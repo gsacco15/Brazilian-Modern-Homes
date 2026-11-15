@@ -100,7 +100,7 @@ const night=[];[[36,33.4,10],[42,46,3],[27,86,10],[30,70,10],[14,72,10],[25.4,45
 const VIEWS={street:[[41,-15.5,5.4],[27,30,7.4]],entry:[[51.5,35,5.9],[31,31.5,5.6]],patio:[[48.6,58.6,6.4],[35,33,6.4]],room:[[21.6,78.9,5.7],[33.5,60,5]],veranda:[[41.8,90.4,5.8],[20.5,83.8,5.4]],aerial:[[96,-38,72],[31,58,0]],plan:[[30.5,55,118],[30.5,56,0]]};
 const roofObjs=[],hit=[];const info=__FINISHES__;
 const pickEl=document.getElementById('pick'),loadEl=document.getElementById('loading');
-new THREE.GLTFLoader().load('casa01.glb',g=>{
+new THREE.GLTFLoader().load('casa01.gltf.json',g=>{
   const root=g.scene;
   root.traverse(o=>{if(/^(Roof|Cedar_soffits|Cedar soffits)/.test(o.name))o.traverse(c=>roofObjs.push(c));
     if(!o.isMesh)return;o.castShadow=true;o.receiveShadow=true;hit.push(o);
@@ -201,7 +201,26 @@ GALLERY = [
 ]
 
 
+def glb_to_json(glb, out):
+    """GLB -> self-contained glTF JSON (buffer as base64 data URI), servable as .json."""
+    import base64
+    import struct
+    b = open(glb, "rb").read()
+    jlen = struct.unpack("<I", b[12:16])[0]
+    j = json.loads(b[20:20 + jlen])
+    off = 20 + jlen
+    blen = struct.unpack("<I", b[off:off + 4])[0]
+    binchunk = b[off + 8:off + 8 + blen]
+    j["buffers"][0]["uri"] = "data:application/octet-stream;base64," + base64.b64encode(binchunk).decode()
+    with open(out, "w") as f:
+        json.dump(j, f, separators=(",", ":"))
+    return out
+
+
 def write_web(img):
+    glb = os.path.join(WEB, "casa01.glb")
+    if os.path.exists(glb):
+        glb_to_json(glb, os.path.join(WEB, "casa01.gltf.json"))
     facts = "".join(f'<div><div class="n">{a}</div><div class="l">{b}</div></div>' for a, b in FACTS)
     moves = "".join(f'<div><div class="k">{i + 1}</div><h3>{t}</h3><p>{p}</p></div>' for i, (t, p) in enumerate(MOVES))
     gal = "".join(
@@ -258,9 +277,9 @@ def write_web(img):
         f'<div class="two"><div><h3>East elevation</h3>{dwg("05_elevation_east.svg")}</div><div><h3>West elevation</h3>{dwg("06_elevation_west.svg")}</div></div>',
         f'<div><h3>Section A-A with Austin sun angles</h3>{dwg("07_section_aa.svg")}</div>',
         f'<div><h3>Cobogó block</h3>{dwg("08_cobogo_detail.svg")}</div></div></section>',
-        '<section class="block"><div class="eyebrow">Finishes</div><h2>Brazilian look, Austin materials</h2>'
-        '<p class="lede">Each sample uses the same material as the renders. Gold italics name the Brazilian reference it stands in for.</p>'
-        f'<div class="sw">{sw}</div></section>',
+        ('<section class="block"><div class="eyebrow">Finishes</div><h2>Brazilian look, Austin materials</h2>'
+         '<p class="lede">Each sample uses the same material as the renders. Gold italics name the Brazilian reference it stands in for.</p>'
+         f'<div class="sw">{sw}</div></section>') if sw else '',
         '<section class="block"><div class="eyebrow">For the builder</div><h2>Quantities and planning budget</h2>',
         f'<div class="cols"><div class="tbl"><table><tr><th>Signature element</th><th style="text-align:right">Qty</th><th>Notes</th></tr>{q}</table></div>',
         f'<div><div class="kv">{kv}</div><div class="note"><b>Planning numbers, not bids</b>Ranges carry over from the earlier '
