@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 937 386" width="937" height="386">
+<defs><pattern id="pavers" width="18" height="12" patternUnits="userSpaceOnUse"><rect width="18" height="12" fill="#f3efe6"/><path d="M0 0 H18 M0 0 V12 M9 6 V12 M0 6 H18" stroke="#d2c9b6" stroke-width="0.6"/></pattern>
+<pattern id="dg" width="7" height="7" patternUnits="userSpaceOnUse"><rect width="7" height="7" fill="#f6f1e7"/><circle cx="2" cy="2" r="0.6" fill="#d6c7ad"/><circle cx="5.5" cy="5" r="0.5" fill="#d6c7ad"/></pattern>
+<pattern id="planting" width="9" height="9" patternUnits="userSpaceOnUse"><rect width="9" height="9" fill="#eef1e8"/><circle cx="2.5" cy="2.5" r="1.1" fill="none" stroke="#a9b89a" stroke-width="0.5"/><circle cx="7" cy="6.5" r="0.8" fill="none" stroke="#a9b89a" stroke-width="0.5"/></pattern>
+<pattern id="lawn" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#eef1e6"/><path d="M1 5 l1 -2 M4 2 l1 -2" stroke="#b9c4a3" stroke-width="0.6"/></pattern>
+<pattern id="stone" width="16" height="8" patternUnits="userSpaceOnUse"><rect width="16" height="8" fill="#efe6d2"/><path d="M0 0 H16 M0 4 H16 M5 0 V4 M12 4 V8" stroke="#c9b993" stroke-width="0.5"/></pattern>
+<pattern id="diag" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="#ffffff"/><line x1="0" y1="0" x2="0" y2="5" stroke="#9a9a9a" stroke-width="0.6"/></pattern>
+<pattern id="earth" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#ffffff"/><line x1="0" y1="0" x2="0" y2="8" stroke="#8a8a8a" stroke-width="0.7"/></pattern></defs>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<rect x="30.00" y="336.00" width="836.40" height="14.28" fill="url(#earth)" stroke="none" stroke-width="1.0" />
+<line x1="30.00" y1="336.00" x2="866.40" y2="336.00" stroke="#23262a" stroke-width="1.8" />
+<rect x="254.40" y="223.80" width="510.00" height="112.20" fill="#fbfaf6" stroke="#23262a" stroke-width="1.1" />
+<rect x="499.20" y="234.00" width="40.80" height="66.30" fill="#dfe3e2" stroke="#23262a" stroke-width="1.1" />
+<line x1="519.60" y1="300.30" x2="519.60" y2="234.00" stroke="#23262a" stroke-width="0.9" />
+<line x1="505.32" y1="283.73" x2="512.26" y2="263.83" stroke="#ffffff" stroke-width="1.6" />
+<rect x="682.80" y="234.00" width="40.80" height="66.30" fill="#dfe3e2" stroke="#23262a" stroke-width="1.1" />
+<line x1="703.20" y1="300.30" x2="703.20" y2="234.00" stroke="#23262a" stroke-width="0.9" />
+<line x1="688.92" y1="283.73" x2="695.86" y2="263.83" stroke="#ffffff" stroke-width="1.6" />
+<rect x="764.40" y="223.80" width="3.37" height="112.20" fill="#e6dcc6" stroke="#23262a" stroke-width="0.8" />
+<rect x="126.90" y="327.33" width="127.50" height="8.67" fill="#efe6d2" stroke="#23262a" stroke-width="0.6" />
+<rect x="134.04" y="223.80" width="3.57" height="103.53" fill="#23262a" stroke="#23262a" stroke-width="0.3" />
+<rect x="126.90" y="211.05" width="668.10" height="12.75" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.5" />
+<line x1="792.96" y1="211.05" x2="815.40" y2="211.05" stroke="#6b6f73" stroke-width="0.6" />
+<path d="M 803.16,211.05 l -5 -7 l 10 0 z" fill="none" stroke="#23262a" stroke-width="0.8"/>
+<text x="819.48" y="211.05" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="3">T.O. ROOF</text>
+<line x1="792.96" y1="223.80" x2="815.40" y2="223.80" stroke="#6b6f73" stroke-width="0.6" />
+<path d="M 803.16,223.80 l -5 -7 l 10 0 z" fill="none" stroke="#23262a" stroke-width="0.8"/>
+<text x="819.48" y="223.80" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="3">SOFFIT</text>
+<line x1="792.96" y1="325.80" x2="815.40" y2="325.80" stroke="#6b6f73" stroke-width="0.6" />
+<path d="M 803.16,325.80 l -5 -7 l 10 0 z" fill="none" stroke="#23262a" stroke-width="0.8"/>
+<text x="819.48" y="325.80" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="3">F.F.</text>
+<line x1="519.60" y1="274.80" x2="519.60" y2="137.10" stroke="#6b6f73" stroke-width="0.6" />
+<circle cx="519.60" cy="274.80" r="1.84" fill="#23262a" stroke="none" stroke-width="1.0" />
+<text x="519.60" y="137.10" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="end" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="-4" dy="3">BEDROOM 3 — EGRESS CASEMENT</text>
+<line x1="703.20" y1="274.80" x2="703.20" y2="167.70" stroke="#6b6f73" stroke-width="0.6" />
+<circle cx="703.20" cy="274.80" r="1.84" fill="#23262a" stroke="none" stroke-width="1.0" />
+<text x="703.20" y="167.70" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="end" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="-4" dy="3">BEDROOM 2 — EGRESS CASEMENT</text>
+<line x1="766.44" y1="244.20" x2="766.44" y2="106.50" stroke="#6b6f73" stroke-width="0.6" />
+<circle cx="766.44" cy="244.20" r="1.84" fill="#23262a" stroke="none" stroke-width="1.0" />
+<text x="766.44" y="106.50" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="end" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="-4" dy="3">LIMESTONE FIN</text>
+<line x1="356.40" y1="295.20" x2="356.40" y2="183.00" stroke="#6b6f73" stroke-width="0.6" />
+<circle cx="356.40" cy="295.20" r="1.84" fill="#23262a" stroke="none" stroke-width="1.0" />
+<text x="356.40" y="183.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">QUIET SIDE: SOLID WALL AGAINST WEST SUN</text>
+<circle cx="662.40" cy="281.43" r="3.88" fill="none" stroke="#6b6f73" stroke-width="0.8" />
+<polyline points="654.75,336.00 657.30,309.48 655.77,287.04 669.03,287.04 667.50,309.48 670.05,336.00" fill="none" stroke="#6b6f73" stroke-width="0.8" />
+</svg>

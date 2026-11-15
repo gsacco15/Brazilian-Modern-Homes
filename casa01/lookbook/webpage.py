@@ -1,0 +1,282 @@
+"""Web version of the Casa 01 lookbook with the interactive 3D viewer.
+Called from build.py; writes casa01/lookbook/web/index.html (+ img/)."""
+import json
+import os
+import shutil
+
+from build import (A, FACTS, MOVES, SWATCHES, HERE, WEB, quantities, room_rows, svg_inline)
+
+WEB_CSS = r"""
+:root{--bg:#f6f4ee;--fg:#1d2520;--muted:#646a63;--line:#dcd8cd;--card:#ffffff;--sage:#5f7458;--gold:#a8844a;--chip:#ece5d4;
+--serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;--sans:'Lato','Helvetica Neue',Arial,sans-serif}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#141916;--fg:#ece8de;--muted:#a5aa9f;--line:#2f3832;--card:#1c221e;--sage:#9db493;--gold:#d2b47c;--chip:#2a312c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#141916;--fg:#ece8de;--muted:#a5aa9f;--line:#2f3832;--card:#1c221e;--sage:#9db493;--gold:#d2b47c;--chip:#2a312c;color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:15px;line-height:1.55;margin:0}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.top{padding-block:28px 18px}
+.eyebrow{font:700 11.5px/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--sage)}
+h1{font-family:var(--serif);font-weight:500;font-size:clamp(40px,6vw,72px);line-height:1;margin:8px 0 0;text-wrap:balance}
+h2{font-family:var(--serif);font-weight:500;font-size:clamp(28px,3.6vw,42px);line-height:1.05;margin:6px 0 0;text-wrap:balance}
+.lede{max-width:62ch;color:var(--muted);margin:12px 0 0;font-size:16px}
+.facts{display:flex;flex-wrap:wrap;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:22px}
+.facts div{flex:1 1 140px;padding:12px 16px 12px 0}
+.facts .n{font-family:var(--serif);font-size:32px;line-height:1}
+.facts .l{font:700 10px/1.3 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.viewer{position:relative;height:min(74vh,760px);min-height:440px;background:#cfdde6;border-radius:4px;overflow:hidden;margin-top:22px}
+.viewer canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
+.vbar{position:absolute;left:12px;right:12px;top:12px;display:flex;flex-wrap:wrap;gap:6px;pointer-events:none}
+.vbar button,.vctl select{pointer-events:auto;font:700 11px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;border:0;background:rgba(246,244,238,.92);color:#1d2520;padding:9px 11px;border-radius:2px;cursor:pointer}
+.vbar button[aria-pressed="true"]{background:#1d2520;color:#f3efe4}
+.vbar button:focus-visible,.vctl select:focus-visible,.vctl input:focus-visible{outline:2px solid #b8955a;outline-offset:2px}
+.vctl{position:absolute;left:12px;right:12px;bottom:12px;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;background:rgba(29,37,32,.84);color:#f3efe4;padding:10px 12px;border-radius:2px}
+.vctl label{font:700 10.5px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:#d8c9a4}
+.vctl input[type=range]{flex:1 1 160px;min-width:120px;accent-color:#b8955a}
+.vctl .time{font:700 13px/1 var(--sans);font-variant-numeric:tabular-nums;min-width:118px}
+.vctl select{padding:7px 8px}
+.pick{position:absolute;right:12px;top:64px;max-width:min(320px,calc(100% - 24px));background:rgba(246,244,238,.96);color:#1d2520;padding:12px 14px;border-radius:2px;font-size:13px;line-height:1.4;box-shadow:0 4px 18px rgba(0,0,0,.15);cursor:pointer}
+.pick b{display:block;font:700 12px/1.2 var(--sans);letter-spacing:.06em;text-transform:uppercase}
+.pick i{font-family:var(--serif);font-size:15px;color:#8a6a35}
+.loading{position:absolute;inset:0;display:grid;place-items:center;font:700 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#1d2520;background:#cfdde6;text-align:center;padding:20px}
+.hint{font-size:12.5px;color:var(--muted);margin-top:8px}
+section.block{padding-block:56px 8px}
+.gal{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:22px}
+.gal figure{margin:0;min-width:0}
+.gal figure.wide{grid-column:1/-1}
+.gal img{width:100%;height:auto;display:block;border-radius:2px;background:var(--chip)}
+figcaption{font-size:13.5px;color:var(--muted);margin-top:8px;max-width:75ch}
+figcaption b{color:var(--fg);font:700 11px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;margin-right:8px}
+.paper{background:#fff;border:1px solid var(--line);border-radius:2px;padding:10px;overflow-x:auto}
+.paper svg{display:block;width:100%;height:auto;min-width:640px}
+.dwgs{display:grid;gap:22px;margin-top:22px}
+.dwgs .two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.dwgs .two>div{min-width:0}
+.dwgs h3{font:700 11.5px/1.2 var(--sans);letter-spacing:.12em;text-transform:uppercase;margin:0 0 8px;color:var(--fg)}
+.sw{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:18px;margin-top:22px}
+.sw img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;border:1px solid var(--line)}
+.sw h4{margin:8px 0 0;font:700 13px/1.25 var(--sans)}
+.sw .br{font-family:var(--serif);font-style:italic;color:var(--gold);font-size:16px;line-height:1.15}
+.sw .sp{font-size:12px;color:var(--muted);line-height:1.35}
+.cols{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:32px;margin-top:22px}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th{font:700 10.5px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px;border-bottom:1px solid var(--fg)}
+td{padding:8px;border-bottom:1px solid var(--line);vertical-align:top}
+td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.kv{display:grid;grid-template-columns:1fr auto;border-top:1px solid var(--line);font-size:14px}
+.kv div{padding:8px 0;border-bottom:1px solid var(--line)}
+.kv div:nth-child(2n){text-align:right;font-weight:700;font-variant-numeric:tabular-nums;padding-left:12px}
+.note{background:var(--chip);padding:14px 16px;font-size:13.5px;margin-top:16px;border-radius:2px}
+.note b{display:block;font:700 10.5px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--sage);margin-bottom:6px}
+.moves{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-top:22px}
+.moves h3{margin:0;font:700 15px/1.25 var(--sans)}
+.moves p{margin:6px 0 0;color:var(--muted);font-size:14px}
+.moves .k{font-family:var(--serif);font-size:34px;color:var(--gold);line-height:1}
+footer{padding-block:48px 40px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--line);margin-top:56px}
+@media (max-width:760px){.gal,.dwgs .two,.cols,.moves{grid-template-columns:1fr}.viewer{height:68vh;min-height:420px}.vctl .time{min-width:auto}}
+"""
+
+VIEWER_JS = r"""
+(function(){
+const M=0.3048, el=document.getElementById('viewer'), canvas=el.querySelector('canvas');
+const T=p=>new THREE.Vector3(p[0]*M,p[2]*M,-p[1]*M);
+const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let renderer;
+try{renderer=new THREE.WebGLRenderer({canvas,antialias:true});}catch(e){document.getElementById('loading').textContent='3D needs WebGL, which this browser has turned off. The renders and plans below still work.';return}
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+renderer.outputEncoding=THREE.sRGBEncoding;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.0;
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+const scene=new THREE.Scene();scene.background=new THREE.Color('#cfdde6');scene.fog=new THREE.Fog(new THREE.Color('#cfdde6'),90,260);
+const camera=new THREE.PerspectiveCamera(50,1,0.1,800);
+const controls=new THREE.OrbitControls(camera,canvas);controls.enableDamping=true;controls.maxPolarAngle=Math.PI*0.495;controls.minDistance=0.5;controls.maxDistance=180;
+const hemi=new THREE.HemisphereLight(0xdfe8ee,0x8c7b62,0.65);scene.add(hemi);
+const sun=new THREE.DirectionalLight(0xfff0d8,2.6);sun.castShadow=true;
+const small=Math.min(window.innerWidth,window.innerHeight)<700;
+sun.shadow.mapSize.set(small?2048:4096,small?2048:4096);
+const C=T([32,62,0]);const sc=sun.shadow.camera;sc.left=-26;sc.right=26;sc.top=26;sc.bottom=-26;sc.near=1;sc.far=150;sun.shadow.bias=-0.0004;sun.shadow.normalBias=0.02;
+sun.target.position.copy(C);scene.add(sun);scene.add(sun.target);
+const night=[];[[36,33.4,10],[42,46,3],[27,86,10],[30,70,10],[14,72,10],[25.4,45,10],[31,106,2]].forEach(p=>{const l=new THREE.PointLight(0xffb36b,0,15,1.6);l.position.copy(T(p));scene.add(l);night.push(l)});
+const VIEWS={street:[[41,-15.5,5.4],[27,30,7.4]],entry:[[51.5,35,5.9],[31,31.5,5.6]],patio:[[48.6,58.6,6.4],[35,33,6.4]],room:[[21.6,78.9,5.7],[33.5,60,5]],veranda:[[41.8,90.4,5.8],[20.5,83.8,5.4]],aerial:[[96,-38,72],[31,58,0]],plan:[[30.5,55,118],[30.5,56,0]]};
+const roofObjs=[],hit=[];const info=__FINISHES__;
+const pickEl=document.getElementById('pick'),loadEl=document.getElementById('loading');
+new THREE.GLTFLoader().load('casa01.glb',g=>{
+  const root=g.scene;
+  root.traverse(o=>{if(/^(Roof|Cedar_soffits|Cedar soffits)/.test(o.name))o.traverse(c=>roofObjs.push(c));
+    if(!o.isMesh)return;o.castShadow=true;o.receiveShadow=true;hit.push(o);
+    (Array.isArray(o.material)?o.material:[o.material]).forEach(m=>{const n=m.name||'';
+      if(n==='web_glass'){m.transparent=true;m.opacity=0.22;m.depthWrite=false;m.metalness=0;m.roughness=0.05;o.castShadow=false}
+      if(n==='web_cobogo'){m.alphaTest=0.5;m.transparent=false;m.side=THREE.DoubleSide}
+      if(m.map){m.map.anisotropy=renderer.capabilities.getMaxAnisotropy()}});});
+  scene.add(root);loadEl.hidden=true;go('street',true);setSun();
+},x=>{if(x.total){loadEl.textContent='Loading 3D model '+Math.round(x.loaded/x.total*100)+'%'}},
+()=>{loadEl.textContent='The 3D model did not load. Reload the page to try again.'});
+function size(){const w=el.clientWidth,h=el.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
+new ResizeObserver(size).observe(el);size();
+let tween=null,roofOn=true;const roofBtn=document.getElementById('roofbtn');
+function setRoof(on){roofObjs.forEach(o=>o.visible=on);roofBtn.setAttribute('aria-pressed',String(!on));roofBtn.textContent=on?'Lift roof':'Put roof back'}
+function go(name,instant){const v=VIEWS[name],p=T(v[0]),t=T(v[1]);
+  if(name==='plan'){roofOn=false}else if(name!=='aerial'){roofOn=true}setRoof(roofOn);
+  document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.view===name)));
+  if(instant||reduce){camera.position.copy(p);controls.target.copy(t);controls.update();return}
+  tween={p0:camera.position.clone(),t0:controls.target.clone(),p1:p,t1:t,s:performance.now(),d:1100}}
+roofBtn.addEventListener('click',()=>{roofOn=!roofOn;setRoof(roofOn)});
+document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.view)));
+const timeEl=document.getElementById('t'),dateEl=document.getElementById('d'),tlab=document.getElementById('tl');
+const skyDay=new THREE.Color('#bcd3e4'),skyDusk=new THREE.Color('#33415a'),skyGold=new THREE.Color('#efc79d');
+function setSun(){const N=+dateEl.value,hrs=+timeEl.value,lat=30.27*Math.PI/180;
+  const dec=23.44*Math.PI/180*Math.sin(2*Math.PI*(284+N)/365),h=(hrs-12)*15*Math.PI/180;
+  const alt=Math.asin(Math.sin(lat)*Math.sin(dec)+Math.cos(lat)*Math.cos(dec)*Math.cos(h));
+  const az=Math.atan2(Math.sin(h),Math.cos(h)*Math.sin(lat)-Math.tan(dec)*Math.cos(lat))+Math.PI;
+  const d=new THREE.Vector3(Math.sin(az)*Math.cos(alt),Math.sin(alt),-Math.cos(az)*Math.cos(alt));
+  sun.position.copy(C).addScaledVector(d,80);
+  const e=Math.max(0,Math.sin(alt));
+  sun.intensity=2.8*Math.min(1,e*2.2);sun.color.setHSL(0.09,0.85-0.55*Math.min(1,e*2),0.5+0.42*Math.min(1,e*1.6));
+  hemi.intensity=0.14+0.55*Math.min(1,e*3.2);
+  const sky=skyDusk.clone().lerp(skyGold,Math.min(1,e*9)).lerp(skyDay,Math.min(1,Math.max(0,(e-0.07)*6)));
+  scene.background.copy(sky);scene.fog.color.copy(sky);
+  const nightAmt=Math.max(0,1-e*8);night.forEach(l=>l.intensity=nightAmt*2.4);
+  const hh=Math.floor(hrs),mm=Math.round((hrs-hh)*60)%60;
+  tlab.textContent=((hh+11)%12+1)+':'+String(mm).padStart(2,'0')+(hrs<12?' am':' pm')+(alt<0?' · dark':'')}
+timeEl.addEventListener('input',setSun);dateEl.addEventListener('change',setSun);
+const ray=new THREE.Raycaster(),ptr=new THREE.Vector2();let down=null;
+canvas.addEventListener('pointerdown',e=>{down=[e.clientX,e.clientY];tween=null});
+canvas.addEventListener('pointerup',e=>{if(!down||Math.hypot(e.clientX-down[0],e.clientY-down[1])>5)return;
+  const r=canvas.getBoundingClientRect();ptr.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);ray.setFromCamera(ptr,camera);
+  const hs=ray.intersectObjects(hit.filter(o=>o.visible&&(o.parent?o.parent.visible:true)),false);if(!hs.length)return;
+  let m=hs[0].object.material;if(Array.isArray(m))m=m[0];const f=info[(m.name||'').replace('web_','')];
+  if(!f){pickEl.hidden=true;return}
+  pickEl.innerHTML='<b>'+f[0]+'</b>'+(f[1]?'<i>Brazilian reference: '+f[1]+'</i><br>':'')+f[2];pickEl.hidden=false});
+pickEl.addEventListener('click',()=>pickEl.hidden=true);
+function loop(now){requestAnimationFrame(loop);if(tween){let k=Math.min(1,(now-tween.s)/tween.d);k=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+  camera.position.lerpVectors(tween.p0,tween.p1,k);controls.target.lerpVectors(tween.t0,tween.t1,k);if(k>=1)tween=null}
+  controls.update();renderer.render(scene,camera)}
+requestAnimationFrame(loop);
+})();
+"""
+
+FINISH_INFO = {
+    "limestone": ["Lueders limestone", "pedra São Tomé", "Sawn-face ashlar in three course heights. One street wall only."],
+    "pavers": ["Limestone pavers", "São Tomé paving", "24x36 thermal-finish pavers on the pátio and veranda."],
+    "cobogo": ["Concrete cobogó", "the Recife cobogó (1929)", "12x12x4 precast breeze block, white cement, 210 blocks."],
+    "cedar_z": ["Western red cedar slats", "freijó / brise-soleil", "2x4 slats at 5\" on center on a steel frame."],
+    "cedar_y": ["Cedar T&G ceiling + soffit", "freijó ceilings", "Clear 1x6 tongue and groove, natural oil. Runs inside and out."],
+    "cedar_x": ["Teak outdoor furniture", "", "Outdoor dining set."],
+    "fence": ["Horizontal cedar fence", "", "6' privacy fence on side and rear lot lines."],
+    "stucco": ["Warm-white stucco", "white mineral plaster", "Smooth three-coat stucco over 2x6 framing."],
+    "paint": ["Interior walls", "", "Warm-white matte paint on gypsum board."],
+    "floor": ["Polished concrete", "cimento queimado", "The slab is the finished floor: light grind, densifier, seal."],
+    "concrete": ["Cast concrete", "", "Cobogó curb, driveway ribbons, entry step."],
+    "bronze": ["Dark bronze aluminum", "slim steel frames", "15\" fascia, window frames, gate frame and posts."],
+    "roof": ["Low-slope TPO roof", "", "1/4\" per foot to scuppers, hidden behind the thin fascia."],
+    "glass": ["Glass", "", "9' sliding glass walls, low-E, dark bronze frames."],
+    "oak": ["Rift white oak", "tauari interiors", "Kitchen cabinets, credenza, desks."],
+    "granite": ["Honed black granite", "Brazilian dark stone", "Island with waterfall ends, counters."],
+    "tile": ["Green glazed tile", "azulejo", "4x4 backsplash behind the range and sink."],
+    "dark_wood": ["Walnut", "freijó / jacarandá furniture", "Dining and coffee tables."],
+    "dg": ["Decomposed granite", "terra batida", "Stabilized DG paths and meadow mulch."],
+    "mulch": ["Planting bed", "", "Courtyard garden bed: palmetto, fern, muhly."],
+    "lawn_soil": ["Buffalo grass lawn", "", "Low-water native lawn under the oak."],
+    "linen": ["Linen upholstery", "linho", "Sofa, bed and outdoor cushions."],
+    "leaf": ["Live oak", "tropical canopy", "Heritage live oak, kept and protected."],
+    "leaf_dark": ["Live oak", "tropical canopy", "Courtyard and street trees."],
+    "bark": ["Live oak", "", "Quercus virginiana."],
+    "agave": ["Agave", "bromeliads", "Agave americana and A. ovatifolia in the front meadow."],
+    "feather": ["Mexican feather grass", "", "Nassella tenuissima, front meadow drifts."],
+    "grass": ["Muhly + sotol", "", "Lindheimer muhly and Texas sotol."],
+    "palm": ["Dwarf palmetto", "tropical palms", "Sabal minor: native, cold-hardy, tropical-looking."],
+}
+
+GALLERY = [
+    ("street", "Street", "Limestone wall, cedar gate and cobogó under one 54-foot roof edge. Native meadow instead of lawn.", True),
+    ("street_dusk", "Dusk", "Courtyard lights behind the cobogó turn the screen into a lantern; grazers rake the limestone.", True),
+    ("entry", "Covered entry", "Sun through the cobogó draws circles on the pavers. The cedar pivot door is inside the screen.", False),
+    ("courtyard", "Pátio", "Dwarf palmetto, ferns and muhly under a limbed-up oak, lined by the gallery glass.", False),
+    ("interior", "Great room", "Cedar ceiling, polished concrete, warm-white walls. Courtyard to the south, veranda to the north.", True),
+    ("kitchen", "Kitchen", "Rift white oak, honed black granite island, green glazed tile.", False),
+    ("gallery", "Gallery", "The bedroom hall is a 30-foot glass wall on the pátio.", False),
+    ("veranda", "Veranda", "276 sf under the oak. The cedar ceiling runs straight out from the great room.", False),
+    ("rear", "Rear yard", "The house sits forward on the lot to protect the heritage live oak.", False),
+    ("aerial", "Aerial", "An L-shaped house wrapped around an open-sky pátio.", True),
+]
+
+
+def write_web(img):
+    facts = "".join(f'<div><div class="n">{a}</div><div class="l">{b}</div></div>' for a, b in FACTS)
+    moves = "".join(f'<div><div class="k">{i + 1}</div><h3>{t}</h3><p>{p}</p></div>' for i, (t, p) in enumerate(MOVES))
+    gal = "".join(
+        f'<figure class="{"wide" if w else ""}"><img src="{img[k]}" alt="{t}. {c}" loading="lazy" width="1600" height="900">'
+        f'<figcaption><b>{t}</b>{c}</figcaption></figure>' for k, t, c, w in GALLERY if k in img)
+    sw = "".join(f'<div><img src="{img["sw_" + k]}" alt="{n} sample" loading="lazy"><h4>{n}</h4><div class="br">{br}</div>'
+                 f'<div class="sp">{sp}</div></div>' for k, n, br, sp in SWATCHES if "sw_" + k in img)
+    rr = "".join(f"<tr><td>{a}</td><td>{b}</td><td class='num'>{c}</td></tr>" for a, b, c in room_rows())
+    q = "".join(f"<tr><td>{a}</td><td class='num'>{b}</td><td>{c}</td></tr>" for a, b, c in quantities())
+    lo, hi = 325 * A["conditioned"], 425 * A["conditioned"]
+    kv = (f"<div>Construction at $325–$425 / sf</div><div>${lo / 1000:,.0f}K–${hi / 1000:,.0f}K</div>"
+          f"<div>Site work + utilities</div><div>$20K–$50K</div><div>Design, engineering, permits</div><div>$25K–$50K</div>"
+          f"<div>Contingency (~10%)</div><div>${lo * 0.1 / 1000:,.0f}K–${hi * 0.1 / 1000:,.0f}K</div>"
+          f"<div>Total, excluding land</div><div>${(lo * 1.1 + 45000) / 1000:,.0f}K–${(hi * 1.1 + 100000) / 1000:,.0f}K</div>")
+
+    def dwg(f):
+        return f'<div class="paper">{svg_inline(f)}</div>'
+
+    js = VIEWER_JS.replace("__FINISHES__", json.dumps(FINISH_INFO))
+    parts = [
+        '<meta charset="utf-8">',
+        '<title>Casa 01 Casa Pátio</title>',
+        '<meta name="claude:viewport-fit-sides" content="cover">',
+        '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
+        '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Lato:wght@400;700;900&display=swap">',
+        f'<style>{WEB_CSS}</style>',
+        '<div class="wrap">',
+        '<header class="top"><div class="eyebrow">Brazilian Modern Homes / Concept design / November 2026</div>',
+        '<h1>Casa 01 · Casa Pátio</h1>',
+        '<p class="lede">A 1,620 sf, three-bedroom courtyard house for an Austin infill lot. One thin roof, one private garden, '
+        'one limestone wall, built with ordinary Texas framing. Every image, plan and number on this page comes from the same 3D model.</p>',
+        f'<div class="facts">{facts}</div></header>',
+        '<div class="viewer" id="viewer"><canvas aria-label="Interactive 3D model of Casa 01. Drag to orbit, scroll or pinch to zoom."></canvas>',
+        '<div class="vbar" role="toolbar" aria-label="Camera views">',
+        '<button data-view="street" aria-pressed="true">Street</button><button data-view="entry" aria-pressed="false">Entry</button>'
+        '<button data-view="patio" aria-pressed="false">Pátio</button><button data-view="room" aria-pressed="false">Great room</button>'
+        '<button data-view="veranda" aria-pressed="false">Veranda</button><button data-view="aerial" aria-pressed="false">Aerial</button>'
+        '<button data-view="plan" aria-pressed="false">Plan</button><button id="roofbtn" aria-pressed="false">Lift roof</button></div>',
+        '<div class="pick" id="pick" hidden></div>',
+        '<div class="vctl"><label for="d">Sun</label><select id="d"><option value="172">June 21</option>'
+        '<option value="80">March 21</option><option value="355">Dec 21</option></select>'
+        '<input id="t" type="range" min="5.5" max="20.5" step="0.05" value="16.5" aria-label="Time of day, solar time">'
+        '<span class="time" id="tl">4:30 pm</span></div>',
+        '<div class="loading" id="loading">Loading 3D model</div></div>',
+        '<p class="hint">Drag to orbit, scroll or pinch to zoom, right-drag or two-finger drag to pan. Tap any surface to see its finish. '
+        'Slide the sun to watch the eaves and the cobogó work through a June or December day.</p>',
+        f'<section class="block"><div class="eyebrow">The idea</div><h2>Three moves make the house</h2><div class="moves">{moves}</div></section>',
+        f'<section class="block"><div class="eyebrow">Renders</div><h2>What it looks like</h2><div class="gal">{gal}</div></section>',
+        '<section class="block"><div class="eyebrow">Drawings</div><h2>Plans, elevations and section</h2><div class="dwgs">',
+        f'<div class="two"><div><h3>Site plan</h3>{dwg("01_site_plan.svg")}</div><div><h3>Floor plan</h3>{dwg("02_floor_plan.svg")}</div></div>',
+        f'<div class="tbl"><table><tr><th>Room</th><th>Clear size</th><th style="text-align:right">sf</th></tr>{rr}</table></div>',
+        f'<div><h3>South elevation (street)</h3>{dwg("03_elevation_south.svg")}</div>',
+        f'<div><h3>North elevation (veranda)</h3>{dwg("04_elevation_north.svg")}</div>',
+        f'<div class="two"><div><h3>East elevation</h3>{dwg("05_elevation_east.svg")}</div><div><h3>West elevation</h3>{dwg("06_elevation_west.svg")}</div></div>',
+        f'<div><h3>Section A-A with Austin sun angles</h3>{dwg("07_section_aa.svg")}</div>',
+        f'<div><h3>Cobogó block</h3>{dwg("08_cobogo_detail.svg")}</div></div></section>',
+        '<section class="block"><div class="eyebrow">Finishes</div><h2>Brazilian look, Austin materials</h2>'
+        '<p class="lede">Each sample uses the same material as the renders. Gold italics name the Brazilian reference it stands in for.</p>'
+        f'<div class="sw">{sw}</div></section>',
+        '<section class="block"><div class="eyebrow">For the builder</div><h2>Quantities and planning budget</h2>',
+        f'<div class="cols"><div class="tbl"><table><tr><th>Signature element</th><th style="text-align:right">Qty</th><th>Notes</th></tr>{q}</table></div>',
+        f'<div><div class="kv">{kv}</div><div class="note"><b>Planning numbers, not bids</b>Ranges carry over from the earlier '
+        'feasibility notes. Next step: price these quantities with two Austin builders, then adapt the plan to a real lot.</div></div></div></section>',
+        '<footer>Concept study for discussion, not for construction. Zoning, structure, energy code and site conditions need a '
+        'licensed local team. Renders are computer visualizations of this design, with scanned CC0 textures from Poly Haven and ambientCG.</footer>',
+        '</div>',
+        '<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>',
+        '<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>',
+        '<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/loaders/GLTFLoader.js"></script>',
+        f'<script>{js}</script>',
+    ]
+    os.makedirs(os.path.join(WEB, "img"), exist_ok=True)
+    out = os.path.join(WEB, "index.html")
+    with open(out, "w") as f:
+        f.write("\n".join(parts))
+    for k, rel in img.items():
+        shutil.copy(os.path.join(HERE, rel), os.path.join(WEB, rel))
+    return out
