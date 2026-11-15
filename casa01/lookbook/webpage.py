@@ -100,7 +100,7 @@ const night=[];[[36,33.4,10],[42,46,3],[27,86,10],[30,70,10],[14,72,10],[25.4,45
 const VIEWS={street:[[41,-15.5,5.4],[27,30,7.4]],entry:[[51.5,35,5.9],[31,31.5,5.6]],patio:[[48.6,58.6,6.4],[35,33,6.4]],room:[[21.6,78.9,5.7],[33.5,60,5]],veranda:[[41.8,90.4,5.8],[20.5,83.8,5.4]],aerial:[[96,-38,72],[31,58,0]],plan:[[30.5,55,118],[30.5,56,0]]};
 const roofObjs=[],hit=[];const info=__FINISHES__;
 const pickEl=document.getElementById('pick'),loadEl=document.getElementById('loading');
-new THREE.GLTFLoader().load('casa01.gltf.json',g=>{
+function onModel(g){
   const root=g.scene;
   root.traverse(o=>{if(/^(Roof|Cedar_soffits|Cedar soffits)/.test(o.name))o.traverse(c=>roofObjs.push(c));
     if(!o.isMesh)return;o.castShadow=true;o.receiveShadow=true;hit.push(o);
@@ -108,9 +108,33 @@ new THREE.GLTFLoader().load('casa01.gltf.json',g=>{
       if(n==='web_glass'){m.transparent=true;m.opacity=0.22;m.depthWrite=false;m.metalness=0;m.roughness=0.05;o.castShadow=false}
       if(n==='web_cobogo'){m.alphaTest=0.5;m.transparent=false;m.side=THREE.DoubleSide}
       if(m.map){m.map.anisotropy=renderer.capabilities.getMaxAnisotropy()}});});
-  scene.add(root);loadEl.hidden=true;go('street',true);setSun();
-},x=>{if(x.total){loadEl.textContent='Loading 3D model '+Math.round(x.loaded/x.total*100)+'%'}},
-()=>{loadEl.textContent='The 3D model did not load. Reload the page to try again.'});
+  scene.add(root);loadEl.hidden=true;go('street',true);setSun();}
+function failed(){loadEl.textContent='The 3D model did not load. Reload the page to try again.'}
+// The page may not fetch data: or blob: URLs, so the model ships as glTF JSON with a base64
+// buffer. Decode it here, rebuild a binary GLB in memory, and parse that (no extra requests).
+(async()=>{try{
+  const res=await fetch('casa01.gltf.json');if(!res.ok)throw new Error(res.status);
+  const total=+res.headers.get('content-length')||0;const reader=res.body.getReader();const chunks=[];let got=0;
+  for(;;){const {done,value}=await reader.read();if(done)break;chunks.push(value);got+=value.length;
+    if(total)loadEl.textContent='Loading 3D model '+Math.round(got/total*100)+'%'}
+  loadEl.textContent='Building the scene';
+  const txt=new TextDecoder().decode(await new Blob(chunks).arrayBuffer());
+  const j=JSON.parse(txt);const uri=j.buffers[0].uri;delete j.buffers[0].uri;
+  const b64=atob(uri.slice(uri.indexOf(',')+1));const bin=new Uint8Array(b64.length);
+  for(let i=0;i<b64.length;i++)bin[i]=b64.charCodeAt(i);
+  j.buffers[0].byteLength=bin.length;
+  let js=new TextEncoder().encode(JSON.stringify(j));
+  const jl=Math.ceil(js.length/4)*4,bl=Math.ceil(bin.length/4)*4;
+  const glb=new ArrayBuffer(12+8+jl+8+bl),dv=new DataView(glb),u8=new Uint8Array(glb);
+  dv.setUint32(0,0x46546C67,true);dv.setUint32(4,2,true);dv.setUint32(8,glb.byteLength,true);
+  dv.setUint32(12,jl,true);dv.setUint32(16,0x4E4F534A,true);u8.fill(0x20,20,20+jl);u8.set(js,20);
+  dv.setUint32(20+jl,bl,true);dv.setUint32(24+jl,0x004E4942,true);u8.set(bin,28+jl);
+  // textures: load through <img> (blob: images are allowed) instead of fetch()
+  const cib=window.createImageBitmap;try{window.createImageBitmap=undefined}catch(e){}
+  new THREE.GLTFLoader().parse(glb,'',g=>{try{window.createImageBitmap=cib}catch(e){}onModel(g)},
+    e=>{try{window.createImageBitmap=cib}catch(_){}console.error(e);failed()});
+  try{window.createImageBitmap=cib}catch(e){}
+}catch(e){console.error(e);failed()}})();
 function size(){const w=el.clientWidth,h=el.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
 new ResizeObserver(size).observe(el);size();
 let tween=null,roofOn=true;const roofBtn=document.getElementById('roofbtn');
