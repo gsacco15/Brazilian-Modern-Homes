@@ -78,7 +78,7 @@ class Sheet:
     def callout(self, a, b, label, size=24, anchor="start"):
         self.line(a, b, "#2b2e31", 2)
         self.add(f'<circle cx="{a[0]:.1f}" cy="{a[1]:.1f}" r="5" fill="#2b2e31"/>')
-        w = len(label) * size * 0.62 + 18
+        w = len(label) * size * 0.72 + 22  # bold caps + letter-spacing; text must never spill onto dark foliage
         x = b[0] if anchor == "start" else b[0] - w
         self.add(f'<rect x="{x:.1f}" y="{b[1] - size * 0.9:.1f}" width="{w:.1f}" height="{size * 1.35:.1f}" '
                  f'fill="rgba(255,255,255,0.9)"/>')
@@ -270,8 +270,9 @@ def elevation(view, title, callouts):
     rz = sh.rot[2]
     margin = 560
     gy = E(0, 0)[1]
+    below = max(0.0, gy + 84 - sh.H)   # room under the grade line for its label
     # cut the ground: white below grade, heavy grade line across the full sheet
-    sh.add(f'<rect x="0" y="{gy:.1f}" width="{sh.W + margin}" height="{sh.H - gy + 2:.1f}" fill="#ffffff"/>')
+    sh.add(f'<rect x="0" y="{gy:.1f}" width="{sh.W + margin}" height="{sh.H - gy + below + 2:.1f}" fill="#ffffff"/>')
     sh.add(f'<rect x="0" y="{gy:.1f}" width="{sh.W + margin}" height="26" fill="url(#earth)"/>')
     sh.line((0, gy), (sh.W + margin - 20, gy), INK, 7)
     x0 = sh.W + 40
@@ -287,7 +288,7 @@ def elevation(view, title, callouts):
     sh.add('<defs><pattern id="earth" width="16" height="16" patternUnits="userSpaceOnUse" '
            'patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="16" stroke="#8a8a8a" stroke-width="2"/>'
            '</pattern></defs>')
-    return sh.save(f"22_{view}.svg", extra_w=margin)
+    return sh.save(f"22_{view}.svg", extra_w=margin, extra_h=below)
 
 
 def elevations():
