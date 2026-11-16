@@ -276,10 +276,10 @@ def web_planting(coll, W):
     pts_fe = S.sample_poly(fm, 150, rng, avoid + [(-1, -1, 9, 18)], 2.0, pts_ag + pts_so) + \
         S.sample_poly(fe, 130, rng, avoid, 2.0, pts_ag + pts_so)
     zc = (D.HARDSCAPE - 0.08) * M
-    cy = [(31.6, 36.6), (53.5, 36.6), (53.5, 49.0), (39.5, 49.0), (39.5, 56.3), (31.6, 56.3)]
+    cy = [(31.6, 36.6), (53.5, 36.6), (53.5, 49.0), (39.5, 49.0), (39.5, 51.4), (31.6, 51.4)]
     pts_pa = S.sample_poly(cy, 12, rng, [(42.2, 44.8, 45.8, 48.2)], 3.0)
     pts_mu = S.sample_poly([(32, 36.6), (53.4, 36.6), (53.4, 39.0), (32, 39.0)], 16, rng, (), 1.5) + \
-        S.sample_poly([(31.6, 38), (36.5, 38), (36.5, 56), (31.6, 56)], 18, rng, (), 1.6, pts_pa)
+        S.sample_poly([(31.6, 38), (36.5, 38), (36.5, 51.4), (31.6, 51.4)], 18, rng, (), 1.6, pts_pa)
 
     def xf(pts, z=0.0, s=(0.8, 1.2)):
         return [(Vector((x * M, y * M, z)), rng.uniform(0, 6.28), rng.uniform(*s)) for x, y in pts]

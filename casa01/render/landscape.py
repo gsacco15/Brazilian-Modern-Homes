@@ -212,10 +212,10 @@ def _planting(L, coll, protos, rng):
 
     # courtyard: dwarf palmetto, ferns in the shade, muhly along the cobogó, agave accents
     zc = (D.HARDSCAPE - 0.08) * M
-    cy = [(31.6, 36.6), (53.5, 36.6), (53.5, 49.0), (39.5, 49.0), (39.5, 56.3), (31.6, 56.3)]
+    cy = [(31.6, 36.6), (53.5, 36.6), (53.5, 49.0), (39.5, 49.0), (39.5, 51.4), (31.6, 51.4)]
     tree_avoid = [(42.2, 44.8, 45.8, 48.2)]
     pts_pa = sample_poly(cy, 11, rng, tree_avoid, 3.2)
-    pts_fn = sample_poly([(31.6, 38), (36.5, 38), (36.5, 56), (31.6, 56)], 26, rng, (), 1.5, pts_pa)
+    pts_fn = sample_poly([(31.6, 38), (36.5, 38), (36.5, 51.4), (31.6, 51.4)], 22, rng, (), 1.5, pts_pa)
     pts_mu2 = sample_poly([(32, 36.6), (53.4, 36.6), (53.4, 39.0), (32, 39.0)], 16, rng, (), 1.5)
     pts_ag2 = [(50.5, 49.0), (47.8, 41.0)]
     P.scatter("Courtyard palmetto", to_m(pts_pa, zc), palm, coll, scale=(1.1, 1.6))

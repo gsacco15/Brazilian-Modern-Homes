@@ -49,6 +49,17 @@ VIEWS = {
                    strength=1.0, exposure=0.0, night=False, two_point=False),
     "rear": dict(cam=(46.0, 121.0, 5.6), tgt=(27.0, 82.0, 7.0), lens=20, hdri="afternoon", sun=292,
                  strength=1.0, exposure=0.5, night=True, night_level=0.35),
+    # 360° equirectangular panoramas for the web tour (tgt only sets the initial heading)
+    "pano_street": dict(cam=(31.5, -2.6, 5.3), tgt=(31.5, 30.0, 5.3), lens=20, hdri="afternoon", sun=232,
+                        strength=1.0, exposure=-0.2, night=False, pano=True),
+    "pano_entry": dict(cam=(31.2, 33.2, D.HARDSCAPE + 5.2), tgt=(31.2, 60.0, 5.3), lens=20, hdri="day", sun=198,
+                       strength=1.0, exposure=0.5, night=False, pano=True),
+    "pano_patio": dict(cam=(35.5, 56.6, D.HARDSCAPE + 5.2), tgt=(44.0, 40.0, 5.3), lens=20, hdri="day", sun=192,
+                       strength=1.0, exposure=0.6, night=False, pano=True),
+    "pano_room": dict(cam=(30.0, 70.5, D.FF + 5.0), tgt=(30.0, 55.0, 5.3), lens=20, hdri="day", sun=200,
+                      strength=1.0, exposure=1.8, night=True, night_level=0.25, pano=True),
+    "pano_veranda": dict(cam=(30.0, 87.5, D.HARDSCAPE + 5.2), tgt=(30.0, 110.0, 5.3), lens=20, hdri="afternoon",
+                         sun=284, strength=1.0, exposure=0.9, night=True, night_level=0.35, pano=True),
     "kitchen": dict(cam=(28.2, 61.3, D.FF + 4.9), tgt=(9.5, 76.5, D.FF + 3.6), lens=19, hdri="day", sun=200,
                     strength=1.0, exposure=2.4, night=True, night_level=0.3),
 }
@@ -255,6 +266,14 @@ def set_camera(v, res_x, res_y):
         cam = bpy.data.objects.new("Cam", cd)
         bpy.context.scene.collection.objects.link(cam)
     cd = cam.data
+    if v.get("pano"):
+        cd.type = "PANO"
+        try:
+            cd.panorama_type = "EQUIRECTANGULAR"
+        except Exception:
+            cd.cycles.panorama_type = "EQUIRECTANGULAR"
+    else:
+        cd.type = "PERSP"
     cd.lens = v["lens"]
     cd.sensor_width = SENSOR
     cd.sensor_fit = "HORIZONTAL"
@@ -265,7 +284,10 @@ def set_camera(v, res_x, res_y):
     d = t - p
     cam.location = p
     yaw = math.atan2(d.y, d.x) - math.pi / 2
-    if v.get("two_point", True):
+    if v.get("pano"):
+        cam.rotation_euler = (math.pi / 2, 0, yaw)
+        cd.shift_x = cd.shift_y = 0
+    elif v.get("two_point", True):
         # level camera; vertical framing via lens shift keeps verticals straight
         cam.rotation_euler = (math.pi / 2, 0, yaw)
         horiz = math.hypot(d.x, d.y)
@@ -366,10 +388,12 @@ def main():
         set_night(night, v["night"], v.get("night_level", 1.0))
         bpy.context.scene.view_settings.exposure = v["exposure"]
         set_camera(v, res_x, res_y)
+        rs = bpy.context.scene.render
+        rs.resolution_x, rs.resolution_y = (args.res, args.res // 2) if v.get("pano") else (res_x, res_y)
         bpy.context.scene.render.filepath = os.path.join(args.out, f"{name}{args.suffix}.png")
         t = time.time()
         bpy.ops.render.render(write_still=True)
-        print(f"[render] {name} {res_x}x{res_y} {args.samples}spp in {time.time() - t:.0f}s", flush=True)
+        print(f"[render] {name} {rs.resolution_x}x{rs.resolution_y} {args.samples}spp in {time.time() - t:.0f}s", flush=True)
 
 
 if __name__ == "__main__":
