@@ -102,7 +102,7 @@ sun.shadow.mapSize.set(small?2048:4096,small?2048:4096);
 const C=T([32,62,0]);const sc=sun.shadow.camera;sc.left=-26;sc.right=26;sc.top=26;sc.bottom=-26;sc.near=1;sc.far=150;sun.shadow.bias=-0.0003;sun.shadow.normalBias=0.025;
 sun.target.position.copy(C);scene.add(sun);scene.add(sun.target);
 const night=[];[[36,33.4,10],[42,46,3],[27,86,10],[30,70,10],[14,72,10],[25.4,45,10],[31,106,2]].forEach(p=>{const l=new THREE.PointLight(0xffb36b,0,15,1.6);l.position.copy(T(p));scene.add(l);night.push(l)});
-const VIEWS={street:[[41,-15.5,5.4],[27,30,7.4]],entry:[[51.5,35,5.9],[31,31.5,5.6]],patio:[[48.6,58.6,6.4],[35,33,6.4]],room:[[21.6,78.9,5.7],[33.5,60,5]],veranda:[[41.8,90.4,5.8],[20.5,83.8,5.4]],aerial:[[96,-38,72],[31,58,0]],plan:[[30.5,55,118],[30.5,56,0]]};
+const VIEWS={street:[[41,-15.5,5.4],[27,30,7.4]],entry:[[51.5,35,5.9],[31,31.5,5.6]],patio:[[53.0,51.5,5.6],[28,51,5.4]],room:[[21.6,78.9,5.7],[33.5,60,5]],veranda:[[41.8,90.4,5.8],[20.5,83.8,5.4]],aerial:[[96,-38,72],[31,58,0]],plan:[[30.5,55,118],[30.5,56,0]]};
 const roofObjs=[],hit=[],baked=[],lit=[];const info=__FINISHES__;
 const pickEl=document.getElementById('pick'),loadEl=document.getElementById('loading');
 const TL=new THREE.TextureLoader();
