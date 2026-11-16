@@ -28,7 +28,10 @@ def cyl(name, coll, mat, x, y, z0, z1, r, axis="Z", segs=40, bowl=0.0):
     me = bpy.data.meshes.new(name)
     bm.to_mesh(me)
     bm.free()
-    me.shade_smooth()
+    # smooth the round sides only: smoothing the flat caps bends their normals into a dome,
+    # which turned the mirror into what looked like a polished brass bowl
+    for poly in me.polygons:
+        poly.use_smooth = len(poly.vertices) <= 4
     me.materials.append(mat)
     ob = bpy.data.objects.new(name, me)
     if axis == "Z":
@@ -104,7 +107,7 @@ def build_primary_bath(L, coll, protos=None):
 
     # round mirror with a brass rim, two brass sconces with glass globes
     my, md = B["mirror"]
-    cyl("Mirror rim", coll, L["brass"], rx0, my, FF + 5.3 * 0 + 0.0, 0.05, md / 2 + 0.07, axis="X")
+    cyl("Mirror rim", coll, L["brass"], rx0, my, 0.0, 0.05, md / 2 + 0.07, axis="X")  # thin brass ring behind the glass
     rim = bpy.data.objects["Mirror rim"]
     rim.location = (rx0 * M, my * M, (FF + 5.3) * M)
     cyl("Mirror", coll, L["mirror"], rx0, my, 0, 0.065, md / 2, axis="X")
