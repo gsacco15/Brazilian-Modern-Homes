@@ -2608,7 +2608,7 @@ footer{padding-block:48px 40px;color:var(--muted);font-size:12.5px;border-top:1p
 const M=0.3048, el=document.getElementById('viewer'), canvas=el.querySelector('canvas');
 const T=p=>new THREE.Vector3(p[0]*M,p[2]*M,-p[1]*M);
 const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const MODEL='casa01_v2.gltf.json', LMAPS={"scale": 0.8854054635042798, "maps": {"House": "House.jpg", "Roof": "Roof.jpg", "Ground": "Ground.jpg", "Context": "Context.jpg"}}, SKY_AZ=304.2, CB={"x0": 33.0, "x1": 54.0, "y": 30.0, "t": 0.33, "z0": 1.0, "z1": 11.0, "block": 1.0};
+const MODEL='casa01_v2.gltf.json', LMAPS={"scale": 0.8854035964167896, "maps": {"House": "House.jpg", "Roof": "Roof.jpg", "Ground": "Ground.jpg", "Context": "Context.jpg"}}, SKY_AZ=304.2, CB={"x0": 33.0, "x1": 54.0, "y": 30.0, "t": 0.33, "z0": 1.0, "z1": 11.0, "block": 1.0};
 let renderer;
 try{renderer=new THREE.WebGLRenderer({canvas,antialias:true});}catch(e){document.getElementById('loading').textContent='3D needs WebGL, which this browser has turned off. The renders and plans below still work.';return}
 renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
