@@ -7,6 +7,7 @@ solstice sun angles) and the cobogó block detail. Same numbers as the 3D
 model, so drawings and renders always agree.
 """
 import math
+import re
 import os
 import random
 
@@ -45,6 +46,7 @@ class SVG:
         self.h = (y1 - y0) * scale + 2 * pad + extra_bottom
         self.items = []
         self.defs = []
+        self.layer = None   # CAD layer name stamped on elements (data-layer) for the DXF export
 
     def X(self, x):
         return self.pad + (x - self.x0) * self.s
@@ -58,6 +60,8 @@ class SVG:
         return f"{self.X(x):.2f},{self.Y(y):.2f}"
 
     def add(self, s):
+        if self.layer:
+            s = re.sub(r"<([a-zA-Z]+)(?=[\s/>])", lambda m: f'<{m.group(1)} data-layer="{self.layer}"', s)
         self.items.append(s)
 
     def rect(self, x0, y0, x1, y1, fill="none", stroke=INK, sw=1.0, extra=""):
@@ -141,7 +145,8 @@ class SVG:
         body = "\n".join(self.items)
         defs = "\n".join(self.defs)
         svg = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {self.w:.0f} {self.h:.0f}" '
-               f'width="{self.w:.0f}" height="{self.h:.0f}">\n'
+               f'width="{self.w:.0f}" height="{self.h:.0f}" data-x0="{self.x0}" data-y0="{self.y0}" data-y1="{self.y1}" '
+               f'data-pad="{self.pad}" data-scale="{self.s}" data-flip="{int(self.flip)}">\n'
                f'<defs>{defs}</defs>\n<rect width="100%" height="100%" fill="#ffffff"/>\n{body}\n</svg>\n')
         with open(os.path.join(OUT, name), "w") as f:
             f.write(svg)
