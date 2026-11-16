@@ -1,3 +1,5 @@
 casa01/render/assets/
 __pycache__/
 *.blend1
+casa01/lookbook/preview.html
+casa01/lookbook/img/ortho_prev/

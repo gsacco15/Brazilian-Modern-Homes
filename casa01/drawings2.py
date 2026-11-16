@@ -178,21 +178,21 @@ def plan_rendered():
         area = D.poly_area(r["poly"])
         if r.get("vertical"):
             x, y = P(*r["label"])
-            sh.add(f'<text x="{x:.1f}" y="{y:.1f}" font-family="{FONT}" font-size="22" font-weight="700" '
+            sh.add(f'<text x="{x:.1f}" y="{y:.1f}" font-family="{FONT}" font-size="34" font-weight="700" '
                    f'letter-spacing="2" text-anchor="middle" fill="{INK}" transform="rotate(-90 {x:.1f} {y:.1f})">'
                    f'GALLERY</text>')
             continue
         sub = None if r.get("small") else f"{fmt_ft(max(xs) - min(xs))} x {fmt_ft(max(ys) - min(ys))} · {area:.0f} sf"
-        sh.tag(P(*r["label"]), r["name"].upper(), sub, size=20 if r.get("small") else 24)
+        sh.tag(P(*r["label"]), r["name"].upper(), sub, size=30 if r.get("small") else 40)
     for o in D.OUTDOOR:
-        sh.tag(P(*o["label"]), o["name"].upper(), None, size=22)
-    sh.callout(P(16.0, 29.9), P(9.0, 25.0), "LUEDERS LIMESTONE WALL", 20, anchor="end")
-    sh.callout(P(44.0, 30.15), P(44.0, 25.2), "COBOGÓ SCREEN", 20)
-    sh.callout(P(54.0, 45.0), P(58.0, 45.0), "CEDAR SCREEN", 20)
-    sh.callout(P(30.5, 30.0), P(30.5, 24.2), "CEDAR GATE", 20, anchor="end")
-    sh.callout(P(36.5, 33.2), P(38.5, 22.6), "BLACK CALÇADA PORTUGUESA", 20)
-    north_arrow(sh, sh.W - 90, 110)
-    scale_bar(sh, 60, sh.H - 70)
+        sh.tag(P(*o["label"]), o["name"].upper(), None, size=36)
+    sh.callout(P(16.0, 29.9), P(9.0, 25.0), "LUEDERS LIMESTONE WALL", 32, anchor="end")
+    sh.callout(P(44.0, 30.15), P(44.0, 25.2), "COBOGÓ SCREEN", 32)
+    sh.callout(P(54.0, 45.0), P(58.0, 45.0), "CEDAR SCREEN", 32)
+    sh.callout(P(30.5, 30.0), P(30.5, 24.2), "CEDAR GATE", 32, anchor="end")
+    sh.callout(P(36.5, 33.2), P(38.5, 22.6), "BLACK CALÇADA PORTUGUESA", 32)
+    north_arrow(sh, sh.W - 110, 130, 62)
+    scale_bar(sh, 60, sh.H - 80)
     return sh.save("20_plan_rendered.svg")
 
 
@@ -248,14 +248,14 @@ def landscape_plan():
             if not (-12 < x < 77 and -14 < y < 129):
                 continue
             X, Y = P(x, y)
-            sh.add(f'<g><circle cx="{X:.1f}" cy="{Y:.1f}" r="17" fill="rgba(255,255,255,0.92)" stroke="{INK}" '
-                   f'stroke-width="1.5"/><text x="{X:.1f}" y="{Y + 6:.1f}" font-family="{FONT}" font-size="15" '
+            sh.add(f'<g><circle cx="{X:.1f}" cy="{Y:.1f}" r="26" fill="rgba(255,255,255,0.94)" stroke="{INK}" '
+                   f'stroke-width="2"/><text x="{X:.1f}" y="{Y + 8:.1f}" font-family="{FONT}" font-size="22" '
                    f'font-weight="900" text-anchor="middle" fill="{INK}">{code}</text></g>')
     for (x, y, s_) in ((30.5, 13.0, "LIMESTONE STEPPING SLABS"), (59.3, 10.0, "RIBBON DRIVE"),
                        (44.0, 46.0, "PÁTIO"), (29.5, 88.0, "VERANDA"), (24.0, 60.0, "CASA 01")):
-        sh.tag(P(x, y), s_, None, size=18)
-    sh.callout(P(65.0, 100.0), P(70.0, 104.0), "6' CEDAR FENCE", 16)
-    sh.callout(P(10.0, 14.0), P(-8.5, 19.0), "DG + NATIVE MEADOW", 16)
+        sh.tag(P(x, y), s_, None, size=28)
+    sh.callout(P(65.0, 100.0), P(64.0, 109.0), "6' CEDAR FENCE", 26, anchor="end")
+    sh.callout(P(10.0, 14.0), P(-9.0, 19.0), "DG + NATIVE MEADOW", 26)
     north_arrow(sh, sh.W - 70, 90, 38)
     scale_bar(sh, 40, sh.H - 60, (0, 10, 20, 40))
     name = sh.save("21_landscape_plan.svg")
@@ -268,20 +268,26 @@ def elevation(view, title, callouts):
     sh = Sheet(view, f"{view}.jpg")
     E = sh.E
     rz = sh.rot[2]
-    span = (3, 57) if rz in (0, 180) else (27, 92.5)
-    a, b = E(span[0] - 6, 0), E(span[1] + 6, 0)
-    sh.line((min(a[0], b[0]), a[1]), (max(a[0], b[0]), a[1]), INK, 5)
-    right = max(E(span[0], 0)[0], E(span[1], 0)[0]) + 40
+    margin = 560
+    gy = E(0, 0)[1]
+    # cut the ground: white below grade, heavy grade line across the full sheet
+    sh.add(f'<rect x="0" y="{gy:.1f}" width="{sh.W + margin}" height="{sh.H - gy + 2:.1f}" fill="#ffffff"/>')
+    sh.add(f'<rect x="0" y="{gy:.1f}" width="{sh.W + margin}" height="26" fill="url(#earth)"/>')
+    sh.line((0, gy), (sh.W + margin - 20, gy), INK, 7)
+    x0 = sh.W + 40
     for z, lab in ((D.FASCIA_TOP, "T.O. ROOF +12'-3\""), (D.CEIL, "SOFFIT / CLG +11'-0\""), (D.FF, "F.F. +1'-0\""),
                    (0, "GRADE 0'-0\"")):
         y = E(0, z)[1]
-        sh.line((right - 30, y), (right + 40, y), "#2b2e31", 2)
-        sh.add(f'<path d="M {right:.1f} {y:.1f} l -11 -15 l 22 0 z" fill="none" stroke="{INK}" stroke-width="2"/>')
-        sh.text((right + 48, y + 8), lab, 22, anchor="start", ls=1)
+        sh.add(f'<line x1="{sh.W - 260}" y1="{y:.1f}" x2="{x0 + 40}" y2="{y:.1f}" stroke="#2b2e31" stroke-width="2" '
+               f'stroke-dasharray="14 8"/>')
+        sh.add(f'<path d="M {x0 + 20:.1f} {y:.1f} l -15 -20 l 30 0 z" fill="#ffffff" stroke="{INK}" stroke-width="2.5"/>')
+        sh.text((x0 + 56, y + (58 if z == 0 else -8)), lab, 32, anchor="start", ls=1)
     for (h, z, h2, z2, lab, anchor) in callouts:
-        sh.callout(E(h, z), E(h2, z2), lab, 22, anchor)
-    sh.text((40, 60), title, 30, anchor="start", ls=4)
-    return sh.save(f"22_{view}.svg")
+        sh.callout(E(h, z), E(h2, z2), lab, 34, anchor)
+    sh.add('<defs><pattern id="earth" width="16" height="16" patternUnits="userSpaceOnUse" '
+           'patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="16" stroke="#8a8a8a" stroke-width="2"/>'
+           '</pattern></defs>')
+    return sh.save(f"22_{view}.svg", extra_w=margin)
 
 
 def elevations():
