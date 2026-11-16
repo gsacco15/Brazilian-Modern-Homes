@@ -38,7 +38,7 @@ SWATCHES = [
     ("tile", "Green glazed tile", "Azulejo", "4x4 handmade-look backsplash"),
     ("bronze", "Dark bronze aluminum", "Slim steel frames", "Fascia, window frames, posts"),
     ("dg", "Decomposed granite", "Terra batida", "Stabilized paths, meadow mulch"),
-    ("linen", "Natural linen", "Linho", "Upholstery + outdoor cushions"),
+    ("calcada", "Black stone mosaic", "Calçada portuguesa", "50 sf at the entry, light concrete band"),
 ]
 
 
@@ -94,6 +94,8 @@ def prep_images():
 
 def quantities():
     c = D.COBOGO
+    em = D.ENTRY_MOSAIC
+    mos = (em["x1"] - em["x0"] - 2 * em["band"]) * (em["y1"] - em["y0"] - 2 * em["band"])
     nx, nz = int(c["x1"] - c["x0"]), int(c["z1"] - c["z0"])
     lw = D.LIMESTONE_WALL
     win = D.EXT_WALLS[0]["openings"][0]
@@ -115,6 +117,7 @@ def quantities():
         ("Windows", f"{len(windows)} units", "Casements (egress) + fixed slot / clerestory / kitchen"),
         ("Roof plate", f"{D.poly_area(D.ROOF):,.0f} sf", f"Low-slope TPO, {perim(D.ROOF):.0f} lf of 15\" bronze fascia"),
         ("Steel posts", f"{len(D.POSTS)} posts", "4\" square HSS, dark bronze"),
+        ("Entry calçada portuguesa", f"{mos:.0f} sf", "Black basalt mosaic or Antika Onyx Black, 6\" concrete band"),
     ]
 
 
@@ -424,8 +427,9 @@ def build_print(img):
 <div class="side"><div><div class="eyebrow" style="margin-bottom:8px">Kept conventional</div><ul class="list">{conv}</ul></div>
 <div class="kv"><div>Construction at $325–$425 / sf</div><div>${lo / 1000:,.0f}K–${hi / 1000:,.0f}K</div>
 <div>Site work + utilities</div><div>$20K–$50K</div><div>Design, engineering, permits</div><div>$25K–$50K</div>
+<div>Entry calçada allowance (designer)</div><div>$1K–$4.5K</div>
 <div>Contingency (~10%)</div><div>${lo * 0.1 / 1000:,.0f}K–${hi * 0.1 / 1000:,.0f}K</div>
-<div>Total, excluding land</div><div>${(lo * 1.1 + 45000) / 1000:,.0f}K–${(hi * 1.1 + 100000) / 1000:,.0f}K</div></div>
+<div>Total, excluding land</div><div>${(lo * 1.1 + 46000) / 1000:,.0f}K–${(hi * 1.1 + 104500) / 1000:,.0f}K</div></div>
 <div class="note"><b>Planning numbers, not bids</b>Ranges carry over from the earlier feasibility notes. Next step: price these quantities with two Austin builders, then adapt the plan to a real lot.</div></div></div>'''))
     return P
 

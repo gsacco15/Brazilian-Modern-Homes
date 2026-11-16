@@ -158,6 +158,10 @@ def hatch_defs(svg):
         '<rect width="7" height="7" fill="#f6f1e7"/><circle cx="2" cy="2" r="0.6" fill="#d6c7ad"/>'
         '<circle cx="5.5" cy="5" r="0.5" fill="#d6c7ad"/></pattern>')
     svg.defs.append(
+        '<pattern id="mosaic" width="7" height="7" patternUnits="userSpaceOnUse">'
+        '<rect width="7" height="7" fill="#2a2a29"/><path d="M0 2 L3 0 L7 3 M2 7 L4 4 L7 6 M0 5 L3 4" '
+        'stroke="#8b847a" stroke-width="0.5" fill="none"/></pattern>')
+    svg.defs.append(
         '<pattern id="planting" width="9" height="9" patternUnits="userSpaceOnUse">'
         '<rect width="9" height="9" fill="#eef1e8"/><circle cx="2.5" cy="2.5" r="1.1" fill="none" stroke="#a9b89a" '
         'stroke-width="0.5"/><circle cx="7" cy="6.5" r="0.8" fill="none" stroke="#a9b89a" stroke-width="0.5"/></pattern>')
@@ -420,6 +424,10 @@ def floor_plan():
     hatch_defs(svg)
     # outdoor surfaces
     svg.rect(28, 30.33, 53.7, 36.0, fill="url(#pavers)", stroke="none")
+    em = D.ENTRY_MOSAIC
+    svg.rect(em["x0"], em["y0"], em["x1"], em["y1"], fill="#ddd8cf", stroke="none")
+    svg.rect(em["x0"] + em["band"], em["y0"] + em["band"], em["x1"] - em["band"], em["y1"] - em["band"],
+             fill="url(#mosaic)", stroke=INK, sw=0.5)
     svg.rect(28, 36, 31.5, 60, fill="url(#pavers)", stroke="none")
     svg.rect(31.5, 52, 39.5, 60, fill="url(#pavers)", stroke="none")
     svg.rect(41.5, 56.5, 51.5, 60, fill="url(#pavers)", stroke="none")
@@ -558,6 +566,7 @@ def floor_plan():
     svg.leader(44.0, 30.15, 47.0, 24.6, "COBOGÓ SCREEN — 12x12 PRECAST BLOCK")
     svg.leader(15.0, 29.8, 11.0, 24.6, "LUEDERS LIMESTONE WALL", anchor="end")
     svg.leader(30.5, 30.2, 27.2, 22.4, "CEDAR PIVOT GATE", anchor="end")
+    svg.leader(36.0, 33.0, 36.0, 21.2, "BLACK CALÇADA PORTUGUESA, 50 SF", anchor="start")
     svg.leader(54.0, 45.0, 58.5, 45.0, "CEDAR SLAT SCREEN")
     svg.leader(43.0, 90.0, 47.0, 90.0, "ROOF EDGE ABOVE")
     svg.text(30.5, 18.8, "ENTER FROM STREET ↑", 8, fill=MID, ls=1.0)

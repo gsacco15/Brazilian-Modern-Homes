@@ -24,7 +24,7 @@ SW = [
     ("limestone", "Lueders limestone"), ("cobogo", "Cobogó block"), ("cedar_z", "Western red cedar"),
     ("stucco", "Warm-white stucco"), ("floor", "Polished concrete"), ("pavers", "Limestone pavers"),
     ("oak", "Rift white oak"), ("granite", "Honed black granite"), ("tile", "Green glazed tile"),
-    ("bronze", "Dark bronze metal"), ("dg", "Decomposed granite"), ("linen", "Natural linen"),
+    ("bronze", "Dark bronze metal"), ("dg", "Decomposed granite"), ("calcada", "Calçada portuguesa"),
 ]
 
 

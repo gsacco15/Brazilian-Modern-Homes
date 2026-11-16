@@ -190,6 +190,7 @@ def plan_rendered():
     sh.callout(P(44.0, 30.15), P(44.0, 25.2), "COBOGÓ SCREEN", 20)
     sh.callout(P(54.0, 45.0), P(58.0, 45.0), "CEDAR SCREEN", 20)
     sh.callout(P(30.5, 30.0), P(30.5, 24.2), "CEDAR GATE", 20, anchor="end")
+    sh.callout(P(36.5, 33.2), P(38.5, 22.6), "BLACK CALÇADA PORTUGUESA", 20)
     north_arrow(sh, sh.W - 90, 110)
     scale_bar(sh, 60, sh.H - 70)
     return sh.save("20_plan_rendered.svg")

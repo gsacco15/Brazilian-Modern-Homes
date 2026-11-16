@@ -470,6 +470,30 @@ def zellige():
     return b.set(Base_Color=col, Roughness=0.06, Coat_Weight=0.4, Coat_Roughness=0.04, Normal=b.bump(h, 0.35, 0.003))
 
 
+def calcada():
+    """Monochrome black calçada portuguesa: irregular 2-3" basalt setts in sand joints."""
+    b = NB("Calcada portuguesa black")
+    tc = b.node("ShaderNodeTexCoord")
+    v = tc.outputs["Object"]
+    vor = b.node("ShaderNodeTexVoronoi", feature="F1")
+    vor.inputs["Scale"].default_value = 17.0
+    vor.inputs["Randomness"].default_value = 0.9
+    b.link(v, vor.inputs["Vector"])
+    edge = b.node("ShaderNodeTexVoronoi", feature="DISTANCE_TO_EDGE")
+    edge.inputs["Scale"].default_value = 17.0
+    edge.inputs["Randomness"].default_value = 0.9
+    b.link(v, edge.inputs["Vector"])
+    joint = b.math("LESS_THAN", edge.outputs["Distance"], 0.045)
+    stone = b.ramp(vor.outputs["Color"], [(0.0, "#121212"), (0.5, "#1d1d1c"), (1.0, "#2c2b29")])
+    nz = b.noise(v, 60, 6, 0.6)
+    sc = b.mix(b.math("MULTIPLY", nz.outputs["Factor"], 0.35), stone.outputs["Color"], "#3a3936")
+    col = b.mix(joint, sc, "#8b847a")
+    dome = b.math("MINIMUM", b.math("MULTIPLY", edge.outputs["Distance"], 6.0), 1.0)
+    h = b.math("ADD", b.math("MULTIPLY", dome, 0.8), b.math("MULTIPLY", nz.outputs["Factor"], 0.15))
+    rough = b.math("ADD", b.math("MULTIPLY", joint, 0.4), 0.48)
+    return b.set(Base_Color=col, Roughness=rough, Normal=b.bump(h, 0.6, 0.004))
+
+
 def mirror():
     b = NB("Mirror")
     return b.set(Base_Color=(0.9, 0.9, 0.9, 1), Metallic=1.0, Roughness=0.015)
@@ -747,7 +771,8 @@ def build_library():
         linen=fabric("Linen", "#D9D1C2"), olive_fabric=fabric("Olive fabric", "#5E6142"),
         terracotta_fabric=fabric("Terracotta fabric", "#A8613F"),
         leather=leather(), rug=rug(), lamp=emission("Lamp glow"),
-        ceramic=ceramic_white(), pot=terracotta_pot(), ladrilho=ladrilho(), zellige=zellige(), mirror=mirror(),
+        ceramic=ceramic_white(), pot=terracotta_pot(), ladrilho=ladrilho(), zellige=zellige(), mirror=mirror(), calcada=calcada(),
+        light_concrete=board_concrete(),
         leaf=leaf(), leaf_shrub=leaf("Shrub leaf", "#2E3E22", "#56693A", "#93A85A"),
         bark=bark(), agave=agave_mat(),
         grass=grass_mat(), feather=grass_mat("Feather grass", "#A8A46A", "#D8C99A", "#C2B884"),

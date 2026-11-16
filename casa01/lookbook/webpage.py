@@ -186,7 +186,7 @@ function setSun(){const N=+dateEl.value,hrs=+timeEl.value,lat=30.27*Math.PI/180;
   const sky=skyDusk.clone().lerp(skyGold,Math.min(1,e*9)).lerp(skyDay,Math.min(1,Math.max(0,(e-0.07)*6)));
   scene.background.copy(sky);scene.fog.color.copy(sky).lerp(new THREE.Color('#ffffff'),0.12);
   if(LMAPS){baked.forEach(m=>{m.lightMapIntensity=1.15*skyLevel;m.envMapIntensity=0.18*skyLevel});
-    lit.forEach(m=>{if(m.name!=='web_glass')m.envMapIntensity=0.9*skyLevel});
+    lit.forEach(m=>{if(m.name!=='web_glass')m.envMapIntensity=1.5*skyLevel});
     if(skyMesh){skyMesh.rotation.y=(SKY_AZ-az*180/Math.PI)*Math.PI/180;
       const dusk=new THREE.Color(1,1,1).lerp(new THREE.Color('#ffbe8a'),Math.max(0,1-e*6)*0.6).multiplyScalar(0.1+0.9*Math.min(1,e*5));
       skyMat.color.copy(dusk);skyMesh.visible=e>0.005}}
@@ -243,6 +243,9 @@ let visible=false;new IntersectionObserver(es=>{visible=es[0].isIntersecting;if(
 FINISH_INFO = {
     "limestone": ["Lueders limestone", "pedra São Tomé", "Sawn-face ashlar in three course heights. One street wall only."],
     "pavers": ["Limestone pavers", "São Tomé paving", "24x36 thermal-finish pavers on the pátio and veranda."],
+    "calcada": ["Black stone mosaic", "calçada portuguesa", "50 sf of black basalt setts (or Techo-Bloc Antika Onyx Black) in the shaded entry, framed by light concrete."],
+    "ladrilho": ["Patterned cement-look tile", "ladrilho hidráulico", "8x8 terracotta, bone and green, primary bath floor."],
+    "zellige": ["Green glazed tile", "azulejo", "2.5x8 handmade-look tile, shower floor to ceiling."],
     "cobogo": ["Concrete cobogó", "the Recife cobogó (1929)", "12x12x4 precast breeze block, white cement, 210 blocks."],
     "cedar_z": ["Western red cedar slats", "freijó / brise-soleil", "2x4 slats at 5\" on center on a steel frame."],
     "cedar_y": ["Cedar T&G ceiling + soffit", "freijó ceilings", "Clear 1x6 tongue and groove, natural oil. Runs inside and out."],
@@ -341,8 +344,9 @@ def write_web(img):
     lo, hi = 325 * A["conditioned"], 425 * A["conditioned"]
     kv = (f"<div>Construction at $325–$425 / sf</div><div>${lo / 1000:,.0f}K–${hi / 1000:,.0f}K</div>"
           f"<div>Site work + utilities</div><div>$20K–$50K</div><div>Design, engineering, permits</div><div>$25K–$50K</div>"
+          f"<div>Entry calçada allowance (designer)</div><div>$1K–$4.5K</div>"
           f"<div>Contingency (~10%)</div><div>${lo * 0.1 / 1000:,.0f}K–${hi * 0.1 / 1000:,.0f}K</div>"
-          f"<div>Total, excluding land</div><div>${(lo * 1.1 + 45000) / 1000:,.0f}K–${(hi * 1.1 + 100000) / 1000:,.0f}K</div>")
+          f"<div>Total, excluding land</div><div>${(lo * 1.1 + 46000) / 1000:,.0f}K–${(hi * 1.1 + 104500) / 1000:,.0f}K</div>")
 
     def dwg(f):
         return f'<div class="paper">{svg_inline(f)}</div>'

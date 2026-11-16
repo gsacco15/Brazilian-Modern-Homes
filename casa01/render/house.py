@@ -373,7 +373,16 @@ def _hardscape(L, coll):
     soil.box(28.0, 30.33, 0.0, 53.7, 60.0, H - 0.08, mats6=[1, 0, 1, 1, 1, 1])
     soil.box(53.7, 30.33, 0.0, 54.3, 60.0, H, mat=1)
     # paved zones: covered entry strip, gallery walk, great-room terrace, primary landing
-    for (x0, y0, x1, y1) in ((28.0, 30.33, 53.7, 36.0), (28.0, 36.0, 31.5, 60.0),
+    # black calçada portuguesa at the entry, framed by a light concrete band
+    em = D.ENTRY_MOSAIC
+    mo = MB("Entry mosaic", [L["calcada"], L["concrete"]])
+    bd = em["band"]
+    mo.box(em["x0"], em["y0"], H - 0.12, em["x1"], em["y1"], H - 0.002, mats6=[1, 1, 1, 1, 1, 1])
+    mo.box(em["x0"] + bd, em["y0"] + bd, H - 0.1, em["x1"] - bd, em["y1"] - bd, H + 0.004,
+           mats6=[1, 0, 1, 1, 1, 1])
+    mo.build(coll)
+    for (x0, y0, x1, y1) in ((em["x1"], 30.33, 53.7, 36.0), (28.0, 30.33, em["x1"], em["y0"]),
+                             (28.0, 36.0, 31.5, 60.0),
                              (31.5, 52.0, 39.5, 60.0), (41.5, 56.5, 51.5, 60.0)):
         pv.box(x0, y0, H - 0.12, x1, y1, H, mats6=[1, 0, 1, 1, 1, 1])
     # stepping stones across the garden to the primary landing

@@ -1,6 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 810 830" width="810" height="830">
 <defs><pattern id="pavers" width="18" height="12" patternUnits="userSpaceOnUse"><rect width="18" height="12" fill="#f3efe6"/><path d="M0 0 H18 M0 0 V12 M9 6 V12 M0 6 H18" stroke="#d2c9b6" stroke-width="0.6"/></pattern>
 <pattern id="dg" width="7" height="7" patternUnits="userSpaceOnUse"><rect width="7" height="7" fill="#f6f1e7"/><circle cx="2" cy="2" r="0.6" fill="#d6c7ad"/><circle cx="5.5" cy="5" r="0.5" fill="#d6c7ad"/></pattern>
+<pattern id="mosaic" width="7" height="7" patternUnits="userSpaceOnUse"><rect width="7" height="7" fill="#2a2a29"/><path d="M0 2 L3 0 L7 3 M2 7 L4 4 L7 6 M0 5 L3 4" stroke="#8b847a" stroke-width="0.5" fill="none"/></pattern>
 <pattern id="planting" width="9" height="9" patternUnits="userSpaceOnUse"><rect width="9" height="9" fill="#eef1e8"/><circle cx="2.5" cy="2.5" r="1.1" fill="none" stroke="#a9b89a" stroke-width="0.5"/><circle cx="7" cy="6.5" r="0.8" fill="none" stroke="#a9b89a" stroke-width="0.5"/></pattern>
 <pattern id="lawn" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#eef1e6"/><path d="M1 5 l1 -2 M4 2 l1 -2" stroke="#b9c4a3" stroke-width="0.6"/></pattern>
 <pattern id="stone" width="16" height="8" patternUnits="userSpaceOnUse"><rect width="16" height="8" fill="#efe6d2"/><path d="M0 0 H16 M0 4 H16 M5 0 V4 M12 4 V8" stroke="#c9b993" stroke-width="0.5"/></pattern>
@@ -9,6 +10,8 @@
 <pattern id="tile" width="5" height="5" patternUnits="userSpaceOnUse"><rect width="5" height="5" fill="#e3ece7"/><path d="M0 0 H5 M0 0 V5" stroke="#a9c2b6" stroke-width="0.5"/></pattern></defs>
 <rect width="100%" height="100%" fill="#ffffff"/>
 <rect x="380.00" y="640.00" width="257.00" height="56.70" fill="url(#pavers)" stroke="none" stroke-width="1.0" />
+<rect x="380.00" y="640.00" width="120.00" height="56.00" fill="#ddd8cf" stroke="none" stroke-width="1.0" />
+<rect x="385.00" y="645.00" width="110.00" height="46.00" fill="url(#mosaic)" stroke="#23262a" stroke-width="0.5" />
 <rect x="380.00" y="400.00" width="35.00" height="240.00" fill="url(#pavers)" stroke="none" stroke-width="1.0" />
 <rect x="415.00" y="400.00" width="80.00" height="80.00" fill="url(#pavers)" stroke="none" stroke-width="1.0" />
 <rect x="515.00" y="400.00" width="100.00" height="35.00" fill="url(#pavers)" stroke="none" stroke-width="1.0" />
@@ -412,6 +415,9 @@
 <line x1="405.00" y1="698.00" x2="372.00" y2="776.00" stroke="#6b6f73" stroke-width="0.6" />
 <circle cx="405.00" cy="698.00" r="2.6" fill="#23262a"/>
 <text x="372.00" y="776.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="end" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="-4" dy="3">CEDAR PIVOT GATE</text>
+<line x1="460.00" y1="670.00" x2="460.00" y2="788.00" stroke="#6b6f73" stroke-width="0.6" />
+<circle cx="460.00" cy="670.00" r="2.6" fill="#23262a"/>
+<text x="460.00" y="788.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">BLACK CALÇADA PORTUGUESA, 50 SF</text>
 <line x1="640.00" y1="550.00" x2="685.00" y2="550.00" stroke="#6b6f73" stroke-width="0.6" />
 <circle cx="640.00" cy="550.00" r="2.6" fill="#23262a"/>
 <text x="685.00" y="550.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">CEDAR SLAT SCREEN</text>

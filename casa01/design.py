@@ -163,6 +163,11 @@ CEDAR_CEILINGS = [
     dict(name="Primary bath", x0=45.69, x1=53.5, y0=71.69, y1=79.5, dir="y"),
 ]
 
+# Entry feature: monochrome black calçada portuguesa under the canopy, inside the gate,
+# framed by a 6" band of smooth light concrete (about 50 sf of mosaic). Shaded, so the
+# dark stone stays comfortable in summer; the pátio and veranda keep light limestone.
+ENTRY_MOSAIC = dict(x0=28.0, x1=40.0, y0=30.4, y1=36.0, band=0.5)
+
 # Slender steel posts (4" square, dark bronze)
 POSTS = [(53.6, 30.8), (53.6, 35.6), (18.4, 91.6), (40.6, 91.6)]
 
@@ -312,6 +317,7 @@ FINISHES = [
     ("Windows & doors", "Slim steel frames", "Dark bronze thermally broken aluminum, 9' sliders"),
     ("Floors (inside)", "Cimento queimado", "Polished, sealed concrete slab, warm gray"),
     ("Floors (outside)", "Pedra São Tomé paving", "Lueders limestone pavers 24x36, thermal finish"),
+    ("Entry paving", "Calçada portuguesa (black)", "50 sf black basalt mosaic or Techo-Bloc Antika Onyx Black, light concrete band"),
     ("Kitchen", "Dark stone + light wood", "Rift white oak cabinets, honed black granite, green glazed tile"),
     ("Landscape", "Tropical garden", "Live oak, dwarf palmetto, agave, sotol, muhly grass, decomposed granite"),
 ]

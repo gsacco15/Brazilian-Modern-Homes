@@ -60,7 +60,7 @@ VIEWS = {
                       strength=1.0, exposure=1.8, night=True, night_level=0.25, pano=True),
     "pano_veranda": dict(cam=(30.0, 87.5, D.HARDSCAPE + 5.2), tgt=(30.0, 110.0, 5.3), lens=20, hdri="afternoon",
                          sun=284, strength=1.0, exposure=0.9, night=True, night_level=0.35, pano=True),
-    "bath": dict(cam=(52.45, 72.2, D.FF + 4.9), tgt=(46.3, 78.9, D.FF + 4.4), lens=15, hdri="day", sun=95,
+    "bath": dict(cam=(52.45, 72.2, D.FF + 4.7), tgt=(46.3, 78.9, D.FF + 3.2), lens=15, hdri="day", sun=95,
                  strength=1.0, exposure=2.0, night=True, night_level=0.5),
     # orthographic presentation renders (rendered plan, landscape plan, elevations).
     # center/width in feet; rot in degrees; res in px. Also written to renders/ortho/ortho_views.json
@@ -425,6 +425,7 @@ def main():
     ap.add_argument("--out", default=OUT)
     ap.add_argument("--suffix", default="")
     ap.add_argument("--save-blend", default="")
+    ap.add_argument("--oscale", type=float, default=1.0, help="resolution multiplier for ortho views")
     args = ap.parse_args(sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else sys.argv[1:])
     os.makedirs(args.out, exist_ok=True)
     night = build_scene()
@@ -442,7 +443,7 @@ def main():
         hidden = []
         if v.get("ortho"):
             set_ortho(v)
-            rs.resolution_x, rs.resolution_y = v["res"]
+            rs.resolution_x, rs.resolution_y = (int(v["res"][0] * args.oscale), int(v["res"][1] * args.oscale))
             for ob in bpy.data.objects:
                 if any(ob.name == h or ob.name.startswith(h + "_") for h in v.get("hide", [])):
                     if not ob.hide_render:

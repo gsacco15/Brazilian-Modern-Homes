@@ -46,7 +46,7 @@ ASSETS = os.path.join(HERE, "assets")
 
 BAKE_ARCH = {"Walls", "Slab", "Window frames", "Limestone ashlar", "Limestone mortar", "Slot window reveal",
              "Roof", "Cedar soffits", "Cobogo curb", "Gate steel", "Steel posts", "Limestone pavers",
-             "Courtyard soil", "Cedar vertical"}
+             "Courtyard soil", "Cedar vertical", "Entry mosaic"}
 BAKE_FURN = {"Oak millwork", "Upholstery", "Walnut furniture", "Ceramic fixtures", "Grill limestone",
              "Outdoor teak", "Living extras"}
 BAKE_LAND = {"Ground", "Cedar fences", "Neighbors"}
