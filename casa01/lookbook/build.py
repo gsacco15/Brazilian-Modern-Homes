@@ -205,10 +205,10 @@ img{display:block}
 figcaption{font-size:12px;line-height:1.45;color:var(--muted)}
 figcaption b{color:var(--ink);font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:11px;margin-right:6px}
 .facts{display:flex;gap:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.facts div{flex:1;padding:14px 16px;border-left:1px solid var(--line)}
+.facts div{flex:1;padding:12px 8px;border-left:1px solid var(--line);min-width:0}
 .facts div:first-child{border-left:0;padding-left:0}
-.facts .n{font-family:var(--serif);font-size:32px;line-height:1;white-space:nowrap}
-.facts .l{font:700 10px/1.2 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.facts .n{font-family:var(--serif);font-size:26px;line-height:1;white-space:nowrap}
+.facts .l{font:700 8.5px/1.25 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:6px}
 .moves{display:grid;grid-template-columns:1fr;gap:14px}
 .move{display:grid;grid-template-columns:34px 1fr;gap:10px}
 .move .k{font-family:var(--serif);font-size:30px;color:var(--gold);line-height:1}

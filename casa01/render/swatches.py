@@ -34,7 +34,10 @@ def main():
     coll = bpy.context.scene.collection
     os.makedirs(OUT, exist_ok=True)
     T = 2.0  # tile size in feet
+    only = [a for a in sys.argv[1:] if not a.startswith("-")]
     for key, label in SW:
+        if only and key not in only:
+            continue
         for o in list(coll.objects):
             bpy.data.objects.remove(o)
         if key == "limestone":
@@ -56,11 +59,11 @@ def main():
             offs = []
             for i in range(-2, 3):
                 for k in range(-2, 3):
-                    offs.append((i * 0.3048, k * 0.3048, 0))
+                    offs.append((i * 0.3048, 0, k * 0.3048))
             ob = merge_copies(blk, offs, "cob", coll)
             ob.rotation_euler = (math.pi / 2, 0, 0)
-            mb = MB("back", [L["paint"]])
-            mb.box(-3, -3, -1.2, 3, 3, -1.1)
+            mb = MB("back", [L["pavers"]])
+            mb.box(-3, -3, -1.6, 3, 3, -1.5)
             mb.build(coll)
         elif key in ("cedar_z",):
             mb = MB("boards", [L["cedar_x"]])
@@ -90,7 +93,7 @@ def main():
         coll.objects.link(so)
         R.setup_render(64, 600, 600)
         R.set_world("day", 200, 0.6)
-        bpy.context.scene.view_settings.exposure = -0.4
+        bpy.context.scene.view_settings.exposure = {"cedar_z": -1.1, "oak": -0.2}.get(key, -0.4)
         bpy.context.scene.render.filepath = os.path.join(OUT, f"{key}.png")
         bpy.ops.render.render(write_still=True)
         print("[swatch]", key, flush=True)
