@@ -376,19 +376,35 @@ def main():
     print(f"[bake] scene built in {time.time() - t0:.0f}s; {len(targets)} targets", flush=True)
 
     tiles = {m.name: EW.WEB.get(by_name.get(m.name, ""), (None, False, "#fff", 1.0))[3] for m in bpy.data.materials}
-    jobs = []
     for ob in targets:
         box_uv_layer(ob, tiles)
-        lightmap_uv(ob)
-        a = area(ob)
-        texel = 0.05 if ob.name not in ("Neighbors", "Cedar fences") else 0.09
-        res = 2 ** int(math.ceil(math.log2(max(64.0, math.sqrt(a) / texel / 0.62 * args.scale))))
-        res = max(128, min(2048, res))
-        if ob.name == "Ground":
-            res = int(2048 * args.scale)
-        jobs.append((ob, res))
-        print(f"[bake] {ob.name}: {a:.0f} m2 -> {res}px", flush=True)
-    raw = {k: blur(v, 1.0 if v.shape[0] >= 1024 else 0.8) for k, v in bake_all(jobs, args.samples).items()}
+    # Cycles re-syncs the whole (very heavy) scene once per baked object, so join the targets
+    # into 4 groups: one bake call each, with one lightmap atlas per group.
+    groups = {"House": [o for o in targets if o.name not in ("Roof", "Cedar soffits", "Ground", "Neighbors", "Cedar fences")],
+              "Roof": [o for o in targets if o.name in ("Roof", "Cedar soffits")],
+              "Ground": [o for o in targets if o.name == "Ground"],
+              "Context": [o for o in targets if o.name in ("Neighbors", "Cedar fences")]}
+    sizes = {"House": 4096, "Roof": 2048, "Ground": 2048, "Context": 1024}
+    jobs = []
+    joined = []
+    for gname, obs in groups.items():
+        if not obs:
+            continue
+        bpy.ops.object.select_all(action="DESELECT")
+        for o in obs:
+            o.select_set(True)
+        bpy.context.view_layer.objects.active = obs[0]
+        if len(obs) > 1:
+            bpy.ops.object.join()
+        g = bpy.context.view_layer.objects.active
+        g.name = gname
+        lightmap_uv(g)
+        res = max(128, int(sizes[gname] * args.scale))
+        jobs.append((g, res))
+        joined.append(gname)
+        print(f"[bake] {gname}: {area(g):.0f} m2 -> {res}px", flush=True)
+    targets = [g for g, _ in jobs]
+    raw = {k: blur(v, 1.3 if v.shape[0] >= 2048 else 1.0) for k, v in bake_all(jobs, args.samples).items()}
 
     # one global scale: open-sky ground irradiance -> 0.5 (headroom), stored sRGB-encoded
     gref = float(np.percentile(raw["Ground"].mean(axis=2), 97)) if "Ground" in raw else 1.0

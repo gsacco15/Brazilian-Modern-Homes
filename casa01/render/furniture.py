@@ -199,6 +199,8 @@ def build_furniture(L, coll, protos):
     for k, mt in enumerate((2, 1, 4)):
         ex.box(15.6 + k * 1.65, 60.26, FF + 4.4, 15.6 + k * 1.65 + 1.45, 60.3, FF + 7.2, mat=mt)
     ex.build(coll)
+    import bath
+    bath.build_primary_bath(L, coll, protos)
     if "plant" in protos:
         place(protos["plant"], 37.9, 61.6, FF, 0.6, coll, scale=1.7)
         place(protos["plant"], 29.3, 35.2, D.HARDSCAPE, 1.2, coll, scale=1.5)

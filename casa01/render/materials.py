@@ -405,6 +405,76 @@ def zellige_green():
     return b.set(Base_Color=br.outputs["Color"], Roughness=0.12, Normal=b.bump(h, 0.3, 0.002))
 
 
+def ladrilho():
+    """Brazilian ladrilho hidráulico: 8x8 cement tile, terracotta corner circles that
+    complete across 4 tiles, green ring, green center diamond, bone ground."""
+    b = NB("Ladrilho hidraulico")
+    tc = b.node("ShaderNodeTexCoord")
+    sep = b.node("ShaderNodeSeparateXYZ")
+    b.link(tc.outputs["Object"], sep.inputs[0])
+    t = 0.2032
+    u = b.math("SUBTRACT", b.math("FRACT", b.math("DIVIDE", sep.outputs[0], t)), 0.5)
+    v = b.math("SUBTRACT", b.math("FRACT", b.math("DIVIDE", sep.outputs[1], t)), 0.5)
+    au, av = b.math("ABSOLUTE", u), b.math("ABSOLUTE", v)
+    cu, cv = b.math("SUBTRACT", au, 0.5), b.math("SUBTRACT", av, 0.5)
+    dc = b.math("SQRT", b.math("ADD", b.math("MULTIPLY", cu, cu), b.math("MULTIPLY", cv, cv)))
+    corner = b.math("LESS_THAN", dc, 0.30)
+    ring = b.math("MULTIPLY", b.math("GREATER_THAN", dc, 0.34), b.math("LESS_THAN", dc, 0.39))
+    diamond = b.math("LESS_THAN", b.math("ADD", au, av), 0.17)
+    petal = b.math("MULTIPLY", b.math("LESS_THAN", b.math("ADD", au, av), 0.30),
+                   b.math("GREATER_THAN", b.math("ADD", au, av), 0.22))
+    grout = b.math("GREATER_THAN", b.math("MAXIMUM", au, av), 0.492)
+    col = b.mix(corner, "#E6DCC8", "#B4603D")
+    col = b.mix(ring, col, "#2F5A48")
+    col = b.mix(diamond, col, "#2F5A48")
+    col = b.mix(petal, col, "#C98B5E")
+    nz = b.noise(tc.outputs["Object"], 18, 6, 0.6)
+    col = b.mix(b.math("MULTIPLY", nz.outputs["Factor"], 0.18), col, "#8F8170", "MULTIPLY")
+    col = b.mix(grout, col, "#CFC5B2")
+    h = b.math("SUBTRACT", b.math("MULTIPLY", nz.outputs["Factor"], 0.2), b.math("MULTIPLY", grout, 1.0))
+    return b.set(Base_Color=col, Roughness=0.5, Normal=b.bump(h, 0.25, 0.002))
+
+
+def zellige():
+    """2.5x8 vertical stack, handmade-look glazed green tile (walls facing X or Y)."""
+    b = NB("Green zellige")
+    geo = b.node("ShaderNodeNewGeometry")
+    tc = b.node("ShaderNodeTexCoord")
+    p = b.node("ShaderNodeSeparateXYZ")
+    b.link(tc.outputs["Object"], p.inputs[0])
+    n = b.node("ShaderNodeSeparateXYZ")
+    b.link(geo.outputs["Normal"], n.inputs[0])
+    ax = b.math("GREATER_THAN", b.math("ABSOLUTE", n.outputs[1]), b.math("ABSOLUTE", n.outputs[0]))
+    hor = b.node("ShaderNodeMix", data_type="FLOAT")
+    b.link(ax, hor.inputs[0])
+    b.link(p.outputs[1], hor.inputs[2])
+    b.link(p.outputs[0], hor.inputs[3])
+    vec = b.node("ShaderNodeCombineXYZ")
+    b.link(hor.outputs[0], vec.inputs[0])
+    b.link(p.outputs[2], vec.inputs[1])
+    br = b.node("ShaderNodeTexBrick", offset=0.0, offset_frequency=1)
+    br.inputs["Scale"].default_value = 1.0
+    br.inputs["Mortar Size"].default_value = 0.0025
+    br.inputs["Brick Width"].default_value = 0.0635
+    br.inputs["Row Height"].default_value = 0.2032
+    br.inputs["Bias"].default_value = 0.0
+    br.inputs["Color1"].default_value = hex2lin("#2B5A47")
+    br.inputs["Color2"].default_value = hex2lin("#4B806A")
+    br.inputs["Mortar"].default_value = hex2lin("#D9D3C6")
+    b.link(vec.outputs[0], br.inputs["Vector"])
+    nz = b.noise(tc.outputs["Object"], 26, 4, 0.5)
+    wav = b.noise(tc.outputs["Object"], 9, 3, 0.5)
+    col = b.mix(b.math("MULTIPLY", wav.outputs["Factor"], 0.35), br.outputs["Color"], "#1F4636", "MULTIPLY")
+    h = b.math("SUBTRACT", b.math("ADD", b.math("MULTIPLY", nz.outputs["Factor"], 0.25),
+                                  b.math("MULTIPLY", wav.outputs["Factor"], 0.35)), br.outputs["Factor"])
+    return b.set(Base_Color=col, Roughness=0.06, Coat_Weight=0.4, Coat_Roughness=0.04, Normal=b.bump(h, 0.35, 0.003))
+
+
+def mirror():
+    b = NB("Mirror")
+    return b.set(Base_Color=(0.9, 0.9, 0.9, 1), Metallic=1.0, Roughness=0.015)
+
+
 def fabric(name, color, rough=1.0, sheen=0.4):
     b = NB(name)
     v = b.coords()
@@ -677,7 +747,7 @@ def build_library():
         linen=fabric("Linen", "#D9D1C2"), olive_fabric=fabric("Olive fabric", "#5E6142"),
         terracotta_fabric=fabric("Terracotta fabric", "#A8613F"),
         leather=leather(), rug=rug(), lamp=emission("Lamp glow"),
-        ceramic=ceramic_white(), pot=terracotta_pot(),
+        ceramic=ceramic_white(), pot=terracotta_pot(), ladrilho=ladrilho(), zellige=zellige(), mirror=mirror(),
         leaf=leaf(), leaf_shrub=leaf("Shrub leaf", "#2E3E22", "#56693A", "#93A85A"),
         bark=bark(), agave=agave_mat(),
         grass=grass_mat(), feather=grass_mat("Feather grass", "#A8A46A", "#D8C99A", "#C2B884"),

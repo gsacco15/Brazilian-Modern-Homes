@@ -1,0 +1,9 @@
+{
+ "scale": 0.8885841356739331,
+ "maps": {
+  "House": "House.jpg",
+  "Roof": "Roof.jpg",
+  "Ground": "Ground.jpg",
+  "Context": "Context.jpg"
+ }
+}

@@ -60,6 +60,27 @@ VIEWS = {
                       strength=1.0, exposure=1.8, night=True, night_level=0.25, pano=True),
     "pano_veranda": dict(cam=(30.0, 87.5, D.HARDSCAPE + 5.2), tgt=(30.0, 110.0, 5.3), lens=20, hdri="afternoon",
                          sun=284, strength=1.0, exposure=0.9, night=True, night_level=0.35, pano=True),
+    "bath": dict(cam=(52.45, 72.2, D.FF + 4.9), tgt=(46.3, 78.9, D.FF + 4.4), lens=15, hdri="day", sun=95,
+                 strength=1.0, exposure=2.0, night=True, night_level=0.5),
+    # orthographic presentation renders (rendered plan, landscape plan, elevations).
+    # center/width in feet; rot in degrees; res in px. Also written to renders/ortho/ortho_views.json
+    "plan_render": dict(ortho=True, center=(32.5, 59.5, 60.0), rot=(0, 0, 0), width=67.0, res=(2400, 2687),
+                        clip=60.0 - (D.FF + 4.5), hide=["Roof", "Cedar soffits"], hdri="day", sun=215,
+                        strength=1.0, exposure=0.15, night=False),
+    "site_render": dict(ortho=True, center=(32.5, 57.5, 140.0), rot=(0, 0, 0), width=93.0, res=(1500, 2371),
+                        hdri="day", sun=225, strength=1.0, exposure=0.0, night=False),
+    "elev_s": dict(ortho=True, center=(30.0, -45.0, 13.0), rot=(90, 0, 0), width=72.0, res=(2400, 1000),
+                   hide=["oak_11", "oak_19", "oak_23", "oak_29", "Neighbors", "Front shrubs"], transparent=True,
+                   hdri="day", sun=200, strength=1.0, exposure=0.0, night=False),
+    "elev_n": dict(ortho=True, center=(30.0, 170.0, 13.0), rot=(90, 0, 180), width=72.0, res=(2400, 1000),
+                   hide=["oak_7", "oak_51", "oak_53", "Neighbors", "Rear lawn", "Cedar fences"], transparent=True,
+                   hdri="afternoon", sun=300, strength=1.0, exposure=0.2, night=False),
+    "elev_e": dict(ortho=True, center=(140.0, 61.0, 13.0), rot=(90, 0, 90), width=86.0, res=(2400, 837),
+                   hide=["Neighbors", "Cedar fences", "oak_29", "oak_37", "oak_59", "oak_67"], transparent=True,
+                   hdri="day", sun=110, strength=1.0, exposure=0.0, night=False),
+    "elev_w": dict(ortho=True, center=(-80.0, 61.0, 13.0), rot=(90, 0, -90), width=86.0, res=(2400, 837),
+                   hide=["Neighbors", "Cedar fences", "oak_23", "oak_31", "oak_57", "oak_61", "oak_11", "Side shrubs"],
+                   transparent=True, hdri="day", sun=250, strength=1.0, exposure=0.0, night=False),
     "kitchen": dict(cam=(28.2, 61.3, D.FF + 4.9), tgt=(9.5, 76.5, D.FF + 3.6), lens=19, hdri="day", sun=200,
                     strength=1.0, exposure=2.4, night=True, night_level=0.3),
 }
@@ -223,6 +244,10 @@ def build_night_lights(coll):
         spot("dl_gal", 25.4, y, c, 16)
     for (x, y) in ((14, 36), (14, 54), (46, 66), (49, 76), (18, 45)):
         spot("dl_bed", x, y, c, 18)
+    # primary bath: sconces + shower downlight
+    for yy in D.PRIMARY_BATH["sconces"]:
+        point("sconce", D.PRIMARY_BATH["room"][0] + 0.55, yy, D.FF + 5.4, 6, radius=0.12)
+    spot("dl_shower", 49.5, 78.0, c, 18)
     # pendants
     for (x, y) in ((23.0, 72.0), (26.2, 72.0), (12.5, 71.6), (16.5, 71.6)):
         point("pendant", x, y, D.CEIL - 3.0, 18, radius=0.1)
@@ -298,6 +323,32 @@ def set_camera(v, res_x, res_y):
         cam.rotation_euler = (math.pi / 2 + pitch, 0, yaw)
         cd.shift_y = 0
     bpy.context.scene.camera = cam
+
+
+def set_ortho(v):
+    cam = bpy.data.objects.get("Cam")
+    if cam is None:
+        cd = bpy.data.cameras.new("Cam")
+        cam = bpy.data.objects.new("Cam", cd)
+        bpy.context.scene.collection.objects.link(cam)
+    cd = cam.data
+    cd.type = "ORTHO"
+    cd.ortho_scale = v["width"] * M
+    cd.sensor_fit = "HORIZONTAL"
+    cd.shift_x = cd.shift_y = 0
+    cd.clip_start = v.get("clip", 0.1) * M
+    cd.clip_end = 1000
+    cam.location = Vector(v["center"]) * M
+    cam.rotation_euler = tuple(math.radians(a) for a in v["rot"])
+    bpy.context.scene.camera = cam
+
+
+def _ortho_meta(name, v, out):
+    import json
+    f = os.path.join(out, "ortho_views.json")
+    meta = json.load(open(f)) if os.path.exists(f) else {}
+    meta[name] = {k: v[k] for k in ("center", "rot", "width", "res")}
+    json.dump(meta, open(f, "w"), indent=1)
 
 
 def setup_render(samples, res_x, res_y):
@@ -387,13 +438,28 @@ def main():
         set_world(v["hdri"], v["sun"], v["strength"])
         set_night(night, v["night"], v.get("night_level", 1.0))
         bpy.context.scene.view_settings.exposure = v["exposure"]
-        set_camera(v, res_x, res_y)
         rs = bpy.context.scene.render
-        rs.resolution_x, rs.resolution_y = (args.res, args.res // 2) if v.get("pano") else (res_x, res_y)
+        hidden = []
+        if v.get("ortho"):
+            set_ortho(v)
+            rs.resolution_x, rs.resolution_y = v["res"]
+            for ob in bpy.data.objects:
+                if any(ob.name == h or ob.name.startswith(h + "_") for h in v.get("hide", [])):
+                    if not ob.hide_render:
+                        ob.hide_render = True
+                        hidden.append(ob)
+            rs.film_transparent = bool(v.get("transparent"))
+            _ortho_meta(name, v, args.out)
+        else:
+            set_camera(v, res_x, res_y)
+            rs.film_transparent = False
+            rs.resolution_x, rs.resolution_y = (args.res, args.res // 2) if v.get("pano") else (res_x, res_y)
         bpy.context.scene.render.filepath = os.path.join(args.out, f"{name}{args.suffix}.png")
         t = time.time()
         bpy.ops.render.render(write_still=True)
         print(f"[render] {name} {rs.resolution_x}x{rs.resolution_y} {args.samples}spp in {time.time() - t:.0f}s", flush=True)
+        for ob in hidden:
+            ob.hide_render = False
 
 
 if __name__ == "__main__":

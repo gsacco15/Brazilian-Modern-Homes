@@ -5,7 +5,8 @@
 <pattern id="lawn" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#eef1e6"/><path d="M1 5 l1 -2 M4 2 l1 -2" stroke="#b9c4a3" stroke-width="0.6"/></pattern>
 <pattern id="stone" width="16" height="8" patternUnits="userSpaceOnUse"><rect width="16" height="8" fill="#efe6d2"/><path d="M0 0 H16 M0 4 H16 M5 0 V4 M12 4 V8" stroke="#c9b993" stroke-width="0.5"/></pattern>
 <pattern id="diag" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="#ffffff"/><line x1="0" y1="0" x2="0" y2="5" stroke="#9a9a9a" stroke-width="0.6"/></pattern>
-<pattern id="earth" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#ffffff"/><line x1="0" y1="0" x2="0" y2="8" stroke="#8a8a8a" stroke-width="0.7"/></pattern></defs>
+<pattern id="earth" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#ffffff"/><line x1="0" y1="0" x2="0" y2="8" stroke="#8a8a8a" stroke-width="0.7"/></pattern>
+<pattern id="tile" width="5" height="5" patternUnits="userSpaceOnUse"><rect width="5" height="5" fill="#e3ece7"/><path d="M0 0 H5 M0 0 V5" stroke="#a9c2b6" stroke-width="0.5"/></pattern></defs>
 <rect width="100%" height="100%" fill="#ffffff"/>
 <rect x="380.00" y="640.00" width="257.00" height="56.70" fill="url(#pavers)" stroke="none" stroke-width="1.0" />
 <rect x="380.00" y="400.00" width="35.00" height="240.00" fill="url(#pavers)" stroke="none" stroke-width="1.0" />
@@ -53,14 +54,8 @@
 <rect x="621.00" y="311.00" width="13.00" height="27.50" fill="none" stroke="#a7aaad" stroke-width="0.7" />
 <rect x="619.00" y="371.00" width="18.00" height="18.00" fill="none" stroke="#a7aaad" stroke-width="0.7" />
 <rect x="619.00" y="291.00" width="18.00" height="18.00" fill="none" stroke="#a7aaad" stroke-width="0.7" />
-<rect x="571.00" y="265.00" width="50.00" height="18.00" fill="#ffffff" stroke="#6b6f73" stroke-width="0.7" />
-<circle cx="583.50" cy="274.00" r="4.50" fill="none" stroke="#a7aaad" stroke-width="0.7" />
-<circle cx="608.50" cy="274.00" r="4.50" fill="none" stroke="#a7aaad" stroke-width="0.7" />
-<rect x="603.00" y="205.00" width="32.00" height="44.00" fill="#ffffff" stroke="#6b6f73" stroke-width="0.7" />
-<line x1="603.00" y1="249.00" x2="635.00" y2="205.00" stroke="#a7aaad" stroke-width="0.5" />
-<line x1="603.00" y1="205.00" x2="635.00" y2="249.00" stroke="#a7aaad" stroke-width="0.5" />
-<rect x="566.50" y="205.00" width="7.00" height="18.00" fill="none" stroke="#a7aaad" stroke-width="0.7" />
-<circle cx="570.00" cy="214.00" r="6.50" fill="none" stroke="#a7aaad" stroke-width="0.7" />
+<rect x="621.00" y="264.50" width="18.00" height="7.00" fill="none" stroke="#a7aaad" stroke-width="0.7" />
+<circle cx="630.00" cy="268.00" r="6.50" fill="none" stroke="#a7aaad" stroke-width="0.7" />
 <rect x="257.00" y="615.00" width="70.00" height="50.00" fill="#ffffff" stroke="#6b6f73" stroke-width="0.8" />
 <line x1="273.00" y1="665.00" x2="273.00" y2="615.00" stroke="#a7aaad" stroke-width="0.5" />
 <rect x="311.00" y="641.50" width="13.00" height="21.00" fill="none" stroke="#a7aaad" stroke-width="0.7" />
@@ -96,6 +91,20 @@
 <rect x="245.00" y="382.50" width="70.00" height="15.00" fill="#f4f1ea" stroke="#6b6f73" stroke-width="0.7" />
 <circle cx="376.00" cy="138.00" r="23.00" fill="none" stroke="#d4d2cc" stroke-width="0.6" stroke-dasharray="2 2"/>
 <circle cx="466.00" cy="138.00" r="23.00" fill="none" stroke="#d4d2cc" stroke-width="0.6" stroke-dasharray="2 2"/>
+<rect x="556.90" y="205.00" width="78.10" height="30.00" fill="url(#tile)" stroke="none" stroke-width="1.0" />
+<line x1="556.90" y1="235.00" x2="604.00" y2="235.00" stroke="#5d8fa0" stroke-width="2.2" />
+<line x1="604.00" y1="235.60" x2="604.00" y2="234.40" stroke="#23262a" stroke-width="2" />
+<rect x="556.90" y="206.00" width="13.10" height="28.00" fill="#efe6d2" stroke="#6b6f73" stroke-width="0.7" />
+<circle cx="574.00" cy="220.00" r="4.20" fill="none" stroke="#6b6f73" stroke-width="0.8" />
+<circle cx="574.00" cy="220.00" r="0.60" fill="#6b6f73" stroke="none" stroke-width="1.0" />
+<circle cx="618.00" cy="218.00" r="1.20" fill="#ffffff" stroke="#6b6f73" stroke-width="0.7" />
+<line x1="560.00" y1="231.50" x2="632.00" y2="231.50" stroke="#6b6f73" stroke-width="0.6" stroke-dasharray="3 2"/>
+<rect x="556.90" y="238.00" width="17.60" height="40.00" fill="#f4f1ea" stroke="#6b6f73" stroke-width="0.8" />
+<circle cx="565.50" cy="258.00" r="6.20" fill="#ffffff" stroke="#6b6f73" stroke-width="0.8" />
+<line x1="557.40" y1="270.00" x2="557.40" y2="246.00" stroke="#b8955a" stroke-width="2.4" />
+<rect x="622.00" y="264.80" width="13.00" height="6.40" fill="#ffffff" stroke="#6b6f73" stroke-width="0.8" />
+<circle cx="624.50" cy="268.00" r="3.00" fill="none" stroke="#6b6f73" stroke-width="0.7" />
+<circle cx="628.00" cy="245.00" r="5.50" fill="rgba(95,116,88,0.18)" stroke="#5f7458" stroke-width="0.8" />
 <polygon points="130.00,730.00 670.00,730.00 670.00,640.00 410.00,640.00 410.00,440.00 670.00,440.00 670.00,170.00 530.00,170.00 530.00,75.00 260.00,75.00 260.00,170.00 130.00,170.00" fill="none" stroke="#6b6f73" stroke-width="0.8" stroke-dasharray="7 4"/>
 <path d="M 641.92,535.00 L 634.18,511.79 L 630.56,487.47 L 620.93,463.30 L 597.38,451.87 L 573.85,445.74 L 552.44,432.56 L 526.98,427.81 L 505.53,444.12 L 484.38,454.42 L 458.19,462.52 L 447.71,486.56 L 444.39,511.43 L 438.58,535.00 L 434.74,560.94 L 451.27,581.57 L 467.00,599.67 L 479.92,622.04 L 501.94,635.35 L 527.91,634.60 L 551.92,633.14 L 577.03,632.64 L 600.59,622.77 L 613.27,599.91 L 627.99,581.18 L 642.48,560.26 Z" fill="none" stroke="#5f7458" stroke-width="0.8" stroke-dasharray="4 2" stroke-linejoin="round"/>
 <circle cx="540.00" cy="535.00" r="3.50" fill="#5f7458" stroke="none" stroke-width="1.0" />
@@ -135,12 +144,18 @@
 <line x1="530.00" y1="397.50" x2="600.00" y2="397.50" stroke="#23262a" stroke-width="0.5" />
 <line x1="565.00" y1="400.00" x2="565.00" y2="395.00" stroke="#23262a" stroke-width="0.9" />
 <rect x="635.00" y="370.00" width="5.00" height="30.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.3" />
-<rect x="635.00" y="200.00" width="5.00" height="140.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.3" />
+<rect x="635.00" y="231.00" width="5.00" height="109.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.3" />
+<rect x="635.00" y="200.00" width="5.00" height="8.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.3" />
 <rect x="635.00" y="340.00" width="5.00" height="30.00" fill="#ffffff" stroke="none" stroke-width="1.0" />
 <line x1="639.40" y1="370.00" x2="639.40" y2="340.00" stroke="#23262a" stroke-width="0.7" />
 <line x1="635.60" y1="370.00" x2="635.60" y2="340.00" stroke="#23262a" stroke-width="0.7" />
 <line x1="637.50" y1="370.00" x2="637.50" y2="340.00" stroke="#23262a" stroke-width="0.5" />
 <line x1="642.50" y1="370.00" x2="642.50" y2="340.00" stroke="#a7aaad" stroke-width="0.5" />
+<rect x="635.00" y="208.00" width="5.00" height="23.00" fill="#ffffff" stroke="none" stroke-width="1.0" />
+<line x1="639.40" y1="231.00" x2="639.40" y2="208.00" stroke="#23262a" stroke-width="0.7" />
+<line x1="635.60" y1="231.00" x2="635.60" y2="208.00" stroke="#23262a" stroke-width="0.7" />
+<line x1="637.50" y1="231.00" x2="637.50" y2="208.00" stroke="#23262a" stroke-width="0.5" />
+<line x1="642.50" y1="231.00" x2="642.50" y2="208.00" stroke="#a7aaad" stroke-width="0.5" />
 <rect x="625.00" y="200.00" width="15.00" height="5.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.3" />
 <rect x="485.00" y="200.00" width="85.00" height="5.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.3" />
 <rect x="270.00" y="200.00" width="35.00" height="5.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.3" />
@@ -389,19 +404,19 @@
 <text x="530.00" y="668.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="9" text-anchor="middle" fill="#5f7458" font-weight="700" letter-spacing="1.2" >COVERED ENTRY</text>
 <text x="410.00" y="94.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="9" text-anchor="middle" fill="#5f7458" font-weight="700" letter-spacing="1.2" >VERANDA</text>
 <line x1="540.00" y1="698.50" x2="570.00" y2="754.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="540.00" cy="698.50" r="1.80" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="540.00" cy="698.50" r="2.6" fill="#23262a"/>
 <text x="570.00" y="754.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">COBOGÓ SCREEN — 12x12 PRECAST BLOCK</text>
 <line x1="250.00" y1="702.00" x2="210.00" y2="754.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="250.00" cy="702.00" r="1.80" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="250.00" cy="702.00" r="2.6" fill="#23262a"/>
 <text x="210.00" y="754.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="end" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="-4" dy="3">LUEDERS LIMESTONE WALL</text>
 <line x1="405.00" y1="698.00" x2="372.00" y2="776.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="405.00" cy="698.00" r="1.80" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="405.00" cy="698.00" r="2.6" fill="#23262a"/>
 <text x="372.00" y="776.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="end" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="-4" dy="3">CEDAR PIVOT GATE</text>
 <line x1="640.00" y1="550.00" x2="685.00" y2="550.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="640.00" cy="550.00" r="1.80" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="640.00" cy="550.00" r="2.6" fill="#23262a"/>
 <text x="685.00" y="550.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">CEDAR SLAT SCREEN</text>
 <line x1="530.00" y1="100.00" x2="570.00" y2="100.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="530.00" cy="100.00" r="1.80" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="530.00" cy="100.00" r="2.6" fill="#23262a"/>
 <text x="570.00" y="100.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">ROOF EDGE ABOVE</text>
 <text x="405.00" y="812.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#6b6f73" font-weight="400" letter-spacing="1.0" >ENTER FROM STREET ↑</text>
 <line x1="160.00" y1="48.00" x2="640.00" y2="48.00" stroke="#6b6f73" stroke-width="0.6" />

@@ -72,6 +72,7 @@ EXT_WALLS = [
     ]),
     dict(id="E-bar", a=(54, 60), b=(54, 80), finish="stucco", openings=[
         dict(kind="casement", off=3.0, w=3.0, sill=3.0, head=9.0, name="Primary bedroom east"),
+        dict(kind="fixed", off=16.9, w=2.3, sill=3.6, head=9.0, name="Shower garden window"),
     ]),
     dict(id="N-bar", a=(54, 80), b=(6, 80), finish="stucco", openings=[
         dict(kind="fixed", off=1.5, w=5.5, sill=6.0, head=9.0, name="Primary bath clerestory"),
@@ -159,6 +160,7 @@ CEDAR_SOFFITS = [
 CEDAR_CEILINGS = [
     dict(name="Great room", x0=6.5, x1=38.81, y0=60.19, y1=79.5, dir="y"),
     dict(name="Gallery", x0=23.19, x1=27.5, y0=30.5, y1=60.19, dir="y"),
+    dict(name="Primary bath", x0=45.69, x1=53.5, y0=71.69, y1=79.5, dir="y"),
 ]
 
 # Slender steel posts (4" square, dark bronze)
@@ -196,9 +198,8 @@ FURNITURE = [
     # Primary
     dict(t="bed", x=50.3, y=66.0, w=6.8, d=6.3, face="w", size="king"),
     dict(t="nightstand", x=52.8, y=62.0), dict(t="nightstand", x=52.8, y=70.0),
-    dict(t="vanity", x=49.6, y=72.6, w=5.0, d=1.8),
-    dict(t="shower", x=51.9, y=77.3, w=3.2, d=4.4),
-    dict(t="wc", x=47.0, y=78.6, face="s"),
+    # primary bath: see PRIMARY_BATH below (walk-in wet room, floating vanity, wall-hung wc)
+    dict(t="wc_wall", x=53.0, y=73.2, face="w"),
     # Bedroom 2 & 3
     dict(t="bed", x=19.2, y=36.0, w=7.0, d=5.0, face="w", size="queen"),
     dict(t="desk", x=8.0, y=36.0, w=2.0, d=4.5),
@@ -220,6 +221,28 @@ FURNITURE = [
     dict(t="lounge_chair", x=28.5, y=101.0, face="s"),
     dict(t="side_table", x=26.5, y=100.3),
     dict(t="fan", x=27.6, y=86.2), dict(t="fan", x=36.6, y=86.2),
+]
+
+# --------------------------------------------------------------------------
+# Primary bathroom (7'-10" x 7'-10"): a Brazilian spa-style wet room
+# --------------------------------------------------------------------------
+PRIMARY_BATH = dict(
+    room=(45.69, 71.69, 53.5, 79.5),              # x0, y0, x1, y1 (clear)
+    shower=(45.69, 76.5, 53.5, 79.5),             # full-width walk-in along the north wall
+    glass=(45.69, 50.4, 76.5),                    # fixed glass panel x0..x1 at y; entry 50.4..53.5
+    rain_head=(47.4, 78.0),
+    bench=(45.69, 76.6, 47.0, 79.4),              # floating limestone bench at the west end
+    vanity=(45.69, 72.2, 47.45, 76.2),            # floating rift-oak vanity on the west wall
+    sink=(46.55, 74.2), mirror=(74.2, 2.4),       # vessel sink; round mirror center y, diameter
+    sconces=(72.85, 75.55),
+    plant=(52.8, 75.5),
+)
+BATH_FINISHES = [
+    ("Floor", "Ladrilho hidráulico", "8x8 cement-look porcelain, terracotta / bone / green"),
+    ("Shower walls", "Azulejo / zellige", "2.5x8 handmade-look green glazed tile, floor to ceiling"),
+    ("Vanity", "Tauari / freijó", "Floating rift white oak, honed limestone top, vessel sink"),
+    ("Fixtures", "Metais dourados", "Brushed brass rain head, wall faucet, round mirror, sconces"),
+    ("Ceiling", "Freijó forro", "Clear cedar T&G (sealed), continuous with the bedroom wing"),
 ]
 
 # --------------------------------------------------------------------------

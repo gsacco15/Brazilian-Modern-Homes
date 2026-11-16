@@ -30,16 +30,16 @@
 <path d="M 803.16,325.80 l -5 -7 l 10 0 z" fill="none" stroke="#23262a" stroke-width="0.8"/>
 <text x="819.48" y="325.80" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="3">F.F.</text>
 <line x1="519.60" y1="274.80" x2="519.60" y2="137.10" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="519.60" cy="274.80" r="1.84" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="519.60" cy="274.80" r="2.6" fill="#23262a"/>
 <text x="519.60" y="137.10" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="end" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="-4" dy="3">BEDROOM 3 — EGRESS CASEMENT</text>
 <line x1="703.20" y1="274.80" x2="703.20" y2="167.70" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="703.20" cy="274.80" r="1.84" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="703.20" cy="274.80" r="2.6" fill="#23262a"/>
 <text x="703.20" y="167.70" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="end" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="-4" dy="3">BEDROOM 2 — EGRESS CASEMENT</text>
 <line x1="766.44" y1="244.20" x2="766.44" y2="106.50" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="766.44" cy="244.20" r="1.84" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="766.44" cy="244.20" r="2.6" fill="#23262a"/>
 <text x="766.44" y="106.50" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="end" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="-4" dy="3">LIMESTONE FIN</text>
 <line x1="356.40" y1="295.20" x2="356.40" y2="183.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="356.40" cy="295.20" r="1.84" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="356.40" cy="295.20" r="2.6" fill="#23262a"/>
 <text x="356.40" y="183.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">QUIET SIDE: SOLID WALL AGAINST WEST SUN</text>
 <circle cx="662.40" cy="281.43" r="3.88" fill="none" stroke="#6b6f73" stroke-width="0.8" />
 <polyline points="654.75,336.00 657.30,309.48 655.77,287.04 669.03,287.04 667.50,309.48 670.05,336.00" fill="none" stroke="#6b6f73" stroke-width="0.8" />

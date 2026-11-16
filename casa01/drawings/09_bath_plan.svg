@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 948 588" width="948" height="588">
+<defs><pattern id="pavers" width="18" height="12" patternUnits="userSpaceOnUse"><rect width="18" height="12" fill="#f3efe6"/><path d="M0 0 H18 M0 0 V12 M9 6 V12 M0 6 H18" stroke="#d2c9b6" stroke-width="0.6"/></pattern>
+<pattern id="dg" width="7" height="7" patternUnits="userSpaceOnUse"><rect width="7" height="7" fill="#f6f1e7"/><circle cx="2" cy="2" r="0.6" fill="#d6c7ad"/><circle cx="5.5" cy="5" r="0.5" fill="#d6c7ad"/></pattern>
+<pattern id="planting" width="9" height="9" patternUnits="userSpaceOnUse"><rect width="9" height="9" fill="#eef1e8"/><circle cx="2.5" cy="2.5" r="1.1" fill="none" stroke="#a9b89a" stroke-width="0.5"/><circle cx="7" cy="6.5" r="0.8" fill="none" stroke="#a9b89a" stroke-width="0.5"/></pattern>
+<pattern id="lawn" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#eef1e6"/><path d="M1 5 l1 -2 M4 2 l1 -2" stroke="#b9c4a3" stroke-width="0.6"/></pattern>
+<pattern id="stone" width="16" height="8" patternUnits="userSpaceOnUse"><rect width="16" height="8" fill="#efe6d2"/><path d="M0 0 H16 M0 4 H16 M5 0 V4 M12 4 V8" stroke="#c9b993" stroke-width="0.5"/></pattern>
+<pattern id="diag" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="#ffffff"/><line x1="0" y1="0" x2="0" y2="5" stroke="#9a9a9a" stroke-width="0.6"/></pattern>
+<pattern id="earth" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#ffffff"/><line x1="0" y1="0" x2="0" y2="8" stroke="#8a8a8a" stroke-width="0.7"/></pattern>
+<pattern id="tile" width="9.4" height="9.4" patternUnits="userSpaceOnUse"><rect width="9.4" height="9.4" fill="#e3ece7"/><path d="M0 0 H9.4 M0 0 V9.4" stroke="#a9c2b6" stroke-width="0.6"/></pattern></defs>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<rect x="291.60" y="144.00" width="312.40" height="312.40" fill="#f7f1e6" stroke="none" stroke-width="1.0" />
+<rect x="291.60" y="144.00" width="312.40" height="120.00" fill="url(#tile)" stroke="none" stroke-width="1.0" />
+<line x1="291.60" y1="264.00" x2="480.00" y2="264.00" stroke="#5d8fa0" stroke-width="2.2" />
+<line x1="480.00" y1="266.40" x2="480.00" y2="261.60" stroke="#23262a" stroke-width="2" />
+<rect x="291.60" y="148.00" width="52.40" height="112.00" fill="#efe6d2" stroke="#6b6f73" stroke-width="0.7" />
+<circle cx="360.00" cy="204.00" r="16.80" fill="none" stroke="#6b6f73" stroke-width="0.8" />
+<circle cx="360.00" cy="204.00" r="2.40" fill="#6b6f73" stroke="none" stroke-width="1.0" />
+<circle cx="536.00" cy="196.00" r="4.80" fill="#ffffff" stroke="#6b6f73" stroke-width="0.7" />
+<line x1="304.00" y1="250.00" x2="592.00" y2="250.00" stroke="#6b6f73" stroke-width="0.6" stroke-dasharray="3 2"/>
+<rect x="291.60" y="276.00" width="70.40" height="160.00" fill="#f4f1ea" stroke="#6b6f73" stroke-width="0.8" />
+<circle cx="326.00" cy="356.00" r="24.80" fill="#ffffff" stroke="#6b6f73" stroke-width="0.8" />
+<line x1="293.60" y1="404.00" x2="293.60" y2="308.00" stroke="#b8955a" stroke-width="2.4" />
+<rect x="552.00" y="383.20" width="52.00" height="25.60" fill="#ffffff" stroke="#6b6f73" stroke-width="0.8" />
+<circle cx="562.00" cy="396.00" r="12.00" fill="none" stroke="#6b6f73" stroke-width="0.7" />
+<circle cx="576.00" cy="304.00" r="22.00" fill="rgba(95,116,88,0.18)" stroke="#5f7458" stroke-width="0.8" />
+<text x="448.00" y="192.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="1.2" >WALK-IN SHOWER</text>
+<text x="448.00" y="192.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="6.5" text-anchor="middle" fill="#6b6f73" font-weight="400" letter-spacing="0.6" dy="10">GREEN ZELLIGE, FLOOR TO CEILING</text>
+<text x="318.00" y="208.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="6.5" text-anchor="middle" fill="#6b6f73" font-weight="400" letter-spacing="0.6" transform="rotate(-90 318.0 208.0)">BENCH</text>
+<text x="456.00" y="340.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="1.0" >LADRILHO HIDRÁULICO</text>
+<text x="456.00" y="340.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="6.5" text-anchor="middle" fill="#6b6f73" font-weight="400" letter-spacing="0.6" dy="10">8x8 PATTERNED TILE FLOOR</text>
+<rect x="-1296.00" y="2104.00" width="100.00" height="20.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.3" />
+<rect x="-1116.00" y="2104.00" width="700.00" height="20.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.3" />
+<rect x="-1196.00" y="2104.00" width="80.00" height="20.00" fill="#dfe9ec" stroke="#23262a" stroke-width="0.8" />
+<rect x="-436.00" y="2074.00" width="20.00" height="50.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.3" />
+<rect x="-436.00" y="1894.00" width="20.00" height="20.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.3" />
+<rect x="-436.00" y="924.00" width="20.00" height="20.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.3" />
+<rect x="-436.00" y="1914.00" width="20.00" height="160.00" fill="#dfe9ec" stroke="#23262a" stroke-width="0.8" />
+<rect x="-436.00" y="944.00" width="20.00" height="950.00" fill="#dfe9ec" stroke="#23262a" stroke-width="0.8" />
+<rect x="-416.00" y="904.00" width="30.00" height="20.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.3" />
+<rect x="-6.00" y="904.00" width="190.00" height="20.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.3" />
+<rect x="464.00" y="904.00" width="160.00" height="20.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.3" />
+<rect x="-386.00" y="904.00" width="380.00" height="20.00" fill="#dfe9ec" stroke="#23262a" stroke-width="0.8" />
+<rect x="184.00" y="904.00" width="280.00" height="20.00" fill="#dfe9ec" stroke="#23262a" stroke-width="0.8" />
+<rect x="604.00" y="804.00" width="20.00" height="120.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.3" />
+<rect x="604.00" y="248.00" width="20.00" height="436.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.3" />
+<rect x="604.00" y="124.00" width="20.00" height="32.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.3" />
+<rect x="604.00" y="684.00" width="20.00" height="120.00" fill="#dfe9ec" stroke="#23262a" stroke-width="0.8" />
+<rect x="604.00" y="156.00" width="20.00" height="92.00" fill="#dfe9ec" stroke="#23262a" stroke-width="0.8" />
+<rect x="564.00" y="124.00" width="60.00" height="20.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.3" />
+<rect x="4.00" y="124.00" width="340.00" height="20.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.3" />
+<rect x="-856.00" y="124.00" width="140.00" height="20.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.3" />
+<rect x="-1296.00" y="124.00" width="120.00" height="20.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.3" />
+<rect x="344.00" y="124.00" width="220.00" height="20.00" fill="#dfe9ec" stroke="#23262a" stroke-width="0.8" />
+<rect x="-716.00" y="124.00" width="720.00" height="20.00" fill="#dfe9ec" stroke="#23262a" stroke-width="0.8" />
+<rect x="-1176.00" y="124.00" width="320.00" height="20.00" fill="#dfe9ec" stroke="#23262a" stroke-width="0.8" />
+<rect x="-1296.00" y="124.00" width="20.00" height="960.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.3" />
+<rect x="-1296.00" y="1244.00" width="20.00" height="560.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.3" />
+<rect x="-1296.00" y="1964.00" width="20.00" height="160.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.3" />
+<rect x="-1296.00" y="1084.00" width="20.00" height="160.00" fill="#dfe9ec" stroke="#23262a" stroke-width="0.8" />
+<rect x="-1296.00" y="1804.00" width="20.00" height="160.00" fill="#dfe9ec" stroke="#23262a" stroke-width="0.8" />
+<rect x="-623.50" y="1824.00" width="15.00" height="280.00" fill="#575b5f" stroke="#575b5f" stroke-width="0.3" />
+<rect x="-623.50" y="1584.00" width="15.00" height="133.20" fill="#575b5f" stroke="#575b5f" stroke-width="0.3" />
+<rect x="-623.50" y="1304.00" width="15.00" height="173.20" fill="#575b5f" stroke="#575b5f" stroke-width="0.3" />
+<rect x="-623.50" y="924.00" width="15.00" height="273.20" fill="#575b5f" stroke="#575b5f" stroke-width="0.3" />
+<rect x="-1276.00" y="1656.50" width="60.00" height="15.00" fill="#575b5f" stroke="#575b5f" stroke-width="0.3" />
+<rect x="-1056.00" y="1656.50" width="440.00" height="15.00" fill="#575b5f" stroke="#575b5f" stroke-width="0.3" />
+<rect x="-1276.00" y="1376.50" width="60.00" height="15.00" fill="#575b5f" stroke="#575b5f" stroke-width="0.3" />
+<rect x="-1056.00" y="1376.50" width="440.00" height="15.00" fill="#575b5f" stroke="#575b5f" stroke-width="0.3" />
+<rect x="-1023.50" y="1384.00" width="15.00" height="280.00" fill="#575b5f" stroke="#575b5f" stroke-width="0.3" />
+<rect x="-1276.00" y="1516.50" width="260.00" height="15.00" fill="#575b5f" stroke="#575b5f" stroke-width="0.3" />
+<rect x="-1276.00" y="916.50" width="667.60" height="15.00" fill="#575b5f" stroke="#575b5f" stroke-width="0.3" />
+<rect x="-1023.50" y="864.00" width="15.00" height="60.00" fill="#575b5f" stroke="#575b5f" stroke-width="0.3" />
+<rect x="-1023.50" y="704.00" width="15.00" height="53.20" fill="#575b5f" stroke="#575b5f" stroke-width="0.3" />
+<rect x="-1276.00" y="696.50" width="260.00" height="15.00" fill="#575b5f" stroke="#575b5f" stroke-width="0.3" />
+<rect x="16.50" y="864.00" width="15.00" height="40.00" fill="#575b5f" stroke="#575b5f" stroke-width="0.3" />
+<rect x="16.50" y="144.00" width="15.00" height="613.20" fill="#575b5f" stroke="#575b5f" stroke-width="0.3" />
+<rect x="24.00" y="456.50" width="50.00" height="15.00" fill="#575b5f" stroke="#575b5f" stroke-width="0.3" />
+<rect x="174.00" y="456.50" width="170.00" height="15.00" fill="#575b5f" stroke="#575b5f" stroke-width="0.3" />
+<line x1="344.00" y1="464.00" x2="344.00" y2="364.00" stroke="#23262a" stroke-width="1.4" />
+<path d="M 344.00,364.00 A 100.00 100.00 0 0 1 444.00,464.00" fill="none" stroke="#a7aaad" stroke-width="0.8" />
+<rect x="444.00" y="456.50" width="160.00" height="15.00" fill="#575b5f" stroke="#575b5f" stroke-width="0.3" />
+<rect x="276.50" y="144.00" width="15.00" height="320.00" fill="#575b5f" stroke="#575b5f" stroke-width="0.3" />
+<line x1="291.60" y1="80.00" x2="604.00" y2="80.00" stroke="#6b6f73" stroke-width="0.6" />
+<line x1="291.60" y1="140.00" x2="291.60" y2="76.00" stroke="#6b6f73" stroke-width="0.5"/>
+<line x1="288.60" y1="83.00" x2="294.60" y2="77.00" stroke="#23262a" stroke-width="1.1"/>
+<line x1="604.00" y1="140.00" x2="604.00" y2="76.00" stroke="#6b6f73" stroke-width="0.5"/>
+<line x1="601.00" y1="83.00" x2="607.00" y2="77.00" stroke="#23262a" stroke-width="1.1"/>
+<text x="447.80" y="80.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="11" text-anchor="middle" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="-3">7'-10"</text>
+<line x1="676.00" y1="456.40" x2="676.00" y2="144.00" stroke="#6b6f73" stroke-width="0.6" />
+<line x1="608.00" y1="456.40" x2="680.00" y2="456.40" stroke="#6b6f73" stroke-width="0.5"/>
+<line x1="673.00" y1="459.40" x2="679.00" y2="453.40" stroke="#23262a" stroke-width="1.1"/>
+<line x1="608.00" y1="144.00" x2="680.00" y2="144.00" stroke="#6b6f73" stroke-width="0.5"/>
+<line x1="673.00" y1="147.00" x2="679.00" y2="141.00" stroke="#23262a" stroke-width="1.1"/>
+<text x="676.00" y="300.20" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="11" text-anchor="middle" fill="#23262a" letter-spacing="0.6" transform="rotate(-90 676.00 300.20)" dy="-3">7'-10"</text>
+<line x1="640.00" y1="264.00" x2="640.00" y2="144.00" stroke="#6b6f73" stroke-width="0.6" />
+<line x1="608.00" y1="264.00" x2="644.00" y2="264.00" stroke="#6b6f73" stroke-width="0.5"/>
+<line x1="637.00" y1="267.00" x2="643.00" y2="261.00" stroke="#23262a" stroke-width="1.1"/>
+<line x1="608.00" y1="144.00" x2="644.00" y2="144.00" stroke="#6b6f73" stroke-width="0.5"/>
+<line x1="637.00" y1="147.00" x2="643.00" y2="141.00" stroke="#23262a" stroke-width="1.1"/>
+<text x="640.00" y="204.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="10" text-anchor="middle" fill="#23262a" letter-spacing="0.6" transform="rotate(-90 640.00 204.00)" dy="-3">3'-0"</text>
+<line x1="243.60" y1="456.40" x2="243.60" y2="276.00" stroke="#6b6f73" stroke-width="0.6" />
+<line x1="287.60" y1="456.40" x2="239.60" y2="456.40" stroke="#6b6f73" stroke-width="0.5"/>
+<line x1="240.60" y1="459.40" x2="246.60" y2="453.40" stroke="#23262a" stroke-width="1.1"/>
+<line x1="287.60" y1="276.00" x2="239.60" y2="276.00" stroke="#6b6f73" stroke-width="0.5"/>
+<line x1="240.60" y1="279.00" x2="246.60" y2="273.00" stroke="#23262a" stroke-width="1.1"/>
+<text x="243.60" y="366.20" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="10" text-anchor="middle" fill="#23262a" letter-spacing="0.6" transform="rotate(-90 243.60 366.20)" dy="-3">4'-6"</text>
+<line x1="624.00" y1="202.00" x2="688.00" y2="112.00" stroke="#6b6f73" stroke-width="0.6" />
+<circle cx="624.00" cy="202.00" r="2.6" fill="#23262a"/>
+<text x="688.00" y="112.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="9" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">GARDEN WINDOW, FROSTED BELOW 5'</text>
+<line x1="454.00" y1="134.00" x2="424.00" y2="72.00" stroke="#6b6f73" stroke-width="0.6" />
+<circle cx="454.00" cy="134.00" r="2.6" fill="#23262a"/>
+<text x="424.00" y="72.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="9" text-anchor="end" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="-4" dy="3">CLERESTORY ABOVE</text>
+<line x1="294.00" y1="356.00" x2="192.00" y2="484.00" stroke="#6b6f73" stroke-width="0.6" />
+<circle cx="294.00" cy="356.00" r="2.6" fill="#23262a"/>
+<text x="192.00" y="484.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="9" text-anchor="end" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="-4" dy="3">ROUND BRASS MIRROR</text>
+<line x1="424.00" y1="264.00" x2="504.00" y2="516.00" stroke="#6b6f73" stroke-width="0.6" />
+<circle cx="424.00" cy="264.00" r="2.6" fill="#23262a"/>
+<text x="504.00" y="516.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="9" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">FIXED GLASS PANEL</text>
+<line x1="584.00" y1="396.00" x2="680.00" y2="476.00" stroke="#6b6f73" stroke-width="0.6" />
+<circle cx="584.00" cy="396.00" r="2.6" fill="#23262a"/>
+<text x="680.00" y="476.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="9" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">WALL-HUNG WC</text>
+<g transform="translate(908.0,46)"><circle r="12.4" fill="none" stroke="#23262a" stroke-width="0.8"/><path d="M0 -11.0 L4.4 7.0 L0 3.5999999999999996 L-4.4 7.0 Z" fill="#23262a"/><text y="-14.399999999999999" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="10" text-anchor="middle" font-weight="700" fill="#23262a">N</text></g>
+</svg>

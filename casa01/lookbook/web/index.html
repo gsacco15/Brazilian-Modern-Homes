@@ -35,8 +35,11 @@ h2{font-family:var(--serif);font-weight:500;font-size:clamp(28px,3.6vw,42px);lin
 .pick{position:absolute;right:12px;top:64px;max-width:min(320px,calc(100% - 24px));background:rgba(246,244,238,.96);color:#1d2520;padding:12px 14px;border-radius:2px;font-size:13px;line-height:1.4;box-shadow:0 4px 18px rgba(0,0,0,.15);cursor:pointer}
 .pick b{display:block;font:700 12px/1.2 var(--sans);letter-spacing:.06em;text-transform:uppercase}
 .pick i{font-family:var(--serif);font-size:15px;color:#8a6a35}
+.pano .loading{background:#1d2520;color:#f3efe4}
 .loading{position:absolute;inset:0;display:grid;place-items:center;font:700 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#1d2520;background:#cfdde6;text-align:center;padding:20px}
 .hint{font-size:12.5px;color:var(--muted);margin-top:8px}
+.pano{position:relative;height:min(70vh,700px);min-height:400px;background:#1d2520;border-radius:4px;overflow:hidden;margin-top:22px}
+.pano canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
 section.block{padding-block:56px 8px}
 .gal{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:22px}
 .gal figure{margin:0;min-width:0}
@@ -84,7 +87,8 @@ footer{padding-block:48px 40px;color:var(--muted);font-size:12.5px;border-top:1p
 <div class="pick" id="pick" hidden></div>
 <div class="vctl"><label for="d">Sun</label><select id="d"><option value="172">June 21</option><option value="80">March 21</option><option value="355">Dec 21</option></select><input id="t" type="range" min="5.5" max="20.5" step="0.05" value="16.5" aria-label="Time of day, solar time"><span class="time" id="tl">4:30 pm</span></div>
 <div class="loading" id="loading">Loading 3D model</div></div>
-<p class="hint">Drag to orbit, scroll or pinch to zoom, right-drag or two-finger drag to pan. Tap any surface to see its finish. Slide the sun to watch the eaves and the cobogó work through a June or December day.</p>
+<p class="hint">Drag to orbit, scroll or pinch to zoom, right-drag or two-finger drag to pan. Tap any surface to see its finish. Slide the sun to watch the eaves and the cobogó work through a June or December day. Soft sky light and bounce light are pre-computed by the photoreal renderer; the sun and its shadows stay live.</p>
+
 <section class="block"><div class="eyebrow">The idea</div><h2>Three moves make the house</h2><div class="moves"><div><div class="k">1</div><h3>One thin roof</h3><p>A single 15-inch roof edge runs the full 54-foot street front. Bedrooms, entry canopy and courtyard all sit under one horizontal line.</p></div><div><div class="k">2</div><h3>Enter through a garden</h3><p>A Lueders limestone wall and a full-height cobogó screen hide a private pátio. You open a cedar gate, walk under the canopy, and reach the front door inside the garden.</p></div><div><div class="k">3</div><h3>A cool room outside</h3><p>The great room opens both ways: south to the courtyard, north to a 276 sf veranda under the heritage oak, with the cedar ceiling running straight through.</p></div></div></section>
 <section class="block"><div class="eyebrow">Renders</div><h2>What it looks like</h2><div class="gal"><figure class="wide"><img src="img/street.jpg" alt="Street. Limestone wall, cedar gate and cobogó under one 54-foot roof edge. Native meadow instead of lawn." loading="lazy" width="1600" height="900"><figcaption><b>Street</b>Limestone wall, cedar gate and cobogó under one 54-foot roof edge. Native meadow instead of lawn.</figcaption></figure><figure class="wide"><img src="img/street_dusk.jpg" alt="Dusk. Courtyard lights behind the cobogó turn the screen into a lantern; grazers rake the limestone." loading="lazy" width="1600" height="900"><figcaption><b>Dusk</b>Courtyard lights behind the cobogó turn the screen into a lantern; grazers rake the limestone.</figcaption></figure><figure class=""><img src="img/entry.jpg" alt="Covered entry. Sun through the cobogó draws circles on the pavers. The cedar pivot door is inside the screen." loading="lazy" width="1600" height="900"><figcaption><b>Covered entry</b>Sun through the cobogó draws circles on the pavers. The cedar pivot door is inside the screen.</figcaption></figure><figure class=""><img src="img/courtyard.jpg" alt="Pátio. Dwarf palmetto, ferns and muhly under a limbed-up oak, lined by the gallery glass." loading="lazy" width="1600" height="900"><figcaption><b>Pátio</b>Dwarf palmetto, ferns and muhly under a limbed-up oak, lined by the gallery glass.</figcaption></figure><figure class="wide"><img src="img/interior.jpg" alt="Great room. Cedar ceiling, polished concrete, warm-white walls. Courtyard to the south, veranda to the north." loading="lazy" width="1600" height="900"><figcaption><b>Great room</b>Cedar ceiling, polished concrete, warm-white walls. Courtyard to the south, veranda to the north.</figcaption></figure><figure class=""><img src="img/kitchen.jpg" alt="Kitchen. Rift white oak, honed black granite island, green glazed tile." loading="lazy" width="1600" height="900"><figcaption><b>Kitchen</b>Rift white oak, honed black granite island, green glazed tile.</figcaption></figure><figure class=""><img src="img/gallery.jpg" alt="Gallery. The bedroom hall is a 30-foot glass wall on the pátio." loading="lazy" width="1600" height="900"><figcaption><b>Gallery</b>The bedroom hall is a 30-foot glass wall on the pátio.</figcaption></figure><figure class=""><img src="img/veranda.jpg" alt="Veranda. 276 sf under the oak. The cedar ceiling runs straight out from the great room." loading="lazy" width="1600" height="900"><figcaption><b>Veranda</b>276 sf under the oak. The cedar ceiling runs straight out from the great room.</figcaption></figure><figure class=""><img src="img/rear.jpg" alt="Rear yard. The house sits forward on the lot to protect the heritage live oak." loading="lazy" width="1600" height="900"><figcaption><b>Rear yard</b>The house sits forward on the lot to protect the heritage live oak.</figcaption></figure><figure class="wide"><img src="img/aerial.jpg" alt="Aerial. An L-shaped house wrapped around an open-sky pátio." loading="lazy" width="1600" height="900"><figcaption><b>Aerial</b>An L-shaped house wrapped around an open-sky pátio.</figcaption></figure></div></section>
 <section class="block"><div class="eyebrow">Drawings</div><h2>Plans, elevations and section</h2><div class="dwgs">
@@ -138,7 +142,7 @@ footer{padding-block:48px 40px;color:var(--muted);font-size:12.5px;border-top:1p
 <path d="M 418.03,665.40 L 419.08,650.15 L 409.19,638.11 L 399.95,627.53 L 392.15,614.77 L 379.72,606.01 L 364.06,608.94 L 350.30,608.58 L 335.15,607.27 L 322.93,615.75 L 315.06,628.07 L 304.96,637.98 L 296.90,650.54 L 298.24,665.40 L 302.53,678.87 L 302.92,693.89 L 310.85,706.47 L 324.89,712.21 L 337.07,718.49 L 349.67,727.42 L 364.60,726.31 L 377.62,719.26 L 391.07,714.47 L 404.22,707.06 L 409.58,692.89 L 412.80,679.10 Z" fill="rgba(95,116,88,0.10)" stroke="#5f7458" stroke-width="0.9"  stroke-linejoin="round"/>
 <circle cx="357.20" cy="665.40" r="1.61" fill="#5f7458" stroke="none" stroke-width="1.0" />
 <line x1="233.00" y1="122.60" x2="292.80" y2="81.20" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="233.00" cy="122.60" r="0.83" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="233.00" cy="122.60" r="2.6" fill="#23262a"/>
 <text x="292.80" y="81.20" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="6.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">HERITAGE LIVE OAK (PROTECTED)</text>
 <text x="159.40" y="568.80" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="6.5" text-anchor="middle" fill="#5f7458" font-weight="700" letter-spacing="1.2" >NATIVE MEADOW</text>
 <text x="159.40" y="568.80" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="6" text-anchor="middle" fill="#6b6f73" font-weight="400" letter-spacing="0.6" dy="9">DG + AGAVE + GRASSES</text>
@@ -172,7 +176,8 @@ footer{padding-block:48px 40px;color:var(--muted);font-size:12.5px;border-top:1p
 <pattern id="lawn" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#eef1e6"/><path d="M1 5 l1 -2 M4 2 l1 -2" stroke="#b9c4a3" stroke-width="0.6"/></pattern>
 <pattern id="stone" width="16" height="8" patternUnits="userSpaceOnUse"><rect width="16" height="8" fill="#efe6d2"/><path d="M0 0 H16 M0 4 H16 M5 0 V4 M12 4 V8" stroke="#c9b993" stroke-width="0.5"/></pattern>
 <pattern id="diag" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="#ffffff"/><line x1="0" y1="0" x2="0" y2="5" stroke="#9a9a9a" stroke-width="0.6"/></pattern>
-<pattern id="earth" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#ffffff"/><line x1="0" y1="0" x2="0" y2="8" stroke="#8a8a8a" stroke-width="0.7"/></pattern></defs>
+<pattern id="earth" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#ffffff"/><line x1="0" y1="0" x2="0" y2="8" stroke="#8a8a8a" stroke-width="0.7"/></pattern>
+<pattern id="tile" width="5" height="5" patternUnits="userSpaceOnUse"><rect width="5" height="5" fill="#e3ece7"/><path d="M0 0 H5 M0 0 V5" stroke="#a9c2b6" stroke-width="0.5"/></pattern></defs>
 <rect width="100%" height="100%" fill="#ffffff"/>
 <rect x="380.00" y="640.00" width="257.00" height="56.70" fill="url(#pavers)" stroke="none" stroke-width="1.0" />
 <rect x="380.00" y="400.00" width="35.00" height="240.00" fill="url(#pavers)" stroke="none" stroke-width="1.0" />
@@ -220,14 +225,8 @@ footer{padding-block:48px 40px;color:var(--muted);font-size:12.5px;border-top:1p
 <rect x="621.00" y="311.00" width="13.00" height="27.50" fill="none" stroke="#a7aaad" stroke-width="0.7" />
 <rect x="619.00" y="371.00" width="18.00" height="18.00" fill="none" stroke="#a7aaad" stroke-width="0.7" />
 <rect x="619.00" y="291.00" width="18.00" height="18.00" fill="none" stroke="#a7aaad" stroke-width="0.7" />
-<rect x="571.00" y="265.00" width="50.00" height="18.00" fill="#ffffff" stroke="#6b6f73" stroke-width="0.7" />
-<circle cx="583.50" cy="274.00" r="4.50" fill="none" stroke="#a7aaad" stroke-width="0.7" />
-<circle cx="608.50" cy="274.00" r="4.50" fill="none" stroke="#a7aaad" stroke-width="0.7" />
-<rect x="603.00" y="205.00" width="32.00" height="44.00" fill="#ffffff" stroke="#6b6f73" stroke-width="0.7" />
-<line x1="603.00" y1="249.00" x2="635.00" y2="205.00" stroke="#a7aaad" stroke-width="0.5" />
-<line x1="603.00" y1="205.00" x2="635.00" y2="249.00" stroke="#a7aaad" stroke-width="0.5" />
-<rect x="566.50" y="205.00" width="7.00" height="18.00" fill="none" stroke="#a7aaad" stroke-width="0.7" />
-<circle cx="570.00" cy="214.00" r="6.50" fill="none" stroke="#a7aaad" stroke-width="0.7" />
+<rect x="621.00" y="264.50" width="18.00" height="7.00" fill="none" stroke="#a7aaad" stroke-width="0.7" />
+<circle cx="630.00" cy="268.00" r="6.50" fill="none" stroke="#a7aaad" stroke-width="0.7" />
 <rect x="257.00" y="615.00" width="70.00" height="50.00" fill="#ffffff" stroke="#6b6f73" stroke-width="0.8" />
 <line x1="273.00" y1="665.00" x2="273.00" y2="615.00" stroke="#a7aaad" stroke-width="0.5" />
 <rect x="311.00" y="641.50" width="13.00" height="21.00" fill="none" stroke="#a7aaad" stroke-width="0.7" />
@@ -263,6 +262,20 @@ footer{padding-block:48px 40px;color:var(--muted);font-size:12.5px;border-top:1p
 <rect x="245.00" y="382.50" width="70.00" height="15.00" fill="#f4f1ea" stroke="#6b6f73" stroke-width="0.7" />
 <circle cx="376.00" cy="138.00" r="23.00" fill="none" stroke="#d4d2cc" stroke-width="0.6" stroke-dasharray="2 2"/>
 <circle cx="466.00" cy="138.00" r="23.00" fill="none" stroke="#d4d2cc" stroke-width="0.6" stroke-dasharray="2 2"/>
+<rect x="556.90" y="205.00" width="78.10" height="30.00" fill="url(#tile)" stroke="none" stroke-width="1.0" />
+<line x1="556.90" y1="235.00" x2="604.00" y2="235.00" stroke="#5d8fa0" stroke-width="2.2" />
+<line x1="604.00" y1="235.60" x2="604.00" y2="234.40" stroke="#23262a" stroke-width="2" />
+<rect x="556.90" y="206.00" width="13.10" height="28.00" fill="#efe6d2" stroke="#6b6f73" stroke-width="0.7" />
+<circle cx="574.00" cy="220.00" r="4.20" fill="none" stroke="#6b6f73" stroke-width="0.8" />
+<circle cx="574.00" cy="220.00" r="0.60" fill="#6b6f73" stroke="none" stroke-width="1.0" />
+<circle cx="618.00" cy="218.00" r="1.20" fill="#ffffff" stroke="#6b6f73" stroke-width="0.7" />
+<line x1="560.00" y1="231.50" x2="632.00" y2="231.50" stroke="#6b6f73" stroke-width="0.6" stroke-dasharray="3 2"/>
+<rect x="556.90" y="238.00" width="17.60" height="40.00" fill="#f4f1ea" stroke="#6b6f73" stroke-width="0.8" />
+<circle cx="565.50" cy="258.00" r="6.20" fill="#ffffff" stroke="#6b6f73" stroke-width="0.8" />
+<line x1="557.40" y1="270.00" x2="557.40" y2="246.00" stroke="#b8955a" stroke-width="2.4" />
+<rect x="622.00" y="264.80" width="13.00" height="6.40" fill="#ffffff" stroke="#6b6f73" stroke-width="0.8" />
+<circle cx="624.50" cy="268.00" r="3.00" fill="none" stroke="#6b6f73" stroke-width="0.7" />
+<circle cx="628.00" cy="245.00" r="5.50" fill="rgba(95,116,88,0.18)" stroke="#5f7458" stroke-width="0.8" />
 <polygon points="130.00,730.00 670.00,730.00 670.00,640.00 410.00,640.00 410.00,440.00 670.00,440.00 670.00,170.00 530.00,170.00 530.00,75.00 260.00,75.00 260.00,170.00 130.00,170.00" fill="none" stroke="#6b6f73" stroke-width="0.8" stroke-dasharray="7 4"/>
 <path d="M 641.92,535.00 L 634.18,511.79 L 630.56,487.47 L 620.93,463.30 L 597.38,451.87 L 573.85,445.74 L 552.44,432.56 L 526.98,427.81 L 505.53,444.12 L 484.38,454.42 L 458.19,462.52 L 447.71,486.56 L 444.39,511.43 L 438.58,535.00 L 434.74,560.94 L 451.27,581.57 L 467.00,599.67 L 479.92,622.04 L 501.94,635.35 L 527.91,634.60 L 551.92,633.14 L 577.03,632.64 L 600.59,622.77 L 613.27,599.91 L 627.99,581.18 L 642.48,560.26 Z" fill="none" stroke="#5f7458" stroke-width="0.8" stroke-dasharray="4 2" stroke-linejoin="round"/>
 <circle cx="540.00" cy="535.00" r="3.50" fill="#5f7458" stroke="none" stroke-width="1.0" />
@@ -302,12 +315,18 @@ footer{padding-block:48px 40px;color:var(--muted);font-size:12.5px;border-top:1p
 <line x1="530.00" y1="397.50" x2="600.00" y2="397.50" stroke="#23262a" stroke-width="0.5" />
 <line x1="565.00" y1="400.00" x2="565.00" y2="395.00" stroke="#23262a" stroke-width="0.9" />
 <rect x="635.00" y="370.00" width="5.00" height="30.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.3" />
-<rect x="635.00" y="200.00" width="5.00" height="140.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.3" />
+<rect x="635.00" y="231.00" width="5.00" height="109.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.3" />
+<rect x="635.00" y="200.00" width="5.00" height="8.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.3" />
 <rect x="635.00" y="340.00" width="5.00" height="30.00" fill="#ffffff" stroke="none" stroke-width="1.0" />
 <line x1="639.40" y1="370.00" x2="639.40" y2="340.00" stroke="#23262a" stroke-width="0.7" />
 <line x1="635.60" y1="370.00" x2="635.60" y2="340.00" stroke="#23262a" stroke-width="0.7" />
 <line x1="637.50" y1="370.00" x2="637.50" y2="340.00" stroke="#23262a" stroke-width="0.5" />
 <line x1="642.50" y1="370.00" x2="642.50" y2="340.00" stroke="#a7aaad" stroke-width="0.5" />
+<rect x="635.00" y="208.00" width="5.00" height="23.00" fill="#ffffff" stroke="none" stroke-width="1.0" />
+<line x1="639.40" y1="231.00" x2="639.40" y2="208.00" stroke="#23262a" stroke-width="0.7" />
+<line x1="635.60" y1="231.00" x2="635.60" y2="208.00" stroke="#23262a" stroke-width="0.7" />
+<line x1="637.50" y1="231.00" x2="637.50" y2="208.00" stroke="#23262a" stroke-width="0.5" />
+<line x1="642.50" y1="231.00" x2="642.50" y2="208.00" stroke="#a7aaad" stroke-width="0.5" />
 <rect x="625.00" y="200.00" width="15.00" height="5.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.3" />
 <rect x="485.00" y="200.00" width="85.00" height="5.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.3" />
 <rect x="270.00" y="200.00" width="35.00" height="5.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.3" />
@@ -556,19 +575,19 @@ footer{padding-block:48px 40px;color:var(--muted);font-size:12.5px;border-top:1p
 <text x="530.00" y="668.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="9" text-anchor="middle" fill="#5f7458" font-weight="700" letter-spacing="1.2" >COVERED ENTRY</text>
 <text x="410.00" y="94.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="9" text-anchor="middle" fill="#5f7458" font-weight="700" letter-spacing="1.2" >VERANDA</text>
 <line x1="540.00" y1="698.50" x2="570.00" y2="754.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="540.00" cy="698.50" r="1.80" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="540.00" cy="698.50" r="2.6" fill="#23262a"/>
 <text x="570.00" y="754.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">COBOGÓ SCREEN — 12x12 PRECAST BLOCK</text>
 <line x1="250.00" y1="702.00" x2="210.00" y2="754.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="250.00" cy="702.00" r="1.80" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="250.00" cy="702.00" r="2.6" fill="#23262a"/>
 <text x="210.00" y="754.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="end" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="-4" dy="3">LUEDERS LIMESTONE WALL</text>
 <line x1="405.00" y1="698.00" x2="372.00" y2="776.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="405.00" cy="698.00" r="1.80" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="405.00" cy="698.00" r="2.6" fill="#23262a"/>
 <text x="372.00" y="776.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="end" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="-4" dy="3">CEDAR PIVOT GATE</text>
 <line x1="640.00" y1="550.00" x2="685.00" y2="550.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="640.00" cy="550.00" r="1.80" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="640.00" cy="550.00" r="2.6" fill="#23262a"/>
 <text x="685.00" y="550.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">CEDAR SLAT SCREEN</text>
 <line x1="530.00" y1="100.00" x2="570.00" y2="100.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="530.00" cy="100.00" r="1.80" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="530.00" cy="100.00" r="2.6" fill="#23262a"/>
 <text x="570.00" y="100.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">ROOF EDGE ABOVE</text>
 <text x="405.00" y="812.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#6b6f73" font-weight="400" letter-spacing="1.0" >ENTER FROM STREET ↑</text>
 <line x1="160.00" y1="48.00" x2="640.00" y2="48.00" stroke="#6b6f73" stroke-width="0.6" />
@@ -1626,19 +1645,19 @@ footer{padding-block:48px 40px;color:var(--muted);font-size:12.5px;border-top:1p
 <path d="M 825.60,510.00 l -5 -7 l 10 0 z" fill="none" stroke="#23262a" stroke-width="0.8"/>
 <text x="844.80" y="510.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="3">GRADE  0'-0"</text>
 <line x1="270.00" y1="438.00" x2="270.00" y2="300.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="270.00" cy="438.00" r="2.16" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="270.00" cy="438.00" r="2.6" fill="#23262a"/>
 <text x="270.00" y="300.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">LUEDERS LIMESTONE ASHLAR, 3 COURSE HEIGHTS</text>
 <line x1="630.00" y1="426.00" x2="630.00" y2="300.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="630.00" cy="426.00" r="2.16" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="630.00" cy="426.00" r="2.6" fill="#23262a"/>
 <text x="630.00" y="300.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">12x12x4 CONCRETE COBOGÓ, CIRCLE PATTERN</text>
 <line x1="468.00" y1="414.00" x2="426.00" y2="330.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="468.00" cy="414.00" r="2.16" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="468.00" cy="414.00" r="2.6" fill="#23262a"/>
 <text x="426.00" y="330.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="end" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="-4" dy="3">CEDAR SLAT PIVOT GATE</text>
 <line x1="702.00" y1="370.80" x2="750.00" y2="336.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="702.00" cy="370.80" r="2.16" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="702.00" cy="370.80" r="2.6" fill="#23262a"/>
 <text x="750.00" y="336.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">15" DARK BRONZE FASCIA</text>
 <line x1="216.00" y1="450.00" x2="150.00" y2="330.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="216.00" cy="450.00" r="2.16" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="216.00" cy="450.00" r="2.6" fill="#23262a"/>
 <text x="150.00" y="330.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="end" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="-4" dy="3">SLOT WINDOW</text>
 </svg>
 </div></div>
@@ -1681,19 +1700,19 @@ footer{padding-block:48px 40px;color:var(--muted);font-size:12.5px;border-top:1p
 <path d="M 825.60,378.00 l -5 -7 l 10 0 z" fill="none" stroke="#23262a" stroke-width="0.8"/>
 <text x="844.80" y="378.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="3">F.F.  +1'-0"</text>
 <line x1="444.00" y1="330.00" x2="444.00" y2="168.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="444.00" cy="330.00" r="2.16" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="444.00" cy="330.00" r="2.6" fill="#23262a"/>
 <text x="444.00" y="168.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="end" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="-4" dy="3">9' SLIDING GLASS WALL TO VERANDA</text>
 <line x1="666.00" y1="306.00" x2="666.00" y2="204.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="666.00" cy="306.00" r="2.16" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="666.00" cy="306.00" r="2.6" fill="#23262a"/>
 <text x="666.00" y="204.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">KITCHEN WINDOW</text>
 <line x1="224.40" y1="288.00" x2="224.40" y2="204.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="224.40" cy="288.00" r="2.16" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="224.40" cy="288.00" r="2.6" fill="#23262a"/>
 <text x="224.40" y="204.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">BATH CLERESTORY</text>
 <line x1="584.40" y1="354.00" x2="584.40" y2="132.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="584.40" cy="354.00" r="2.16" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="584.40" cy="354.00" r="2.6" fill="#23262a"/>
 <text x="584.40" y="132.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">LIMESTONE GRILL COUNTER (CHURRASQUEIRA)</text>
 <line x1="726.00" y1="354.00" x2="768.00" y2="402.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="726.00" cy="354.00" r="2.16" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="726.00" cy="354.00" r="2.6" fill="#23262a"/>
 <text x="768.00" y="402.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">SMOOTH WARM-WHITE STUCCO</text>
 </svg>
 </div></div>
@@ -1830,10 +1849,10 @@ footer{padding-block:48px 40px;color:var(--muted);font-size:12.5px;border-top:1p
 <path d="M 803.16,325.80 l -5 -7 l 10 0 z" fill="none" stroke="#23262a" stroke-width="0.8"/>
 <text x="819.48" y="325.80" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="3">F.F.</text>
 <line x1="285.00" y1="274.80" x2="285.00" y2="162.60" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="285.00" cy="274.80" r="1.84" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="285.00" cy="274.80" r="2.6" fill="#23262a"/>
 <text x="285.00" y="162.60" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">CEDAR 2x4 SLATS @ 5" O.C. — PRIVACY TO DRIVEWAY</text>
 <line x1="483.90" y1="274.80" x2="540.00" y2="172.80" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="483.90" cy="274.80" r="1.84" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="483.90" cy="274.80" r="2.6" fill="#23262a"/>
 <text x="540.00" y="172.80" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">PRIMARY BEDROOM WINDOW</text>
 <circle cx="162.60" cy="281.43" r="3.88" fill="none" stroke="#6b6f73" stroke-width="0.8" />
 <polyline points="154.95,336.00 157.50,309.48 155.97,287.04 169.23,287.04 167.70,309.48 170.25,336.00" fill="none" stroke="#6b6f73" stroke-width="0.8" />
@@ -1870,16 +1889,16 @@ footer{padding-block:48px 40px;color:var(--muted);font-size:12.5px;border-top:1p
 <path d="M 803.16,325.80 l -5 -7 l 10 0 z" fill="none" stroke="#23262a" stroke-width="0.8"/>
 <text x="819.48" y="325.80" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="3">F.F.</text>
 <line x1="519.60" y1="274.80" x2="519.60" y2="137.10" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="519.60" cy="274.80" r="1.84" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="519.60" cy="274.80" r="2.6" fill="#23262a"/>
 <text x="519.60" y="137.10" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="end" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="-4" dy="3">BEDROOM 3 — EGRESS CASEMENT</text>
 <line x1="703.20" y1="274.80" x2="703.20" y2="167.70" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="703.20" cy="274.80" r="1.84" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="703.20" cy="274.80" r="2.6" fill="#23262a"/>
 <text x="703.20" y="167.70" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="end" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="-4" dy="3">BEDROOM 2 — EGRESS CASEMENT</text>
 <line x1="766.44" y1="244.20" x2="766.44" y2="106.50" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="766.44" cy="244.20" r="1.84" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="766.44" cy="244.20" r="2.6" fill="#23262a"/>
 <text x="766.44" y="106.50" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="end" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="-4" dy="3">LIMESTONE FIN</text>
 <line x1="356.40" y1="295.20" x2="356.40" y2="183.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="356.40" cy="295.20" r="1.84" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="356.40" cy="295.20" r="2.6" fill="#23262a"/>
 <text x="356.40" y="183.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">QUIET SIDE: SOLID WALL AGAINST WEST SUN</text>
 <circle cx="662.40" cy="281.43" r="3.88" fill="none" stroke="#6b6f73" stroke-width="0.8" />
 <polyline points="654.75,336.00 657.30,309.48 655.77,287.04 669.03,287.04 667.50,309.48 670.05,336.00" fill="none" stroke="#6b6f73" stroke-width="0.8" />
@@ -1953,19 +1972,19 @@ footer{padding-block:48px 40px;color:var(--muted);font-size:12.5px;border-top:1p
 <text x="724.08" y="361.20" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="9" text-anchor="middle" fill="#5f7458" font-weight="700" letter-spacing="1.2" >VERANDA</text>
 <text x="951.60" y="414.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="9" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="1.2" >HERITAGE LIVE OAK</text>
 <line x1="471.60" y1="329.52" x2="500.40" y2="274.80" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="471.60" cy="329.52" r="1.73" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="471.60" cy="329.52" r="2.6" fill="#23262a"/>
 <text x="500.40" y="274.80" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">CEDAR T&amp;G CEILING CONTINUES OUTSIDE AS SOFFIT</text>
 <line x1="567.60" y1="318.00" x2="606.00" y2="246.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="567.60" cy="318.00" r="1.73" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="567.60" cy="318.00" r="2.6" fill="#23262a"/>
 <text x="606.00" y="246.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">LOW-SLOPE ROOF 1/4":12", R-38 INSULATION</text>
 <line x1="567.60" y1="427.44" x2="625.20" y2="456.24" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="567.60" cy="427.44" r="1.73" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="567.60" cy="427.44" r="2.6" fill="#23262a"/>
 <text x="625.20" y="456.24" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">POLISHED CONCRETE SLAB ON GRADE</text>
 <line x1="184.56" y1="375.60" x2="130.80" y2="284.40" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="184.56" cy="375.60" r="1.73" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="184.56" cy="375.60" r="2.6" fill="#23262a"/>
 <text x="130.80" y="284.40" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="end" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="-4" dy="3">COBOGÓ SCREEN</text>
 <line x1="452.40" y1="323.76" x2="394.80" y2="246.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="452.40" cy="323.76" r="1.73" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="452.40" cy="323.76" r="2.6" fill="#23262a"/>
 <text x="394.80" y="246.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="end" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="-4" dy="3">4' EAVE: SHADES SUMMER SUN, ADMITS WINTER SUN</text>
 <line x1="1016.88" y1="315.60" x2="1038.00" y2="315.60" stroke="#6b6f73" stroke-width="0.6" />
 <path d="M 1026.48,315.60 l -5 -7 l 10 0 z" fill="none" stroke="#23262a" stroke-width="0.8"/>
@@ -2063,7 +2082,7 @@ footer{padding-block:48px 40px;color:var(--muted);font-size:12.5px;border-top:1p
 </div></div></div></section>
 <section class="block"><div class="eyebrow">Finishes</div><h2>Brazilian look, Austin materials</h2><p class="lede">Each sample uses the same material as the renders. Gold italics name the Brazilian reference it stands in for.</p><div class="sw"><div><img src="img/sw_limestone.jpg" alt="Lueders limestone sample" loading="lazy"><h4>Lueders limestone</h4><div class="br">Pedra São Tomé / moledo</div><div class="sp">Sawn-face ashlar, 3 course heights</div></div><div><img src="img/sw_cobogo.jpg" alt="Concrete cobogó sample" loading="lazy"><h4>Concrete cobogó</h4><div class="br">Cobogó, Recife 1929</div><div class="sp">12x12x4 precast, white cement</div></div><div><img src="img/sw_cedar_z.jpg" alt="Western red cedar sample" loading="lazy"><h4>Western red cedar</h4><div class="br">Freijó / ipê</div><div class="sp">Clear T&G soffits, 2x4 slats, natural oil</div></div><div><img src="img/sw_stucco.jpg" alt="Warm-white stucco sample" loading="lazy"><h4>Warm-white stucco</h4><div class="br">White mineral plaster</div><div class="sp">Smooth 3-coat, sand finish</div></div><div><img src="img/sw_floor.jpg" alt="Polished concrete sample" loading="lazy"><h4>Polished concrete</h4><div class="br">Cimento queimado</div><div class="sp">Slab-on-grade, light grind + seal</div></div><div><img src="img/sw_pavers.jpg" alt="Limestone pavers sample" loading="lazy"><h4>Limestone pavers</h4><div class="br">São Tomé paving</div><div class="sp">24x36 thermal-finish, courtyard + veranda</div></div><div><img src="img/sw_oak.jpg" alt="Rift white oak sample" loading="lazy"><h4>Rift white oak</h4><div class="br">Tauari interiors</div><div class="sp">Kitchen cabinets, credenza, desks</div></div><div><img src="img/sw_granite.jpg" alt="Honed black granite sample" loading="lazy"><h4>Honed black granite</h4><div class="br">Brazilian dark stone</div><div class="sp">Island + counters, 1.5" honed</div></div><div><img src="img/sw_tile.jpg" alt="Green glazed tile sample" loading="lazy"><h4>Green glazed tile</h4><div class="br">Azulejo</div><div class="sp">4x4 handmade-look backsplash</div></div><div><img src="img/sw_bronze.jpg" alt="Dark bronze aluminum sample" loading="lazy"><h4>Dark bronze aluminum</h4><div class="br">Slim steel frames</div><div class="sp">Fascia, window frames, posts</div></div><div><img src="img/sw_dg.jpg" alt="Decomposed granite sample" loading="lazy"><h4>Decomposed granite</h4><div class="br">Terra batida</div><div class="sp">Stabilized paths, meadow mulch</div></div><div><img src="img/sw_linen.jpg" alt="Natural linen sample" loading="lazy"><h4>Natural linen</h4><div class="br">Linho</div><div class="sp">Upholstery + outdoor cushions</div></div></div></section>
 <section class="block"><div class="eyebrow">For the builder</div><h2>Quantities and planning budget</h2>
-<div class="cols"><div class="tbl"><table><tr><th>Signature element</th><th style="text-align:right">Qty</th><th>Notes</th></tr><tr><td>Cobogó screen</td><td class='num'>210 blocks</td><td>21 x 10 courses, 210 sf, on cast curb</td></tr><tr><td>Limestone feature wall</td><td class='num'>242 sf</td><td>23.5' long x 11' high, one slot window</td></tr><tr><td>Cedar soffits (outside)</td><td class='num'>774 sf</td><td>Entry canopy, courtyard eaves, veranda</td></tr><tr><td>Cedar ceilings (inside)</td><td class='num'>752 sf</td><td>Great room + gallery, same boards as soffit</td></tr><tr><td>Cedar slat screen</td><td class='num'>101 slats</td><td>2x4 @ 5" o.c., 29.7' run x 10' high</td></tr><tr><td>Sliding glass walls</td><td class='num'>4 units</td><td>58.2 lf total, 9'-0" tall, dark bronze</td></tr><tr><td>Windows</td><td class='num'>6 units</td><td>Casements (egress) + fixed slot / clerestory / kitchen</td></tr><tr><td>Roof plate</td><td class='num'>2,760 sf</td><td>Low-slope TPO, 291 lf of 15" bronze fascia</td></tr><tr><td>Steel posts</td><td class='num'>4 posts</td><td>4" square HSS, dark bronze</td></tr></table></div>
+<div class="cols"><div class="tbl"><table><tr><th>Signature element</th><th style="text-align:right">Qty</th><th>Notes</th></tr><tr><td>Cobogó screen</td><td class='num'>210 blocks</td><td>21 x 10 courses, 210 sf, on cast curb</td></tr><tr><td>Limestone feature wall</td><td class='num'>242 sf</td><td>23.5' long x 11' high, one slot window</td></tr><tr><td>Cedar soffits (outside)</td><td class='num'>774 sf</td><td>Entry canopy, courtyard eaves, veranda</td></tr><tr><td>Cedar ceilings (inside)</td><td class='num'>813 sf</td><td>Great room + gallery, same boards as soffit</td></tr><tr><td>Cedar slat screen</td><td class='num'>101 slats</td><td>2x4 @ 5" o.c., 29.7' run x 10' high</td></tr><tr><td>Sliding glass walls</td><td class='num'>4 units</td><td>58.2 lf total, 9'-0" tall, dark bronze</td></tr><tr><td>Windows</td><td class='num'>7 units</td><td>Casements (egress) + fixed slot / clerestory / kitchen</td></tr><tr><td>Roof plate</td><td class='num'>2,760 sf</td><td>Low-slope TPO, 291 lf of 15" bronze fascia</td></tr><tr><td>Steel posts</td><td class='num'>4 posts</td><td>4" square HSS, dark bronze</td></tr></table></div>
 <div><div class="kv"><div>Construction at $325–$425 / sf</div><div>$526K–$688K</div><div>Site work + utilities</div><div>$20K–$50K</div><div>Design, engineering, permits</div><div>$25K–$50K</div><div>Contingency (~10%)</div><div>$53K–$69K</div><div>Total, excluding land</div><div>$624K–$857K</div></div><div class="note"><b>Planning numbers, not bids</b>Ranges carry over from the earlier feasibility notes. Next step: price these quantities with two Austin builders, then adapt the plan to a real lot.</div></div></div></section>
 <footer>Concept study for discussion, not for construction. Zoning, structure, energy code and site conditions need a licensed local team. Renders are computer visualizations of this design, with scanned CC0 textures from Poly Haven and ambientCG.</footer>
 </div>
@@ -2075,38 +2094,61 @@ footer{padding-block:48px 40px;color:var(--muted);font-size:12.5px;border-top:1p
 const M=0.3048, el=document.getElementById('viewer'), canvas=el.querySelector('canvas');
 const T=p=>new THREE.Vector3(p[0]*M,p[2]*M,-p[1]*M);
 const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const MODEL='casa01.gltf.json', LMAPS=null, SKY_AZ=304.2;
 let renderer;
 try{renderer=new THREE.WebGLRenderer({canvas,antialias:true});}catch(e){document.getElementById('loading').textContent='3D needs WebGL, which this browser has turned off. The renders and plans below still work.';return}
 renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
-renderer.outputEncoding=THREE.sRGBEncoding;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.0;
+renderer.outputEncoding=THREE.sRGBEncoding;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;
 renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-const scene=new THREE.Scene();scene.background=new THREE.Color('#cfdde6');scene.fog=new THREE.Fog(new THREE.Color('#cfdde6'),90,260);
-const camera=new THREE.PerspectiveCamera(50,1,0.1,800);
+const scene=new THREE.Scene();scene.background=new THREE.Color('#bcd3e4');scene.fog=new THREE.Fog(new THREE.Color('#c9d6df'),110,330);
+const camera=new THREE.PerspectiveCamera(50,1,0.1,900);
 const controls=new THREE.OrbitControls(camera,canvas);controls.enableDamping=true;controls.maxPolarAngle=Math.PI*0.495;controls.minDistance=0.5;controls.maxDistance=180;
-const hemi=new THREE.HemisphereLight(0xdfe8ee,0x8c7b62,0.65);scene.add(hemi);
+const hemi=new THREE.HemisphereLight(0xdfe8ee,0x8c7b62,LMAPS?0.0:0.65);scene.add(hemi);
 const sun=new THREE.DirectionalLight(0xfff0d8,2.6);sun.castShadow=true;
 const small=Math.min(window.innerWidth,window.innerHeight)<700;
 sun.shadow.mapSize.set(small?2048:4096,small?2048:4096);
-const C=T([32,62,0]);const sc=sun.shadow.camera;sc.left=-26;sc.right=26;sc.top=26;sc.bottom=-26;sc.near=1;sc.far=150;sun.shadow.bias=-0.0004;sun.shadow.normalBias=0.02;
+const C=T([32,62,0]);const sc=sun.shadow.camera;sc.left=-26;sc.right=26;sc.top=26;sc.bottom=-26;sc.near=1;sc.far=150;sun.shadow.bias=-0.0003;sun.shadow.normalBias=0.025;
 sun.target.position.copy(C);scene.add(sun);scene.add(sun.target);
 const night=[];[[36,33.4,10],[42,46,3],[27,86,10],[30,70,10],[14,72,10],[25.4,45,10],[31,106,2]].forEach(p=>{const l=new THREE.PointLight(0xffb36b,0,15,1.6);l.position.copy(T(p));scene.add(l);night.push(l)});
 const VIEWS={street:[[41,-15.5,5.4],[27,30,7.4]],entry:[[51.5,35,5.9],[31,31.5,5.6]],patio:[[48.6,58.6,6.4],[35,33,6.4]],room:[[21.6,78.9,5.7],[33.5,60,5]],veranda:[[41.8,90.4,5.8],[20.5,83.8,5.4]],aerial:[[96,-38,72],[31,58,0]],plan:[[30.5,55,118],[30.5,56,0]]};
-const roofObjs=[],hit=[];const info={"limestone": ["Lueders limestone", "pedra S\u00e3o Tom\u00e9", "Sawn-face ashlar in three course heights. One street wall only."], "pavers": ["Limestone pavers", "S\u00e3o Tom\u00e9 paving", "24x36 thermal-finish pavers on the p\u00e1tio and veranda."], "cobogo": ["Concrete cobog\u00f3", "the Recife cobog\u00f3 (1929)", "12x12x4 precast breeze block, white cement, 210 blocks."], "cedar_z": ["Western red cedar slats", "freij\u00f3 / brise-soleil", "2x4 slats at 5\" on center on a steel frame."], "cedar_y": ["Cedar T&G ceiling + soffit", "freij\u00f3 ceilings", "Clear 1x6 tongue and groove, natural oil. Runs inside and out."], "cedar_x": ["Teak outdoor furniture", "", "Outdoor dining set."], "fence": ["Horizontal cedar fence", "", "6' privacy fence on side and rear lot lines."], "stucco": ["Warm-white stucco", "white mineral plaster", "Smooth three-coat stucco over 2x6 framing."], "paint": ["Interior walls", "", "Warm-white matte paint on gypsum board."], "floor": ["Polished concrete", "cimento queimado", "The slab is the finished floor: light grind, densifier, seal."], "concrete": ["Cast concrete", "", "Cobog\u00f3 curb, driveway ribbons, entry step."], "bronze": ["Dark bronze aluminum", "slim steel frames", "15\" fascia, window frames, gate frame and posts."], "roof": ["Low-slope TPO roof", "", "1/4\" per foot to scuppers, hidden behind the thin fascia."], "glass": ["Glass", "", "9' sliding glass walls, low-E, dark bronze frames."], "oak": ["Rift white oak", "tauari interiors", "Kitchen cabinets, credenza, desks."], "granite": ["Honed black granite", "Brazilian dark stone", "Island with waterfall ends, counters."], "tile": ["Green glazed tile", "azulejo", "4x4 backsplash behind the range and sink."], "dark_wood": ["Walnut", "freij\u00f3 / jacarand\u00e1 furniture", "Dining and coffee tables."], "dg": ["Decomposed granite", "terra batida", "Stabilized DG paths and meadow mulch."], "mulch": ["Planting bed", "", "Courtyard garden bed: palmetto, fern, muhly."], "lawn_soil": ["Buffalo grass lawn", "", "Low-water native lawn under the oak."], "linen": ["Linen upholstery", "linho", "Sofa, bed and outdoor cushions."], "leaf": ["Live oak", "tropical canopy", "Heritage live oak, kept and protected."], "leaf_dark": ["Live oak", "tropical canopy", "Courtyard and street trees."], "bark": ["Live oak", "", "Quercus virginiana."], "agave": ["Agave", "bromeliads", "Agave americana and A. ovatifolia in the front meadow."], "feather": ["Mexican feather grass", "", "Nassella tenuissima, front meadow drifts."], "grass": ["Muhly + sotol", "", "Lindheimer muhly and Texas sotol."], "palm": ["Dwarf palmetto", "tropical palms", "Sabal minor: native, cold-hardy, tropical-looking."]};
+const roofObjs=[],hit=[],baked=[],lit=[];const info={"limestone": ["Lueders limestone", "pedra S\u00e3o Tom\u00e9", "Sawn-face ashlar in three course heights. One street wall only."], "pavers": ["Limestone pavers", "S\u00e3o Tom\u00e9 paving", "24x36 thermal-finish pavers on the p\u00e1tio and veranda."], "cobogo": ["Concrete cobog\u00f3", "the Recife cobog\u00f3 (1929)", "12x12x4 precast breeze block, white cement, 210 blocks."], "cedar_z": ["Western red cedar slats", "freij\u00f3 / brise-soleil", "2x4 slats at 5\" on center on a steel frame."], "cedar_y": ["Cedar T&G ceiling + soffit", "freij\u00f3 ceilings", "Clear 1x6 tongue and groove, natural oil. Runs inside and out."], "cedar_x": ["Teak outdoor furniture", "", "Outdoor dining set."], "fence": ["Horizontal cedar fence", "", "6' privacy fence on side and rear lot lines."], "stucco": ["Warm-white stucco", "white mineral plaster", "Smooth three-coat stucco over 2x6 framing."], "paint": ["Interior walls", "", "Warm-white matte paint on gypsum board."], "floor": ["Polished concrete", "cimento queimado", "The slab is the finished floor: light grind, densifier, seal."], "concrete": ["Cast concrete", "", "Cobog\u00f3 curb, driveway ribbons, entry step."], "bronze": ["Dark bronze aluminum", "slim steel frames", "15\" fascia, window frames, gate frame and posts."], "roof": ["Low-slope TPO roof", "", "1/4\" per foot to scuppers, hidden behind the thin fascia."], "glass": ["Glass", "", "9' sliding glass walls, low-E, dark bronze frames."], "oak": ["Rift white oak", "tauari interiors", "Kitchen cabinets, credenza, desks."], "granite": ["Honed black granite", "Brazilian dark stone", "Island with waterfall ends, counters."], "tile": ["Green glazed tile", "azulejo", "4x4 backsplash behind the range and sink."], "dark_wood": ["Walnut", "freij\u00f3 / jacarand\u00e1 furniture", "Dining and coffee tables."], "dg": ["Decomposed granite", "terra batida", "Stabilized DG paths and meadow mulch."], "mulch": ["Planting bed", "", "Courtyard garden bed: palmetto, fern, muhly."], "lawn_soil": ["Buffalo grass lawn", "", "Low-water native lawn under the oak."], "linen": ["Linen upholstery", "linho", "Sofa, bed and outdoor cushions."], "leaf": ["Live oak", "tropical canopy", "Heritage live oak, kept and protected."], "leaf_dark": ["Live oak", "tropical canopy", "Courtyard and street trees."], "bark": ["Live oak", "", "Quercus virginiana."], "agave": ["Agave", "bromeliads", "Agave americana and A. ovatifolia in the front meadow."], "feather": ["Mexican feather grass", "", "Nassella tenuissima, front meadow drifts."], "grass": ["Muhly + sotol", "", "Lindheimer muhly and Texas sotol."], "palm": ["Dwarf palmetto", "tropical palms", "Sabal minor: native, cold-hardy, tropical-looking."]};
 const pickEl=document.getElementById('pick'),loadEl=document.getElementById('loading');
+const TL=new THREE.TextureLoader();
+function tex(url,srgb,flip){const t=TL.load(url);if(srgb)t.encoding=THREE.sRGBEncoding;t.flipY=!!flip;t.wrapS=t.wrapT=THREE.RepeatWrapping;t.anisotropy=renderer.capabilities.getMaxAnisotropy();return t}
+// photographed sky on a big dome (rotated so its sun sits where the live sun is)
+let skyMat=null,skyMesh=null;
+if(LMAPS){const st=TL.load('tex/sky_day.jpg',t=>{const pm=new THREE.PMREMGenerator(renderer);scene.environment=pm.fromEquirectangular(t).texture;pm.dispose()});
+  st.encoding=THREE.sRGBEncoding;st.mapping=THREE.EquirectangularReflectionMapping;
+  const dome=TL.load('tex/sky_day.jpg');dome.encoding=THREE.sRGBEncoding;dome.wrapS=THREE.RepeatWrapping;dome.repeat.x=-1;dome.offset.x=0.5;
+  skyMat=new THREE.MeshBasicMaterial({map:dome,side:THREE.BackSide,fog:false,depthWrite:false});
+  skyMesh=new THREE.Mesh(new THREE.SphereGeometry(420,48,24),skyMat);skyMesh.renderOrder=-1;scene.add(skyMesh)}
+const NM={web_limestone:['limestone',0.9],web_pavers:['limestone',0.6],web_stucco:['stucco',0.5],web_cedar_z:['cedar_rot',0.6],web_cedar_y:['cedar_rot',0.5],
+  web_cedar_x:['cedar',0.5],web_fence:['cedar',0.6],web_floor:['concrete',0.25],web_concrete:['concrete',0.6],web_dg:['dg',0.9],web_bark:['bark',1.0],
+  web_lawn_soil:['grass',0.8],web_asphalt:['asphalt',0.6],web_oak:['oak',0.3]};
+const nmCache={};function nmap(k){return nmCache[k]||(nmCache[k]=tex('tex/'+k+'_n.jpg',false,false))}
 function onModel(g){
   const root=g.scene;
   root.traverse(o=>{if(/^(Roof|Cedar_soffits|Cedar soffits)/.test(o.name))o.traverse(c=>roofObjs.push(c));
     if(!o.isMesh)return;o.castShadow=true;o.receiveShadow=true;hit.push(o);
     (Array.isArray(o.material)?o.material:[o.material]).forEach(m=>{const n=m.name||'';
-      if(n==='web_glass'){m.transparent=true;m.opacity=0.22;m.depthWrite=false;m.metalness=0;m.roughness=0.05;o.castShadow=false}
-      if(n==='web_cobogo'){m.alphaTest=0.5;m.transparent=false;m.side=THREE.DoubleSide}
+      if(n==='web_glass'){m.transparent=true;m.opacity=0.2;m.depthWrite=false;m.metalness=0;m.roughness=0.03;m.envMapIntensity=1.6;o.castShadow=false}
+      if(n==='web_cobogo'||n.startsWith('web_leafcard')){m.alphaTest=0.5;m.transparent=false;m.side=THREE.DoubleSide}
+      if(n.startsWith('web_leafcard')){o.receiveShadow=true}
+      if(LMAPS&&NM[n]&&!m.normalMap){m.normalMap=nmap(NM[n][0]);m.normalScale=new THREE.Vector2(NM[n][1],NM[n][1])}
+      if(n==='web_floor'){m.roughness=0.22}
       if(m.map){m.map.anisotropy=renderer.capabilities.getMaxAnisotropy()}});});
+  // baked sky + bounce light: each baked object gets its own material copies with its lightmap
+  if(LMAPS){root.traverse(o=>{const key=LMAPS.maps[o.name];if(!key)return;const lm=tex('lm/'+key,true,false);
+    o.traverse(c=>{if(!c.isMesh||!c.geometry.attributes.uv2)return;
+      const ms=(Array.isArray(c.material)?c.material:[c.material]).map(m=>{const k=m.clone();k.lightMap=lm;k.lightMapIntensity=1;k.envMapIntensity=0.2;baked.push(k);return k});
+      c.material=Array.isArray(c.material)?ms:ms[0];})});
+    root.traverse(o=>{if(!o.isMesh)return;(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>{if(!m.lightMap&&!lit.includes(m))lit.push(m)})})}
   scene.add(root);loadEl.hidden=true;go('street',true);setSun();}
 function failed(){loadEl.textContent='The 3D model did not load. Reload the page to try again.'}
 // The page may not fetch data: or blob: URLs, so the model ships as glTF JSON with a base64
 // buffer. Decode it here, rebuild a binary GLB in memory, and parse that (no extra requests).
 (async()=>{try{
-  const res=await fetch('casa01.gltf.json');if(!res.ok)throw new Error(res.status);
+  const res=await fetch(MODEL);if(!res.ok)throw new Error(res.status);
   const total=+res.headers.get('content-length')||0;const reader=res.body.getReader();const chunks=[];let got=0;
   for(;;){const {done,value}=await reader.read();if(done)break;chunks.push(value);got+=value.length;
     if(total)loadEl.textContent='Loading 3D model '+Math.round(got/total*100)+'%'}
@@ -2122,7 +2164,6 @@ function failed(){loadEl.textContent='The 3D model did not load. Reload the page
   dv.setUint32(0,0x46546C67,true);dv.setUint32(4,2,true);dv.setUint32(8,glb.byteLength,true);
   dv.setUint32(12,jl,true);dv.setUint32(16,0x4E4F534A,true);u8.fill(0x20,20,20+jl);u8.set(js,20);
   dv.setUint32(20+jl,bl,true);dv.setUint32(24+jl,0x004E4942,true);u8.set(bin,28+jl);
-  // textures: load through <img> (blob: images are allowed) instead of fetch()
   const cib=window.createImageBitmap;try{window.createImageBitmap=undefined}catch(e){}
   new THREE.GLTFLoader().parse(glb,'',g=>{try{window.createImageBitmap=cib}catch(e){}onModel(g)},
     e=>{try{window.createImageBitmap=cib}catch(_){}console.error(e);failed()});
@@ -2148,10 +2189,16 @@ function setSun(){const N=+dateEl.value,hrs=+timeEl.value,lat=30.27*Math.PI/180;
   const d=new THREE.Vector3(Math.sin(az)*Math.cos(alt),Math.sin(alt),-Math.cos(az)*Math.cos(alt));
   sun.position.copy(C).addScaledVector(d,80);
   const e=Math.max(0,Math.sin(alt));
-  sun.intensity=2.8*Math.min(1,e*2.2);sun.color.setHSL(0.09,0.85-0.55*Math.min(1,e*2),0.5+0.42*Math.min(1,e*1.6));
-  hemi.intensity=0.14+0.55*Math.min(1,e*3.2);
+  sun.intensity=(LMAPS?3.0:2.8)*Math.min(1,e*2.2);sun.color.setHSL(0.09,0.85-0.55*Math.min(1,e*2),0.5+0.42*Math.min(1,e*1.6));
+  const day=Math.min(1,e*3.2),skyLevel=0.04+0.96*Math.min(1,e*4);
+  hemi.intensity=LMAPS?0.0:0.14+0.55*day;
   const sky=skyDusk.clone().lerp(skyGold,Math.min(1,e*9)).lerp(skyDay,Math.min(1,Math.max(0,(e-0.07)*6)));
-  scene.background.copy(sky);scene.fog.color.copy(sky);
+  scene.background.copy(sky);scene.fog.color.copy(sky).lerp(new THREE.Color('#ffffff'),0.12);
+  if(LMAPS){baked.forEach(m=>{m.lightMapIntensity=1.15*skyLevel;m.envMapIntensity=0.18*skyLevel});
+    lit.forEach(m=>{if(m.name!=='web_glass')m.envMapIntensity=0.9*skyLevel});
+    if(skyMesh){skyMesh.rotation.y=(SKY_AZ-az*180/Math.PI)*Math.PI/180;
+      const dusk=new THREE.Color(1,1,1).lerp(new THREE.Color('#ffbe8a'),Math.max(0,1-e*6)*0.6).multiplyScalar(0.1+0.9*Math.min(1,e*5));
+      skyMat.color.copy(dusk);skyMesh.visible=e>0.005}}
   const nightAmt=Math.max(0,1-e*8);night.forEach(l=>l.intensity=nightAmt*2.4);
   const hh=Math.floor(hrs),mm=Math.round((hrs-hh)*60)%60;
   tlab.textContent=((hh+11)%12+1)+':'+String(mm).padStart(2,'0')+(hrs<12?' am':' pm')+(alt<0?' · dark':'')}
@@ -2161,12 +2208,13 @@ canvas.addEventListener('pointerdown',e=>{down=[e.clientX,e.clientY];tween=null}
 canvas.addEventListener('pointerup',e=>{if(!down||Math.hypot(e.clientX-down[0],e.clientY-down[1])>5)return;
   const r=canvas.getBoundingClientRect();ptr.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);ray.setFromCamera(ptr,camera);
   const hs=ray.intersectObjects(hit.filter(o=>o.visible&&(o.parent?o.parent.visible:true)),false);if(!hs.length)return;
-  let m=hs[0].object.material;if(Array.isArray(m))m=m[0];const f=info[(m.name||'').replace('web_','')];
+  let m=hs[0].object.material;if(Array.isArray(m))m=m[0];const f=info[(m.name||'').replace('web_','').replace(/_[ab]$/,'')];
   if(!f){pickEl.hidden=true;return}
   pickEl.innerHTML='<b>'+f[0]+'</b>'+(f[1]?'<i>Brazilian reference: '+f[1]+'</i><br>':'')+f[2];pickEl.hidden=false});
 pickEl.addEventListener('click',()=>pickEl.hidden=true);
 function loop(now){requestAnimationFrame(loop);if(tween){let k=Math.min(1,(now-tween.s)/tween.d);k=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
   camera.position.lerpVectors(tween.p0,tween.p1,k);controls.target.lerpVectors(tween.t0,tween.t1,k);if(k>=1)tween=null}
+  if(skyMesh)skyMesh.position.copy(camera.position);
   controls.update();renderer.render(scene,camera)}
 requestAnimationFrame(loop);
 })();

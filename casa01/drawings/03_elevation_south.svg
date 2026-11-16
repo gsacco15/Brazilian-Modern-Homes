@@ -992,18 +992,18 @@
 <path d="M 825.60,510.00 l -5 -7 l 10 0 z" fill="none" stroke="#23262a" stroke-width="0.8"/>
 <text x="844.80" y="510.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="3">GRADE  0'-0"</text>
 <line x1="270.00" y1="438.00" x2="270.00" y2="300.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="270.00" cy="438.00" r="2.16" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="270.00" cy="438.00" r="2.6" fill="#23262a"/>
 <text x="270.00" y="300.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">LUEDERS LIMESTONE ASHLAR, 3 COURSE HEIGHTS</text>
 <line x1="630.00" y1="426.00" x2="630.00" y2="300.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="630.00" cy="426.00" r="2.16" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="630.00" cy="426.00" r="2.6" fill="#23262a"/>
 <text x="630.00" y="300.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">12x12x4 CONCRETE COBOGÓ, CIRCLE PATTERN</text>
 <line x1="468.00" y1="414.00" x2="426.00" y2="330.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="468.00" cy="414.00" r="2.16" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="468.00" cy="414.00" r="2.6" fill="#23262a"/>
 <text x="426.00" y="330.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="end" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="-4" dy="3">CEDAR SLAT PIVOT GATE</text>
 <line x1="702.00" y1="370.80" x2="750.00" y2="336.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="702.00" cy="370.80" r="2.16" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="702.00" cy="370.80" r="2.6" fill="#23262a"/>
 <text x="750.00" y="336.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">15" DARK BRONZE FASCIA</text>
 <line x1="216.00" y1="450.00" x2="150.00" y2="330.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="216.00" cy="450.00" r="2.16" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="216.00" cy="450.00" r="2.6" fill="#23262a"/>
 <text x="150.00" y="330.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="end" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="-4" dy="3">SLOT WINDOW</text>
 </svg>

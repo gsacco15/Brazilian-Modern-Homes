@@ -133,7 +133,7 @@ class SVG:
 
     def leader(self, x0, y0, x1, y1, label, size=8.5, anchor="start", px_offset=0):
         self.line(x0, y0, x1, y1, MID, 0.6)
-        self.circle(x0, y0, 0.18, fill=INK, stroke="none")
+        self.add(f'<circle cx="{self.X(x0):.2f}" cy="{self.Y(y0):.2f}" r="2.6" fill="{INK}"/>')
         self.text(x1, y1, label, size, anchor=anchor, extra=f'dx="{4 if anchor == "start" else -4}" dy="3"')
 
     def save(self, name, title=None):
@@ -313,7 +313,7 @@ def furniture_plan(svg):
         elif t == "tub":
             svg.rect(x0, y0, x1, y1, fill="#ffffff", stroke=MID, sw=0.7)
             svg.rect(x0 + 0.3, y0 + 0.3, x1 - 0.3, y1 - 0.3, **st)
-        elif t == "wc":
+        elif t in ("wc", "wc_wall"):
             svg.rect(x - 0.9, y - 0.35, x + 0.9, y + 0.35, **st) if it.get("face") in ("e", "w") else \
                 svg.rect(x - 0.35, y - 0.9, x + 0.35, y + 0.9, **st)
             svg.circle(x, y, 0.65, **st)
@@ -332,6 +332,89 @@ def furniture_plan(svg):
             svg.circle(x, y, 0.7, fill="#ffffff", **st)
 
 
+def bath_symbols(svg, labels=False):
+    """Primary bath fixtures from design.PRIMARY_BATH (plan symbols)."""
+    B = D.PRIMARY_BATH
+    sx0, sy0, sx1, sy1 = B["shower"]
+    svg.rect(sx0, sy0, sx1, sy1, fill="url(#tile)", stroke="none")
+    gx0, gx1, gy = B["glass"]
+    svg.line(gx0, gy, gx1, gy, "#5d8fa0", 2.2)
+    svg.line(gx1, gy - 0.06, gx1, gy + 0.06, INK, 2)
+    bx0, by0, bx1, by1 = B["bench"]
+    svg.rect(bx0, by0, bx1, by1, fill="#efe6d2", stroke=MID, sw=0.7)
+    hx, hy = B["rain_head"]
+    svg.circle(hx, hy, 0.42, fill="none", stroke=MID, sw=0.8)
+    svg.circle(hx, hy, 0.06, fill=MID, stroke="none")
+    svg.circle(51.8, 78.2, 0.12, fill="#ffffff", stroke=MID, sw=0.7)    # linear drain end
+    svg.line(46.0, 76.85, 53.2, 76.85, MID, 0.6, extra='stroke-dasharray="3 2"')
+    vx0, vy0, vx1, vy1 = B["vanity"]
+    svg.rect(vx0, vy0, vx1, vy1, fill="#f4f1ea", stroke=MID, sw=0.8)
+    sx, sy = B["sink"]
+    svg.circle(sx, sy, 0.62, fill="#ffffff", stroke=MID, sw=0.8)
+    my, md = B["mirror"]
+    svg.line(B["room"][0] + 0.05, my - md / 2, B["room"][0] + 0.05, my + md / 2, GOLD, 2.4)
+    svg.rect(52.2, 72.88, 53.5, 73.52, fill="#ffffff", stroke=MID, sw=0.8)
+    svg.circle(52.45, 73.2, 0.3, fill="none", stroke=MID, sw=0.7)
+    px, py = B["plant"]
+    svg.circle(px, py, 0.55, fill="rgba(95,116,88,0.18)", stroke=GREEN, sw=0.8)
+    if labels:
+        svg.text(49.6, 78.3, "WALK-IN SHOWER", 8.5, weight=700, ls=1.2)
+        svg.text(49.6, 78.3, "GREEN ZELLIGE, FLOOR TO CEILING", 6.5, fill=MID, extra='dy="10"')
+        svg.text(46.35, 77.9, "BENCH", 6.5, fill=MID, extra=f'transform="rotate(-90 {svg.X(46.35):.1f} {svg.Y(77.9):.1f})"')
+        svg.text(49.8, 74.6, "LADRILHO HIDRÁULICO", 7.5, weight=700, ls=1.0)
+        svg.text(49.8, 74.6, "8x8 PATTERNED TILE FLOOR", 6.5, fill=MID, extra='dy="10"')
+
+
+def bath_plan():
+    """Enlarged plan of the primary bath (about 1/2" = 1'-0")."""
+    svg = SVG(39.0, 69.0, 61.5, 82.5, scale=40, pad=24)
+    hatch_defs(svg)
+    svg.defs.append('<pattern id="tile" width="9.4" height="9.4" patternUnits="userSpaceOnUse">'
+                    '<rect width="9.4" height="9.4" fill="#e3ece7"/><path d="M0 0 H9.4 M0 0 V9.4" stroke="#a9c2b6" '
+                    'stroke-width="0.6"/></pattern>')
+    B = D.PRIMARY_BATH
+    rx0, ry0, rx1, ry1 = B["room"]
+    svg.rect(rx0, ry0, rx1, ry1, fill="#f7f1e6", stroke="none")
+    bath_symbols(svg, labels=True)
+    for w in D.EXT_WALLS:
+        rects, spans, rect, (ux, uy, nx, ny) = wall_rects(w, D.EXT_T)
+        for r in rects:
+            svg.rect(*r, fill=POCHE, stroke=POCHE, sw=0.3)
+        for o in spans:
+            x0, y0, x1, y1 = rect(o["off"], o["off"] + o["w"], 0, D.EXT_T)
+            svg.rect(x0, y0, x1, y1, fill="#dfe9ec", stroke=INK, sw=0.8)
+    for p in D.PARTITIONS:
+        (ax, ay), (bx, by) = p["a"], p["b"]
+        L = math.hypot(bx - ax, by - ay)
+        ux, uy = (bx - ax) / L, (by - ay) / L
+        nx, ny = -uy, ux
+        t = D.INT_T / 2
+        s = 0.0
+        for o in sorted(p["openings"], key=lambda o: o["off"]) + [None]:
+            e = o["off"] if o else L
+            if e - s > 1e-6:
+                xs = [ax + ux * s + nx * t, ax + ux * e - nx * t]
+                ys = [ay + uy * s + ny * t, ay + uy * e - ny * t]
+                svg.rect(min(xs), min(ys), max(xs), max(ys), fill="#575b5f", stroke="#575b5f", sw=0.3)
+            if o:
+                if o.get("name") == "Primary bath":
+                    hx, hy = ax + ux * o["off"], ay + uy * o["off"]
+                    svg.line(hx, hy, hx, hy + o["w"], INK, 1.4)
+                    svg.arc(hx, hy, o["w"], math.pi / 2, 0, LIGHT, 0.8)
+                s = o["off"] + o["w"]
+    svg.dim(rx0, ry1, rx1, ry1, 1.6, size=11)
+    svg.dim(rx1, ry0, rx1, ry1, 1.8, horizontal=False, size=11)
+    svg.dim(rx1, B["shower"][1], rx1, ry1, 0.9, horizontal=False, size=10)
+    svg.dim(rx0, ry0, rx0, B["vanity"][3], -1.2, horizontal=False, size=10)
+    svg.leader(54.0, 78.05, 55.6, 80.3, "GARDEN WINDOW, FROSTED BELOW 5'", size=9)
+    svg.leader(49.75, 79.75, 49.0, 81.3, "CLERESTORY ABOVE", size=9, anchor="end")
+    svg.leader(45.75, 74.2, 43.2, 71.0, "ROUND BRASS MIRROR", size=9, anchor="end")
+    svg.leader(49.0, 76.5, 51.0, 70.2, "FIXED GLASS PANEL", size=9)
+    svg.leader(53.0, 73.2, 55.4, 71.2, "WALL-HUNG WC", size=9)
+    north_arrow(svg, svg.w - 40, 46, 20)
+    return svg.save("09_bath_plan.svg")
+
+
 def floor_plan():
     svg = SVG(-7, 20, 68, 97, scale=10.0, pad=30)
     hatch_defs(svg)
@@ -348,6 +431,10 @@ def floor_plan():
     # interior floor tone
     svg.poly(D.FOOTPRINT, fill="#fbfaf7", stroke="none")
     furniture_plan(svg)
+    svg.defs.append('<pattern id="tile" width="5" height="5" patternUnits="userSpaceOnUse">'
+                    '<rect width="5" height="5" fill="#e3ece7"/><path d="M0 0 H5 M0 0 V5" stroke="#a9c2b6" '
+                    'stroke-width="0.5"/></pattern>')
+    bath_symbols(svg)
     # roof outline overhead
     svg.poly(D.ROOF, fill="none", stroke=MID, sw=0.8, extra='stroke-dasharray="7 4"')
     # courtyard tree canopy
@@ -898,7 +985,7 @@ def cobogo_detail():
 def main():
     hatch = None
     outs = [site_plan(), floor_plan(), south_elevation(), north_elevation(), east_elevation(),
-            west_elevation(), section_aa(), cobogo_detail()]
+            west_elevation(), section_aa(), cobogo_detail(), bath_plan()]
     for o in outs:
         print(o)
 

@@ -5,6 +5,7 @@ renders, the SVG drawings and design.py.
     node casa01/lookbook/make_pdf.js
 """
 import html
+import json
 import math
 import os
 import re
@@ -22,7 +23,9 @@ DRAW = os.path.join(CASA, "drawings")
 IMG = os.path.join(HERE, "img")
 WEB = os.path.join(HERE, "web")
 
-VIEWS = ["street", "street_dusk", "entry", "courtyard", "interior", "kitchen", "gallery", "veranda", "rear", "aerial"]
+VIEWS = ["street", "street_dusk", "entry", "courtyard", "interior", "kitchen", "gallery", "veranda", "rear", "aerial",
+         "bath"]
+ORTHO_VIEWS = ["plan_render", "site_render", "elev_s", "elev_n", "elev_e", "elev_w"]
 SWATCHES = [
     ("limestone", "Lueders limestone", "Pedra São Tomé / moledo", "Sawn-face ashlar, 3 course heights"),
     ("cobogo", "Concrete cobogó", "Cobogó, Recife 1929", "12x12x4 precast, white cement"),
@@ -53,7 +56,7 @@ def perim(poly):
 
 
 def svg_inline(name):
-    s = open(os.path.join(DRAW, name)).read()
+    s = open(os.path.join(DRAW, name)).read().replace("__IMG__", "img/ortho")
     s = re.sub(r'(<svg[^>]*?) width="\d+" height="\d+"', r'\1', s, count=1)
     return s.replace("<svg ", '<svg class="dwg" preserveAspectRatio="xMidYMid meet" ', 1)
 
@@ -69,6 +72,17 @@ def prep_images():
         if not os.path.exists(dst) or os.path.getmtime(dst) < os.path.getmtime(src):
             Image.open(src).convert("RGB").save(dst, quality=86, optimize=True, progressive=True)
         have[v] = f"img/{v}.jpg"
+    os.makedirs(os.path.join(IMG, "ortho"), exist_ok=True)
+    for v in ORTHO_VIEWS:
+        src = os.path.join(RENDERS, "ortho", f"{v}.png")
+        if not os.path.exists(src):
+            continue
+        dst = os.path.join(IMG, "ortho", f"{v}.jpg")
+        if not os.path.exists(dst) or os.path.getmtime(dst) < os.path.getmtime(src):
+            im = Image.open(src).convert("RGBA")
+            bg = Image.new("RGBA", im.size, (255, 255, 255, 255))
+            Image.alpha_composite(bg, im).convert("RGB").save(dst, quality=85, optimize=True, progressive=True)
+        have["ortho_" + v] = f"img/ortho/{v}.jpg"
     for key, *_ in SWATCHES:
         src = os.path.join(RENDERS, "swatches", f"{key}.png")
         if os.path.exists(src):
@@ -235,6 +249,30 @@ td.num{text-align:right;font-variant-numeric:tabular-nums}
 .kv{display:grid;grid-template-columns:1fr auto;font-size:12px;border-top:1px solid var(--line)}
 .kv div{padding:6px 0;border-bottom:1px solid var(--line)}
 .kv div:nth-child(2n){text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
+.sheetpage{background:#fff}
+.sheet{position:absolute;left:22px;right:22px;top:20px;bottom:22px;border:1.6px solid var(--ink);display:grid;grid-template-columns:minmax(0,1fr) 196px}
+.draw{position:relative;padding:14px 16px;min-width:0;min-height:0;display:flex;gap:16px}
+.frame{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;min-height:0}
+.frame .dwgwrap{border:0;flex:1}
+.dtitle{display:flex;align-items:center;gap:10px;border-top:1.6px solid var(--ink);padding-top:6px;font:700 11px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase}
+.dtitle .no{width:24px;height:24px;border:1.5px solid var(--ink);border-radius:50%;display:grid;place-items:center;font:900 11px/1 var(--sans)}
+.dtitle .sc{margin-left:auto;font-weight:400;color:var(--muted);letter-spacing:.06em}
+.tb{border-left:1.6px solid var(--ink);display:flex;flex-direction:column;font-size:11px}
+.tb>div{padding:10px 12px;border-bottom:1px solid var(--ink)}
+.tb-brand{font:900 12.5px/1.2 var(--sans);letter-spacing:.16em;background:var(--ink);color:#f3efe4}
+.tb-brand small{display:block;font:700 9px/1.4 var(--sans);letter-spacing:.14em;color:#cdbb92;margin-top:4px}
+.tb-proj{font-family:var(--serif);font-size:21px;line-height:1.05}
+.tb-proj span{display:block;font:700 9.5px/1.6 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.tb-k{font:700 8.5px/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.tb-v{font:700 11.5px/1.3 var(--sans);margin:2px 0 8px}
+.tb-side{flex:1;overflow:hidden}
+.tb-num{font:900 34px/1 var(--sans);letter-spacing:.02em}
+.tb-num small{display:block;font:700 8.5px/1.4 var(--sans);letter-spacing:.14em;color:var(--muted)}
+.tb-note{font:700 8.5px/1.4 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:#a0472f;border-bottom:0!important}
+.sched{font-size:9.5px}
+.sched th{font-size:8px;padding:5px 5px}
+.sched td{padding:4px 5px}
+.code{display:inline-grid;place-items:center;width:20px;height:20px;border:1.3px solid var(--ink);border-radius:50%;font:900 8.5px/1 var(--sans)}
 """
 
 
@@ -244,6 +282,22 @@ def page(n, eyebrow, title, sub, inner, footer=True):
     return (f'<section class="page"><div class="bar"></div><div class="head"><div class="eyebrow">{eyebrow}</div>'
             f'<h2>{title}</h2><div class="sub">{sub}</div><div class="rule"></div></div>'
             f'<div class="body">{inner}</div>{f}</section>')
+
+
+def sheet(n, code, title, scale, inner, side=""):
+    return (f'<section class="page sheetpage"><div class="sheet"><div class="draw">{inner}</div>'
+            f'<aside class="tb"><div class="tb-brand">BRAZILIAN MODERN HOMES<small>RESIDENTIAL DESIGN · AUSTIN</small></div>'
+            f'<div class="tb-proj">Casa 01<br>Casa Pátio<span>Central Austin, Texas</span></div>'
+            f'<div class="tb-side">{side}</div>'
+            f'<div><div class="tb-k">Sheet title</div><div class="tb-v">{title}</div><div class="tb-k">Scale</div>'
+            f'<div class="tb-v">{scale}</div><div class="tb-k">Date / Phase</div><div class="tb-v">Nov 2026 · Concept</div></div>'
+            f'<div class="tb-num"><small>SHEET</small>{code}</div><div class="tb-note">Concept design. Not for construction.</div>'
+            f'</aside></div><div class="foot" style="bottom:6px"><span></span><span>{n:02d}</span></div></section>')
+
+
+def frame(svgname, no, title, scale, style=""):
+    return (f'<div class="frame" style="{style}"><div class="dwgwrap">{svg_inline(svgname)}</div>'
+            f'<div class="dtitle"><span class="no">{no}</span>{title}<span class="sc">{scale}</span></div></div>')
 
 
 def fig(src, cap_b, cap):
@@ -299,47 +353,71 @@ def build_print(img):
                   "276 sf covered, north-facing, with a limestone grill counter and two ceiling fans.",
                   f'<div class="two">{fig(img.get("veranda", ""), "Veranda", "The great room ceiling continues outside as the soffit. Teak table for eight, churrasqueira at the far end.")}'
                   f'{fig(img.get("rear", ""), "Rear yard", "The house sits forward on the lot to protect the heritage live oak. Buffalo grass and native beds behind.")}</div>'))
-    site = [("Lot", "65' x 125' (8,125 sf)"), ("Zoning (assumed)", "SF-3, central Austin"),
-            ("Setbacks", "25' front / 5' side / 10' rear"), ("Conditioned", f"{A['conditioned']:,.0f} sf"),
-            ("Roof incl. eaves + veranda", f"{A['roof']:,.0f} sf"),
-            ("Building cover (approx.)", f"{(A['roof']) / A['lot'] * 100:.0f}% of lot (40% max)"),
-            ("Parking", "Ribbon pad, east side"), ("Trees", "Heritage oak kept; house pulled forward")]
-    kv = "".join(f"<div>{a}</div><div>{b}</div>" for a, b in site)
-    P.append(page(9, "08 / Site", "Site plan",
-                  "Typical central-Austin infill lot. Street to the south, pátio and veranda to the private sides.",
-                  f'''<div style="display:grid;grid-template-columns:1fr 380px;gap:26px;height:100%;grid-template-rows:minmax(0,1fr)"><div class="dwgwrap">{svg_inline("01_site_plan.svg")}</div>
-<div class="side"><div class="kv">{kv}</div><div class="note"><b>Check before design development</b>Zoning, impervious cover, tree ordinance and utility locations must be confirmed for the actual lot. Numbers here assume a generic SF-3 lot.</div></div></div>'''))
-    rr = "".join(f"<tr><td>{a}</td><td>{b}</td><td class='num'>{c}</td></tr>" for a, b, c in room_rows())
-    P.append(page(10, "09 / Plan", "Floor plan",
-                  "Bedroom wing to the west, living bar to the north, pátio in the corner they make.",
-                  f'''<div style="display:grid;grid-template-columns:1fr 330px;gap:22px;height:100%;grid-template-rows:minmax(0,1fr)"><div class="dwgwrap" style="padding:4px">{svg_inline("02_floor_plan.svg")}</div>
-<div class="side"><table><tr><th>Room</th><th>Clear size</th><th style="text-align:right">sf</th></tr>{rr}</table>
-<div class="kv"><div>Conditioned (gross)</div><div>{A["conditioned"]:,.0f} sf</div><div>Veranda (covered)</div><div>{A["veranda"]:.0f} sf</div><div>Pátio + covered entry</div><div>{A["courtyard"]:.0f} sf</div></div></div></div>'''))
-    P.append(page(11, "10 / Elevations", "Street and garden elevations",
-                  "South (street) above, north (veranda) below. One roof height everywhere: 12'-3\" to the top of the fascia.",
-                  f'''<div style="display:grid;grid-template-rows:minmax(0,1fr) minmax(0,1fr);gap:14px;height:100%"><div class="dwgwrap">{svg_inline("03_elevation_south.svg")}</div><div class="dwgwrap">{svg_inline("04_elevation_north.svg")}</div></div>'''))
-    P.append(page(12, "10 / Elevations", "Side elevations",
-                  "East (cedar screen to the driveway) above, west (quiet side, solid against afternoon sun) below.",
-                  f'''<div style="display:grid;grid-template-rows:minmax(0,1fr) minmax(0,1fr);gap:14px;height:100%"><div class="dwgwrap">{svg_inline("05_elevation_east.svg")}</div><div class="dwgwrap">{svg_inline("06_elevation_west.svg")}</div></div>'''))
+    n = 9
+    if img.get("bath"):
+        bf = "".join(f"<tr><td>{a}</td><td><i>{b}</i></td><td>{c}</td></tr>" for a, b, c in D.BATH_FINISHES)
+        P.append(page(n, "08 / Primary bath", "A spa-style wet room",
+                      "7'-10\" square: walk-in shower along the window wall, floating oak vanity, patterned cement-look tile.",
+                      f'''<div style="display:grid;grid-template-columns:1fr 400px;gap:24px;height:100%;grid-template-rows:minmax(0,1fr)">
+<figure style="margin:0;display:flex;flex-direction:column;gap:8px;min-height:0"><div style="flex:1;min-height:0;overflow:hidden"><img class="fill" src="{img["bath"]}" alt="Primary bath render"></div>
+<figcaption><b>Primary bath</b>Green zellige to the ceiling, a fixed glass panel, brass rain head, limestone bench, and a garden window into a fenced side yard.</figcaption></figure>
+<div class="side"><div class="dwgwrap" style="height:300px">{svg_inline("09_bath_plan.svg")}</div>
+<table class="sched"><tr><th>Element</th><th>Brazilian ref.</th><th>Austin spec</th></tr>{bf}</table></div></div>'''))
+        n += 1
+    if img.get("ortho_site_render"):
+        rows = json.load(open(os.path.join(DRAW, "plant_schedule.json")))
+        tr = "".join(f"<tr><td><span class='code'>{c}</span></td><td><b>{cm}</b><br><i>{bt}</i></td><td>{sz}</td>"
+                     f"<td class='num'>{q if q else 'area'}</td><td>{w}</td></tr>" for c, cm, bt, sz, w, nt, q in rows)
+        P.append(sheet(n, "L-100", "Landscape plan", "1\" = 20'-0\" (approx.)",
+                       frame("21_landscape_plan.svg", 1, "Landscape plan", "Graphic scale") +
+                       f'''<div style="width:470px;display:flex;flex-direction:column;gap:10px"><div class="eyebrow">Plant schedule</div>
+<table class="sched"><tr><th>Key</th><th>Plant</th><th>Size</th><th style="text-align:right">Qty</th><th>Water</th></tr>{tr}</table>
+<div class="note"><b>Planting intent</b>Xeriscape front meadow on decomposed granite, a shady tropical-looking pátio of native palmetto and fern, buffalo-grass lawn under the heritage oak. Drip irrigation on a smart controller; check plant choices against Austin's Grow Green guide.</div></div>''',
+                       side='<div class="tb-k">Legend</div><div class="tb-v">Codes match the schedule. Lot line dashed white, setbacks dashed gold.</div>'))
+        n += 1
+    if img.get("ortho_plan_render"):
+        rr = "".join(f"<tr><td>{a}</td><td>{b}</td><td class='num'>{c}</td></tr>" for a, b, c in room_rows())
+        P.append(sheet(n, "A-100", "Rendered floor plan", "1/8\" = 1'-0\" (approx.)",
+                       frame("20_plan_rendered.svg", 1, "Floor plan, rendered", "Cut at 5'-6\" above floor") +
+                       f'''<div style="width:380px;display:flex;flex-direction:column;gap:10px"><div class="eyebrow">Room schedule</div>
+<table class="sched"><tr><th>Room</th><th>Clear size</th><th style="text-align:right">sf</th></tr>{rr}</table>
+<div class="kv"><div>Conditioned (gross)</div><div>{A["conditioned"]:,.0f} sf</div><div>Veranda (covered)</div><div>{A["veranda"]:.0f} sf</div><div>Pátio + covered entry</div><div>{A["courtyard"]:.0f} sf</div></div></div>'''))
+        n += 1
+    P.append(sheet(n, "A-101", "Floor plan, dimensioned", "1/8\" = 1'-0\" (approx.)",
+                   frame("02_floor_plan.svg", 1, "Floor plan", "Graphic scale") +
+                   frame("01_site_plan.svg", 2, "Site plan", "1\" = 30'-0\"", style="flex:0 0 300px")))
+    n += 1
+    if img.get("ortho_elev_s"):
+        P.append(sheet(n, "A-200", "Elevations, rendered", "1/8\" = 1'-0\" (approx.)",
+                       '<div style="flex:1;display:grid;grid-template-rows:minmax(0,1fr) minmax(0,1fr);gap:10px;min-width:0">' +
+                       frame("22_elev_s.svg", 1, "South elevation (street)", "Rendered") +
+                       frame("22_elev_n.svg", 2, "North elevation (veranda)", "Rendered") + "</div>"))
+        n += 1
+        P.append(sheet(n, "A-201", "Elevations, rendered", "1/8\" = 1'-0\" (approx.)",
+                       '<div style="flex:1;display:grid;grid-template-rows:minmax(0,1fr) minmax(0,1fr);gap:10px;min-width:0">' +
+                       frame("22_elev_e.svg", 3, "East elevation", "Rendered") +
+                       frame("22_elev_w.svg", 4, "West elevation", "Rendered") + "</div>"))
+        n += 1
     cl = "".join(f'<div class="move"><div class="k">{i + 1}</div><div><h3>{t}</h3><p>{p}</p></div></div>'
                  for i, (t, p) in enumerate(CLIMATE))
-    P.append(page(13, "11 / Section + climate", "Section A-A: built for Austin sun",
-                  "Cut north-south through the entry, pátio, great room and veranda, looking west.",
-                  f'''<div style="display:grid;grid-template-columns:1fr 330px;gap:22px;height:100%;grid-template-rows:minmax(0,1fr)"><div class="dwgwrap">{svg_inline("07_section_aa.svg")}</div><div class="moves">{cl}</div></div>'''))
-    P.append(page(14, "12 / Signature detail", "The cobogó block",
-                  "One custom-looking block, made from standard precast. The circles complete across the joints.",
-                  f'''<div style="display:grid;grid-template-columns:1fr 360px;gap:24px;height:100%;grid-template-rows:minmax(0,1fr)"><div class="dwgwrap">{svg_inline("08_cobogo_detail.svg")}</div>
-<div class="side"><figure style="margin:0;display:flex;flex-direction:column;gap:8px;height:300px"><div style="flex:1;overflow:hidden"><img class="fill" src="{img.get("entry", "")}" alt="Cobogó in light" style="object-position:12% 50%"></div><figcaption><b>In light</b>Morning and winter sun cast the pattern onto the pavers.</figcaption></figure>
-<div class="note"><b>Sourcing</b>US-made breeze blocks come in circle patterns close to this one. A precaster can also cast a custom mold for 210 blocks. Get both prices.</div></div></div>'''))
+    P.append(sheet(n, "A-300", "Building section", "1/8\" = 1'-0\" (approx.)",
+                   frame("07_section_aa.svg", 1, "Section A-A with Austin solstice sun", "Looking west") +
+                   f'<div class="moves" style="width:300px">{cl}</div>'))
+    n += 1
+    P.append(sheet(n, "A-500", "Signature detail", "3\" = 1'-0\"",
+                   frame("08_cobogo_detail.svg", 1, "Cobogó breeze block", "Block, section, tiled field") +
+                   f'''<div class="side" style="width:300px"><figure style="margin:0;display:flex;flex-direction:column;gap:8px;height:300px"><div style="flex:1;overflow:hidden"><img class="fill" src="{img.get("entry", "")}" alt="Cobogó in light" style="object-position:12% 50%"></div><figcaption><b>In light</b>Morning and winter sun cast the pattern onto the pavers.</figcaption></figure>
+<div class="note"><b>Sourcing</b>US-made breeze blocks come in circle patterns close to this one. A precaster can also cast a custom mold for 210 blocks. Get both prices.</div></div>'''))
+    n += 1
     sw = "".join(f'''<div class="t"><img src="{img.get("sw_" + k, "")}" alt="{n}"><h4>{n}</h4><div class="br">{br}</div><div class="sp">{sp}</div></div>'''
                  for k, n, br, sp in SWATCHES)
-    P.append(page(15, "13 / Finishes", "Finish board",
+    P.append(page(n, "13 / Finishes", "Finish board",
                   "Each tile is rendered with the same material used in the renders. Gold italics: the Brazilian reference it replaces.",
                   f'<div class="sw">{sw}</div>'))
     q = "".join(f"<tr><td>{a}</td><td class='num'>{b}</td><td>{c}</td></tr>" for a, b, c in quantities())
     conv = "".join(f"<li>{c}</li>" for c in CONVENTIONAL)
     lo, hi = 325 * A["conditioned"], 425 * A["conditioned"]
-    P.append(page(16, "14 / For the builder", "Quantities and planning budget",
+    P.append(page(n + 1, "14 / For the builder", "Quantities and planning budget",
                   "Counts come straight from the 3D model, so a builder can price the signature elements early.",
                   f'''<div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;height:100%">
 <div><table><tr><th>Signature element</th><th style="text-align:right">Qty</th><th>Notes</th></tr>{q}</table></div>

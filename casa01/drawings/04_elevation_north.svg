@@ -37,18 +37,18 @@
 <path d="M 825.60,378.00 l -5 -7 l 10 0 z" fill="none" stroke="#23262a" stroke-width="0.8"/>
 <text x="844.80" y="378.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="3">F.F.  +1'-0"</text>
 <line x1="444.00" y1="330.00" x2="444.00" y2="168.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="444.00" cy="330.00" r="2.16" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="444.00" cy="330.00" r="2.6" fill="#23262a"/>
 <text x="444.00" y="168.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="end" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="-4" dy="3">9' SLIDING GLASS WALL TO VERANDA</text>
 <line x1="666.00" y1="306.00" x2="666.00" y2="204.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="666.00" cy="306.00" r="2.16" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="666.00" cy="306.00" r="2.6" fill="#23262a"/>
 <text x="666.00" y="204.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">KITCHEN WINDOW</text>
 <line x1="224.40" y1="288.00" x2="224.40" y2="204.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="224.40" cy="288.00" r="2.16" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="224.40" cy="288.00" r="2.6" fill="#23262a"/>
 <text x="224.40" y="204.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">BATH CLERESTORY</text>
 <line x1="584.40" y1="354.00" x2="584.40" y2="132.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="584.40" cy="354.00" r="2.16" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="584.40" cy="354.00" r="2.6" fill="#23262a"/>
 <text x="584.40" y="132.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">LIMESTONE GRILL COUNTER (CHURRASQUEIRA)</text>
 <line x1="726.00" y1="354.00" x2="768.00" y2="402.00" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="726.00" cy="354.00" r="2.16" fill="#23262a" stroke="none" stroke-width="1.0" />
+<circle cx="726.00" cy="354.00" r="2.6" fill="#23262a"/>
 <text x="768.00" y="402.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">SMOOTH WARM-WHITE STUCCO</text>
 </svg>

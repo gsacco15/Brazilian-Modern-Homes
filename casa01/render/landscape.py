@@ -31,6 +31,22 @@ def proto_collection(name, objs, parent):
     return c
 
 
+PLANT_LOG = {}
+
+
+def _sc(name, pts, collection, coll, **kw):
+    """P.scatter + record positions (feet) for the landscape plan's plant schedule."""
+    PLANT_LOG[name] = [(round(p[0] / M, 2), round(p[1] / M, 2)) for p in pts]
+    return P.scatter(name, pts, collection, coll, **kw)
+
+
+def write_plant_log(path):
+    import json
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    trees = [dict(x=t["x"], y=t["y"], spread=t["spread"], note=t.get("note", "")) for t in D.TREES]
+    json.dump(dict(plants=PLANT_LOG, trees=trees), open(path, "w"))
+
+
 def point_in_poly(x, y, poly):
     inside = False
     n = len(poly)
@@ -90,6 +106,8 @@ def build_site(L, coll, protos):
     _neighbors(L, coll)
     _trees(L, coll)
     _planting(L, coll, protos, rng)
+    write_plant_log(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "renders", "ortho",
+                                 "planting.json"))
 
 
 def _fences(L, coll):
@@ -193,22 +211,22 @@ def _planting(L, coll, protos, rng):
         pts_fe += sample_poly(poly, 300, rng, path_avoid + [(-1, -1, 9, 18)], 1.55, used)
     pts_mu = sample_poly([(33, 22), (54, 22), (54, 27), (33, 27)], 26, rng, (), 1.6) + \
         sample_poly([(0.5, 22), (27.5, 22), (27.5, 27), (0.5, 27)], 30, rng, (), 1.6)
-    P.scatter("Front agave", to_m(pts_ag), agv, coll, scale=(0.9, 1.4))
-    P.scatter("Front sotol", to_m(pts_so), sot, coll, scale=(0.9, 1.3))
-    P.scatter("Front feather grass", to_m(pts_fe), feather, coll, scale=(0.6, 1.1))
-    P.scatter("Front muhly", to_m(pts_mu), muhly, coll, scale=(0.8, 1.2))
+    _sc("Front agave", to_m(pts_ag), agv, coll, scale=(0.9, 1.4))
+    _sc("Front sotol", to_m(pts_so), sot, coll, scale=(0.9, 1.3))
+    _sc("Front feather grass", to_m(pts_fe), feather, coll, scale=(0.6, 1.1))
+    _sc("Front muhly", to_m(pts_mu), muhly, coll, scale=(0.8, 1.2))
     if "lawn" in protos:
         greens = []
         for poly in (fm, fe):
             greens += sample_poly(poly, 260, rng, path_avoid, 0.0)
-        P.scatter("Front green tufts", to_m(greens, -0.02), protos["lawn"], coll, scale=(1.2, 2.2))
+        _sc("Front green tufts", to_m(greens, -0.02), protos["lawn"], coll, scale=(1.2, 2.2))
     if "boulder" in protos:
-        P.scatter("Front boulders", to_m([(20.5, 14.0), (36.5, 9.0), (38.0, 11.5), (11.0, 22.0)], -0.12),
+        _sc("Front boulders", to_m([(20.5, 14.0), (36.5, 9.0), (38.0, 11.5), (11.0, 22.0)], -0.12),
                   protos["boulder"], coll, scale=(0.45, 0.8))
     if "shrub" in protos:
         sh = [(1.5 + k * 2.6, 0.9 + rng.uniform(-0.3, 0.3)) for k in range(0)] + \
              [(0.8, y) for y in (4, 8, 12, 16, 20, 24)] + [(64.0, y) for y in (30, 34)]
-        P.scatter("Front shrubs", to_m(sh), protos["shrub"], coll, scale=(1.4, 2.0))
+        _sc("Front shrubs", to_m(sh), protos["shrub"], coll, scale=(1.4, 2.0))
 
     # courtyard: dwarf palmetto, ferns in the shade, muhly along the cobogó, agave accents
     zc = (D.HARDSCAPE - 0.08) * M
@@ -218,22 +236,28 @@ def _planting(L, coll, protos, rng):
     pts_fn = sample_poly([(31.6, 38), (36.5, 38), (36.5, 51.4), (31.6, 51.4)], 22, rng, (), 1.5, pts_pa)
     pts_mu2 = sample_poly([(32, 36.6), (53.4, 36.6), (53.4, 39.0), (32, 39.0)], 16, rng, (), 1.5)
     pts_ag2 = [(50.5, 49.0), (47.8, 41.0)]
-    P.scatter("Courtyard palmetto", to_m(pts_pa, zc), palm, coll, scale=(1.1, 1.6))
+    _sc("Courtyard palmetto", to_m(pts_pa, zc), palm, coll, scale=(1.1, 1.6))
     if "fern" in protos:
-        P.scatter("Courtyard ferns", to_m(pts_fn, zc), protos["fern"], coll, scale=(0.9, 1.4))
-    P.scatter("Courtyard muhly", to_m(pts_mu2, zc), muhly, coll, scale=(0.8, 1.1))
-    P.scatter("Courtyard agave", to_m(pts_ag2, zc), agv, coll, scale=(1.0, 1.2))
+        _sc("Courtyard ferns", to_m(pts_fn, zc), protos["fern"], coll, scale=(0.9, 1.4))
+    _sc("Courtyard muhly", to_m(pts_mu2, zc), muhly, coll, scale=(0.8, 1.1))
+    _sc("Courtyard agave", to_m(pts_ag2, zc), agv, coll, scale=(1.0, 1.2))
 
+    # private garden outside the shower window (east side yard)
+    sg = sample_poly([(55.0, 73.5), (60.5, 73.5), (60.5, 83.0), (55.0, 83.0)], 6, rng, (), 2.2)
+    _sc("Shower garden palmetto", to_m(sg), palm, coll, scale=(1.2, 1.7))
+    if "fern" in protos:
+        _sc("Shower garden ferns", to_m(sample_poly([(54.6, 74), (57.5, 74), (57.5, 82), (54.6, 82)], 8, rng, (), 1.2)),
+                  protos["fern"], coll, scale=(1.0, 1.5))
     # rear: buffalo grass lawn clumps + native beds along the fence
     if "lawn" in protos:
         lawn_pts = sample_poly([(7, 94.2), (53, 94.2), (53, 124.2), (7, 124.2)], 5200, rng,
                                [(29.0, 108.0, 33.0, 112.0)], 0.0)
-        P.scatter("Rear lawn", to_m(lawn_pts, -0.02), protos["lawn"], coll, scale=(1.1, 1.9))
+        _sc("Rear lawn", to_m(lawn_pts, -0.02), protos["lawn"], coll, scale=(1.1, 1.9))
         park = sample_poly([(-30, -10.8), (95, -10.8), (95, -5.2), (-30, -5.2)], 2400, rng, [(55, -11, 64, -5)], 0.0)
-        P.scatter("Parkway lawn", to_m(park, -0.02), protos["lawn"], coll, scale=(1.1, 1.9))
+        _sc("Parkway lawn", to_m(park, -0.02), protos["lawn"], coll, scale=(1.1, 1.9))
     bed = sample_poly([(1, 94), (6, 94), (6, 124), (1, 124)], 30, rng, (), 1.4) + \
         sample_poly([(54.5, 62), (64, 62), (64, 124), (54.5, 124)], 70, rng, (), 1.4)
-    P.scatter("Rear muhly", to_m(bed), muhly, coll, scale=(0.9, 1.3))
+    _sc("Rear muhly", to_m(bed), muhly, coll, scale=(0.9, 1.3))
     if "shrub" in protos:
         sb = sample_poly([(1, 32), (5.5, 32), (5.5, 92), (1, 92)], 12, rng, (), 4.0)
-        P.scatter("Side shrubs", to_m(sb), protos["shrub"], coll, scale=(1.3, 1.9))
+        _sc("Side shrubs", to_m(sb), protos["shrub"], coll, scale=(1.3, 1.9))
