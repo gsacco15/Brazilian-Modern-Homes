@@ -3,3 +3,5 @@ __pycache__/
 *.blend1
 casa01/lookbook/preview.html
 casa01/lookbook/img/ortho_prev/
+# raw 4096px 360 renders (~13 MB each); the page ships JPGs in casa01/lookbook/web/pano/
+casa01/renders/pano/*.png
