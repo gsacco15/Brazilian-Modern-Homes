@@ -46,7 +46,10 @@ ASSETS = os.path.join(HERE, "assets")
 
 BAKE_ARCH = {"Walls", "Slab", "Window frames", "Limestone ashlar", "Limestone mortar", "Slot window reveal",
              "Roof", "Cedar soffits", "Cobogo curb", "Gate steel", "Steel posts", "Limestone pavers",
-             "Courtyard soil", "Cedar vertical", "Entry mosaic"}
+             "Courtyard soil", "Cedar vertical", "Entry mosaic", "Bath floor tile", "Shower zellige",
+             "Bath limestone", "Bath brass", "Bath vanity", "Bath wc"}
+# small bath fixtures kept in the web model without a lightmap
+KEEP_EXTRA = ("Glass", "Shower glass", "Rain head", "Vessel sink", "Mirror", "Mirror rim", "Sconce arm", "Sconce globe")
 BAKE_FURN = {"Oak millwork", "Upholstery", "Walnut furniture", "Ceramic fixtures", "Grill limestone",
              "Outdoor teak", "Living extras"}
 BAKE_LAND = {"Ground", "Cedar fences", "Neighbors"}
@@ -420,7 +423,7 @@ def main():
     print(f"[bake] lightmaps done ({len(raw)}) ref={gref:.3f}", flush=True)
 
     # ---- turn the bake scene into the web scene
-    keep = set(o.name for o in targets) | {"Glass"}
+    keep = set(o.name for o in targets) | {o.name for o in bpy.data.objects if o.name.split(".")[0] in KEEP_EXTRA}
     for ob in list(bpy.data.objects):
         if ob.name not in keep:
             bpy.data.objects.remove(ob)

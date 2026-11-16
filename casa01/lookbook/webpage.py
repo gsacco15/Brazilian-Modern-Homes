@@ -4,6 +4,7 @@ import json
 import os
 import shutil
 
+import design as D
 from build import (A, FACTS, MOVES, SWATCHES, HERE, WEB, quantities, room_rows, svg_inline)
 
 WEB_CSS = r"""
@@ -281,10 +282,11 @@ PANOS = [("street", "Street"), ("entry", "Covered entry"), ("patio", "Pátio"), 
 GALLERY = [
     ("street", "Street", "Limestone wall, cedar gate and cobogó under one 54-foot roof edge. Native meadow instead of lawn.", True),
     ("street_dusk", "Dusk", "Courtyard lights behind the cobogó turn the screen into a lantern; grazers rake the limestone.", True),
-    ("entry", "Covered entry", "Sun through the cobogó draws circles on the pavers. The cedar pivot door is inside the screen.", False),
+    ("entry", "Covered entry", "Black calçada portuguesa underfoot, the cobogó beside you, the cedar pivot door ahead, all in shade under the canopy.", False),
     ("courtyard", "Pátio", "Dwarf palmetto, ferns and muhly under a limbed-up oak, lined by the gallery glass.", False),
     ("interior", "Great room", "Cedar ceiling, polished concrete, warm-white walls. Courtyard to the south, veranda to the north.", True),
     ("kitchen", "Kitchen", "Rift white oak, honed black granite island, green glazed tile.", False),
+    ("bath", "Primary bath", "Ladrilho hidráulico floor, green zellige wet room, floating oak vanity, brass fixtures, a garden window.", True),
     ("gallery", "Gallery", "The bedroom hall is a 30-foot glass wall on the pátio.", False),
     ("veranda", "Veranda", "276 sf under the oak. The cedar ceiling runs straight out from the great room.", False),
     ("rear", "Rear yard", "The house sits forward on the lot to protect the heritage live oak.", False),
@@ -351,6 +353,35 @@ def write_web(img):
     def dwg(f):
         return f'<div class="paper">{svg_inline(f)}</div>'
 
+    from build import ft, DRAW
+    sch = json.load(open(os.path.join(DRAW, "schedules.json")))
+    drows = "".join(f"<tr><td><b>{d['tag']}</b></td><td>{d['name']}</td><td>{ft(d['w'])} x {ft(d['h'])}</td><td>{d['type']}</td></tr>"
+                    for d in sch["doors"])
+    wg = {}
+    for w in sch["windows"]:
+        g = wg.setdefault(w["tag"], dict(w=w["w"], h=w["h"], kind=w["kind"], n=0))
+        g["n"] += 1
+    wrows = "".join(f"<tr><td><b>{t}</b></td><td class='num'>{g['n']}</td><td>{ft(g['w'])} x {ft(g['h'])}</td>"
+                    f"<td>{'sliding' if g['kind'] == 'slider' else g['kind']}</td></tr>" for t, g in sorted(wg.items()))
+    knotes = "".join(f"<li>{k}</li>" for k in sch["keynotes"])
+    bf = "".join(f"<tr><td>{a}</td><td><i>{b}</i></td><td>{c}</td></tr>" for a, b, c in D.BATH_FINISHES)
+    bath_sec = ('<section class="block"><div class="eyebrow">Primary bath</div><h2>A spa-style wet room</h2>'
+                '<p class="lede">7\'-10" square: walk-in shower along the window wall, floating oak vanity, patterned cement-look tile.</p>'
+                f'<div class="cols"><div class="paper">{svg_inline("09_bath_plan.svg")}</div>'
+                f'<div class="tbl"><table><tr><th>Element</th><th>Brazilian ref.</th><th>Austin spec</th></tr>{bf}</table></div></div></section>'
+                ) if img.get("bath") else ""
+    land_sec = ""
+    if img.get("ortho_site_render"):
+        rows = json.load(open(os.path.join(DRAW, "plant_schedule.json")))
+        tr = "".join(f"<tr><td><b>{c}</b></td><td>{cm}<br><i style='color:var(--muted)'>{bt}</i></td><td>{sz}</td>"
+                     f"<td class='num'>{q if q else 'area'}</td><td>{w}</td></tr>" for c, cm, bt, sz, w, nt, q in rows)
+        land_sec = ('<section class="block"><div class="eyebrow">Landscape</div><h2>L-100 Landscape plan</h2>'
+                    '<p class="lede">Xeriscape meadow in front, a shady tropical-looking pátio of native palmetto and fern, '
+                    'buffalo-grass lawn under the heritage oak. Quantities are counted from the 3D model.</p>'
+                    f'<div class="cols"><div class="paper">{svg_inline("21_landscape_plan.svg")}</div>'
+                    f'<div class="tbl"><table><tr><th>Key</th><th>Plant</th><th>Size</th><th style="text-align:right">Qty</th>'
+                    f'<th>Water</th></tr>{tr}</table></div></div></section>')
+
     js = (VIEWER_JS.replace("__FINISHES__", json.dumps(FINISH_INFO)).replace("__MODEL__", model)
           .replace("__LIGHTMAPS__", json.dumps(lmaps)).replace("__SKYAZ__", "304.2"))
     pbtn = "".join(f'<button data-pano="{k}" aria-pressed="false">{lab}</button>' for k, lab in panos)
@@ -391,14 +422,26 @@ def write_web(img):
         tour,
         f'<section class="block"><div class="eyebrow">The idea</div><h2>Three moves make the house</h2><div class="moves">{moves}</div></section>',
         f'<section class="block"><div class="eyebrow">Renders</div><h2>What it looks like</h2><div class="gal">{gal}</div></section>',
-        '<section class="block"><div class="eyebrow">Drawings</div><h2>Plans, elevations and section</h2><div class="dwgs">',
-        f'<div class="two"><div><h3>Site plan</h3>{dwg("01_site_plan.svg")}</div><div><h3>Floor plan</h3>{dwg("02_floor_plan.svg")}</div></div>',
+        bath_sec,
+        land_sec,
+        '<section class="block"><div class="eyebrow">Presentation drawings</div><h2>Rendered plan and elevations</h2><div class="dwgs">',
+        f'<div><h3>A-100 Floor plan, rendered (cut at 5\'-6")</h3>{dwg("20_plan_rendered.svg")}</div>',
         f'<div class="tbl"><table><tr><th>Room</th><th>Clear size</th><th style="text-align:right">sf</th></tr>{rr}</table></div>',
-        f'<div><h3>South elevation (street)</h3>{dwg("03_elevation_south.svg")}</div>',
-        f'<div><h3>North elevation (veranda)</h3>{dwg("04_elevation_north.svg")}</div>',
-        f'<div class="two"><div><h3>East elevation</h3>{dwg("05_elevation_east.svg")}</div><div><h3>West elevation</h3>{dwg("06_elevation_west.svg")}</div></div>',
-        f'<div><h3>Section A-A with Austin sun angles</h3>{dwg("07_section_aa.svg")}</div>',
-        f'<div><h3>Cobogó block</h3>{dwg("08_cobogo_detail.svg")}</div></div></section>',
+        f'<div><h3>A-200 South elevation (street)</h3>{dwg("22_elev_s.svg")}</div>',
+        f'<div><h3>A-200 North elevation (veranda)</h3>{dwg("22_elev_n.svg")}</div>',
+        f'<div class="two"><div><h3>A-201 East elevation</h3>{dwg("22_elev_e.svg")}</div><div><h3>A-201 West elevation</h3>{dwg("22_elev_w.svg")}</div></div>',
+        '</div></section>',
+        '<section class="block"><div class="eyebrow">Construction drawings</div><h2>Plans, schedules, elevations, section</h2><div class="dwgs">',
+        f'<div><h3>A-101 Floor plan</h3>{dwg("30_floor_plan_cd.svg")}</div>',
+        f'<div class="two"><div class="tbl"><h3>Door schedule</h3><table><tr><th>No.</th><th>Location</th><th>Size</th><th>Type</th></tr>{drows}</table></div>'
+        f'<div class="tbl"><h3>Window schedule</h3><table><tr><th>Mark</th><th style="text-align:right">Qty</th><th>Size</th><th>Type</th></tr>{wrows}</table>'
+        f'<h3 style="margin-top:18px">Keynotes</h3><ol style="margin:0;padding-left:20px;font-size:13px;color:var(--muted)">{knotes}</ol></div></div>',
+        f'<div class="two"><div><h3>A-102 Roof plan</h3>{dwg("31_roof_plan_cd.svg")}</div><div><h3>A-102 Site plan</h3>{dwg("01_site_plan.svg")}</div></div>',
+        f'<div><h3>A-202 South elevation</h3>{dwg("32_elev_s_cd.svg")}</div>',
+        f'<div><h3>A-202 North elevation</h3>{dwg("33_elev_n_cd.svg")}</div>',
+        f'<div class="two"><div><h3>A-203 East elevation</h3>{dwg("34_elev_e_cd.svg")}</div><div><h3>A-203 West elevation</h3>{dwg("35_elev_w_cd.svg")}</div></div>',
+        f'<div><h3>A-300 Section A-A with Austin sun angles</h3>{dwg("07_section_aa.svg")}</div>',
+        f'<div><h3>A-500 Cobogó block</h3>{dwg("08_cobogo_detail.svg")}</div></div></section>',
         ('<section class="block"><div class="eyebrow">Finishes</div><h2>Brazilian look, Austin materials</h2>'
          '<p class="lede">Each sample uses the same material as the renders. Gold italics name the Brazilian reference it stands in for.</p>'
          f'<div class="sw">{sw}</div></section>') if sw else '',
@@ -415,7 +458,7 @@ def write_web(img):
         f'<script>{js}</script>',
         f'<script>{PANO_JS}</script>' if panos else '',
     ]
-    os.makedirs(os.path.join(WEB, "img"), exist_ok=True)
+    os.makedirs(os.path.join(WEB, "img", "ortho"), exist_ok=True)
     out = os.path.join(WEB, "index.html")
     with open(out, "w") as f:
         f.write("\n".join(parts))

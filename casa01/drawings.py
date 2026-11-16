@@ -700,7 +700,8 @@ def level_marks(svg, x, marks):
     for z, label in marks:
         svg.line(x - 1.2, z, x + 1.0, z, MID, 0.6)
         svg.add(f'<path d="M {svg.P(x - 0.2, z)} l -5 -7 l 10 0 z" fill="none" stroke="{INK}" stroke-width="0.8"/>')
-        svg.text(x + 1.4, z, label, 7.5, anchor="start", extra='dy="3"')
+        # grade sits on the ground line: drop its label below so the hatch doesn't strike it
+        svg.text(x + 1.4, z, label, 7.5, anchor="start", extra='dy="12"' if z <= 0 else 'dy="3"')
 
 
 def elev_tree(svg, x, z0, h, spread, seed, stroke=LIGHT, trunk=True):
