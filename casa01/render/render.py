@@ -58,7 +58,7 @@ VIEWS = {
                        strength=1.0, exposure=0.6, night=False, pano=True),
     "pano_room": dict(cam=(30.0, 70.5, D.FF + 5.0), tgt=(30.0, 55.0, 5.3), lens=20, hdri="day", sun=200,
                       strength=1.0, exposure=1.8, night=True, night_level=0.25, pano=True),
-    "pano_veranda": dict(cam=(30.0, 87.5, D.HARDSCAPE + 5.2), tgt=(30.0, 110.0, 5.3), lens=20, hdri="afternoon",
+    "pano_veranda": dict(cam=(35.2, 87.4, D.HARDSCAPE + 5.2), tgt=(33.0, 110.0, 5.3), lens=20, hdri="afternoon",
                          sun=284, strength=1.0, exposure=0.9, night=True, night_level=0.35, pano=True),
     "bath": dict(cam=(52.45, 72.2, D.FF + 4.7), tgt=(46.3, 78.9, D.FF + 3.2), lens=15, hdri="day", sun=95,
                  strength=1.0, exposure=2.25, night=True, night_level=0.2),
