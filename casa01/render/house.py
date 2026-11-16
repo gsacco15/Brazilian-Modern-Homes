@@ -188,8 +188,9 @@ def _limestone_wall(L, coll):
     w = D.EXT_WALLS[0]
     o = w["openings"][0]
     hole = (w["a"][0] + o["off"], w["a"][0] + o["off"] + o["w"], FF + o["sill"], FF + o["head"])
-    mort.box(lw["x0"], yf + 0.06, lw["z0"], lw["x1"], yb, lw["z1"])
-    # punch the mortar plane around the window
+    # mortar bed behind the stones, with the window opening cut out of it
+    for (a0, a1, b0, b1) in subtract_rect((lw["x0"], lw["x1"], lw["z0"], lw["z1"]), hole):
+        mort.box(a0, yf + 0.06, b0, a1, yb, b1)
     courses = []
     z = lw["z0"]
     pattern = [0.667, 0.333, 1.0, 0.333, 0.667, 0.667, 1.0, 0.333]

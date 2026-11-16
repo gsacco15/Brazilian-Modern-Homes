@@ -86,7 +86,7 @@ VIEWER_JS = r"""
 const M=0.3048, el=document.getElementById('viewer'), canvas=el.querySelector('canvas');
 const T=p=>new THREE.Vector3(p[0]*M,p[2]*M,-p[1]*M);
 const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const MODEL='__MODEL__', LMAPS=__LIGHTMAPS__, SKY_AZ=__SKYAZ__;
+const MODEL='__MODEL__', LMAPS=__LIGHTMAPS__, SKY_AZ=__SKYAZ__, CB=__COBOGO__;
 let renderer;
 try{renderer=new THREE.WebGLRenderer({canvas,antialias:true});}catch(e){document.getElementById('loading').textContent='3D needs WebGL, which this browser has turned off. The renders and plans below still work.';return}
 renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
@@ -123,12 +123,32 @@ function onModel(g){
   root.traverse(o=>{if(/^(Roof|Cedar_soffits|Cedar soffits)/.test(o.name))o.traverse(c=>roofObjs.push(c));
     if(!o.isMesh)return;o.castShadow=true;o.receiveShadow=true;hit.push(o);
     (Array.isArray(o.material)?o.material:[o.material]).forEach(m=>{const n=m.name||'';
-      if(n==='web_glass'){m.transparent=true;m.opacity=0.2;m.depthWrite=false;m.metalness=0;m.roughness=0.03;m.envMapIntensity=1.6;o.castShadow=false}
+      if(n==='web_glass'){m.color.set(0x0b1214);m.transparent=true;m.opacity=0.34;m.depthWrite=false;m.metalness=0;m.roughness=0.02;m.envMapIntensity=0.9;o.castShadow=false}
       if(n==='web_cobogo'||n.startsWith('web_leafcard')){m.alphaTest=0.5;m.transparent=false;m.side=THREE.DoubleSide}
       if(n.startsWith('web_leafcard')){o.receiveShadow=true}
       if(LMAPS&&NM[n]&&!m.normalMap){m.normalMap=nmap(NM[n][0]);m.normalScale=new THREE.Vector2(NM[n][1],NM[n][1])}
       if(n==='web_floor'){m.roughness=0.22}
       if(m.map){m.map.anisotropy=renderer.capabilities.getMaxAnisotropy()}});});
+  // the cobogó: 210 real 12x12x4 blocks (one extruded block, instanced) instead of a flat cut-out
+  // picture, so the screen has depth and blocks the view at an angle like the real thing
+  root.traverse(o=>{if(/^Cobogo_screen/.test(o.name))o.traverse(c=>{c.visible=false})});
+  {const b=CB.block*M,h=b/2,rc=0.24*b,re=0.085*b,PI=Math.PI,sh=new THREE.Shape();
+    sh.moveTo(-h+rc,-h);sh.lineTo(-re,-h);sh.absarc(0,-h,re,PI,0,true);
+    sh.lineTo(h-rc,-h);sh.absarc(h,-h,rc,PI,PI/2,true);
+    sh.lineTo(h,-re);sh.absarc(h,0,re,1.5*PI,PI/2,true);
+    sh.lineTo(h,h-rc);sh.absarc(h,h,rc,1.5*PI,PI,true);
+    sh.lineTo(re,h);sh.absarc(0,h,re,0,-PI,true);
+    sh.lineTo(-h+rc,h);sh.absarc(-h,h,rc,0,-PI/2,true);
+    sh.lineTo(-h,re);sh.absarc(-h,0,re,PI/2,-PI/2,true);
+    sh.lineTo(-h,-h+rc);sh.absarc(-h,-h,rc,PI/2,0,true);
+    const hole=new THREE.Path();hole.absarc(0,0,0.30*b,0,2*PI,false);sh.holes.push(hole);
+    const geo=new THREE.ExtrudeGeometry(sh,{depth:CB.t*M,bevelEnabled:false,curveSegments:14});
+    const mat=new THREE.MeshStandardMaterial({name:'web_cobogo',color:new THREE.Color(0xd9d4c8),roughness:0.92,metalness:0});
+    const nx=Math.round((CB.x1-CB.x0)/CB.block),nz=Math.round((CB.z1-CB.z0)/CB.block);
+    const im=new THREE.InstancedMesh(geo,mat,nx*nz),mx=new THREE.Matrix4();let k=0;
+    for(let i=0;i<nx;i++)for(let j=0;j<nz;j++){mx.makeScale(0.985,0.985,1);
+      mx.setPosition((CB.x0+(i+0.5)*CB.block)*M,(CB.z0+(j+0.5)*CB.block)*M,-(CB.y+CB.t)*M);im.setMatrixAt(k++,mx)}
+    im.castShadow=true;im.receiveShadow=true;im.name='Cobogo_blocks';root.add(im);hit.push(im)}
   // baked sky + bounce light: each baked object gets its own material copies with its lightmap
   if(LMAPS){root.traverse(o=>{const key=LMAPS.maps[o.name];if(!key)return;const lm=tex('lm/'+key,true,false);
     o.traverse(c=>{if(!c.isMesh||!c.geometry.attributes.uv2)return;
@@ -383,7 +403,8 @@ def write_web(img):
                     f'<th>Water</th></tr>{tr}</table></div></div></section>')
 
     js = (VIEWER_JS.replace("__FINISHES__", json.dumps(FINISH_INFO)).replace("__MODEL__", model)
-          .replace("__LIGHTMAPS__", json.dumps(lmaps)).replace("__SKYAZ__", "304.2"))
+          .replace("__LIGHTMAPS__", json.dumps(lmaps)).replace("__SKYAZ__", "304.2")
+          .replace("__COBOGO__", json.dumps({k: D.COBOGO[k] for k in ("x0", "x1", "y", "t", "z0", "z1")} | {"block": D.BLOCK})))
     pbtn = "".join(f'<button data-pano="{k}" aria-pressed="false">{lab}</button>' for k, lab in panos)
     tour = ('<section class="block" id="tour"><div class="eyebrow">360° tour</div><h2>Stand inside the renders</h2>'
             '<p class="lede">Full photoreal 360° views from the render engine. Drag to look around in every direction; '
