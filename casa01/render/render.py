@@ -61,7 +61,7 @@ VIEWS = {
     "pano_veranda": dict(cam=(30.0, 87.5, D.HARDSCAPE + 5.2), tgt=(30.0, 110.0, 5.3), lens=20, hdri="afternoon",
                          sun=284, strength=1.0, exposure=0.9, night=True, night_level=0.35, pano=True),
     "bath": dict(cam=(52.45, 72.2, D.FF + 4.7), tgt=(46.3, 78.9, D.FF + 3.2), lens=15, hdri="day", sun=95,
-                 strength=1.0, exposure=2.0, night=True, night_level=0.5),
+                 strength=1.0, exposure=2.0, night=True, night_level=0.2),
     # orthographic presentation renders (rendered plan, landscape plan, elevations).
     # center/width in feet; rot in degrees; res in px. Also written to renders/ortho/ortho_views.json
     "plan_render": dict(ortho=True, center=(32.5, 59.5, 60.0), rot=(0, 0, 0), width=67.0, res=(2400, 2687),

@@ -496,7 +496,8 @@ def calcada():
 
 def mirror():
     b = NB("Mirror")
-    return b.set(Base_Color=(0.9, 0.9, 0.9, 1), Metallic=1.0, Roughness=0.015)
+    # silvered glass reads faintly cool-green, which keeps it from looking like polished brass
+    return b.set(Base_Color=(0.84, 0.89, 0.88, 1), Metallic=1.0, Roughness=0.01)
 
 
 def fabric(name, color, rough=1.0, sheen=0.4):
