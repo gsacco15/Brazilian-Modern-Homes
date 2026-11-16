@@ -1,56 +1,56 @@
-# Casa Pátio early-list landing page
+# Casa Pátio website (Vercel)
 
-A one-page site for running Instagram, Facebook and X ads and collecting sign-ups.
+Every push to GitHub rebuilds the site. `scripts/vercel-build.sh` assembles it from this repo:
 
-- `page.html`: the page (edit copy here).
-- `config.json`: your domain, ad pixel IDs and an optional form endpoint.
-- `build.py`: builds the deployable site into `site/`.
-- `site/`: **the folder you put online.**
+| Address | What it is | Source |
+|---|---|---|
+| `/` | Landing page with the early-list form | `casa01/landing/page.html` → `site/` |
+| `/house` | Interactive house: live 3D model with sun slider, 360° tour, renders, finishes | `casa01/lookbook/web/house.html` + assets |
+| `/Casa01_Lookbook.pdf` | The latest 21-page lookbook | `casa01/Casa01_Lookbook.pdf` |
+| `/leads` | **Private** list of sign-ups, with counts by ad and headline | `casa01/landing/leads.html` |
+| `/api/lead`, `/api/leads` | Save a sign-up / read them (serverless functions) | `api/` |
 
-Rebuild after any edit:
+After editing the landing page, rebuild it and push:
 
 ```bash
 python3 casa01/landing/build.py
 ```
 
-## 1. Put it online (about 10 minutes, free)
+## One-time Vercel setup (about 5 minutes)
 
-The easiest host is **Netlify**, because it collects form sign-ups with no extra setup.
+1. **Show every push on the main address.** In the Vercel project, open **Settings → Git → Production Branch** and enter `claude/compassionate-keller-mtj4mo`. If you skip this, pushes only make preview links.
+2. **Somewhere to keep sign-ups.** Open **Storage → Create Database → Upstash for Redis** (free plan) and connect it to this project. Vercel adds the connection settings automatically.
+3. **Your private key for `/leads`.** Open **Settings → Environment Variables** and add `ADMIN_KEY` with a long password only you know.
+4. **Optional email per sign-up.** Make a free resend.com account, then add `RESEND_API_KEY` and `NOTIFY_EMAIL` (your address).
+5. **Redeploy** (Deployments → latest → Redeploy) so the new settings take effect.
+6. **Test it.** Fill in the form on your site, then open `/leads`, enter your key, and you should see the test sign-up.
 
-1. Create a free account at netlify.com.
-2. Open app.netlify.com/drop and drag the `casa01/landing/site` folder onto the page.
-3. In the new site's settings, open **Forms** and turn on **form detection**, then deploy again (drag the folder once more).
-4. Under **Forms → Form notifications**, add your email so every sign-up is emailed to you.
-5. Sign-ups appear under **Forms → early-list**, with a CSV export.
+Until step 2 is done, the form shows "That didn't go through". Don't start ads before then.
 
-The free tier covers 100 sign-ups a month, plenty for an interest test.
+**Link previews:** once you know the final address (for example `https://brazilian-modern-homes.vercel.app` or your own domain), put it in `config.json` as `site_url`, run the build above and push. Instagram and X then show the house image when the link is shared.
 
-**Own domain (recommended for ads):** buy one (for example casapatio.com or similar) and connect it under **Domain management**. Then put it in `config.json` as `"site_url": "https://yourdomain.com"` and rebuild, so link previews on Instagram and X show the house image.
+**Own domain:** buy one and add it under **Settings → Domains**.
 
-**Other hosts:** to host anywhere else, create a free form at formspree.io and put its URL in `"form_endpoint"`.
+## Ad tracking (optional, before you spend)
 
-## 2. Add ad tracking (optional, before you spend)
+- **Meta (Instagram/Facebook):** create a Pixel in Events Manager, then put its ID in `config.json` → `meta_pixel_id`. The page sends `PageView` on load and `Lead` on each sign-up.
+- **X:** create a pixel and a "Lead" conversion event, then put the IDs in `x_pixel_id` and `x_lead_event_id`.
 
-- **Meta (Instagram/Facebook):** in Events Manager create a Pixel, then put its ID in `"meta_pixel_id"`. The page sends `PageView` on load and `Lead` on each sign-up.
-- **X:** create a pixel and a "Lead" conversion event, then put the pixel ID in `"x_pixel_id"` and the event ID in `"x_lead_event_id"`.
+Rebuild and push after changing `config.json`.
 
-Rebuild and redeploy after changing `config.json`.
+## Tag every ad link
 
-## 3. Tag every ad link
-
-Every sign-up records which ad it came from. Use links like:
+Each sign-up records which ad it came from. `/leads` counts them by source and headline:
 
 ```
-https://yourdomain.com/?utm_source=instagram&utm_campaign=test1&utm_content=dusk-video&v=a
-https://yourdomain.com/?utm_source=x&utm_campaign=test1&utm_content=courtyard&v=b
+https://YOUR-SITE/?utm_source=instagram&utm_campaign=test1&utm_content=dusk&v=a
+https://YOUR-SITE/?utm_source=x&utm_campaign=test1&utm_content=courtyard&v=b
 ```
 
-- `utm_source`: instagram, facebook, x, pinterest
-- `utm_content`: which creative (street, dusk, courtyard, 360 video)
 - `v=a`: headline "A Brazilian courtyard house, built on your Austin lot."
 - `v=b`: headline "Your own private courtyard, in the middle of Austin."
 
-## 4. A simple two-week test
+## A simple two-week test
 
 | | |
 |---|---|
@@ -64,7 +64,9 @@ https://yourdomain.com/?utm_source=x&utm_campaign=test1&utm_content=courtyard&v=
 
 **What to watch:**
 - **Cost per sign-up:** under about $30–40 is a good signal for a $500K+ product.
-- **Quality:** the share of sign-ups that own land or a home ("What fits you best?") and pick a budget of $500K+.
-- **Winners:** which headline (`variant`) and which creative (`utm_content`) bring the most qualified sign-ups.
+- **Quality:** the share of sign-ups that own land or a home ("What fits you best?").
+- **Winners:** which headline and creative bring the most qualified sign-ups.
 
-**A strong result:** 10–20 sign-ups from people who own land, from about $500 of ads. Book calls with them and offer the Lot Fit Study.
+**A strong result:** 10–20 sign-ups from people who own land, from about $500 of ads.
+
+*Netlify instead of Vercel:* drag `casa01/landing/site` onto app.netlify.com/drop, turn on Forms, and set `form_endpoint` to `""` in `config.json`.

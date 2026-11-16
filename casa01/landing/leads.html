@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Early List Sign-ups</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Lato:wght@400;700;900&display=swap">
+<style>
+:root{--paper:#f5f2ea;--card:#fffdf7;--ink:#1d2520;--muted:#5b625b;--line:#dcd6c8;--gold:#94712f;--forest:#1d2520;--on:#ece6d8;--err:#a3361f;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 Lato,"Helvetica Neue",Arial,sans-serif}
+.wrap{max-width:1200px;margin:0 auto;padding:32px max(16px,env(safe-area-inset-right,0px)) 48px max(16px,env(safe-area-inset-left,0px))}
+h1{font:500 40px/1.05 "Cormorant Garamond",Georgia,serif;margin:4px 0 18px}
+.eyebrow{font-size:12px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+form{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+input{min-height:44px;padding:8px 12px;border:1px solid #cfc8b8;border-radius:2px;font:15px Lato,sans-serif;min-width:0;width:min(320px,100%)}
+button{min-height:44px;padding:0 18px;border:0;border-radius:2px;background:var(--forest);color:var(--on);font:900 12px Lato,sans-serif;letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+.msg{margin-top:12px;color:var(--muted)}.msg.err{color:var(--err)}
+.sum{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin:24px 0}
+.box{background:var(--card);border:1px solid var(--line);padding:16px;min-width:0}
+.box h2{font:900 11px Lato,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.big{font:500 44px/1 "Cormorant Garamond",Georgia,serif}
+.box ul{list-style:none;margin:0;padding:0;display:grid;gap:4px;font-size:14px}
+.box li{display:flex;justify-content:space-between;gap:8px}.box li b{font-variant-numeric:tabular-nums}
+.tbl{overflow-x:auto;background:var(--card);border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;font-size:13px;min-width:900px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);background:#f0ece1;position:sticky;top:0}
+td.n{max-width:260px;color:var(--muted)}
+.empty{padding:28px;text-align:center;color:var(--muted)}
+</style></head>
+<body><div class="wrap">
+<div class="eyebrow">Casa Pátio · private</div>
+<h1>Early list sign-ups</h1>
+<form id="f"><label for="k" class="eyebrow" style="color:var(--muted)">Admin key</label>
+  <input id="k" type="password" autocomplete="current-password" placeholder="Your ADMIN_KEY">
+  <button type="submit">Show sign-ups</button>
+  <button type="button" class="ghost" id="csv" hidden>Download CSV</button></form>
+<p class="msg" id="msg">Enter the admin key you set in Vercel.</p>
+<div id="out" hidden>
+  <div class="sum" id="sum"></div>
+  <div class="tbl"><table><thead><tr><th>When</th><th>Name</th><th>Email / phone</th><th>Fits</th><th>Home</th><th>Budget</th><th>Timing</th><th>Where</th><th>Source</th><th>Headline</th><th>Notes</th></tr></thead>
+  <tbody id="rows"></tbody></table></div>
+</div>
+</div>
+<script>
+(function(){
+  var $ = function(id){ return document.getElementById(id); }, data = [];
+  try { $('k').value = sessionStorage.getItem('bmh_admin') || ''; } catch (e) {}
+  function esc(s){ var d = document.createElement('div'); d.textContent = s == null ? '' : String(s); return d.innerHTML; }
+  function tally(key){ var t = {}; data.forEach(function(r){ var v = r[key] || '(none)'; t[v] = (t[v] || 0) + 1; });
+    return Object.keys(t).sort(function(a, b){ return t[b] - t[a]; }).map(function(k){ return '<li><span>' + esc(k) + '</span><b>' + t[k] + '</b></li>'; }).join(''); }
+  function render(){
+    var owners = data.filter(function(r){ return /own/i.test(r.situation || ''); }).length;
+    $('sum').innerHTML =
+      '<div class="box"><h2>Total sign-ups</h2><div class="big">' + data.length + '</div></div>' +
+      '<div class="box"><h2>Own land or a home</h2><div class="big">' + owners + '</div></div>' +
+      '<div class="box"><h2>By ad source</h2><ul>' + tally('utm_source') + '</ul></div>' +
+      '<div class="box"><h2>By headline</h2><ul>' + tally('variant') + '</ul></div>' +
+      '<div class="box"><h2>What fits them</h2><ul>' + tally('situation') + '</ul></div>' +
+      '<div class="box"><h2>Budget</h2><ul>' + tally('budget') + '</ul></div>';
+    $('rows').innerHTML = data.length ? data.map(function(r){
+      return '<tr><td>' + esc(new Date(r.ts).toLocaleString()) + '</td><td>' + esc(r.name) + '</td><td>' + esc(r.email) + (r.phone ? '<br>' + esc(r.phone) : '') +
+        '</td><td>' + esc(r.situation) + '</td><td>' + esc(r.home) + '</td><td>' + esc(r.budget) + '</td><td>' + esc(r.timing) + '</td><td>' + esc(r.location) +
+        '</td><td>' + esc([r.utm_source, r.utm_campaign, r.utm_content].filter(Boolean).join(' / ')) + '</td><td>' + esc(r.variant) + '</td><td class="n">' + esc(r.notes) + '</td></tr>';
+    }).join('') : '<tr><td colspan="11" class="empty">No sign-ups yet. They appear here as soon as someone joins.</td></tr>';
+    $('out').hidden = false; $('csv').hidden = false;
+  }
+  $('f').addEventListener('submit', function(e){
+    e.preventDefault(); var key = $('k').value.trim(); var msg = $('msg'); msg.className = 'msg'; msg.textContent = 'Loading…';
+    fetch('/api/leads', { headers: { 'x-admin-key': key } }).then(function(r){ return r.json().then(function(j){ return [r.status, j]; }); })
+      .then(function(x){
+        if (x[0] === 401) throw new Error('That key is wrong. Check ADMIN_KEY in Vercel.');
+        if (x[1].error === 'admin_key_not_set') throw new Error('Set an ADMIN_KEY environment variable in Vercel, then redeploy.');
+        if (x[1].error === 'storage_not_configured') throw new Error('Connect Upstash Redis in Vercel (Storage tab), then redeploy.');
+        if (x[0] !== 200) throw new Error('Could not load sign-ups (' + (x[1].error || x[0]) + ').');
+        try { sessionStorage.setItem('bmh_admin', key); } catch (e) {}
+        data = x[1].leads; msg.textContent = 'Updated ' + new Date().toLocaleTimeString() + '.'; render();
+      }).catch(function(err){ msg.className = 'msg err'; msg.textContent = err.message; });
+  });
+  $('csv').addEventListener('click', function(){
+    fetch('/api/leads?format=csv', { headers: { 'x-admin-key': $('k').value.trim() } }).then(function(r){ return r.blob(); }).then(function(b){
+      var a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'casa-patio-early-list.csv'; document.body.appendChild(a); a.click(); a.remove();
+    });
+  });
+})();
+</script>
+</body></html>

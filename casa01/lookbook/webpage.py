@@ -412,19 +412,7 @@ def write_web(img):
             f'<div class="pano" id="pano"><canvas aria-label="360 degree photoreal view. Drag to look around."></canvas>'
             f'<div class="vbar" role="toolbar" aria-label="360 views">{pbtn}</div>'
             '<div class="loading" id="pload">Loading view</div></div></section>') if panos else ""
-    parts = [
-        '<meta charset="utf-8">',
-        '<title>Casa 01 Casa Pátio</title>',
-        '<meta name="claude:viewport-fit-sides" content="cover">',
-        '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
-        '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Lato:wght@400;700;900&display=swap">',
-        f'<style>{WEB_CSS}</style>',
-        '<div class="wrap">',
-        '<header class="top"><div class="eyebrow">Brazilian Modern Homes / Concept design / November 2026</div>',
-        '<h1>Casa 01 · Casa Pátio</h1>',
-        '<p class="lede">A 1,620 sf, three-bedroom courtyard house for an Austin infill lot. One thin roof, one private garden, '
-        'one limestone wall, built with ordinary Texas framing. Every image, plan and number on this page comes from the same 3D model.</p>',
-        f'<div class="facts">{facts}</div></header>',
+    viewer = [
         '<div class="viewer" id="viewer"><canvas aria-label="Interactive 3D model of Casa 01. Drag to orbit, scroll or pinch to zoom."></canvas>',
         '<div class="vbar" role="toolbar" aria-label="Camera views">',
         '<button data-view="street" aria-pressed="true">Street</button><button data-view="entry" aria-pressed="false">Entry</button>'
@@ -440,6 +428,21 @@ def write_web(img):
         '<p class="hint">Drag to orbit, scroll or pinch to zoom, right-drag or two-finger drag to pan. Tap any surface to see its finish. '
         'Slide the sun to watch the eaves and the cobogó work through a June or December day. Soft sky light and bounce light are '
         'pre-computed by the photoreal renderer; the sun and its shadows stay live.</p>',
+    ]
+    parts = [
+        '<meta charset="utf-8">',
+        '<title>Casa 01 Casa Pátio</title>',
+        '<meta name="claude:viewport-fit-sides" content="cover">',
+        '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
+        '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Lato:wght@400;700;900&display=swap">',
+        f'<style>{WEB_CSS}</style>',
+        '<div class="wrap">',
+        '<header class="top"><div class="eyebrow">Brazilian Modern Homes / Concept design / November 2026</div>',
+        '<h1>Casa 01 · Casa Pátio</h1>',
+        '<p class="lede">A 1,620 sf, three-bedroom courtyard house for an Austin infill lot. One thin roof, one private garden, '
+        'one limestone wall, built with ordinary Texas framing. Every image, plan and number on this page comes from the same 3D model.</p>',
+        f'<div class="facts">{facts}</div></header>',
+        *viewer,
         tour,
         f'<section class="block"><div class="eyebrow">The idea</div><h2>Three moves make the house</h2><div class="moves">{moves}</div></section>',
         f'<section class="block"><div class="eyebrow">Renders</div><h2>What it looks like</h2><div class="gal">{gal}</div></section>',
@@ -479,6 +482,7 @@ def write_web(img):
         f'<script>{js}</script>',
         f'<script>{PANO_JS}</script>' if panos else '',
     ]
+    write_house(facts, viewer, tour, moves, gal, sw, js, panos)
     os.makedirs(os.path.join(WEB, "img", "ortho"), exist_ok=True)
     out = os.path.join(WEB, "index.html")
     with open(out, "w") as f:
@@ -486,3 +490,63 @@ def write_web(img):
     for k, rel in img.items():
         shutil.copy(os.path.join(HERE, rel), os.path.join(WEB, rel))
     return out
+
+
+HOUSE_CSS = """
+.site{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 0;border-bottom:1px solid var(--line);margin-bottom:26px}
+.site .brand{font-family:var(--serif);font-size:22px;color:var(--fg);text-decoration:none}
+.site nav{display:flex;gap:18px;align-items:center}
+.site nav a{color:var(--fg);text-decoration:none;font-size:12px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
+.site nav a:hover{color:var(--gold)}
+.site nav a.pill{border:1px solid var(--fg);padding:9px 13px}
+@media (max-width:640px){.site .lg{display:none}.site .brand{font-size:18px}.site nav{gap:14px}}
+.cta{background:var(--card);border:1px solid var(--gold);padding:clamp(24px,4vw,44px)}
+.ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 22px;background:var(--fg);color:var(--bg);
+  text-decoration:none;font-size:12px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;border-radius:2px;border:1px solid var(--fg)}
+.btn.ghost{background:transparent;color:var(--fg)}
+"""
+
+
+def write_house(facts, viewer, tour, moves, gal, sw, js, panos):
+    """Public 'Explore the house' page for the Vercel site (served at /house/)."""
+    parts = [
+        '<!doctype html><html lang="en"><head><meta charset="utf-8">',
+        '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">',
+        '<base href="/house/">',
+        '<title>Explore Casa Pátio</title>',
+        '<meta name="description" content="Walk around Casa Pátio in 3D, slide the Austin sun, and stand inside the renders in 360°.">',
+        '<meta property="og:title" content="Explore Casa Pátio · Brazilian Modern Homes"><meta property="og:image" content="img/street.jpg">',
+        '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
+        '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Lato:wght@400;700;900&display=swap">',
+        f'<style>body{{margin:0}}img{{max-width:100%}}[hidden]{{display:none!important}}{WEB_CSS}{HOUSE_CSS}</style></head><body>',
+        '<div class="wrap">',
+        '<header class="site"><a class="brand" href="/">Brazilian Modern Homes</a><nav aria-label="Site">'
+        '<a class="lg" href="/">Home</a><a class="lg" href="/Casa01_Lookbook.pdf" target="_blank" rel="noopener">Lookbook PDF</a>'
+        '<a class="pill" href="/#join">Join<span class="lg"> the early list</span></a></nav></header>',
+        '<header class="top"><div class="eyebrow">Casa 01 · Explore the house</div><h1>Casa Pátio</h1>',
+        '<p class="lede">Walk around the house, slide the sun through an Austin day, and stand inside the renders. '
+        'Every view comes from the same 3D model as the plans.</p>',
+        f'<div class="facts">{facts}</div></header>',
+        *viewer,
+        tour,
+        f'<section class="block"><div class="eyebrow">The idea</div><h2>Three moves make the house</h2><div class="moves">{moves}</div></section>',
+        f'<section class="block"><div class="eyebrow">Renders</div><h2>Day to dusk</h2><div class="gal">{gal}</div></section>',
+        ('<section class="block"><div class="eyebrow">Finishes</div><h2>Brazilian look, Texas materials</h2>'
+         f'<div class="sw">{sw}</div></section>') if sw else '',
+        '<section class="block"><div class="cta"><div class="eyebrow">Build it on your lot</div><h2>Want Casa Pátio on your land?</h2>'
+        '<p class="lede">Join the early list for a Lot Fit Study: a site plan and renderings of the house on your actual lot, '
+        'before you commit.</p><div class="ctas"><a class="btn" href="/#join">Join the early list</a>'
+        '<a class="btn ghost" href="/Casa01_Lookbook.pdf" target="_blank" rel="noopener">Download the lookbook (PDF)</a></div></div></section>',
+        '<footer>Brazilian Modern Homes · Austin, Texas. Renderings are computer visualizations of the Casa 01 concept design; '
+        'prices and specifications may change.</footer>',
+        '</div>',
+        '<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>',
+        '<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>',
+        '<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/loaders/GLTFLoader.js"></script>',
+        f'<script>{js}</script>',
+        f'<script>{PANO_JS}</script>' if panos else '',
+        '</body></html>',
+    ]
+    with open(os.path.join(WEB, "house.html"), "w") as f:
+        f.write("\n".join(parts))

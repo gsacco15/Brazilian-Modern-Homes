@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Casa Pátio Early List</title><meta name="description" content="Casa Pátio: a Brazilian modern courtyard house for your Austin lot. Texas limestone, cedar and a concrete cobogó screen under one long roof. Join the early list."><meta name="theme-color" content="#1d2520"><meta property="og:type" content="website"><meta property="og:title" content="Casa Pátio · Brazilian Modern Homes"><meta property="og:description" content="Casa Pátio: a Brazilian modern courtyard house for your Austin lot. Texas limestone, cedar and a concrete cobogó screen under one long roof. Join the early list."><meta property="og:image" content="img/og.jpg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Casa Pátio · Brazilian Modern Homes"><meta name="twitter:description" content="Casa Pátio: a Brazilian modern courtyard house for your Austin lot. Texas limestone, cedar and a concrete cobogó screen under one long roof. Join the early list."><meta name="twitter:image" content="img/og.jpg"><style>*,*::before,*::after{box-sizing:border-box}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}html{scroll-behavior:smooth}</style><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Lato:wght@400;700;900&display=swap"><script>window.BMH_CONFIG={"formEndpoint": "", "xLeadEventId": ""};</script><style>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Casa Pátio Early List</title><meta name="description" content="Casa Pátio: a Brazilian modern courtyard house for your Austin lot. Texas limestone, cedar and a concrete cobogó screen under one long roof. Join the early list."><meta name="theme-color" content="#1d2520"><meta property="og:type" content="website"><meta property="og:title" content="Casa Pátio · Brazilian Modern Homes"><meta property="og:description" content="Casa Pátio: a Brazilian modern courtyard house for your Austin lot. Texas limestone, cedar and a concrete cobogó screen under one long roof. Join the early list."><meta property="og:image" content="img/og.jpg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Casa Pátio · Brazilian Modern Homes"><meta name="twitter:description" content="Casa Pátio: a Brazilian modern courtyard house for your Austin lot. Texas limestone, cedar and a concrete cobogó screen under one long roof. Join the early list."><meta name="twitter:image" content="img/og.jpg"><style>*,*::before,*::after{box-sizing:border-box}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}html{scroll-behavior:smooth}</style><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Lato:wght@400;700;900&display=swap"><script>window.BMH_CONFIG={"formEndpoint": "/api/lead", "xLeadEventId": ""};</script><style>
 /* Layout: full-bleed render opens, then cream and deep-green bands like the lookbook sheets; one 1120px column.
    Single deliberate brand look (Brazilian Modern Homes lookbook palette), colors set explicitly. */
 :root{
@@ -56,6 +56,20 @@ a{color:inherit}
   .hero-copy{padding-block:60px 48px}
   .hero-copy>*{max-width:600px}
 }
+
+/* top menu over the hero */
+.topnav{position:absolute;top:0;left:0;right:0;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:12px;
+  padding:14px max(16px,env(safe-area-inset-right,0px)) 28px max(16px,env(safe-area-inset-left,0px));
+  background:linear-gradient(180deg,rgba(29,37,32,.72),rgba(29,37,32,0))}
+.topnav a{color:var(--on-forest);text-decoration:none;font-size:12px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
+.topnav .brand{font-family:var(--serif);font-size:21px;font-weight:500;letter-spacing:0;text-transform:none}
+.topnav .links{display:flex;gap:20px;align-items:center}
+.topnav .pill{border:1px solid rgba(236,230,216,.75);padding:9px 13px}
+.topnav a:hover{color:var(--gold-hi)}
+@media (max-width:640px){.topnav .lg{display:none}.topnav .brand{font-size:17px}.topnav .links{gap:14px}}
+.btn.outline{border-color:var(--ink);color:var(--ink);background:transparent}
+.btn.outline:hover{background:#ece5d4}
+.textlink{font-weight:700;color:var(--gold);text-underline-offset:3px}
 
 /* features */
 .split{display:grid;gap:clamp(28px,5vw,64px);align-items:center}
@@ -162,6 +176,10 @@ footer b{color:var(--on-forest);font-weight:900;letter-spacing:.14em;text-transf
 </style></head><body><div class="preview" id="previewNote" hidden><div class="wrap">Preview. Sign-ups start collecting once this page is live on your own domain.</div></div>
 
 <header class="hero">
+  <nav class="topnav" aria-label="Site">
+    <a class="brand" href="/">Brazilian Modern Homes</a>
+    <div class="links"><a href="/house">Explore<span class="lg"> the house</span></a><a class="lg" href="/Casa01_Lookbook.pdf" target="_blank" rel="noopener">Lookbook PDF</a><a class="pill" href="#join">Join<span class="lg"> the list</span></a></div>
+  </nav>
   <img class="hero-img" src="img/street-1600.jpg" srcset="img/street-800.jpg 800w, img/street-1600.jpg 1600w" sizes="100vw"
        alt="Casa Pátio from the street: a limestone wall, a cedar pivot gate and a white concrete cobogó screen under one long, thin roof, with a native meadow in front" fetchpriority="high">
   <div class="hero-over">
@@ -239,6 +257,7 @@ footer b{color:var(--on-forest);font-weight:900;letter-spacing:.14em;text-transf
       <button class="chip" type="button" data-pano="patio" aria-pressed="true">Pátio</button>
       <button class="chip" type="button" data-pano="room" aria-pressed="false">Great room</button>
     </div>
+    <p style="margin-top:18px"><a class="textlink" href="/house">Walk the whole house in 3D, with a live sun →</a></p>
   </div>
 </section>
 
@@ -270,6 +289,10 @@ footer b{color:var(--on-forest);font-weight:900;letter-spacing:.14em;text-transf
       </article>
     </div>
     <p class="fine">Estimates cover construction only. Land, site work, permits and fees are extra. Real pricing comes after a Lot Fit Study and a builder bid on your lot.</p>
+    <div class="cta-row" style="margin-top:24px">
+      <a class="btn outline" href="/house">Explore the house in 3D</a>
+      <a class="btn outline" href="/Casa01_Lookbook.pdf" target="_blank" rel="noopener">Download the lookbook (PDF)</a>
+    </div>
   </div>
 </section>
 
@@ -402,7 +425,7 @@ footer b{color:var(--on-forest);font-weight:900;letter-spacing:.14em;text-transf
 <footer>
   <div class="wrap">
     <b>Brazilian Modern Homes</b>
-    <span>Austin, Texas</span>
+    <span>Austin, Texas · <a href="/house">Explore the house</a> · <a href="/Casa01_Lookbook.pdf" target="_blank" rel="noopener">Lookbook PDF</a> · <a href="#join">Join the early list</a></span>
     <span>Renderings are concept visualizations of Casa 01. Prices are estimates, not offers.</span>
   </div>
 </footer>
@@ -474,12 +497,10 @@ footer b{color:var(--on-forest);font-weight:900;letter-spacing:.14em;text-transf
     if (!validate()) return;
     if (PREVIEW) { done(); return; }
     btn.disabled = true; btn.textContent = 'Sending…';
-    var fd = new FormData(form), req;
-    if (CFG.formEndpoint) {
-      req = fetch(CFG.formEndpoint, { method: 'POST', body: fd, headers: { 'Accept': 'application/json' } });
-    } else {
-      req = fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(fd).toString() });
-    }
+    // Vercel: /api/lead (config.json). Also works with Netlify Forms ('/') or a Formspree URL.
+    var body = new URLSearchParams(new FormData(form)).toString();
+    var req = fetch(CFG.formEndpoint || '/', { method: 'POST', body: body,
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/json' } });
     req.then(function(r){ if (!r.ok) throw new Error(r.status); done(); })
        .catch(function(){ document.getElementById('e_send').hidden = false; })
        .finally(function(){ btn.disabled = false; btn.textContent = 'Join the early list'; });
