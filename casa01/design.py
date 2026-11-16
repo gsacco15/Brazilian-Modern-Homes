@@ -107,7 +107,7 @@ PARTITIONS = [
     # Bed 3 / kitchen
     dict(a=(6.5, 60.0), b=(23.19, 60.0), openings=[]),
     # Laundry + mechanical
-    dict(a=(13.0, 60.0), b=(13.0, 65.5), openings=[dict(off=1.5, w=2.67, kind="door")]),
+    dict(a=(13.0, 60.0), b=(13.0, 65.5), openings=[dict(off=1.5, w=2.67, kind="door", name="Laundry")]),
     dict(a=(6.5, 65.5), b=(13.0, 65.5), openings=[]),
     # Primary suite
     dict(a=(39.0, 60.5), b=(39.0, 79.5), openings=[dict(off=1.0, w=2.67, kind="door", name="Primary")]),

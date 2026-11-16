@@ -743,8 +743,8 @@ def window_elev(svg, x0, x1, z0, z1, panels=1, fill="#dfe3e2"):
     svg.line(x0 + (x1 - x0) * 0.15, z0 + (z1 - z0) * 0.25, x0 + (x1 - x0) * 0.32, z0 + (z1 - z0) * 0.55, "#ffffff", 1.6)
 
 
-def south_elevation():
-    svg = SVG(-6, -2, 74, 40, scale=12, pad=30)
+def south_elevation(ztop=40):
+    svg = SVG(-6, -2, 74, ztop, scale=12, pad=30)
     hatch_defs(svg)
     FF, C, FT = D.FF, D.CEIL, D.FASCIA_TOP
     elev_tree(svg, 31.0, 0, 38, 58, 7, stroke=FAINT, trunk=False)          # heritage oak behind
@@ -791,9 +791,9 @@ def south_elevation():
     return svg.save("03_elevation_south.svg")
 
 
-def north_elevation():
+def north_elevation(ztop=30):
     # looking south: east on the left. map x' = 60 - x
-    svg = SVG(-6, -2, 74, 30, scale=12, pad=30)
+    svg = SVG(-6, -2, 74, ztop, scale=12, pad=30)
     hatch_defs(svg)
     FF, C, FT = D.FF, D.CEIL, D.FASCIA_TOP
     X = lambda x: 60 - x
@@ -822,9 +822,9 @@ def north_elevation():
     return svg.save("04_elevation_north.svg")
 
 
-def east_elevation():
+def east_elevation(ztop=30):
     # looking west: south (street) on the left -> horizontal = y
-    svg = SVG(20, -2, 106, 30, scale=10.2, pad=30)
+    svg = SVG(20, -2, 106, ztop, scale=10.2, pad=30)
     hatch_defs(svg)
     FF, C, FT = D.FF, D.CEIL, D.FASCIA_TOP
     elev_tree(svg, 46.5, D.HARDSCAPE, 24, 22, 3, stroke=LIGHT, trunk=False)
@@ -854,9 +854,9 @@ def east_elevation():
     return svg.save("05_elevation_east.svg")
 
 
-def west_elevation():
+def west_elevation(ztop=30):
     # looking east: north on the left -> horizontal = 125 - y
-    svg = SVG(20, -2, 106, 30, scale=10.2, pad=30)
+    svg = SVG(20, -2, 106, ztop, scale=10.2, pad=30)
     hatch_defs(svg)
     FF, C, FT = D.FF, D.CEIL, D.FASCIA_TOP
     Y = lambda y: 122 - y

@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 360" width="1020" height="360">
+<defs><pattern id="pavers" width="18" height="12" patternUnits="userSpaceOnUse"><rect width="18" height="12" fill="#f3efe6"/><path d="M0 0 H18 M0 0 V12 M9 6 V12 M0 6 H18" stroke="#d2c9b6" stroke-width="0.6"/></pattern>
+<pattern id="dg" width="7" height="7" patternUnits="userSpaceOnUse"><rect width="7" height="7" fill="#f6f1e7"/><circle cx="2" cy="2" r="0.6" fill="#d6c7ad"/><circle cx="5.5" cy="5" r="0.5" fill="#d6c7ad"/></pattern>
+<pattern id="mosaic" width="7" height="7" patternUnits="userSpaceOnUse"><rect width="7" height="7" fill="#2a2a29"/><path d="M0 2 L3 0 L7 3 M2 7 L4 4 L7 6 M0 5 L3 4" stroke="#8b847a" stroke-width="0.5" fill="none"/></pattern>
+<pattern id="planting" width="9" height="9" patternUnits="userSpaceOnUse"><rect width="9" height="9" fill="#eef1e8"/><circle cx="2.5" cy="2.5" r="1.1" fill="none" stroke="#a9b89a" stroke-width="0.5"/><circle cx="7" cy="6.5" r="0.8" fill="none" stroke="#a9b89a" stroke-width="0.5"/></pattern>
+<pattern id="lawn" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#eef1e6"/><path d="M1 5 l1 -2 M4 2 l1 -2" stroke="#b9c4a3" stroke-width="0.6"/></pattern>
+<pattern id="stone" width="16" height="8" patternUnits="userSpaceOnUse"><rect width="16" height="8" fill="#efe6d2"/><path d="M0 0 H16 M0 4 H16 M5 0 V4 M12 4 V8" stroke="#c9b993" stroke-width="0.5"/></pattern>
+<pattern id="diag" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="#ffffff"/><line x1="0" y1="0" x2="0" y2="5" stroke="#9a9a9a" stroke-width="0.6"/></pattern>
+<pattern id="earth" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#ffffff"/><line x1="0" y1="0" x2="0" y2="8" stroke="#8a8a8a" stroke-width="0.7"/></pattern></defs>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<rect x="30.00" y="306.00" width="960.00" height="16.80" fill="url(#earth)" stroke="none" stroke-width="1.0" />
+<line x1="30.00" y1="306.00" x2="990.00" y2="306.00" stroke="#23262a" stroke-width="1.8" />
+<rect x="174.00" y="174.00" width="576.00" height="132.00" fill="#fbfaf6" stroke="#23262a" stroke-width="1.1" />
+<rect x="192.00" y="186.00" width="66.00" height="36.00" fill="#dfe3e2" stroke="#23262a" stroke-width="1.1" />
+<line x1="201.90" y1="213.00" x2="213.12" y2="202.20" stroke="#ffffff" stroke-width="1.6" />
+<rect x="360.00" y="186.00" width="216.00" height="108.00" fill="#dfe3e2" stroke="#23262a" stroke-width="1.1" />
+<line x1="414.00" y1="294.00" x2="414.00" y2="186.00" stroke="#23262a" stroke-width="0.9" />
+<line x1="468.00" y1="294.00" x2="468.00" y2="186.00" stroke="#23262a" stroke-width="0.9" />
+<line x1="522.00" y1="294.00" x2="522.00" y2="186.00" stroke="#23262a" stroke-width="0.9" />
+<line x1="392.40" y1="267.00" x2="429.12" y2="234.60" stroke="#ffffff" stroke-width="1.6" />
+<rect x="618.00" y="186.00" width="96.00" height="64.80" fill="#dfe3e2" stroke="#23262a" stroke-width="1.1" />
+<line x1="632.40" y1="234.60" x2="648.72" y2="215.16" stroke="#ffffff" stroke-width="1.6" />
+<rect x="312.00" y="295.80" width="312.00" height="10.20" fill="#efe6d2" stroke="#23262a" stroke-width="0.6" />
+<rect x="570.00" y="259.20" width="30.00" height="36.60" fill="#e6dcc6" stroke="#23262a" stroke-width="0.8" />
+<rect x="599.16" y="174.00" width="4.08" height="121.80" fill="#23262a" stroke="#23262a" stroke-width="0.3" />
+<rect x="332.76" y="174.00" width="4.08" height="121.80" fill="#23262a" stroke="#23262a" stroke-width="0.3" />
+<rect x="138.00" y="159.00" width="648.00" height="15.00" fill="#2b2e31" stroke="#2b2e31" stroke-width="0.5" />
+<rect x="306.00" y="174.00" width="324.00" height="1.44" fill="#d9a77d" stroke="none" stroke-width="1.0" />
+<circle cx="462.00" cy="231.60" r="4.56" fill="none" stroke="#6b6f73" stroke-width="0.8" />
+<polyline points="453.00,295.80 456.00,264.60 454.20,238.20 469.80,238.20 468.00,264.60 471.00,295.80" fill="none" stroke="#6b6f73" stroke-width="0.8" />
+<line x1="813.60" y1="159.00" x2="840.00" y2="159.00" stroke="#6b6f73" stroke-width="0.6" />
+<path d="M 825.60,159.00 l -5 -7 l 10 0 z" fill="none" stroke="#23262a" stroke-width="0.8"/>
+<text x="844.80" y="159.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="3">T.O. ROOF  +12'-3"</text>
+<line x1="813.60" y1="174.00" x2="840.00" y2="174.00" stroke="#6b6f73" stroke-width="0.6" />
+<path d="M 825.60,174.00 l -5 -7 l 10 0 z" fill="none" stroke="#23262a" stroke-width="0.8"/>
+<text x="844.80" y="174.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="3">SOFFIT / CLG  +11'-0"</text>
+<line x1="813.60" y1="294.00" x2="840.00" y2="294.00" stroke="#6b6f73" stroke-width="0.6" />
+<path d="M 825.60,294.00 l -5 -7 l 10 0 z" fill="none" stroke="#23262a" stroke-width="0.8"/>
+<text x="844.80" y="294.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="3">F.F.  +1'-0"</text>
+<line x1="444.00" y1="246.00" x2="444.00" y2="84.00" stroke="#6b6f73" stroke-width="0.6" />
+<circle cx="444.00" cy="246.00" r="2.6" fill="#23262a"/>
+<text x="444.00" y="84.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="end" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="-4" dy="3">9' SLIDING GLASS WALL TO VERANDA</text>
+<line x1="666.00" y1="222.00" x2="666.00" y2="120.00" stroke="#6b6f73" stroke-width="0.6" />
+<circle cx="666.00" cy="222.00" r="2.6" fill="#23262a"/>
+<text x="666.00" y="120.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">KITCHEN WINDOW</text>
+<line x1="224.40" y1="204.00" x2="224.40" y2="120.00" stroke="#6b6f73" stroke-width="0.6" />
+<circle cx="224.40" cy="204.00" r="2.6" fill="#23262a"/>
+<text x="224.40" y="120.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">BATH CLERESTORY</text>
+<line x1="584.40" y1="270.00" x2="584.40" y2="48.00" stroke="#6b6f73" stroke-width="0.6" />
+<circle cx="584.40" cy="270.00" r="2.6" fill="#23262a"/>
+<text x="584.40" y="48.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">LIMESTONE GRILL COUNTER (CHURRASQUEIRA)</text>
+<line x1="726.00" y1="270.00" x2="768.00" y2="318.00" stroke="#6b6f73" stroke-width="0.6" />
+<circle cx="726.00" cy="270.00" r="2.6" fill="#23262a"/>
+<text x="768.00" y="318.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">SMOOTH WARM-WHITE STUCCO</text>
+</svg>

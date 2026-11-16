@@ -386,9 +386,28 @@ def build_print(img):
 <table class="sched"><tr><th>Room</th><th>Clear size</th><th style="text-align:right">sf</th></tr>{rr}</table>
 <div class="kv"><div>Conditioned (gross)</div><div>{A["conditioned"]:,.0f} sf</div><div>Veranda (covered)</div><div>{A["veranda"]:.0f} sf</div><div>Pátio + covered entry</div><div>{A["courtyard"]:.0f} sf</div></div></div>'''))
         n += 1
-    P.append(sheet(n, "A-101", "Floor plan, dimensioned", "1/8\" = 1'-0\" (approx.)",
-                   frame("02_floor_plan.svg", 1, "Floor plan", "Graphic scale") +
-                   frame("01_site_plan.svg", 2, "Site plan", "1\" = 30'-0\"", style="flex:0 0 300px")))
+    sch = json.load(open(os.path.join(DRAW, "schedules.json")))
+    dr = "".join(f"<tr><td><span class='code'>{d['tag']}</span></td><td>{d['name']}</td><td>{ft(d['w'])} x {ft(d['h'])}</td>"
+                 f"<td>{d['type']}</td></tr>" for d in sch["doors"])
+    wgroups = {}
+    for w in sch["windows"]:
+        g = wgroups.setdefault(w["tag"], dict(w=w["w"], h=w["h"], sill=w["sill"], kind=w["kind"], names=[]))
+        g["names"].append(w["name"])
+    wr = "".join(f"<tr><td><b>{t}</b></td><td class='num'>{len(g['names'])}</td><td>{ft(g['w'])} x {ft(g['h'])}</td>"
+                 f"<td>{'sliding' if g['kind'] == 'slider' else g['kind']}</td><td>{ft(g['sill']) if g['sill'] else '–'}</td></tr>"
+                 for t, g in sorted(wgroups.items()))
+    kn = "".join(f"<div style='display:grid;grid-template-columns:18px 1fr;gap:4px;font-size:8.5px;line-height:1.25;margin-bottom:3px'>"
+                 f"<b>{i + 1}</b><span>{k}</span></div>" for i, k in enumerate(sch["keynotes"]))
+    P.append(sheet(n, "A-101", "Floor plan", "1/8\" = 1'-0\" (approx.)",
+                   frame("30_floor_plan_cd.svg", 1, "Floor plan", "Graphic scale") +
+                   f'''<div style="width:400px;display:flex;flex-direction:column;gap:8px;min-height:0">
+<div class="eyebrow">Door schedule</div><table class="sched"><tr><th>No.</th><th>Location</th><th>Size</th><th>Type</th></tr>{dr}</table>
+<div class="eyebrow" style="margin-top:4px">Window schedule</div><table class="sched"><tr><th>Mark</th><th style="text-align:right">Qty</th><th>Size</th><th>Type</th><th>Sill</th></tr>{wr}</table></div>''',
+                   side=f'<div class="tb-k" style="margin-bottom:6px">Keynotes</div>{kn}'))
+    n += 1
+    P.append(sheet(n, "A-102", "Roof plan + site plan", "As noted",
+                   frame("31_roof_plan_cd.svg", 1, "Roof plan", "1/16\" = 1'-0\" (approx.)") +
+                   frame("01_site_plan.svg", 2, "Site plan", "1\" = 30'-0\" (approx.)", style="flex:0 0 360px")))
     n += 1
     if img.get("ortho_elev_s"):
         P.append(sheet(n, "A-200", "Elevations, rendered", "1/8\" = 1'-0\" (approx.)",
@@ -401,6 +420,16 @@ def build_print(img):
                        frame("22_elev_e.svg", 3, "East elevation", "Rendered") +
                        frame("22_elev_w.svg", 4, "West elevation", "Rendered") + "</div>"))
         n += 1
+    P.append(sheet(n, "A-202", "Exterior elevations", "1/8\" = 1'-0\" (approx.)",
+                   '<div style="flex:1;display:grid;grid-template-rows:minmax(0,1fr) minmax(0,1fr);gap:10px;min-width:0">' +
+                   frame("32_elev_s_cd.svg", 1, "South elevation (street)", "Graphic scale") +
+                   frame("33_elev_n_cd.svg", 2, "North elevation (veranda)", "Graphic scale") + "</div>"))
+    n += 1
+    P.append(sheet(n, "A-203", "Exterior elevations", "1/8\" = 1'-0\" (approx.)",
+                   '<div style="flex:1;display:grid;grid-template-rows:minmax(0,1fr) minmax(0,1fr);gap:10px;min-width:0">' +
+                   frame("34_elev_e_cd.svg", 3, "East elevation", "Graphic scale") +
+                   frame("35_elev_w_cd.svg", 4, "West elevation", "Graphic scale") + "</div>"))
+    n += 1
     cl = "".join(f'<div class="move"><div class="k">{i + 1}</div><div><h3>{t}</h3><p>{p}</p></div></div>'
                  for i, (t, p) in enumerate(CLIMATE))
     P.append(sheet(n, "A-300", "Building section", "1/8\" = 1'-0\" (approx.)",
