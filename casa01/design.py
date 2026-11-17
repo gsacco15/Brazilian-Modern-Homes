@@ -137,7 +137,7 @@ ROOMS = [
     dict(name="Walk-in", poly=[(43.2, 71.7), (50.8, 71.7), (50.8, 79.5), (43.2, 79.5)], label=(47.0, 78.0), small=True),
     dict(name="Primary Bath", poly=[(51.2, 71.7), (59.0, 71.7), (59.0, 79.5), (51.2, 79.5)], label=(56.0, 75.0), small=True),
     dict(name="Bedroom 3", poly=[(6.5, 48.7), (20.8, 48.7), (20.8, 59.8), (6.5, 59.8)], label=(13.6, 55.6)),
-    dict(name="Bath 2", poly=[(13.2, 41.7), (20.8, 41.7), (20.8, 48.3), (13.2, 48.3)], label=(17.0, 45.0), small=True),
+    dict(name="Bath 2", poly=[(13.2, 41.7), (20.8, 41.7), (20.8, 48.3), (13.2, 48.3)], label=(18.35, 45.1), small=True),
     dict(name="Cl.", poly=[(6.5, 41.7), (12.8, 41.7), (12.8, 44.8), (6.5, 44.8)], label=(9.7, 43.3), small=True, show_area=False),
     dict(name="Cl.", poly=[(6.5, 45.2), (12.8, 45.2), (12.8, 48.3), (6.5, 48.3)], label=(9.7, 46.8), small=True, show_area=False),
     dict(name="Bedroom 2", poly=[(6.5, 30.5), (20.8, 30.5), (20.8, 41.3), (6.5, 41.3)], label=(13.6, 34.6)),
@@ -240,7 +240,7 @@ FURNITURE = [
     # Bath 2 (V2): tub/shower on the far wall, vanity + toilet on the long walls, door swing clear
     dict(t="tub", x=14.55, y=44.2, w=2.67, d=5.0, face="n"),
     dict(t="vanity", x=17.9, y=47.42, w=3.0, d=1.75),
-    dict(t="wc", x=17.4, y=42.75, face="n"),
+    dict(t="wc", x=17.6, y=42.75, face="n"),
     # Laundry (V2): stacked washer/dryer + heat-pump water heater; door swings out
     dict(t="washer", x=7.8, y=61.35, label="W/D"), dict(t="wh", x=10.4, y=61.25),
     # Veranda
@@ -263,17 +263,34 @@ PRIMARY_BATH = dict(
     shower=(51.19, 76.5, 59.0, 79.5),             # full-width walk-in along the north wall
     glass=(51.19, 55.9, 76.5),                    # fixed glass panel x0..x1 at y; entry 55.9..59.0
     rain_head=(52.9, 78.0),
+    drain=(53.2, 79.3, 58.0),                     # linear slot drain x0, y, x1 (curbless, slab recessed)
     bench=(51.19, 76.6, 52.5, 79.4),              # floating limestone bench at the west end
     vanity=(51.19, 72.2, 52.95, 76.2),            # floating rift-oak vanity on the west wall
     sink=(52.05, 74.2), mirror=(74.2, 2.4),       # vessel sink; round mirror center y, diameter
     sconces=(72.85, 75.55),
     plant=(58.3, 75.5),
 )
+# V2 (tracker P1-56/57): concrete floors in both baths, tile only in the wet zones; the hall bath
+# keeps the house's one tub, styled like the primary, in terracotta instead of green
+HALL_BATH = dict(
+    room=(13.2, 41.7, 20.8, 48.3),
+    tub=(13.2, 41.7, 15.9, 46.7),                 # 30x60 alcove tub on the west wall
+    glass=(15.9, 41.7, 44.2),                     # fixed glass panel on the tub edge: x, y0..y1 (no curtain)
+    tile=[(13.2, 41.7, 15.9, 46.7)],              # terracotta zellige-look floor to ceiling around the tub
+    niche=(13.2, 43.0, 45.4, 4.2, 5.4),           # wall x, y0..y1, z0..z1 above FF: tiled niche
+    shelf=(13.2, 46.7, 15.9, 48.3),               # oak open shelving in the alcove beside the tub
+    vanity=(16.45, 46.55, 19.35, 48.3),           # floating rift-oak vanity on the north wall
+    sink=(17.9, 47.45), mirror=(17.9, 1.55, 2.9), # rectangular vessel; pill mirror center x, w, h
+    sconces=(16.75, 19.05),
+    wc=(17.6, 42.75),                             # wall-hung, on the south wall
+)
 BATH_FINISHES = [
-    ("Floor", "Ladrilho hidráulico", "8x8 cement-look porcelain, terracotta / bone / green"),
-    ("Shower walls", "Azulejo / zellige", "2.5x8 zellige-look glazed porcelain, green, floor to ceiling"),
+    ("Floors", "Concreto polido", "Honed concrete, low sheen, slip-resistant sealer (both baths, same as the house)"),
+    ("Primary shower", "Azulejo / zellige", "2.5x8 zellige-look glazed porcelain, green, floor to ceiling; matte mosaic floor, curbless"),
+    ("Hall bath tub", "Azulejo terracota", "2.5x8 zellige-look glazed porcelain, terracotta, to the ceiling; fixed glass panel"),
     ("Vanity", "Tauari / freijó", "Floating rift white oak, honed limestone top, vessel sink"),
-    ("Fixtures", "Metais dourados", "Brushed brass rain head, wall faucet, round mirror, sconces"),
+    ("Fixtures", "Metais dourados", "Brushed brass; round mirror (primary), pill mirror (hall bath), sconces"),
+    ("Skylights", "Claraboias", "Over the primary shower and the hall bath tub; fixed, laminated low-E"),
     ("Ceiling", "Forro branco", "Painted moisture-resistant gypsum, warm white (cedar kept for the great room)"),
 ]
 
@@ -305,7 +322,8 @@ PLANTING = [
 ]
 
 # V2 skylights (low-slope roof): daylight for the windowless Bath 2 and the walk-in closet
-SKYLIGHTS = [dict(name="Bath 2", rect=(15.9, 44.0, 19.9, 46.0)),
+SKYLIGHTS = [dict(name="Bath 2", rect=(13.55, 42.2, 15.55, 46.2)),          # 2x4 over the tub
+             dict(name="Primary shower", rect=(53.6, 77.0, 56.6, 79.0)),   # 2x3, middle of the shower
              dict(name="Walk-in", rect=(46.0, 74.6, 48.0, 76.6))]
 
 # V2 HVAC (tracker P1-32, option A): one variable-speed outdoor heat pump on a pad in the west

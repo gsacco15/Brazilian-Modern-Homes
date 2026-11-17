@@ -96,6 +96,7 @@ KEYNOTES = [
     "Dropped ceiling 8'-6\" for ducts + air handler (dash-dot); living spaces stay 10'-0\"",
     "Add alternate 1: motorized sliding cedar gate; parks behind the cobogó when open (dashed)",
     "Gate rough-in, built with the slab: 12\" concrete track strip, motor pad, conduit to house + east post",
+    "Tub with fixed glass panel; terracotta zellige-look porcelain to the ceiling, tiled niche",
 ]
 
 
@@ -227,6 +228,11 @@ def floor_plan_cd():
     sx0, sy0, sx1, sy1 = B["shower"]
     svg.layer = "A-FLOR-PATT"
     svg.rect(sx0, sy0, sx1, sy1, fill="url(#tileh)", stroke="none")
+    hb = getattr(D, "HALL_BATH", None)
+    if hb:   # fixed glass panel on the tub edge
+        svg.layer = "A-GLAZ"
+        gx, gy0, gy1 = hb["glass"]
+        svg.line(gx, gy0 + 0.1, gx, gy1, "#5d8fa0", 2.0)
     # built-ins / fixtures only (no loose furniture on a CD plan)
     for it in D.FURNITURE:
         t = it["t"]
@@ -496,6 +502,8 @@ def floor_plan_cd():
     keynote(svg, 19.75, 85.2, 10)
     keynote(svg, 44.0, 46.5, 11)
     keynote(svg, D.PRIMARY_BATH["shower"][2] - 0.9, 78.3, 12)
+    if hb:
+        keynote(svg, hb["tub"][0] + 0.7, hb["tub"][1] + 0.7, 19)
     if cp:
         keynote(svg, cp["x0"] + 1.4, (cp["y0"] + cp["y1"]) / 2, 13)
     if sl:
@@ -508,9 +516,9 @@ def floor_plan_cd():
     if hv:
         x0, y0, x1, y1 = hv["pad"]
         keynote(svg, (x0 + x1) / 2, y1, 14, (x0 + x1) / 2, y1 + 2.4)
-    for k in sk:
+    for k in sk:   # tag inside the skylight outline
         x0, y0, x1, y1 = k["rect"]
-        keynote(svg, x1, y1, 15, x1 + 1.6, y1 + 1.6)
+        keynote(svg, (x0 + x1) / 2, (y0 + y1) / 2, 15)
     if hv:
         x0, y0, x1, y1 = hv["dropped"][3]["rect"]
         keynote(svg, x0 + 0.3, y1 - 0.3, 16, x0 - 3.7, y1 + 1.2)

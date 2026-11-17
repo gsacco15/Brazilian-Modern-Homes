@@ -38,16 +38,17 @@ CHANGES = [
     ((10.2, 52.6), "Bedroom wing 2 ft narrower",
      "Bedrooms 2 and 3 are 14'-3\" wide (were 16'-3\"), about 155 sf each, still fitting a queen bed and desk. "
      "This keeps the courtyard 22'-6\" wide (V1: 26 ft) and the cobogó 17 ft (V1: 21 ft)."),
-    ((15.8, 42.6), "Bath 2 re-planned",
-     "Tub/shower on the far wall, vanity and toilet on the long walls; the door from the gallery swings into clear floor."),
+    ((15.8, 42.6), "Hall bath re-planned",
+     "The house's one tub, on the far wall, with a fixed glass panel (no curtain), terracotta zellige-look tile to the "
+     "ceiling, a tiled niche and a skylight over it. Vanity and toilet on the long walls; the door swings into clear floor."),
     ((19.3, 51.6), "Door swings cleared",
      "Bedroom 2 and 3 doors moved clear of the beds, the laundry door now swings out, the primary bath door clears the vanity. "
      "Every door has a tag (D1-D16), including the front pivot door D1."),
     ((32.0, 81.6), "Stock-size glass",
      "Veranda slider 16 ft (was a custom 18 ft), courtyard slider a stock 12 ft 3-panel (was 9'-6\"), primary 8 ft slider "
      "+ 4 ft window. The gallery glass wall stays as is."),
-    ((46.25, 75.6), "Two skylights",
-     "Over the windowless Bath 2 and the walk-in closet (dashed X)."),
+    ((46.25, 75.6), "Three skylights",
+     "Over the middle of the primary shower, the hall bath tub and the walk-in closet (dashed X)."),
     ((3.0, 59.6), "HVAC: one outdoor unit",
      "AC pad in the west side yard. Two hidden air handlers: AHU-1 above the laundry, AHU-2 above the walk-in. Dropped "
      "8'-6\" ceilings only over laundry, closets, Bath 2 and walk-in (dash-dot). Living spaces stay 10 ft."),
@@ -60,7 +61,8 @@ CHANGES = [
 SPEC_CHANGES = [
     "Cedar ceiling in the great room only; bedrooms, gallery and baths painted (soffits, veranda and street edge stay cedar).",
     "Buff Lueders limestone at the street wall.",
-    "Zellige-look glazed porcelain in the primary shower (same look, lower cost).",
+    "Zellige-look glazed porcelain in the primary shower (same look, lower cost); terracotta in the hall bath.",
+    "Concrete floors in both baths, honed, slip-resistant sealer; tile only in the wet zones (curbless primary shower).",
     "Roof: low-slope TPO behind the bronze fascia stays the working assumption (marked TBD).",
 ]
 KEPT = ["Gallery glass wall (a signature feature)", "Laundry location", "Front cedar pivot door + entry gate",
@@ -175,12 +177,12 @@ def main():
                 ("Courtyard width / cobogó", "26'-0\" / 21 ft", "22'-6\" / 17 ft"),
                 ("Carport", "—", f"{area['carport']:,.0f} sf, cedar gate optional"),
                 ("Roof plate", "2,760 sf", f"{area['roof']:,.0f} sf"), ("Bedrooms / baths", "3 / 2", "3 / 2"),
-                ("Skylights", "—", "2")]
+                ("Skylights", "—", "3")]
     cmp = "".join(f"<tr><td>{a}</td><td class='n'>{b}</td><td class='n'><b>{c}</b></td></tr>" for a, b, c in cmp_rows)
     cost = [("Conditioned area +50 sf net (great room +80, primary suite +30, bedroom wing −60)", "Adds about $12–18K"),
             ("Carport, no storage", "Adds about $15–25K"), ("Gate rough-in: track strip, motor pad, conduit", "Adds about $1–1.5K"),
             ("Sliding cedar gate, optional", "Adds about $7–12K if chosen"),
-            ("East slat screen", "Adds about $1–2K"), ("Two skylights", "Adds $4–8K"), ("HVAC option A", "About $0–8K"),
+            ("East slat screen", "Adds about $1–2K"), ("Three skylights", "Adds $6–12K"), ("HVAC option A", "About $0–8K"),
             ("Cedar ceilings scaled back", "Saves $15–30K"), ("Stock-size glass", "Saves about $10–25K"),
             ("Zellige-look porcelain", "Saves $3–8K")]
     costr = "".join(f"<tr><td>{a}</td><td>{b}</td></tr>" for a, b in cost)
