@@ -39,6 +39,9 @@ VIEWS = {
                       sun=192, strength=1.0, exposure=0.7, night=False),
     "entry": dict(cam=(47.2, 34.6, D.HARDSCAPE + 5.0), tgt=(26.0, 32.5, 5.6), lens=22, hdri="day", sun=198,
                   strength=1.0, exposure=0.95, night=False),
+    # just inside the main gate, looking right into the courtyard (front door at your left)
+    "gate": dict(cam=(29.4, 31.4, D.HARDSCAPE + 5.3), tgt=(48.0, 45.0, 6.9), lens=16, hdri="day", sun=200,
+                 strength=1.0, exposure=0.85, night=False),
     "veranda": dict(cam=(41.8, 90.4, D.HARDSCAPE + 4.9), tgt=(20.5, 83.8, 5.4), lens=20, hdri="afternoon",
                     sun=284, strength=1.0, exposure=0.9, night=True, night_level=0.35),
     "interior": dict(cam=(29.6, 61.0, D.FF + 4.5), tgt=(41.0, 71.5, D.FF + 3.6), lens=18, hdri="day", sun=200,

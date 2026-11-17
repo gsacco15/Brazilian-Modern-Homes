@@ -23,8 +23,8 @@ DRAW = os.path.join(CASA, "drawings")
 IMG = os.path.join(HERE, "img")
 WEB = os.path.join(HERE, "web")
 
-VIEWS = ["street", "street_dusk", "entry", "courtyard", "interior", "kitchen", "gallery", "veranda", "rear", "aerial",
-         "bath", "bath2"]
+VIEWS = ["street", "street_dusk", "gate", "entry", "courtyard", "interior", "kitchen", "gallery", "veranda", "rear",
+         "aerial", "bath", "bath2"]
 ORTHO_VIEWS = ["plan_render", "site_render", "elev_s", "elev_n", "elev_e", "elev_w"]
 SWATCHES = [
     ("limestone", "Lueders limestone", "Pedra São Tomé / moledo", "Sawn-face ashlar, 3 course heights"),
@@ -35,7 +35,7 @@ SWATCHES = [
     ("pavers", "Limestone pavers", "São Tomé paving", "24x36 thermal-finish, courtyard + veranda"),
     ("oak", "Rift white oak", "Tauari interiors", "Kitchen cabinets, credenza, desks"),
     ("granite", "Honed black granite", "Brazilian dark stone", "Island + counters, 1.5\" honed"),
-    ("tile", "Green glazed tile", "Azulejo", "4x4 handmade-look backsplash"),
+    ("tile", "Green glazed tile", "Azulejo", "4x4 handmade-look backsplash; zellige-look in the baths"),
     ("bronze", "Dark bronze aluminum", "Slim steel frames", "Fascia, window frames, posts"),
     ("dg", "Decomposed granite", "Terra batida", "Stabilized paths, meadow mulch"),
     ("calcada", "Black stone mosaic", "Calçada portuguesa", "50 sf at the entry, light concrete band"),
@@ -103,7 +103,14 @@ def quantities():
     soffit = sum((z["x1"] - z["x0"]) * (z["y1"] - z["y0"]) for z in D.CEDAR_SOFFITS)
     ceil = sum((z["x1"] - z["x0"]) * (z["y1"] - z["y0"]) for z in D.CEDAR_CEILINGS)
     s = D.CEDAR_SCREEN
-    slats = int((s["y1"] - s["y0"]) / (s["slat_w"] + s["gap"]))
+    run = (s["y1"] - s["y0"]) - sum(b - a for a, b in s.get("openings", []))
+    run += sum((sc.get("x1", 0) - sc.get("x0", 0)) if sc["axis"] == "x" else (sc["y1"] - sc["y0"])
+               for sc in getattr(D, "SLAT_SCREENS", []))
+    slats = int(run / (s["slat_w"] + s["gap"]))
+    area = D.area_schedule()
+    sl = getattr(D, "CARPORT_SLIDER", None)
+    sk = getattr(D, "SKYLIGHTS", [])
+    ndoors = sum(1 for p in D.PARTITIONS for o in p["openings"])
     sliders = [o for w in D.EXT_WALLS for o in w["openings"] if o["kind"] == "slider"]
     windows = [o for w in D.EXT_WALLS for o in w["openings"] if o["kind"] in ("fixed", "casement")]
     glass_lf = sum(o["w"] for o in sliders)
@@ -111,9 +118,14 @@ def quantities():
         ("Cobogó screen", f"{nx * nz} blocks", f"{nx} x {nz} courses, {nx * nz} sf, on cast curb"),
         ("Limestone feature wall", f"{lime:.0f} sf", f"{lw['x1'] - lw['x0']:.1f}' long x {lw['z1']:.0f}' high, one slot window"),
         ("Cedar soffits (outside)", f"{soffit:.0f} sf", "Entry canopy, courtyard eaves, veranda"),
-        ("Cedar ceilings (inside)", f"{ceil:.0f} sf", "Great room + gallery, same boards as soffit"),
-        ("Cedar slat screen", f"{slats} slats", f"2x4 @ 5\" o.c., {s['y1'] - s['y0']:.1f}' run x 10' high"),
-        ("Sliding glass walls", f"{len(sliders)} units", f"{glass_lf:.1f} lf total, 9'-0\" tall, dark bronze"),
+        ("Cedar ceilings (inside)", f"{ceil:.0f} sf", "Great room only, same boards as the soffits"),
+        ("Cedar slat screens", f"{slats} slats", f"2x4 @ 5\" o.c., {run:.0f}' run x 10' high, carport + pátio sides"),
+        ("Sliding glass walls", f"{len(sliders)} units", f"{glass_lf:.1f} lf total, stock sizes, 9'-0\" tall, dark bronze"),
+        ("Carport", f"{area.get('carport', 0):,.0f} sf", "Slab at the courtyard level under the main roof; one car"),
+        ("Sliding cedar carport gate", "1 (option)" if sl else "—",
+         f"{(sl['x1'] - sl['x0']):.0f}' wide, motorized; track strip, pad + conduit in the base" if sl else ""),
+        ("Skylights", f"{len(sk)} units", "Fixed, laminated low-E: primary shower, hall bath tub, walk-in"),
+        ("Interior doors", f"{ndoors} openings", "Rift oak veneer, solid core, brass levers; bypass closets"),
         ("Windows", f"{len(windows)} units", "Casements (egress) + fixed slot / clerestory / kitchen"),
         ("Roof plate", f"{D.poly_area(D.ROOF):,.0f} sf", f"Low-slope TPO, {perim(D.ROOF):.0f} lf of 15\" bronze fascia"),
         ("Steel posts", f"{len(D.POSTS)} posts", "4\" square HSS, dark bronze"),
@@ -320,7 +332,7 @@ def build_print(img):
     hero = img.get("street", "")
     P.append(f'''<section class="page cover"><div class="panel"><div class="eyebrow">Concept design package / November 2026</div>
 <div class="goldrule"></div><h1>Casa 01<br>Casa Pátio</h1><div class="tagline">Brazilian modern for Austin</div>
-<p>A 1,620 sf, three-bedroom courtyard house. One thin roof, one private garden, and one limestone wall, built with ordinary Texas framing.</p>
+<p>A {A["conditioned"]:,.0f} sf, three-bedroom courtyard house with a covered carport. One thin roof, one private garden, and one limestone wall, built with ordinary Texas framing.</p>
 <div class="bottom">Brazilian soul. Texas materials.<br>Renders + plans + finishes</div></div>
 <div style="position:relative"><img class="fill" src="{hero}" alt="Casa 01 street view"></div></section>''')
     facts = "".join(f'<div><div class="n">{a}</div><div class="l">{b}</div></div>' for a, b in FACTS)
@@ -333,39 +345,60 @@ def build_print(img):
 <figure style="margin:0;display:flex;flex-direction:column;gap:8px;min-height:0"><div style="flex:1;min-height:0;overflow:hidden"><img class="fill" src="{img.get("aerial", "")}" alt="Aerial view"></div>
 <figcaption><b>Aerial</b>The L-shaped plan wraps the pátio. The roof plate covers the entry and veranda; the courtyard stays open to the sky.</figcaption></figure></div>'''))
     P.append(bleed(3, img.get("street", ""), "02 / Street", "A long, low line on the street",
-                   "Limestone wall, cedar gate, cobogó screen, under one 54-foot roof edge. Front yard: decomposed "
-                   "granite, agave, sotol and Mexican feather grass. No lawn to water.",
-                   ["Lueders limestone ashlar", "Cedar slat pivot gate", "12x12 concrete cobogó", "15\" dark bronze fascia"]))
+                   "Limestone wall, cedar pivot gate, cobogó screen and a sliding cedar carport gate, under one "
+                   "57-foot roof edge. The car is never part of the facade. Front yard: decomposed granite, agave, "
+                   "sotol and Mexican feather grass. No lawn to water.",
+                   ["Lueders limestone ashlar", "Cedar slat pivot gate", "12x12 concrete cobogó",
+                    "Sliding cedar carport gate (option)", "15\" dark bronze fascia"]))
     P.append(bleed(4, img.get("street_dusk", ""), "03 / Dusk", "The screen turns into a lantern",
-                   "Courtyard lights wash the inside face of the cobogó, so the circles glow at night. In-grade "
-                   "grazers rake the limestone. Low path lights mark the stepping slabs.",
+                   "Courtyard lights wash the inside face of the cobogó, so the circles glow at night, and the "
+                   "carport lights glow through the gate slats. In-grade grazers rake the limestone. Low path lights "
+                   "mark the stepping slabs.",
                    ["Courtyard backlight through cobogó", "2700K in-grade grazers"]))
     P.append(page(5, "04 / Arrival", "You enter through the garden",
-                  "Through the gate, under a cedar canopy, past the pátio to a cedar pivot door.",
-                  f'<div class="two">{fig(img.get("entry", ""), "Covered entry", "Sun through the cobogó draws circles on the limestone pavers. The front door is on the left, inside the screen.")}'
-                  f'{fig(img.get("courtyard", ""), "Pátio", "Dwarf palmetto, ferns and muhly grass under a limbed-up oak. The gallery glass (right) lines the whole garden.")}</div>'))
-    P.append(bleed(6, img.get("interior", ""), "05 / Great room", "One room between two gardens",
+                  "On foot through the cedar gate, by car through a cedar side gate from the carport: both land in "
+                  "the covered entry, on one level, at the cedar pivot door.",
+                  f'<div class="two">{fig(img.get("gate", img.get("courtyard", "")), "Through the main gate", "Step in and the pátio opens to the right under the oak; the front door is on your left, inside the screen. The carport side gate is at the far end.")}'
+                  f'{fig(img.get("entry", ""), "Covered entry", "Black calçada underfoot, the cobogó beside you, the cedar pivot door ahead. Sun through the screen draws circles on the pavers.")}</div>'))
+    P.append(bleed(6, img.get("courtyard", ""), "05 / Pátio", "One garden, open to the sky",
+                   f"The pátio wraps behind the carport to the primary bedroom: {A['courtyard']:.0f} sf with the "
+                   "covered entry. Dwarf palmetto, ferns and muhly under a limbed-up oak; cedar slats on the carport "
+                   "sides, and a slat screen on the east edge lets the morning light in.",
+                   ["One L-shaped courtyard", "Cedar slat screens", "Limbed-up oak, native shade garden"]))
+    P.append(bleed(7, img.get("interior", ""), "06 / Great room", "One room between two gardens",
                    "Dining and living open south to the pátio and north to the veranda. Cedar ceiling, polished "
-                   "concrete floor, warm-white walls: three materials do most of the work.",
-                   ["Cedar T&G ceiling", "Polished concrete slab", "Leather + linen + walnut"]))
-    P.append(page(7, "06 / Interiors", "Kitchen and gallery",
+                   "concrete floor, warm-white walls: three materials do most of the work. A low walnut-framed "
+                   "sofa with loose linen cushions faces the room.",
+                   ["Cedar T&G ceiling", "Polished concrete slab", "Walnut + linen + leather"]))
+    P.append(page(8, "07 / Interiors", "Kitchen and gallery",
                   "Light oak, black stone and one green tile: a Brazilian palette with materials stocked in Austin.",
                   f'<div class="two">{fig(img.get("kitchen", ""), "Kitchen", "Rift white oak cabinets, honed black granite island with waterfall ends, green glazed tile backsplash, open shelf.")}'
-                  f'{fig(img.get("gallery", ""), "Gallery", "The bedroom hall is a 30-foot glass wall on the pátio. Bedrooms open off it; the front door is at the far end.")}</div>'))
-    P.append(page(8, "07 / Veranda", "Outdoor living under the oak",
+                  f'{fig(img.get("gallery", ""), "Gallery", "The bedroom hall is a 30-foot glass wall on the pátio. Rift-oak doors open off it to the bedrooms and the hall bath; the front door is at the far end.")}</div>'))
+    P.append(page(9, "08 / Veranda", "Outdoor living under the oak",
                   "276 sf covered, north-facing, with a limestone grill counter and two ceiling fans.",
                   f'<div class="two">{fig(img.get("veranda", ""), "Veranda", "The great room ceiling continues outside as the soffit. Teak table for eight, churrasqueira at the far end.")}'
                   f'{fig(img.get("rear", ""), "Rear yard", "The house sits forward on the lot to protect the heritage live oak. Buffalo grass and native beds behind.")}</div>'))
-    n = 9
+    n = 10
     if img.get("bath"):
         bf = "".join(f"<tr><td>{a}</td><td><i>{b}</i></td><td>{c}</td></tr>" for a, b, c in D.BATH_FINISHES)
-        P.append(page(n, "08 / Primary bath", "A spa-style wet room",
-                      "7'-10\" square: walk-in shower along the window wall, floating oak vanity, patterned cement-look tile.",
+        P.append(page(n, "09 / Primary bath", "A spa-style wet room",
+                      "7'-10\" square: a curbless walk-in shower with a skylight in the middle, floating oak vanity, "
+                      "honed concrete floor.",
                       f'''<div style="display:grid;grid-template-columns:1fr 400px;gap:24px;height:100%;grid-template-rows:minmax(0,1fr)">
 <figure style="margin:0;display:flex;flex-direction:column;gap:8px;min-height:0"><div style="flex:1;min-height:0;overflow:hidden"><img class="fill" src="{img["bath"]}" alt="Primary bath render"></div>
-<figcaption><b>Primary bath</b>Green zellige to the ceiling, a fixed glass panel, brass rain head, limestone bench, and a garden window into a fenced side yard.</figcaption></figure>
+<figcaption><b>Primary bath</b>Green zellige-look tile to the ceiling, a fixed glass panel, brass rain head, limestone bench, a skylight overhead and a garden window into a fenced side yard.</figcaption></figure>
 <div class="side"><div class="dwgwrap" style="height:300px">{svg_inline("09_bath_plan.svg")}</div>
 <table class="sched"><tr><th>Element</th><th>Brazilian ref.</th><th>Austin spec</th></tr>{bf}</table></div></div>'''))
+        n += 1
+    if img.get("bath2"):
+        P.append(page(n, "10 / Hall bath", "The house's one tub, done like the primary",
+                      "Terracotta instead of green, the same oak, brass and stone. A fixed glass panel, no curtain, "
+                      "and a skylight over the tub.",
+                      f'''<div style="display:grid;grid-template-columns:1fr 400px;gap:24px;height:100%;grid-template-rows:minmax(0,1fr)">
+<figure style="margin:0;display:flex;flex-direction:column;gap:8px;min-height:0"><div style="flex:1;min-height:0;overflow:hidden"><img class="fill" src="{img["bath2"]}" alt="Hall bath render"></div>
+<figcaption><b>Hall bath</b>Terracotta zellige-look tile to the ceiling around the tub, a tiled niche, open oak shelves, a pill mirror with brass sconces and a rectangular vessel on limestone.</figcaption></figure>
+<div class="side"><div class="dwgwrap" style="height:300px">{svg_inline("10_hall_bath_plan.svg")}</div>
+<div class="note"><b>A per-client swap</b>Clients without small children can trade the tub for a walk-in shower like the primary's in the same footprint (about +$2–4K). Floors stay concrete either way.</div></div></div>'''))
         n += 1
     if img.get("ortho_site_render"):
         rows = json.load(open(os.path.join(DRAW, "plant_schedule.json")))
@@ -439,17 +472,17 @@ def build_print(img):
     P.append(sheet(n, "A-500", "Signature detail", "3\" = 1'-0\"",
                    frame("08_cobogo_detail.svg", 1, "Cobogó breeze block", "Block, section, tiled field") +
                    f'''<div class="side" style="width:300px"><figure style="margin:0;display:flex;flex-direction:column;gap:8px;height:300px"><div style="flex:1;overflow:hidden"><img class="fill" src="{img.get("entry", "")}" alt="Cobogó in light" style="object-position:12% 50%"></div><figcaption><b>In light</b>Morning and winter sun cast the pattern onto the pavers.</figcaption></figure>
-<div class="note"><b>Sourcing</b>US-made breeze blocks come in circle patterns close to this one. A precaster can also cast a custom mold for 210 blocks. Get both prices.</div></div>'''))
+<div class="note"><b>Sourcing</b>US-made breeze blocks come in circle patterns close to this one. A precaster can also cast a custom mold for {int(D.COBOGO["x1"] - D.COBOGO["x0"]) * int(D.COBOGO["z1"] - D.COBOGO["z0"])} blocks. Get both prices.</div></div>'''))
     n += 1
     sw = "".join(f'''<div class="t"><img src="{img.get("sw_" + k, "")}" alt="{n}"><h4>{n}</h4><div class="br">{br}</div><div class="sp">{sp}</div></div>'''
                  for k, n, br, sp in SWATCHES)
-    P.append(page(n, "13 / Finishes", "Finish board",
+    P.append(page(n, "11 / Finishes", "Finish board",
                   "Each tile is rendered with the same material used in the renders. Gold italics: the Brazilian reference it replaces.",
                   f'<div class="sw">{sw}</div>'))
     q = "".join(f"<tr><td>{a}</td><td class='num'>{b}</td><td>{c}</td></tr>" for a, b, c in quantities())
     conv = "".join(f"<li>{c}</li>" for c in CONVENTIONAL)
     lo, hi = 325 * A["conditioned"], 425 * A["conditioned"]
-    P.append(page(n + 1, "14 / For the builder", "Quantities and planning budget",
+    P.append(page(n + 1, "12 / For the builder", "Quantities and planning budget",
                   "Counts come straight from the 3D model, so a builder can price the signature elements early.",
                   f'''<div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;height:100%">
 <div><table><tr><th>Signature element</th><th style="text-align:right">Qty</th><th>Notes</th></tr>{q}</table></div>
@@ -457,8 +490,10 @@ def build_print(img):
 <div class="kv"><div>Construction at $325–$425 / sf</div><div>${lo / 1000:,.0f}K–${hi / 1000:,.0f}K</div>
 <div>Site work + utilities</div><div>$20K–$50K</div><div>Design, engineering, permits</div><div>$25K–$50K</div>
 <div>Entry calçada allowance (designer)</div><div>$1K–$4.5K</div>
+<div>Carport (slab, roof, posts, gate rough-in)</div><div>$15K–$25K</div>
 <div>Contingency (~10%)</div><div>${lo * 0.1 / 1000:,.0f}K–${hi * 0.1 / 1000:,.0f}K</div>
-<div>Total, excluding land</div><div>${(lo * 1.1 + 46000) / 1000:,.0f}K–${(hi * 1.1 + 104500) / 1000:,.0f}K</div></div>
+<div>Total, excluding land</div><div>${(lo * 1.1 + 61000) / 1000:,.0f}K–${(hi * 1.1 + 129500) / 1000:,.0f}K</div>
+<div>Option: sliding cedar carport gate</div><div>+$7K–$12K</div></div>
 <div class="note"><b>Planning numbers, not bids</b>Ranges carry over from the earlier feasibility notes. Next step: price these quantities with two Austin builders, then adapt the plan to a real lot.</div></div></div>'''))
     return P
 

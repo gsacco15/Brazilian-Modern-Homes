@@ -129,7 +129,7 @@ function onModel(g){
       if(LMAPS&&NM[n]&&!m.normalMap){m.normalMap=nmap(NM[n][0]);m.normalScale=new THREE.Vector2(NM[n][1],NM[n][1])}
       if(n==='web_floor'){m.roughness=0.22}
       if(m.map){m.map.anisotropy=renderer.capabilities.getMaxAnisotropy()}});});
-  // the cobogó: 210 real 12x12x4 blocks (one extruded block, instanced) instead of a flat cut-out
+  // the cobogó: the real 12x12x4 blocks (one extruded block, instanced) instead of a flat cut-out
   // picture, so the screen has depth and blocks the view at an angle like the real thing
   root.traverse(o=>{if(/^Cobogo_screen/.test(o.name))o.traverse(c=>{c.visible=false})});
   {const b=CB.block*M,h=b/2,rc=0.24*b,re=0.085*b,PI=Math.PI,sh=new THREE.Shape();
@@ -265,9 +265,8 @@ FINISH_INFO = {
     "limestone": ["Lueders limestone", "pedra São Tomé", "Sawn-face ashlar in three course heights. One street wall only."],
     "pavers": ["Limestone pavers", "São Tomé paving", "24x36 thermal-finish pavers on the pátio and veranda."],
     "calcada": ["Black stone mosaic", "calçada portuguesa", "50 sf of black basalt setts (or Techo-Bloc Antika Onyx Black) in the shaded entry, framed by light concrete."],
-    "ladrilho": ["Patterned cement-look tile", "ladrilho hidráulico", "8x8 terracotta, bone and green, primary bath floor."],
-    "zellige": ["Green glazed tile", "azulejo", "2.5x8 handmade-look tile, shower floor to ceiling."],
-    "cobogo": ["Concrete cobogó", "the Recife cobogó (1929)", "12x12x4 precast breeze block, white cement, 210 blocks."],
+    "zellige": ["Zellige-look glazed tile", "azulejo", "2.5x8 handmade-look porcelain: green in the primary shower, terracotta around the hall bath tub."],
+    "cobogo": ["Concrete cobogó", "the Recife cobogó (1929)", f"12x12x4 precast breeze block, white cement, {int(D.COBOGO['x1'] - D.COBOGO['x0']) * int(D.COBOGO['z1'] - D.COBOGO['z0'])} blocks."],
     "cedar_z": ["Western red cedar slats", "freijó / brise-soleil", "2x4 slats at 5\" on center on a steel frame."],
     "cedar_y": ["Cedar T&G ceiling + soffit", "freijó ceilings", "Clear 1x6 tongue and groove, natural oil. Runs inside and out."],
     "cedar_x": ["Teak outdoor furniture", "", "Outdoor dining set."],
@@ -301,6 +300,7 @@ PANOS = [("street", "Street"), ("entry", "Covered entry"), ("patio", "Pátio"), 
 
 GALLERY = [
     ("street", "Street", "Limestone wall, cedar pivot gate, cobogó and the sliding cedar carport gate under one long roof edge. Native meadow instead of lawn.", True),
+    ("gate", "Through the gate", "Step through the cedar gate: the pátio opens to the right under the oak, the front door is on your left.", False),
     ("street_dusk", "Dusk", "Lights behind the cobogó and the carport slats turn the front into a lantern; grazers rake the limestone.", True),
     ("entry", "Covered entry", "Black calçada portuguesa underfoot, the cobogó beside you, the cedar pivot door ahead. You arrive here from the carport through a cedar gate.", False),
     ("courtyard", "Pátio", "One L-shaped pátio: palmetto, ferns and muhly under a limbed-up oak, lined by the gallery glass and cedar slat screens.", False),
@@ -386,10 +386,13 @@ def write_web(img):
                     f"<td>{'sliding' if g['kind'] == 'slider' else g['kind']}</td></tr>" for t, g in sorted(wg.items()))
     knotes = "".join(f"<li>{k}</li>" for k in sch["keynotes"])
     bf = "".join(f"<tr><td>{a}</td><td><i>{b}</i></td><td>{c}</td></tr>" for a, b, c in D.BATH_FINISHES)
-    bath_sec = ('<section class="block"><div class="eyebrow">Primary bath</div><h2>A spa-style wet room</h2>'
-                '<p class="lede">7\'-10" square: walk-in shower along the window wall, floating oak vanity, patterned cement-look tile.</p>'
+    bath_sec = ('<section class="block"><div class="eyebrow">The baths</div><h2>Two baths, one language</h2>'
+                '<p class="lede">Concrete floors, zellige-look tile only in the wet zones, floating oak vanities, brass and a '
+                'skylight in each. The primary is green with a curbless walk-in shower; the hall bath is terracotta around '
+                'the house\'s one tub.</p>'
                 f'<div class="cols"><div class="paper">{svg_inline("09_bath_plan.svg")}</div>'
-                f'<div class="tbl"><table><tr><th>Element</th><th>Brazilian ref.</th><th>Austin spec</th></tr>{bf}</table></div></div></section>'
+                f'<div class="paper">{svg_inline("10_hall_bath_plan.svg")}</div></div>'
+                f'<div class="tbl" style="margin-top:18px"><table><tr><th>Element</th><th>Brazilian ref.</th><th>Austin spec</th></tr>{bf}</table></div></section>'
                 ) if img.get("bath") else ""
     land_sec = ""
     if img.get("ortho_site_render"):
@@ -440,7 +443,7 @@ def write_web(img):
         '<div class="wrap">',
         '<header class="top"><div class="eyebrow">Brazilian Modern Homes / Concept design / November 2026</div>',
         '<h1>Casa 01 · Casa Pátio</h1>',
-        '<p class="lede">A 1,620 sf, three-bedroom courtyard house for an Austin infill lot. One thin roof, one private garden, '
+        f'<p class="lede">A {D.conditioned_area():,.0f} sf, three-bedroom courtyard house with a covered carport, for an Austin infill lot. One thin roof, one private garden, '
         'one limestone wall, built with ordinary Texas framing. Every image, plan and number on this page comes from the same 3D model.</p>',
         f'<div class="facts">{facts}</div></header>',
         *viewer,

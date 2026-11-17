@@ -577,8 +577,16 @@ def roof_plan_cd():
     cd_defs(svg)
     svg.poly(D.FOOTPRINT, fill="none", stroke=MID, sw=0.7, extra='stroke-dasharray="5 3"')
     svg.poly(D.ROOF, fill="#f6f6f4", stroke=LINE, sw=1.8)
-    inset = [(3.6, 27.6), (56.4, 27.6), (56.4, 35.4), (30.4, 35.4), (30.4, 56.6), (56.4, 56.6), (56.4, 82.4),
-             (42.4, 82.4), (42.4, 91.9), (16.6, 91.9), (16.6, 82.4), (3.6, 82.4)]
+    # gravel stop: the roof outline offset 0.6 ft inward (rectilinear CCW polygon)
+    R_, n_, dd = D.ROOF, len(D.ROOF), 0.6
+    inset = []
+    for i in range(n_):
+        (ax_, ay_), (bx_, by_), (cx_, cy_) = R_[i - 1], R_[i], R_[(i + 1) % n_]
+        def nrm(x0, y0, x1, y1):
+            L_ = math.hypot(x1 - x0, y1 - y0)
+            return (-(y1 - y0) / L_, (x1 - x0) / L_)
+        n1, n2 = nrm(ax_, ay_, bx_, by_), nrm(bx_, by_, cx_, cy_)
+        inset.append((bx_ + dd * (n1[0] + n2[0]), by_ + dd * (n1[1] + n2[1])))
     svg.poly(inset, fill="none", stroke=LINE, sw=0.6)
     svg.text(30.0, 70.0, "LOW-SLOPE TPO ROOF", 9, weight=700, ls=1.2)
     svg.text(30.0, 70.0, "1/4\" PER FT TO SCUPPERS", 7.5, fill=MID, extra='dy="11"')
@@ -588,14 +596,34 @@ def roof_plan_cd():
                 f'L {svg.X(x1) + 4:.1f} {svg.Y(y1) + 6:.1f}" fill="none" stroke="{LINE}" stroke-width="1"/>')
     for (x, y) in ((10, 83.0), (50, 83.0), (29, 92.5)):
         svg.rect(x - 0.6, y - 0.25, x + 0.6, y + 0.25, fill=LINE, stroke="none")
-        svg.leader(x, y, x + 3, y + 3.2, "SCUPPER + DOWNSPOUT", size=7)
-    svg.text(43.5, 46.5, "OPEN TO SKY", 8, weight=700, ls=1.2, fill=MID)
-    svg.text(43.5, 46.5, "(PÁTIO)", 7.5, fill=MID, extra='dy="10"')
-    svg.dim(3, 83, 57, 83, 9.5 + 2.5, size=8)
+        if y > 90:
+            svg.leader(x, y, x + 2.5, y - 3.4, "SCUPPER + DOWNSPOUT", size=7)
+        else:
+            svg.leader(x, y, x + 3, y + 3.2, "SCUPPER + DOWNSPOUT", size=7)
+    xs_ = [p[0] for p in D.ROOF]
+    rx0_, rx1_ = min(xs_), max(xs_)
+    # courtyard opening in the roof plate: the notch between the canopy and the bar
+    inner = [p for p in D.ROOF if rx0_ < p[0] < rx1_ and 30 < p[1] < 80]
+    nx0 = min(p[0] for p in inner) if inner else 29.0
+    nx1 = max(p[0] for p in inner) if inner else 48.0
+    ny0 = min(p[1] for p in inner) if inner else 36.0
+    ny1 = max(p[1] for p in inner) if inner else 56.0
+    svg.text((nx0 + nx1) / 2, (ny0 + ny1) / 2, "OPEN TO SKY", 8, weight=700, ls=1.2, fill=MID)
+    svg.text((nx0 + nx1) / 2, (ny0 + ny1) / 2, "(PÁTIO)", 7.5, fill=MID, extra='dy="10"')
+    for k in getattr(D, "SKYLIGHTS", []):
+        x0, y0, x1, y1 = k["rect"]
+        svg.rect(x0, y0, x1, y1, fill="#dfe9ec", stroke=LINE, sw=1.0)
+        svg.line(x0, y0, x1, y1, MID, 0.5)
+        svg.line(x0, y1, x1, y0, MID, 0.5)
+    sk_ = getattr(D, "SKYLIGHTS", [])
+    if sk_:
+        x0, y0, x1, y1 = sk_[0]["rect"]
+        svg.leader((x0 + x1) / 2, y0, (x0 + x1) / 2 + 6.0, y0 - 4.0, f"SKYLIGHTS ({len(sk_)}), FIXED, CURB-MOUNTED", size=7)
+    svg.dim(rx0_, 83, rx1_, 83, 9.5 + 2.5, size=8)
     svg.dim(3, 27, 3, 83, -4.0, horizontal=False, size=8)
     svg.dim(6, 30, 3, 30, -2.6, "3'-0\" OH", size=7)
-    svg.dim(31, 56, 57, 56, -2.0, size=7)
-    svg.dim(57, 36, 57, 56, 2.5, horizontal=False, size=7)
+    svg.dim(nx0, ny1, nx1, ny1, -2.0, size=7)
+    svg.dim(nx1, ny0, nx1, ny1, 2.5, horizontal=False, size=7)
     north_arrow(svg, svg.w - 34, 34, 16)
     return svg.save("31_roof_plan_cd.svg")
 

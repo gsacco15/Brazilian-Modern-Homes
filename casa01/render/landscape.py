@@ -269,11 +269,11 @@ def _planting(L, coll, protos, rng):
     _sc("Courtyard agave", to_m(pts_ag2, zc), agv, coll, scale=(1.0, 1.2))
 
     # private garden outside the shower window (east side yard)
-    ex = D.BAR["x1"] + 0.8
-    sg = sample_poly([(ex, 73.5), (64.3, 73.5), (64.3, 83.0), (ex, 83.0)], 6, rng, (), 2.2)
-    _sc("Shower garden palmetto", to_m(sg), palm, coll, scale=(1.2, 1.7))
+    ex = D.BAR["x1"] + 2.4      # clear of the house wall: palmetto fronds spread ~1 m
+    sg = sample_poly([(ex, 73.5), (64.0, 73.5), (64.0, 83.0), (ex, 83.0)], 4, rng, (), 2.4)
+    _sc("Shower garden palmetto", to_m(sg), palm, coll, scale=(0.9, 1.2))
     if "fern" in protos:
-        _sc("Shower garden ferns", to_m(sample_poly([(ex, 74), (ex + 2.6, 74), (ex + 2.6, 82), (ex, 82)], 8, rng, (), 1.2)),
+        _sc("Shower garden ferns", to_m(sample_poly([(ex - 1.2, 74), (ex + 1.4, 74), (ex + 1.4, 82), (ex - 1.2, 82)], 8, rng, (), 1.2)),
                   protos["fern"], coll, scale=(1.0, 1.5))
     # rear: buffalo grass lawn clumps + native beds along the fence
     if "lawn" in protos:

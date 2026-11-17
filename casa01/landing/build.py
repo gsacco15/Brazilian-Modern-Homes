@@ -19,7 +19,7 @@ SITE = os.path.join(HERE, "site")
 IMG = os.path.join(SITE, "img")
 RENDERS = os.path.join(CASA, "renders")
 PANO = os.path.join(CASA, "lookbook", "web", "pano")
-STILLS = ["street", "street_dusk", "entry", "courtyard", "interior", "kitchen", "bath", "veranda"]
+STILLS = ["street", "street_dusk", "gate", "entry", "courtyard", "interior", "kitchen", "bath", "bath2", "veranda"]
 
 DESCRIPTION = ("Casa Pátio: a Brazilian modern courtyard house for your Austin lot. Texas limestone, cedar "
                "and a concrete cobogó screen under one long roof. Join the early list.")

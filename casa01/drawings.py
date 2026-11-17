@@ -344,6 +344,7 @@ def furniture_plan(svg):
 def bath_symbols(svg, labels=False):
     """Primary bath fixtures from design.PRIMARY_BATH (plan symbols)."""
     B = D.PRIMARY_BATH
+    rx0, ry0, rx1, ry1 = B["room"]
     sx0, sy0, sx1, sy1 = B["shower"]
     svg.rect(sx0, sy0, sx1, sy1, fill="url(#tile)", stroke="none")
     gx0, gx1, gy = B["glass"]
@@ -354,37 +355,78 @@ def bath_symbols(svg, labels=False):
     hx, hy = B["rain_head"]
     svg.circle(hx, hy, 0.42, fill="none", stroke=MID, sw=0.8)
     svg.circle(hx, hy, 0.06, fill=MID, stroke="none")
-    svg.circle(51.8, 78.2, 0.12, fill="#ffffff", stroke=MID, sw=0.7)    # linear drain end
-    svg.line(46.0, 76.85, 53.2, 76.85, MID, 0.6, extra='stroke-dasharray="3 2"')
+    if "drain" in B:
+        dx0, dy, dx1 = B["drain"]
+        svg.rect(dx0, dy - 0.06, dx1, dy + 0.06, fill="#c9b27a", stroke=MID, sw=0.5)
+    for k in getattr(D, "SKYLIGHTS", []):
+        if k["name"] == "Primary shower":
+            x0, y0, x1, y1 = k["rect"]
+            svg.rect(x0, y0, x1, y1, fill="none", stroke=MID, sw=0.7, extra='stroke-dasharray="5 3"')
+            svg.line(x0, y0, x1, y1, LIGHT, 0.5, extra='stroke-dasharray="5 3"')
+            svg.line(x0, y1, x1, y0, LIGHT, 0.5, extra='stroke-dasharray="5 3"')
     vx0, vy0, vx1, vy1 = B["vanity"]
     svg.rect(vx0, vy0, vx1, vy1, fill="#f4f1ea", stroke=MID, sw=0.8)
     sx, sy = B["sink"]
     svg.circle(sx, sy, 0.62, fill="#ffffff", stroke=MID, sw=0.8)
     my, md = B["mirror"]
-    svg.line(B["room"][0] + 0.05, my - md / 2, B["room"][0] + 0.05, my + md / 2, GOLD, 2.4)
-    svg.rect(52.2, 72.88, 53.5, 73.52, fill="#ffffff", stroke=MID, sw=0.8)
-    svg.circle(52.45, 73.2, 0.3, fill="none", stroke=MID, sw=0.7)
-    px, py = B["plant"]
-    svg.circle(px, py, 0.55, fill="rgba(95,116,88,0.18)", stroke=GREEN, sw=0.8)
+    svg.line(rx0 + 0.05, my - md / 2, rx0 + 0.05, my + md / 2, GOLD, 2.4)
+    wcs = [f for f in D.FURNITURE if f["t"] == "wc_wall"]
+    wcy = wcs[0]["y"] if wcs else ry0 + 1.5
+    svg.rect(rx1 - 1.75, wcy - 0.6, rx1 - 0.35, wcy + 0.6, fill="#ffffff", stroke=MID, sw=0.8)
+    svg.circle(rx1 - 1.2, wcy, 0.42, fill="none", stroke=MID, sw=0.7)
     if labels:
-        svg.text(49.6, 78.3, "WALK-IN SHOWER", 8.5, weight=700, ls=1.2)
-        svg.text(49.6, 78.3, "GREEN ZELLIGE, FLOOR TO CEILING", 6.5, fill=MID, extra='dy="10"')
-        svg.text(46.35, 77.9, "BENCH", 6.5, fill=MID, extra=f'transform="rotate(-90 {svg.X(46.35):.1f} {svg.Y(77.9):.1f})"')
-        svg.text(49.8, 74.6, "LADRILHO HIDRÁULICO", 7.5, weight=700, ls=1.0)
-        svg.text(49.8, 74.6, "8x8 PATTERNED TILE FLOOR", 6.5, fill=MID, extra='dy="10"')
+        cx = (sx0 + sx1) / 2
+        svg.text(cx + 0.6, sy0 + 1.95, "CURBLESS WALK-IN SHOWER", 8.5, weight=700, ls=1.2)
+        svg.text(cx + 0.6, sy0 + 1.95, "GREEN ZELLIGE-LOOK TO CEILING", 6.5, fill=MID, extra='dy="10"')
+        svg.text(bx0 + 0.5, (by0 + by1) / 2, "BENCH", 6.5, fill=MID,
+                 extra=f'transform="rotate(-90 {svg.X(bx0 + 0.5):.1f} {svg.Y((by0 + by1) / 2):.1f})"')
+        svg.text((vx1 + rx1) / 2 - 0.4, ry0 + 1.3, "HONED CONCRETE FLOOR", 7.5, weight=700, ls=1.0)
+        svg.text((vx1 + rx1) / 2 - 0.4, ry0 + 1.3, "SAME SLAB AS THE HOUSE", 6.5, fill=MID, extra='dy="10"')
 
 
-def bath_plan():
-    """Enlarged plan of the primary bath (about 1/2" = 1'-0")."""
-    svg = SVG(39.0, 69.0, 61.5, 82.5, scale=40, pad=24)
-    hatch_defs(svg)
-    svg.defs.append('<pattern id="tile" width="9.4" height="9.4" patternUnits="userSpaceOnUse">'
-                    '<rect width="9.4" height="9.4" fill="#e3ece7"/><path d="M0 0 H9.4 M0 0 V9.4" stroke="#a9c2b6" '
-                    'stroke-width="0.6"/></pattern>')
-    B = D.PRIMARY_BATH
+def hall_bath_symbols(svg, labels=False):
+    """Hall bath (design.HALL_BATH): tub alcove in terracotta tile, glass panel, niche, shelves."""
+    B = getattr(D, "HALL_BATH", None)
+    if not B:
+        return
     rx0, ry0, rx1, ry1 = B["room"]
-    svg.rect(rx0, ry0, rx1, ry1, fill="#f7f1e6", stroke="none")
-    bath_symbols(svg, labels=True)
+    tx0, ty0, tx1, ty1 = B["tub"]
+    sh = B["shelf"]
+    svg.rect(tx0, ty0, tx1, ty1, fill="url(#tiletc)", stroke="none")
+    svg.rect(sh[0], sh[1], sh[2], sh[1] + D.INT_T, fill="#575b5f", stroke="#575b5f", sw=0.3)   # tub-foot wall
+    svg.rect(tx0 + 0.3, ty0 + 0.05, tx1 - 0.12, ty1 - 0.05, fill="#ffffff", stroke=MID, sw=0.8)
+    svg.rect(tx0 + 0.55, ty0 + 0.35, tx1 - 0.4, ty1 - 0.35, fill="none", stroke=LIGHT, sw=0.7,
+             extra='rx="6" ry="6"')
+    gx, gy0, gy1 = B["glass"]
+    svg.line(gx - 0.1, gy0 + 0.05, gx - 0.1, gy1, "#5d8fa0", 2.2)
+    svg.line(gx - 0.16, gy1, gx - 0.04, gy1, INK, 2)
+    cx = (tx0 + 0.3 + tx1) / 2
+    svg.circle(cx, ty0 + 0.75, 0.3, fill="none", stroke=MID, sw=0.7)
+    nx, ny0, ny1, _z0, _z1 = B["niche"]
+    svg.rect(nx, ny0, nx + 0.28, ny1, fill="#ffffff", stroke=MID, sw=0.6, extra='stroke-dasharray="3 2"')
+    for k in getattr(D, "SKYLIGHTS", []):
+        if k["name"] == "Bath 2":
+            x0, y0, x1, y1 = k["rect"]
+            svg.rect(x0, y0, x1, y1, fill="none", stroke=MID, sw=0.7, extra='stroke-dasharray="5 3"')
+            svg.line(x0, y0, x1, y1, LIGHT, 0.5, extra='stroke-dasharray="5 3"')
+            svg.line(x0, y1, x1, y0, LIGHT, 0.5, extra='stroke-dasharray="5 3"')
+    y0s = sh[1] + D.INT_T
+    svg.rect(sh[0], y0s, sh[2], sh[3], fill="#efe2cc", stroke=MID, sw=0.6)
+    vx0, vy0, vx1, vy1 = B["vanity"]
+    svg.rect(vx0, vy0, vx1, vy1, fill="#f4f1ea", stroke=MID, sw=0.8)
+    sx, sy = B["sink"]
+    svg.rect(sx - 0.75, sy - 0.48, sx + 0.75, sy + 0.42, fill="#ffffff", stroke=MID, sw=0.8, extra='rx="3" ry="3"')
+    mx, mw, _mh = B["mirror"]
+    svg.line(mx - mw / 2, ry1 - 0.05, mx + mw / 2, ry1 - 0.05, GOLD, 2.4)
+    wx, wy = B["wc"]
+    svg.rect(wx - 0.6, ry0 + 0.35, wx + 0.6, ry0 + 1.75, fill="#ffffff", stroke=MID, sw=0.8)
+    svg.circle(wx, ry0 + 1.2, 0.42, fill="none", stroke=MID, sw=0.7)
+    if labels:
+        svg.text((tx0 + tx1) / 2 + 0.1, ty1 - 0.9, "TUB", 8.5, weight=700, ls=1.2)
+        svg.text((vx0 + rx1) / 2 + 0.3, (ry0 + ry1) / 2 - 0.3, "HONED CONCRETE FLOOR", 7.0, weight=700, ls=0.8)
+
+
+def _bath_walls(svg, door_names):
     for w in D.EXT_WALLS:
         rects, spans, rect, (ux, uy, nx, ny) = wall_rects(w, D.EXT_T)
         for r in rects:
@@ -406,41 +448,120 @@ def bath_plan():
                 ys = [ay + uy * s + ny * t, ay + uy * e - ny * t]
                 svg.rect(min(xs), min(ys), max(xs), max(ys), fill="#575b5f", stroke="#575b5f", sw=0.3)
             if o:
-                if o.get("name") == "Primary bath":
+                if o.get("name") in door_names:
+                    sw_ = o.get("swing", 1)
                     hx, hy = ax + ux * o["off"], ay + uy * o["off"]
-                    svg.line(hx, hy, hx, hy + o["w"], INK, 1.4)
-                    svg.arc(hx, hy, o["w"], math.pi / 2, 0, LIGHT, 0.8)
+                    lx, ly = hx + nx * o["w"] * sw_, hy + ny * o["w"] * sw_
+                    svg.line(hx, hy, lx, ly, INK, 1.4)
+                    a0 = math.atan2(uy, ux)
+                    a1 = math.atan2(ly - hy, lx - hx)
+                    svg.arc(hx, hy, o["w"], min(a0, a1), max(a0, a1), LIGHT, 0.8)
                 s = o["off"] + o["w"]
+
+
+def _bath_defs(svg):
+    hatch_defs(svg)
+    svg.defs.append('<pattern id="tile" width="9.4" height="9.4" patternUnits="userSpaceOnUse">'
+                    '<rect width="9.4" height="9.4" fill="#e3ece7"/><path d="M0 0 H9.4 M0 0 V9.4" stroke="#a9c2b6" '
+                    'stroke-width="0.6"/></pattern>')
+    svg.defs.append('<pattern id="tiletc" width="3.2" height="10" patternUnits="userSpaceOnUse">'
+                    '<rect width="3.2" height="10" fill="#efd6c6"/><path d="M0 0 H3.2 M0 0 V10" stroke="#c99478" '
+                    'stroke-width="0.5"/></pattern>')
+
+
+def bath_plan():
+    """Enlarged plan of the primary bath (about 1/2" = 1'-0")."""
+    B = D.PRIMARY_BATH
+    rx0, ry0, rx1, ry1 = B["room"]
+    svg = SVG(rx0 - 7.5, ry0 - 2.4, rx1 + 7.5, ry1 + 3.0, scale=40, pad=24)
+    _bath_defs(svg)
+    svg.rect(rx0, ry0, rx1, ry1, fill="#f1ede6", stroke="none")
+    bath_symbols(svg, labels=True)
+    _bath_walls(svg, ("Primary bath",))
     svg.dim(rx0, ry1, rx1, ry1, 1.6, size=11)
     svg.dim(rx1, ry0, rx1, ry1, 1.8, horizontal=False, size=11)
     svg.dim(rx1, B["shower"][1], rx1, ry1, 0.9, horizontal=False, size=10)
     svg.dim(rx0, ry0, rx0, B["vanity"][3], -1.2, horizontal=False, size=10)
-    svg.leader(54.0, 78.05, 55.6, 80.3, "GARDEN WINDOW, FROSTED BELOW 5'", size=9)
-    svg.leader(49.75, 79.75, 49.0, 81.3, "CLERESTORY ABOVE", size=9, anchor="end")
-    svg.leader(45.75, 74.2, 43.2, 71.0, "ROUND BRASS MIRROR", size=9, anchor="end")
-    svg.leader(49.0, 76.5, 51.0, 70.2, "FIXED GLASS PANEL", size=9)
-    svg.leader(53.0, 73.2, 55.4, 71.2, "WALL-HUNG WC", size=9)
+    ew = [w for w in D.EXT_WALLS if w["id"] == "E-bar"][0]
+    gw = [o for o in ew["openings"] if "garden" in o.get("name", "").lower()]
+    if gw:
+        gyc = ew["a"][1] + gw[0]["off"] + gw[0]["w"] / 2
+        svg.leader(rx1 + 0.25, gyc, rx1 + 2.0, ry1 + 1.6, "GARDEN WINDOW, FROSTED BELOW 5'", size=9)
+    sk = [k for k in getattr(D, "SKYLIGHTS", []) if k["name"] == "Primary shower"]
+    if sk:
+        x0, y0, x1, y1 = sk[0]["rect"]
+        svg.leader((x0 + x1) / 2, (y0 + y1) / 2, (x0 + x1) / 2 + 0.6, ry1 + 2.3, "SKYLIGHT ABOVE, 2' x 3'", size=9)
+    svg.leader(rx0 + 2.2, ry1 + 0.25, rx0 - 0.6, ry1 + 1.6, "CLERESTORY ABOVE", size=9, anchor="end")
+    my, md = B["mirror"]
+    svg.leader(rx0 + 0.05, my, rx0 - 1.6, my - 1.2, "ROUND BRASS MIRROR", size=9, anchor="end")
+    gx0, gx1, gy = B["glass"]
+    svg.leader(gx0 + 1.4, gy, rx0 - 1.6, gy - 0.4, "FIXED GLASS PANEL", size=9, anchor="end")
+    vx0, vy0, vx1, vy1 = B["vanity"]
+    svg.leader(vx1 - 0.3, vy0 + 0.5, rx0 - 1.6, ry0 - 1.3, "FLOATING OAK VANITY, LIMESTONE TOP", size=9, anchor="end")
+    if "drain" in B:
+        dx0, dy, dx1 = B["drain"]
+        svg.leader(dx1 - 0.4, dy, rx1 + 2.0, ry1 + 0.5, "SLOT DRAIN", size=9)
+    wcs = [f for f in D.FURNITURE if f["t"] == "wc_wall"]
+    wcy = wcs[0]["y"] if wcs else ry0 + 1.5
+    svg.leader(rx1 - 1.0, wcy, rx1 + 2.0, wcy - 0.9, "WALL-HUNG WC", size=9)
     north_arrow(svg, svg.w - 40, 46, 20)
     return svg.save("09_bath_plan.svg")
 
 
+def hall_bath_plan():
+    """Enlarged plan of the hall bath (about 1/2" = 1'-0")."""
+    B = getattr(D, "HALL_BATH", None)
+    if not B:
+        return None
+    rx0, ry0, rx1, ry1 = B["room"]
+    svg = SVG(rx0 - 9.0, ry0 - 2.4, rx1 + 8.6, ry1 + 2.8, scale=38, pad=24)
+    _bath_defs(svg)
+    svg.rect(rx0, ry0, rx1, ry1, fill="#f1ede6", stroke="none")
+    hall_bath_symbols(svg, labels=True)
+    _bath_walls(svg, ("Bath",))
+    svg.dim(rx0, ry1, rx1, ry1, 1.4, size=11)
+    svg.dim(rx1, ry0, rx1, ry1, 1.6, horizontal=False, size=11)
+    tx0, ty0, tx1, ty1 = B["tub"]
+    svg.dim(tx0, ty0, tx1, ty0, -1.3, size=10)
+    svg.dim(tx0, ty0, tx0, ty1, -1.2, horizontal=False, size=10)
+    gx, gy0, gy1 = B["glass"]
+    svg.leader(gx - 0.1, (gy0 + gy1) / 2, rx1 + 1.6, ry0 - 1.2, "FIXED GLASS PANEL (NO CURTAIN)", size=9)
+    nx, ny0, ny1, _z0, _z1 = B["niche"]
+    svg.leader(nx + 0.14, (ny0 + ny1) / 2, rx0 - 1.8, (ny0 + ny1) / 2 + 1.0, "TILED NICHE", size=9, anchor="end")
+    svg.leader(tx0 + 0.15, ty0 + 0.6, rx0 - 1.8, ty0 - 0.6, "TERRACOTTA ZELLIGE-LOOK TO CEILING", size=9, anchor="end")
+    sk = [k for k in getattr(D, "SKYLIGHTS", []) if k["name"] == "Bath 2"]
+    if sk:
+        x0, y0, x1, y1 = sk[0]["rect"]
+        svg.leader((x0 + x1) / 2, y1 - 0.4, rx0 - 1.8, y1 + 0.6, "SKYLIGHT ABOVE, 2' x 4'", size=9, anchor="end")
+    sh = B["shelf"]
+    svg.leader((sh[0] + sh[2]) / 2, (sh[1] + D.INT_T + sh[3]) / 2, rx0 - 1.8, ry1 + 1.6, "OPEN OAK SHELVES", size=9,
+               anchor="end")
+    mx, mw, _mh = B["mirror"]
+    svg.leader(mx + mw / 2 - 0.2, ry1 - 0.05, rx1 + 1.6, ry1 + 1.6, "PILL MIRROR, BRASS SCONCES", size=9)
+    vx0, vy0, vx1, vy1 = B["vanity"]
+    svg.leader(vx1 - 0.2, vy0 + 0.4, rx1 + 1.6, vy0 - 0.3, "OAK VANITY, LIMESTONE TOP, RECTANGULAR VESSEL", size=9)
+    wx, wy = B["wc"]
+    svg.leader(wx + 0.5, ry0 + 1.2, rx1 + 1.6, ry0 + 0.6, "WALL-HUNG WC", size=9)
+    north_arrow(svg, svg.w - 40, 46, 20)
+    return svg.save("10_hall_bath_plan.svg")
+
+
 def floor_plan():
-    svg = SVG(-7, 20, 68, 97, scale=10.0, pad=30)
+    svg = SVG(-7, 20, 80, 97, scale=10.0, pad=30)
     hatch_defs(svg)
-    # outdoor surfaces
-    svg.rect(28, 30.33, 53.7, 36.0, fill="url(#pavers)", stroke="none")
+    # outdoor surfaces (from design: paving, courtyard planting, carport slab)
+    for pl in D.PLANTING:
+        if pl["name"] == "Courtyard garden":
+            svg.poly(pl["poly"], fill="url(#planting)", stroke="none")
+    for pz in D.PAVING:
+        svg.rect(*pz["rect"], fill="url(#pavers)", stroke="none")
     em = D.ENTRY_MOSAIC
     svg.rect(em["x0"], em["y0"], em["x1"], em["y1"], fill="#ddd8cf", stroke="none")
     svg.rect(em["x0"] + em["band"], em["y0"] + em["band"], em["x1"] - em["band"], em["y1"] - em["band"],
              fill="url(#mosaic)", stroke=INK, sw=0.5)
-    svg.rect(28, 36, 31.5, 60, fill="url(#pavers)", stroke="none")
-    svg.rect(31.5, 52, 39.5, 60, fill="url(#pavers)", stroke="none")
-    svg.rect(41.5, 56.5, 51.5, 60, fill="url(#pavers)", stroke="none")
-    svg.rect(31.5, 36, 53.7, 52, fill="url(#planting)", stroke="none")
-    svg.rect(39.5, 52, 53.7, 56.5, fill="url(#planting)", stroke="none")
-    svg.rect(16.5, 80, 42.5, 92.5, fill="url(#pavers)", stroke="none")
-    for (x, y) in ((41.0, 53.8), (43.6, 54.9), (46.2, 55.4)):
-        svg.rect(x - 1.0, y - 0.7, x + 1.0, y + 0.7, fill="#f3efe6", stroke="#d2c9b6", sw=0.6)
+    cp = getattr(D, "CARPORT", None)
+    if cp:
+        svg.rect(cp["x0"], cp["y0"], cp["x1"], cp["y1"], fill="#e7e4de", stroke=LIGHT, sw=0.6)
     # interior floor tone
     svg.poly(D.FOOTPRINT, fill="#fbfaf7", stroke="none")
     furniture_plan(svg)
@@ -448,6 +569,10 @@ def floor_plan():
                     '<rect width="5" height="5" fill="#e3ece7"/><path d="M0 0 H5 M0 0 V5" stroke="#a9c2b6" '
                     'stroke-width="0.5"/></pattern>')
     bath_symbols(svg)
+    svg.defs.append('<pattern id="tiletc" width="2.4" height="7" patternUnits="userSpaceOnUse">'
+                    '<rect width="2.4" height="7" fill="#efd6c6"/><path d="M0 0 H2.4 M0 0 V7" stroke="#c99478" '
+                    'stroke-width="0.4"/></pattern>')
+    hall_bath_symbols(svg)
     # roof outline overhead
     svg.poly(D.ROOF, fill="none", stroke=MID, sw=0.8, extra='stroke-dasharray="7 4"')
     # courtyard tree canopy
@@ -543,8 +668,26 @@ def floor_plan():
     s_ = D.CEDAR_SCREEN
     y = s_["y0"]
     while y < s_["y1"]:
-        svg.rect(s_["x"] - s_["slat_d"], y, s_["x"], y + s_["slat_w"], fill=CEDAR, stroke="none")
+        if not any(a - 0.05 < y < b for (a, b) in s_.get("openings", [])):
+            svg.rect(s_["x"] - s_["slat_d"], y, s_["x"], y + s_["slat_w"], fill=CEDAR, stroke="none")
         y += s_["slat_w"] + s_["gap"]
+    for sc in getattr(D, "SLAT_SCREENS", []):
+        if sc["axis"] == "x":
+            x = sc["x0"] + 0.3
+            while x < sc["x1"] - 0.2:
+                svg.rect(x, sc["y"], x + s_["slat_w"], sc["y"] + s_["slat_d"], fill=CEDAR, stroke="none")
+                x += s_["slat_w"] + s_["gap"]
+        else:
+            y = sc["y0"] + 0.1
+            while y < sc["y1"] - 0.1:
+                svg.rect(sc["x"] - s_["slat_d"], y, sc["x"], y + s_["slat_w"], fill=CEDAR, stroke="none")
+                y += s_["slat_w"] + s_["gap"]
+    sl = getattr(D, "CARPORT_SLIDER", None)
+    if sl and sl.get("installed", True):   # sliding gate shown closed; parked position dashed
+        svg.rect(sl["x0"] + 0.1, sl["y"] - 0.14, sl["x1"] - 0.1, sl["y"] + 0.14, fill=CEDAR, stroke="none")
+        w_ = sl["x1"] - sl["x0"]
+        svg.rect(sl["park_x0"], sl["y"] - 0.14, sl["park_x0"] + w_, sl["y"] + 0.14, fill="none", stroke=CEDAR, sw=0.7,
+                 extra='stroke-dasharray="4 2"')
     # posts
     for (x, y) in D.POSTS:
         svg.rect(x - 0.17, y - 0.17, x + 0.17, y + 0.17, fill=INK, stroke=INK, sw=0.3)
@@ -572,16 +715,23 @@ def floor_plan():
     svg.leader(15.0, 29.8, 11.0, 24.6, "LUEDERS LIMESTONE WALL", anchor="end")
     svg.leader(30.5, 30.2, 27.2, 22.4, "CEDAR PIVOT GATE", anchor="end")
     svg.leader(36.0, 33.0, 36.0, 21.2, "BLACK CALÇADA PORTUGUESA, 50 SF", anchor="start")
-    svg.leader(54.0, 45.0, 58.5, 45.0, "CEDAR SLAT SCREEN")
+    if cp:
+        svg.leader(D.CEDAR_SCREEN["x"], 44.0, cp["x1"] + 3.0, 44.0, "CEDAR SLAT SCREENS", size=7.5)
+        sl = getattr(D, "CARPORT_SLIDER", None)
+        if sl:
+            svg.leader((sl["x0"] + sl["x1"]) / 2, sl["y"], cp["x1"] + 3.0, 26.0, "SLIDING CEDAR GATE (OPTION)", size=7.5)
     svg.leader(43.0, 90.0, 47.0, 90.0, "ROOF EDGE ABOVE")
     svg.text(30.5, 18.8, "ENTER FROM STREET ↑", 8, fill=MID, ls=1.0)
     # dimension strings
-    svg.dim(6, 80, 54, 80, 15.2, fmt_ft(48), size=9)
-    svg.dim(6, 30, 28, 30, -7.2, size=8.5)
-    svg.dim(28, 30, 54, 30, -7.2, size=8.5)
-    svg.dim(6, 30, 6, 60, -5.6, horizontal=False, size=8.5)
-    svg.dim(6, 60, 6, 80, -5.6, horizontal=False, size=8.5)
-    svg.dim(54, 60, 54, 80, 6.2, horizontal=False, size=8.5)
+    bx0, bx1 = D.BAR["x0"], D.BAR["x1"]
+    svg.dim(bx0, 80, bx1, 80, 15.2, fmt_ft(bx1 - bx0), size=9)
+    svg.dim(bx0, 30, D.WING["x1"], 30, -7.2, size=8.5)
+    svg.dim(D.WING["x1"], 30, cp["x0"] if cp else bx1, 30, -7.2, size=8.5)
+    if cp:
+        svg.dim(cp["x0"], 30, cp["x1"], 30, -7.2, size=8.5)
+    svg.dim(bx0, 30, bx0, 60, -5.6, horizontal=False, size=8.5)
+    svg.dim(bx0, 60, bx0, 80, -5.6, horizontal=False, size=8.5)
+    svg.dim(bx1, 60, bx1, 80, 6.2, horizontal=False, size=8.5)
     svg.dim(18, 80, 18, 92, -3.6, horizontal=False, size=8)
     svg.dim(6, 30, 6, 80, -9.6, fmt_ft(50), horizontal=False, size=9)
     # section mark A-A (cut at x = 34, looking west)
@@ -863,26 +1013,42 @@ def north_elevation(ztop=30):
     FF, C, FT = D.FF, D.CEIL, D.FASCIA_TOP
     X = lambda x: 60 - x
     ground(svg, -6, 74)
-    svg.rect(X(54), 0, X(6), C, fill="#fbfaf6", stroke=INK, sw=1.1)
-    w = D.EXT_WALLS[4]
+    w = [w for w in D.EXT_WALLS if w["id"] == "N-bar"][0]
+    ax = w["a"][0]
+    svg.rect(X(ax), 0, X(w["b"][0]), C, fill="#fbfaf6", stroke=INK, sw=1.1)
+    centers = {}
     for o in w["openings"]:
-        xa = 54 - o["off"]
+        xa = ax - o["off"]
         xb = xa - o["w"]
         window_elev(svg, X(xa), X(xb), FF + o["sill"], FF + o["head"], panels=o.get("panels", 1))
-    # veranda paving edge + step
-    svg.rect(X(42.5), 0, X(16.5), D.HARDSCAPE, fill="#efe6d2", stroke=INK, sw=0.6)
-    # churrasqueira
-    svg.rect(X(21.0), D.HARDSCAPE, X(18.5), D.HARDSCAPE + 3.05, fill=STONE, stroke=INK, sw=0.8)
-    for (x, y) in D.POSTS[2:]:
-        svg.rect(X(x + 0.17), D.HARDSCAPE, X(x - 0.17), C, fill=INK, stroke=INK, sw=0.3)
-    svg.rect(X(57), C, X(3), FT, fill=POCHE, stroke=POCHE, sw=0.5)
-    svg.rect(X(43), C - 0.12, X(16), C, fill="#d9a77d", stroke="none")
-    human(svg, X(30.0), D.HARDSCAPE)
-    level_marks(svg, 60.5, [(FT, "T.O. ROOF  +12'-3\""), (C, "SOFFIT / CLG  +11'-0\""), (FF, "F.F.  +1'-0\"")])
-    svg.leader(X(31.5), 5.0, X(31.5), 18.5, "9' SLIDING GLASS WALL TO VERANDA", anchor="end")
-    svg.leader(X(13), 7.0, X(13), 15.5, "KITCHEN WINDOW")
-    svg.leader(X(49.8), 8.5, X(49.8), 15.5, "BATH CLERESTORY")
-    svg.leader(X(19.8), 3.0, X(19.8), 21.5, "LIMESTONE GRILL COUNTER (CHURRASQUEIRA)")
+        centers[o["kind"] if o["kind"] == "slider" else o.get("name", "")] = ((xa + xb) / 2, o)
+    vp = [p for p in D.PAVING if p["name"] == "Veranda"]
+    vx0, vy0, vx1, vy1 = vp[0]["rect"] if vp else (16.5, 80, 42.5, 92.5)
+    svg.rect(X(vx1), 0, X(vx0), D.HARDSCAPE, fill="#efe6d2", stroke=INK, sw=0.6)
+    gc = [f for f in D.FURNITURE if f["t"] == "grill_counter"]
+    if gc:
+        gx = gc[0]["x"]
+        svg.rect(X(gx + gc[0]["w"] / 2), D.HARDSCAPE, X(gx - gc[0]["w"] / 2), D.HARDSCAPE + 3.05, fill=STONE, stroke=INK, sw=0.8)
+    for (x, y) in D.POSTS:
+        if y > 80:
+            svg.rect(X(x + 0.17), D.HARDSCAPE, X(x - 0.17), C, fill=INK, stroke=INK, sw=0.3)
+    rx0, rx1 = min(p[0] for p in D.ROOF), max(p[0] for p in D.ROOF)
+    svg.rect(X(rx1), C, X(rx0), FT, fill=POCHE, stroke=POCHE, sw=0.5)
+    ver = [z for z in D.CEDAR_SOFFITS if z["name"] == "Veranda"]
+    if ver:
+        svg.rect(X(ver[0]["x1"]), C - 0.12, X(ver[0]["x0"]), C, fill="#d9a77d", stroke="none")
+    human(svg, X((vx0 + vx1) / 2 + 1.0), D.HARDSCAPE)
+    level_marks(svg, X(rx0) + 3.0, [(FT, "T.O. ROOF  +12'-3\""), (C, "SOFFIT / CLG  +11'-0\""), (FF, "F.F.  +1'-0\"")])
+    if "slider" in centers:
+        cxs, o = centers["slider"]
+        svg.leader(X(cxs), 5.0, X(cxs), 18.5, f"{fmt_ft(o['w'])} SLIDING GLASS WALL TO VERANDA", anchor="end")
+    for name, (cxw, o) in centers.items():
+        if "Kitchen" in name:
+            svg.leader(X(cxw), 7.0, X(cxw), 15.5, "KITCHEN WINDOW")
+        if "clerestory" in name.lower():
+            svg.leader(X(cxw), 8.5, X(cxw), 15.5, "PRIMARY BATH CLERESTORY")
+    if gc:
+        svg.leader(X(gx), 3.0, X(gx), 21.5, "LIMESTONE GRILL COUNTER (CHURRASQUEIRA)")
     svg.leader(X(8), 3.0, X(4.5), -1.0 + 0.0, "SMOOTH WARM-WHITE STUCCO", anchor="start")
     return svg.save("04_elevation_north.svg")
 
@@ -891,30 +1057,70 @@ def east_elevation(ztop=30):
     # looking west: south (street) on the left -> horizontal = y
     svg = SVG(20, -2, 106, ztop, scale=10.2, pad=30)
     hatch_defs(svg)
-    FF, C, FT = D.FF, D.CEIL, D.FASCIA_TOP
-    elev_tree(svg, 46.5, D.HARDSCAPE, 24, 22, 3, stroke=LIGHT, trunk=False)
+    FF, C, FT, H = D.FF, D.CEIL, D.FASCIA_TOP, D.HARDSCAPE
+    elev_tree(svg, 46.5, H, 24, 22, 3, stroke=LIGHT, trunk=False)
     ground(svg, 20, 102)
-    # cedar screen
     s = D.CEDAR_SCREEN
-    svg.rect(s["y0"], 0, s["y1"], D.HARDSCAPE, fill="#e7e3da", stroke=INK, sw=0.7)
-    svg.rect(s["y0"], D.HARDSCAPE, s["y1"], C, fill="#efd9c4", stroke=INK, sw=0.9)
-    y = s["y0"] + 0.05
-    while y < s["y1"]:
-        svg.rect(y, D.HARDSCAPE + 0.1, y + s["slat_w"], C - 0.02, fill=CEDAR, stroke="none")
-        y += s["slat_w"] + s["gap"]
-    # bar east wall
-    svg.rect(60, 0, 80, C, fill="#fbfaf6", stroke=INK, sw=1.1)
-    o = D.EXT_WALLS[3]["openings"][0]
-    window_elev(svg, 60 + o["off"], 60 + o["off"] + o["w"], FF + o["sill"], FF + o["head"])
-    # veranda end (set back) + post
-    svg.rect(80, 0, 92.5, D.HARDSCAPE, fill="#efe6d2", stroke=INK, sw=0.6)
-    svg.rect(91.45, D.HARDSCAPE, 91.8, C, fill=INK, stroke=INK, sw=0.3)
-    # roof: canopy, courtyard gap shows the wing eave beyond, bar + veranda
-    svg.rect(27, C, 92.5, FT, fill=POCHE, stroke=POCHE, sw=0.5)
-    svg.rect(36, C - 0.12, 56, C, fill="#d9a77d", stroke="none")
-    level_marks(svg, 96.0, [(FT, "T.O. ROOF"), (C, "SOFFIT"), (FF, "F.F.")])
-    svg.leader(45.0, 6.0, 45.0, 17.0, "CEDAR 2x4 SLATS @ 5\" O.C. — PRIVACY TO DRIVEWAY")
-    svg.leader(64.5, 6.0, 70.0, 16.0, "PRIMARY BEDROOM WINDOW")
+    cp = getattr(D, "CARPORT", None)
+    if cp:
+        # open carport side: slab edge, the cedar screen beyond (lighter), the gate edge-on, posts
+        svg.rect(cp["y0"], 0, cp["y1"], H, fill="#e7e3da", stroke=INK, sw=0.7)
+        svg.rect(s["y0"], H, s["y1"], C, fill="#f3e6d8", stroke=LIGHT, sw=0.6)
+        y = s["y0"] + 0.05
+        while y < s["y1"]:
+            if not any(a0 - 0.05 < y < b0 for (a0, b0) in s.get("openings", [])):
+                svg.rect(y, H + 0.1, y + s["slat_w"], C - 0.02, fill="#d8ab86", stroke="none")
+            y += s["slat_w"] + s["gap"]
+        sl = getattr(D, "CARPORT_SLIDER", None)
+        if sl and sl.get("installed", True):
+            svg.rect(sl["y"] - 0.15, sl["z0"], sl["y"] + 0.15, sl["z1"] - 0.15, fill=CEDAR, stroke=INK, sw=0.6)
+        for (x, y) in D.POSTS:
+            if x > cp["x1"] - 1.0 and cp["y0"] <= y <= cp["y1"]:
+                svg.rect(y - 0.17, H, y + 0.17, C, fill=INK, stroke=INK, sw=0.3)
+    for sc in getattr(D, "SLAT_SCREENS", []):
+        if sc["axis"] == "y":   # courtyard east screen, in line with the house wall
+            svg.rect(sc["y0"], 0, sc["y1"], H, fill="#e7e3da", stroke=INK, sw=0.7)
+            svg.rect(sc["y0"], H, sc["y1"], C, fill="#efd9c4", stroke=INK, sw=0.9)
+            y = sc["y0"] + 0.1
+            while y < sc["y1"] - 0.1:
+                svg.rect(y, H + 0.1, y + s["slat_w"], C - 0.02, fill=CEDAR, stroke="none")
+                y += s["slat_w"] + s["gap"]
+    # bar east wall + its windows
+    w = [w for w in D.EXT_WALLS if w["id"] == "E-bar"][0]
+    ya, yb = w["a"][1], w["b"][1]
+    svg.rect(ya, 0, yb, C, fill="#fbfaf6", stroke=INK, sw=1.1)
+    wins = {}
+    for o in w["openings"]:
+        window_elev(svg, ya + o["off"], ya + o["off"] + o["w"], FF + o["sill"], FF + o["head"])
+        wins[o.get("name", "")] = ya + o["off"] + o["w"] / 2
+    # veranda (set back at its own east edge) + post
+    vp = [p for p in D.PAVING if p["name"] == "Veranda"]
+    vx0, vy0, vx1, vy1 = vp[0]["rect"] if vp else (16.5, 80, 42.5, 92.5)
+    svg.rect(vy0, 0, vy1, H, fill="#efe6d2", stroke=INK, sw=0.6)
+    for (x, y) in D.POSTS:
+        if y > 80 and x > 30:
+            svg.rect(y - 0.17, H, y + 0.17, C, fill=INK, stroke=INK, sw=0.3)
+    # roof: the plate at the east edge (carport + bar), the wing eave beyond over the open courtyard
+    ys = sorted(set(p[1] for p in D.ROOF))
+    ry0, ry1 = min(ys), max(ys)
+    east = [p for p in D.ROOF if p[0] >= max(q[0] for q in D.ROOF) - 0.01]
+    svg.rect(ry0, C, ry1, FT, fill=POCHE, stroke=POCHE, sw=0.5)
+    if len(east) >= 4:
+        gaps = sorted(p[1] for p in east)
+        g0, g1 = gaps[1], gaps[2]
+        svg.rect(g0, C, g1, FT, fill="#8a8d90", stroke=POCHE, sw=0.5)
+    level_marks(svg, ry1 + 3.5, [(FT, "T.O. ROOF"), (C, "SOFFIT"), (FF, "F.F.")])
+    if cp:
+        svg.leader((cp["y0"] + cp["y1"]) / 2, 6.0, cp["y0"] + 1.0, 16.5, "OPEN CARPORT SIDE, CEDAR SCREEN BEYOND")
+    for sc in getattr(D, "SLAT_SCREENS", []):
+        if sc["axis"] == "y":
+            svg.leader((sc["y0"] + sc["y1"]) / 2, 7.0, (sc["y0"] + sc["y1"]) / 2, 19.0,
+                       "CEDAR SLAT SCREEN: MORNING LIGHT INTO THE PÁTIO")
+    for name, yc in wins.items():
+        if "bedroom" in name.lower():
+            svg.leader(yc, 6.0, yc + 3.5, 17.5, "PRIMARY BEDROOM WINDOW")
+        if "garden" in name.lower():
+            svg.leader(yc, 6.5, yc + 4.0, 14.6, "SHOWER GARDEN WINDOW, FROSTED BELOW 5'")
     human(svg, 33.0, 0)
     return svg.save("05_elevation_east.svg")
 
@@ -1059,7 +1265,7 @@ def cobogo_detail():
 def main():
     hatch = None
     outs = [site_plan(), floor_plan(), south_elevation(), north_elevation(), east_elevation(),
-            west_elevation(), section_aa(), cobogo_detail(), bath_plan()]
+            west_elevation(), section_aa(), cobogo_detail(), bath_plan(), hall_bath_plan()]
     for o in outs:
         print(o)
 

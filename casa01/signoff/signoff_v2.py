@@ -14,7 +14,7 @@ CASA = os.path.dirname(HERE)
 sys.path.insert(0, CASA)
 import design as D  # noqa: E402
 
-V1 = os.path.join(CASA, "drawings")
+V1 = os.path.join(CASA, "drawings", "v1")   # V1 as presented (frozen copies)
 V2 = os.path.join(CASA, "drawings", "v2")
 RED = "#c0392b"
 
@@ -34,7 +34,7 @@ CHANGES = [
      "The courtyard wraps behind the carport to the primary bedroom, whose 8 ft slider (D3) and window open onto it. "
      "Cedar slats line the carport's two courtyard sides, and a new slat screen on the east edge, in line with the house "
      "and the carport, brings in morning light. "
-     "763 sf with the covered entry (V1: 771)."),
+     f"{D.area_schedule()['courtyard']:.0f} sf with the covered entry (V1: 771)."),
     ((10.2, 52.6), "Bedroom wing 2 ft narrower",
      "Bedrooms 2 and 3 are 14'-3\" wide (were 16'-3\"), about 155 sf each, still fitting a queen bed and desk. "
      "This keeps the courtyard 22'-6\" wide (V1: 26 ft) and the cobogó 17 ft (V1: 21 ft)."),
