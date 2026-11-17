@@ -52,6 +52,9 @@ WEB = {
     "calcada": ("dg", False, "#242422", 0.5, 0.6, 0.0),
     "ladrilho": (None, False, "#D8C8AE", 1, 0.5, 0.0),
     "zellige": (None, False, "#356A55", 1, 0.08, 0.0),
+    "zellige_terracotta": (None, False, "#B4643F", 1, 0.08, 0.0),
+    "shower_mosaic": (None, False, "#46705D", 1, 0.55, 0.0),
+    "oak_door": ("oak", False, "#C9A57A", 0.8, 0.5, 0.0),
     "mirror": (None, False, "#D8D8D8", 1, 0.03, 1.0),
     "dg": ("dg", False, "#C2A27C", 1.2, 0.95, 0.0),
     "mulch": ("mulch", False, "#4E3D2E", 1.2, 0.95, 0.0),
@@ -332,8 +335,7 @@ def main():
     g.box(0.0, -0.5, -0.1, 54.0, 27.0, 0.0, mats6=[1] * 6)
     g.box(54.0, -0.5, -0.1, 65.0, 125.0, 0.0, mats6=[1] * 6)
     g.box(0.0, 27.0, -0.1, 6.0, 125.0, 0.0, mats6=[1] * 6)
-    for (sx0, sx1) in D.DRIVEWAY["strips"]:
-        g.box(sx0, D.DRIVEWAY["y0"], -0.1, sx1, D.DRIVEWAY["y1"], 0.05, mat=4)
+    landscape.drive(g, dg_mat=1, strip_mat=4)
     g.build(land)
     landscape._fences(L, land)
     landscape._neighbors(L, land)

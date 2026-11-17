@@ -101,9 +101,11 @@ def build_house(L, coll):
     glass.build(coll)
 
     _limestone_wall(L, coll)
-    _roof(L, coll)
+    roof_ob = _roof(L, coll)
+    _skylights(L, coll, roof_ob)
     _cobogo(L, coll)
     _gate_and_screen(L, coll, cedar_z)
+    _doors(L, coll)
     _posts(L, coll)
     _hardscape(L, coll)
     cedar_z.build(coll, bevel=0.002)
@@ -229,7 +231,7 @@ def _roof(L, coll):
     roof = MB("Roof", [L["roof"], L["bronze"], L["stucco"]])
     roof.prism(D.ROOF, D.FASCIA_BOT, D.FASCIA_TOP, top=0, side=1, bottom=2)
     # gravel-stop lip
-    roof.build(coll, bevel=0.003)
+    roof_ob = roof.build(coll, bevel=0.003)
     # cedar soffit + ceiling boards
     boards = MB("Cedar soffits", [L["cedar_y"]])
     rng = random.Random(9)
@@ -246,6 +248,7 @@ def _roof(L, coll):
                 y = y1
             x = x1 + gap
     boards.build(coll, bevel=0.002)
+    return roof_ob
 
 
 # --------------------------------------------------------------------------- cobogó
@@ -326,9 +329,25 @@ def _cobogo(L, coll):
 
 
 # --------------------------------------------------------------------------- gate & screen
+def _slats_y(cedar_z, x, y0, y1, z0, z1, sw, sd, gap, skip=()):
+    """Vertical cedar slats along a screen line parallel to Y (face at x, depth -sd)."""
+    y = y0
+    while y + sw <= y1 + 1e-6:
+        if not any(a - 0.02 < y + sw and y < b + 0.02 for (a, b) in skip):
+            cedar_z.box(x - sd, y, z0, x, y + sw, z1)
+        y += sw + gap
+
+
+def _slats_x(cedar_z, y, x0, x1, z0, z1, sw, sd, gap):
+    x = x0
+    while x + sw <= x1 + 1e-6:
+        cedar_z.box(x, y, z0, x + sw, y + sd, z1)
+        x += sw + gap
+
+
 def _gate_and_screen(L, coll, cedar_z):
     g = D.ENTRY_GATE
-    steel = MB("Gate steel", [L["bronze"]])
+    steel = MB("Gate steel", [L["bronze"], L["brass"]])
     # jamb posts
     steel.box(g["x0"] - 0.33, g["y"], g["z0"] - 0.85, g["x0"], g["y"] + 0.33, g["z1"])
     steel.box(g["x1"], g["y"], g["z0"] - 0.85, g["x1"] + 0.5, g["y"] + 0.33, g["z1"])
@@ -342,20 +361,164 @@ def _gate_and_screen(L, coll, cedar_z):
         cedar_z.box(x, g["y"] + 0.02, g["z0"] + 0.15, x + 0.125, g["y"] + 0.31, g["z1"] - 0.15)
         x += pitch
     # brass pull
-    steel.box(gx0 + 0.25, g["y"] - 0.12, D.FF + 3.0, gx0 + 0.32, g["y"] - 0.05, D.FF + 6.0)
-    # cedar screen on the courtyard east side
+    steel.box(gx0 + 0.25, g["y"] - 0.12, D.FF + 3.0, gx0 + 0.32, g["y"] - 0.05, D.FF + 6.0, mat=1)
+
+    # cedar screen between the carport and the courtyard, with the side gate (D15) in it
     s = D.CEDAR_SCREEN
-    y = s["y0"] + 0.05
-    while y + s["slat_w"] < s["y1"]:
-        cedar_z.box(s["x"] - s["slat_d"], y, s["z0"] + 0.1, s["x"], y + s["slat_w"], s["z1"] - 0.02)
-        y += s["slat_w"] + s["gap"]
-    # rails + posts behind slats, cap channel
-    steel.box(s["x"] + 0.0, s["y0"], s["z0"] + 0.6, s["x"] + 0.12, s["y1"], s["z0"] + 0.75)
-    steel.box(s["x"] + 0.0, s["y0"], s["z1"] - 1.0, s["x"] + 0.12, s["y1"], s["z1"] - 0.85)
-    for yy in (s["y0"] + 0.2, s["y0"] + 8, s["y0"] + 16, s["y0"] + 24, s["y1"] - 0.3):
-        steel.box(s["x"], yy, D.GRADE, s["x"] + 0.25, yy + 0.25, s["z1"])
-    steel.box(s["x"] - s["slat_d"] - 0.02, 36.0, s["z1"] - 0.02, s["x"] + 0.12, 56.0, s["z1"] + 0.06)
+    sw, sd, gap = s["slat_w"], s["slat_d"], s["gap"]
+    ops = s.get("openings", [])
+    z0, z1 = s["z0"] + 0.1, s["z1"] - 0.02
+    _slats_y(cedar_z, s["x"], s["y0"], s["y1"], z0, z1, sw, sd, gap, skip=ops)
+    spans = []
+    yy = s["y0"]
+    for (a, b) in ops:
+        spans.append((yy, a - 0.05))
+        yy = b + 0.05
+    spans.append((yy, s["y1"]))
+    for (a, b) in spans:   # rails behind the slats (courtyard side), posts at the ends + every ~6 ft
+        steel.box(s["x"], a, s["z0"] + 0.6, s["x"] + 0.12, b, s["z0"] + 0.75)
+        steel.box(s["x"], a, s["z1"] - 1.0, s["x"] + 0.12, b, s["z1"] - 0.85)
+        n = max(1, int(round((b - a) / 6.0)))
+        for k in range(n + 1):
+            py = min(a + k * (b - a) / n, b - 0.25)
+            steel.box(s["x"], py, D.GRADE, s["x"] + 0.25, py + 0.25, s["z1"])
+    steel.box(s["x"] - sd - 0.02, s["y0"], s["z1"] - 0.02, s["x"] + 0.12, s["y1"], s["z1"] + 0.06)
+    cg = getattr(D, "CARPORT_GATE", None)
+    if cg:   # side gate leaf, closed: the same slats on a bronze frame + a brass pull
+        x = cg["x"]
+        steel.box(x - sd, cg["y0"] + 0.05, cg["z0"] + 0.08, x, cg["y1"] - 0.05, cg["z0"] + 0.2)
+        steel.box(x - sd, cg["y0"] + 0.05, cg["z1"] - 0.3, x, cg["y1"] - 0.05, cg["z1"] - 0.18)
+        _slats_y(cedar_z, x, cg["y0"] + 0.08, cg["y1"] - 0.08, cg["z0"] + 0.2, cg["z1"] - 0.3, sw, sd, gap)
+        steel.box(x + 0.02, cg["y1"] - 0.45, D.FF + 2.6, x + 0.08, cg["y1"] - 0.38, D.FF + 5.6, mat=1)
+        steel.box(x - sd - 0.08, cg["y1"] - 0.45, D.FF + 2.6, x - sd - 0.02, cg["y1"] - 0.38, D.FF + 5.6, mat=1)
+    for sc in getattr(D, "SLAT_SCREENS", []):
+        top = s["z1"] - 0.02
+        if sc["axis"] == "x":   # carport north: slats along x, posts at the ends + middle
+            _slats_x(cedar_z, sc["y"], sc["x0"] + 0.35, sc["x1"] - 0.35, s["z0"] + 0.1, top, sw, sd, gap)
+            for px in (sc["x0"] + 0.1, (sc["x0"] + sc["x1"]) / 2, sc["x1"] - 0.35):
+                steel.box(px, sc["y"] + sd, D.GRADE, px + 0.25, sc["y"] + sd + 0.25, s["z1"])
+            for zz in (s["z0"] + 0.6, s["z1"] - 1.0):
+                steel.box(sc["x0"], sc["y"] + sd, zz, sc["x1"], sc["y"] + sd + 0.12, zz + 0.15)
+            steel.box(sc["x0"], sc["y"] - 0.02, s["z1"] - 0.02, sc["x1"], sc["y"] + sd + 0.12, s["z1"] + 0.06)
+        else:                   # courtyard east: slats along y on the lot's side-yard edge
+            _slats_y(cedar_z, sc["x"], sc["y0"] + 0.3, sc["y1"] - 0.3, s["z0"] + 0.1, top, sw, sd, gap)
+            for py in (sc["y0"] + 0.05, (sc["y0"] + sc["y1"]) / 2, sc["y1"] - 0.6):
+                steel.box(sc["x"], py, D.GRADE, sc["x"] + 0.25, py + 0.25, s["z1"])
+            for zz in (s["z0"] + 0.6, s["z1"] - 1.0):
+                steel.box(sc["x"], sc["y0"], zz, sc["x"] + 0.12, sc["y1"] - 0.5, zz + 0.15)
+            steel.box(sc["x"] - sd - 0.02, sc["y0"], s["z1"] - 0.02, sc["x"] + 0.12, sc["y1"] - 0.5, s["z1"] + 0.06)
+    sl = getattr(D, "CARPORT_SLIDER", None)
+    if sl and sl.get("installed", True):   # motorized sliding cedar gate, closed
+        y = sl["y"]
+        steel.box(sl["park_x0"] - 0.3, y - 0.05, sl["z0"] - 0.02, sl["x1"], y + 0.05, sl["z0"] + 0.04)   # ground track
+        steel.box(sl["x0"] + 0.05, y - 0.15, sl["z0"] + 0.08, sl["x1"] - 0.05, y + 0.15, sl["z0"] + 0.24)
+        steel.box(sl["x0"] + 0.05, y - 0.15, sl["z1"] - 0.32, sl["x1"] - 0.05, y + 0.15, sl["z1"] - 0.16)
+        for ex in (sl["x0"] + 0.05, sl["x1"] - 0.2):
+            steel.box(ex, y - 0.15, sl["z0"] + 0.08, ex + 0.15, y + 0.15, sl["z1"] - 0.16)
+        x = sl["x0"] + 0.25
+        while x + 0.125 < sl["x1"] - 0.2:
+            cedar_z.box(x, y - 0.14, sl["z0"] + 0.24, x + 0.125, y + 0.14, sl["z1"] - 0.32)
+            x += 0.29
+        ri = getattr(D, "GATE_ROUGH_IN", None)
+        if ri:   # gate operator on its pad, behind the cobogó
+            mx0, my0, mx1, my1 = ri["motor_pad"]
+            steel.box(mx0 + 0.35, my0 + 0.15, D.HARDSCAPE, mx1 - 0.35, my1 - 0.1, D.HARDSCAPE + 1.15)
     steel.build(coll, bevel=0.002)
+
+
+# how far each door stands open in the renders (degrees; 90 = flat against the swing side)
+DOOR_OPEN = {"Bed 2": 55, "Bed 3": 55, "Bath": 84, "Laundry": 70, "Primary": 75, "WIC": 80, "Primary bath": 86}
+
+
+def _doors(L, coll):
+    """Interior doors (V2): flush solid-core rift oak veneer leaves, painted flush jambs, brass
+    levers; closets get bypass oak leaves. Swings follow the plan (hinge at the opening start,
+    opening along the wall normal * swing)."""
+    dm = MB("Interior doors", [L.get("oak_door", L["oak"]), L["paint"], L["brass"], L["black"]])
+    t = D.INT_T
+    for p in D.PARTITIONS:
+        a = Vector(p["a"]); b = Vector(p["b"])
+        Lp = (b - a).length
+        u = (b - a) / Lp
+        n = Vector((-u.y, u.x))
+        for o in p["openings"]:
+            s0, s1 = o["off"], o["off"] + o["w"]
+            for (q0, q1) in ((s0, s0 + 0.06), (s1 - 0.06, s1)):
+                x0, y0, x1, y1 = _rect(a, u, n, q0, q1, -t / 2, t / 2)
+                dm.box(x0, y0, FF, x1, y1, FF + 8.0, mat=1)
+            x0, y0, x1, y1 = _rect(a, u, n, s0, s1, -t / 2, t / 2)
+            dm.box(x0, y0, FF + 7.94, x1, y1, FF + 8.0, mat=1)
+            if o["kind"] == "closet":
+                half = o["w"] / 2
+                for k, dd in enumerate((-0.07, 0.07)):
+                    q0 = s0 + 0.06 if k == 0 else s0 + half - 0.06
+                    q1 = s0 + half + 0.06 if k == 0 else s1 - 0.06
+                    x0, y0, x1, y1 = _rect(a, u, n, q0, q1, dd - 0.055, dd + 0.055)
+                    dm.box(x0, y0, FF + 0.06, x1, y1, FF + 7.9, mat=0)
+                    pq = q0 + 0.25 if k == 0 else q1 - 0.33
+                    for side in (-1, 1):
+                        x0, y0, x1, y1 = _rect(a, u, n, pq, pq + 0.08, dd + side * 0.055, dd + side * 0.065)
+                        dm.box(x0, y0, FF + 3.2, x1, y1, FF + 4.4, mat=3)
+                continue
+            sw = o.get("swing", 1)
+            ang = math.radians(o.get("open", DOOR_OPEN.get(o.get("name"), 82)))
+            nn = n * sw
+            hinge = a + u * (s0 + 0.06) + nn * (t / 2)
+            lw = o["w"] - 0.12
+            d = u * math.cos(ang) + nn * math.sin(ang)
+            p0, p1 = hinge, hinge + d * lw
+            _rot_box_m(dm, p0, p1, 0.146, FF + 0.04, FF + 7.92, 0)
+            perp = Vector((-d.y, d.x))
+            for side in (-1, 1):   # brass lever on both faces
+                c0 = hinge + d * (lw - 0.62) + perp * (0.073 + side * 0.073 + side * 0.07)
+                c1 = hinge + d * (lw - 0.2) + perp * (0.073 + side * 0.073 + side * 0.07)
+                _rot_box_m(dm, c0, c1, 0.05, FF + 3.15, FF + 3.21, 2)
+    dm.build(coll, bevel=0.003)
+
+
+def _rot_box_m(mb, p0, p1, depth, z0, z1, mat):
+    d = (p1 - p0)
+    perp = Vector((-d.y, d.x)).normalized() * depth
+    q = [p0, p1, p1 + perp, p0 + perp]
+    verts = [(c.x, c.y, z0) for c in q] + [(c.x, c.y, z1) for c in q]
+    faces = [(0, 3, 2, 1), (4, 5, 6, 7), (0, 1, 5, 4), (1, 2, 6, 5), (2, 3, 7, 6), (3, 0, 4, 7)]
+    if d.x * perp.y - d.y * perp.x < 0:
+        faces = [tuple(reversed(f)) for f in faces]
+    mb._add(verts, faces, [mat] * 6, random.random())
+
+
+def _skylights(L, coll, roof_ob):
+    """Cut each skylight through the roof plate; painted light well, membrane curb, bronze
+    frame and a laminated glass lid (design.SKYLIGHTS)."""
+    sk = getattr(D, "SKYLIGHTS", [])
+    if not sk or roof_ob is None:
+        return
+    well = MB("Skylight wells", [L["paint"], L["roof"], L["bronze"]])
+    lid = MB("Skylight glass", [L["glass"]])
+    ft, curb = D.FASCIA_TOP, 0.42
+    for k in sk:
+        x0, y0, x1, y1 = k["rect"]
+        cm = MB("cut", [L["paint"]])
+        cm.box(x0, y0, D.CEIL - 1.0, x1, y1, ft + 2.0)
+        cut = cm.build(coll)
+        cut.hide_render = cut.hide_viewport = True
+        mod = roof_ob.modifiers.new("skylight", "BOOLEAN")
+        mod.operation = "DIFFERENCE"
+        mod.solver = "EXACT"
+        mod.object = cut
+        w = 0.05
+        for (a0, b0, a1, b1) in ((x0, y0, x0 + w, y1), (x1 - w, y0, x1, y1), (x0, y0, x1, y0 + w), (x0, y1 - w, x1, y1)):
+            well.box(a0, b0, D.CEIL - 0.01, a1, b1, ft + curb, mat=0)
+        c = 0.3   # curb, flashed with the roof membrane
+        for (a0, b0, a1, b1) in ((x0 - c, y0 - c, x0, y1 + c), (x1, y0 - c, x1 + c, y1 + c),
+                                 (x0, y0 - c, x1, y0), (x0, y1, x1, y1 + c)):
+            well.box(a0, b0, ft - 0.02, a1, b1, ft + curb, mat=1)
+        for (a0, b0, a1, b1) in ((x0 - c, y0 - c, x0 + 0.08, y1 + c), (x1 - 0.08, y0 - c, x1 + c, y1 + c),
+                                 (x0, y0 - c, x1, y0 + 0.08), (x0, y1 - 0.08, x1, y1 + c)):
+            well.box(a0, b0, ft + curb, a1, b1, ft + curb + 0.12, mat=2)
+        lid.box(x0 + 0.02, y0 + 0.02, ft + curb + 0.02, x1 - 0.02, y1 - 0.02, ft + curb + 0.08)
+    well.build(coll, bevel=0.002)
+    lid.build(coll)
 
 
 def _posts(L, coll):
@@ -370,10 +533,20 @@ def _hardscape(L, coll):
     pv = MB("Limestone pavers", [L["pavers"], L["concrete"]])
     soil = MB("Courtyard soil", [L["mulch"], L["concrete"]])
     H = D.HARDSCAPE
-    # courtyard platform (retained by the cobogó curb + concrete curb at the screen)
-    soil.box(28.0, 30.33, 0.0, 53.7, 60.0, H - 0.08, mats6=[1, 0, 1, 1, 1, 1])
-    soil.box(53.7, 30.33, 0.0, 54.3, 60.0, H, mat=1)
-    # paved zones: covered entry strip, gallery walk, great-room terrace, primary landing
+    # courtyard platform (covered entry + L-shaped courtyard), retained by concrete curbs
+    court = [p for p in D.OUTDOOR if p["name"].startswith("Pátio")][0]["poly"]
+    entry = [p for p in D.OUTDOOR if p["name"] == "Covered entry"][0]["poly"]
+    ex0, ey0 = entry[0]
+    poly = [(ex0, ey0), (entry[1][0], ey0)] + [q for q in court if q[1] > 36.0 or q[0] > entry[1][0]]
+    poly = [(26.0, 30.33), (48.5, 30.33), (48.5, 50.0), (59.5, 50.0), (59.5, 60.0), (26.0, 60.0)] \
+        if len(poly) < 6 else poly
+    soil.prism(poly, 0.0, H - 0.08, top=0, side=1, bottom=1)
+    # carport slab at the courtyard level: level arrival, one level for the sliding gate track
+    cp = getattr(D, "CARPORT", None)
+    if cp:
+        slab = MB("Carport slab", [L["concrete"]])
+        slab.box(cp["x0"], cp["y0"], -0.3, cp["x1"], cp["y1"], H - 0.02)
+        slab.build(coll, bevel=0.004)
     # black calçada portuguesa at the entry, framed by a light concrete band
     em = D.ENTRY_MOSAIC
     mo = MB("Entry mosaic", [L["calcada"], L["concrete"]])
@@ -382,16 +555,14 @@ def _hardscape(L, coll):
     mo.box(em["x0"] + bd, em["y0"] + bd, H - 0.1, em["x1"] - bd, em["y1"] - bd, H + 0.004,
            mats6=[1, 0, 1, 1, 1, 1])
     mo.build(coll)
-    for (x0, y0, x1, y1) in ((em["x1"], 30.33, 53.7, 36.0), (28.0, 30.33, em["x1"], em["y0"]),
-                             (28.0, 36.0, 31.5, 60.0),
-                             (31.5, 52.0, 39.5, 60.0), (41.5, 56.5, 51.5, 60.0)):
-        pv.box(x0, y0, H - 0.12, x1, y1, H, mats6=[1, 0, 1, 1, 1, 1])
-    # stepping stones across the garden to the primary landing
-    for k, (x, y) in enumerate(((41.0, 53.8), (43.6, 54.9), (46.2, 55.4))):
-        pv.box(x - 1.0, y - 0.7, H - 0.12, x + 1.0, y + 0.7, H - 0.02)
-    # veranda + step
-    pv.box(16.5, 80.0, 0.0, 42.5, 92.5, H, mats6=[1, 0, 1, 1, 1, 1])
-    pv.box(16.5, 92.5, 0.0, 42.5, 93.8, H * 0.5, mats6=[1, 0, 1, 1, 1, 1])
+    for pz in D.PAVING:
+        x0, y0, x1, y1 = pz["rect"]
+        if pz["name"] == "Veranda":
+            pv.box(x0, y0, 0.0, x1, y1, H, mats6=[1, 0, 1, 1, 1, 1])
+            pv.box(x0, y1, 0.0, x1, y1 + 1.3, H * 0.5, mats6=[1, 0, 1, 1, 1, 1])   # step
+            continue
+        for (a0, a1, b0, b1) in subtract_rect((x0, x1, y0, y1), (em["x0"], em["x1"], em["y0"], em["y1"])):
+            pv.box(a0, b0, H - 0.12, a1, b1, H, mats6=[1, 0, 1, 1, 1, 1])
     # entry step outside the gate + front stepping slabs
     g = D.ENTRY_GATE
     pv.box(g["x0"] - 0.3, 27.6, 0.0, g["x1"] + 0.3, 29.95, H * 0.5)

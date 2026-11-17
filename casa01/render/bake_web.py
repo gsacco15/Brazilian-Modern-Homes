@@ -46,10 +46,16 @@ ASSETS = os.path.join(HERE, "assets")
 
 BAKE_ARCH = {"Walls", "Slab", "Window frames", "Limestone ashlar", "Limestone mortar", "Slot window reveal",
              "Roof", "Cedar soffits", "Cobogo curb", "Gate steel", "Steel posts", "Limestone pavers",
-             "Courtyard soil", "Cedar vertical", "Entry mosaic", "Bath floor tile", "Shower zellige",
-             "Bath limestone", "Bath brass", "Bath vanity", "Bath wc"}
-# small bath fixtures kept in the web model without a lightmap
-KEEP_EXTRA = ("Glass", "Shower glass", "Rain head", "Vessel sink", "Mirror", "Mirror rim", "Sconce arm", "Sconce globe")
+             "Courtyard soil", "Cedar vertical", "Entry mosaic", "Shower zellige", "Primary shower floor",
+             "Bath limestone", "Bath brass", "Bath vanity", "Bath wc",
+             # V2
+             "Interior doors", "Carport slab", "Skylight wells", "Hall bath tub wall", "Hall bath terracotta tile",
+             "Hall bath brass", "Hall bath oak", "Hall bath limestone", "Hall bath wc"}
+# small fixtures (and the subdivided sofa) kept in the web model without a lightmap
+KEEP_EXTRA = ("Glass", "Shower glass", "Rain head", "Vessel sink", "Mirror", "Mirror rim", "Sconce arm", "Sconce globe",
+              "Skylight glass", "Hall bath glass", "Hall bath tub", "Hall bath vessel", "Hall mirror", "Hall mirror rim",
+              "Hall sconce arm", "Hall sconce globe", "Hall shower head", "Hall bath vanity reveal",
+              "Sofa frame", "Sofa seat cushion", "Sofa back cushion", "Sofa pillow", "Sofa throw")
 BAKE_FURN = {"Oak millwork", "Upholstery", "Walnut furniture", "Ceramic fixtures", "Grill limestone",
              "Outdoor teak", "Living extras"}
 BAKE_LAND = {"Ground", "Cedar fences", "Neighbors"}
@@ -170,8 +176,7 @@ def build_bake_scene():
     g.box(0.0, -0.5, -0.1, 54.0, 27.0, 0.0, mats6=[1] * 6)
     g.box(54.0, -0.5, -0.1, 65.0, 125.0, 0.0, mats6=[1] * 6)
     g.box(0.0, 27.0, -0.1, 6.0, 125.0, 0.0, mats6=[1] * 6)
-    for (sx0, sx1) in D.DRIVEWAY["strips"]:
-        g.box(sx0, D.DRIVEWAY["y0"], -0.1, sx1, D.DRIVEWAY["y1"], 0.05, mat=4)
+    landscape.drive(g, dg_mat=1, strip_mat=4)
     g.build(land)
     return L
 
@@ -373,6 +378,13 @@ def main():
             for mod in list(ob.modifiers):
                 if mod.type == "BEVEL":
                     ob.modifiers.remove(mod)
+            # bake the evaluated shape (e.g. the roof with its skylight cuts): joining drops modifiers
+            if ob.modifiers:
+                bpy.ops.object.select_all(action="DESELECT")
+                ob.select_set(True)
+                bpy.context.view_layer.objects.active = ob
+                for mod in list(ob.modifiers):
+                    bpy.ops.object.modifier_apply(modifier=mod.name)
             targets.append(ob)
     if args.only:
         targets = [o for o in targets if o.name in args.only.split(",")]

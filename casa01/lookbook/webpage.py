@@ -102,7 +102,7 @@ sun.shadow.mapSize.set(small?2048:4096,small?2048:4096);
 const C=T([32,62,0]);const sc=sun.shadow.camera;sc.left=-26;sc.right=26;sc.top=26;sc.bottom=-26;sc.near=1;sc.far=150;sun.shadow.bias=-0.0003;sun.shadow.normalBias=0.025;
 sun.target.position.copy(C);scene.add(sun);scene.add(sun.target);
 const night=[];[[36,33.4,10],[42,46,3],[27,86,10],[30,70,10],[14,72,10],[25.4,45,10],[31,106,2]].forEach(p=>{const l=new THREE.PointLight(0xffb36b,0,15,1.6);l.position.copy(T(p));scene.add(l);night.push(l)});
-const VIEWS={street:[[41,-15.5,5.4],[27,30,7.4]],entry:[[51.5,35,5.9],[31,31.5,5.6]],patio:[[53.0,51.5,5.6],[28,51,5.4]],room:[[21.6,78.9,5.7],[33.5,60,5]],veranda:[[41.8,90.4,5.8],[20.5,83.8,5.4]],aerial:[[96,-38,72],[31,58,0]],plan:[[30.5,55,118],[30.5,56,0]]};
+const VIEWS={street:[[55,-5.5,5.2],[30.5,30,6.6]],entry:[[47.2,34.6,5.85],[26,32.5,5.6]],patio:[[52.5,58.9,6.25],[30,40,6]],room:[[29.6,61,5.5],[41,71.5,4.6]],veranda:[[41.8,90.4,5.8],[20.5,83.8,5.4]],aerial:[[96,-38,72],[31,58,0]],plan:[[30.5,55,118],[30.5,56,0]]};
 const roofObjs=[],hit=[],baked=[],lit=[];const info=__FINISHES__;
 const pickEl=document.getElementById('pick'),loadEl=document.getElementById('loading');
 const TL=new THREE.TextureLoader();
@@ -300,14 +300,15 @@ PANOS = [("street", "Street"), ("entry", "Covered entry"), ("patio", "Pátio"), 
          ("veranda", "Veranda")]
 
 GALLERY = [
-    ("street", "Street", "Limestone wall, cedar gate and cobogó under one 54-foot roof edge. Native meadow instead of lawn.", True),
-    ("street_dusk", "Dusk", "Courtyard lights behind the cobogó turn the screen into a lantern; grazers rake the limestone.", True),
-    ("entry", "Covered entry", "Black calçada portuguesa underfoot, the cobogó beside you, the cedar pivot door ahead, all in shade under the canopy.", False),
-    ("courtyard", "Pátio", "Dwarf palmetto, ferns and muhly under a limbed-up oak, lined by the gallery glass.", False),
-    ("interior", "Great room", "Cedar ceiling, polished concrete, warm-white walls. Courtyard to the south, veranda to the north.", True),
+    ("street", "Street", "Limestone wall, cedar pivot gate, cobogó and the sliding cedar carport gate under one long roof edge. Native meadow instead of lawn.", True),
+    ("street_dusk", "Dusk", "Lights behind the cobogó and the carport slats turn the front into a lantern; grazers rake the limestone.", True),
+    ("entry", "Covered entry", "Black calçada portuguesa underfoot, the cobogó beside you, the cedar pivot door ahead. You arrive here from the carport through a cedar gate.", False),
+    ("courtyard", "Pátio", "One L-shaped pátio: palmetto, ferns and muhly under a limbed-up oak, lined by the gallery glass and cedar slat screens.", False),
+    ("interior", "Great room", "Cedar ceiling, polished concrete, a walnut-framed linen sofa. Courtyard to the south, veranda to the north.", True),
     ("kitchen", "Kitchen", "Rift white oak, honed black granite island, green glazed tile.", False),
-    ("bath", "Primary bath", "Ladrilho hidráulico floor, green zellige wet room, floating oak vanity, brass fixtures, a garden window.", True),
-    ("gallery", "Gallery", "The bedroom hall is a 30-foot glass wall on the pátio.", False),
+    ("bath", "Primary bath", "Curbless walk-in shower in green zellige-look tile with a skylight in the middle; concrete floor, floating oak vanity, brass.", True),
+    ("bath2", "Hall bath", "Terracotta zellige-look tile around the house's one tub, a fixed glass panel, a skylight above, pill mirror, oak and limestone.", True),
+    ("gallery", "Gallery", "The bedroom hall is a 30-foot glass wall on the pátio, with rift-oak doors to the bedrooms and hall bath.", False),
     ("veranda", "Veranda", "276 sf under the oak. The cedar ceiling runs straight out from the great room.", False),
     ("rear", "Rear yard", "The house sits forward on the lot to protect the heritage live oak.", False),
     ("aerial", "Aerial", "An L-shaped house wrapped around an open-sky pátio.", True),

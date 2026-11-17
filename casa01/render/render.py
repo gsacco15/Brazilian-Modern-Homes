@@ -31,19 +31,19 @@ OUT = os.path.join(os.path.dirname(HERE), "renders")
 
 # camera: position & target in feet, lens mm. sun = compass azimuth of the sun.
 VIEWS = {
-    "street": dict(cam=(41.0, -15.5, 5.4), tgt=(27.0, 30.0, 7.4), lens=22, hdri="afternoon", sun=232,
+    "street": dict(cam=(55.0, -5.5, 5.2), tgt=(30.5, 30.0, 6.6), lens=20, hdri="afternoon", sun=232,
                    strength=1.0, exposure=-0.2, night=False),
-    "street_dusk": dict(cam=(41.0, -15.5, 5.4), tgt=(27.0, 30.0, 7.4), lens=22, hdri="dusk", sun=290,
+    "street_dusk": dict(cam=(55.0, -5.5, 5.2), tgt=(30.5, 30.0, 6.6), lens=20, hdri="dusk", sun=290,
                         strength=0.07, exposure=0.9, night=True, night_level=1.6),
-    "courtyard": dict(cam=(48.6, 58.6, D.HARDSCAPE + 5.6), tgt=(35.0, 33.0, 6.4), lens=18, hdri="day",
+    "courtyard": dict(cam=(52.5, 58.9, D.HARDSCAPE + 5.4), tgt=(30.0, 40.0, 6.0), lens=18, hdri="day",
                       sun=192, strength=1.0, exposure=0.7, night=False),
-    "entry": dict(cam=(51.5, 35.0, D.HARDSCAPE + 5.0), tgt=(31.0, 31.5, 5.6), lens=24, hdri="day", sun=198,
-                  strength=1.0, exposure=0.6, night=False),
+    "entry": dict(cam=(47.2, 34.6, D.HARDSCAPE + 5.0), tgt=(26.0, 32.5, 5.6), lens=22, hdri="day", sun=198,
+                  strength=1.0, exposure=0.95, night=False),
     "veranda": dict(cam=(41.8, 90.4, D.HARDSCAPE + 4.9), tgt=(20.5, 83.8, 5.4), lens=20, hdri="afternoon",
                     sun=284, strength=1.0, exposure=0.9, night=True, night_level=0.35),
-    "interior": dict(cam=(21.6, 78.9, D.FF + 4.7), tgt=(33.5, 60.0, D.FF + 4.0), lens=17, hdri="day", sun=200,
+    "interior": dict(cam=(29.6, 61.0, D.FF + 4.5), tgt=(41.0, 71.5, D.FF + 3.6), lens=18, hdri="day", sun=200,
                      strength=1.0, exposure=2.6, night=True, night_level=0.25),
-    "gallery": dict(cam=(25.4, 59.6, D.FF + 4.8), tgt=(25.4, 31.0, D.FF + 4.4), lens=17, hdri="day", sun=120,
+    "gallery": dict(cam=(24.9, 58.8, D.FF + 4.8), tgt=(21.6, 36.0, D.FF + 4.3), lens=17, hdri="day", sun=120,
                     strength=1.0, exposure=2.6, night=True, night_level=0.3),
     "aerial": dict(cam=(118.0, -52.0, 96.0), tgt=(31.0, 58.0, 0.0), lens=30, hdri="day", sun=215,
                    strength=1.0, exposure=0.0, night=False, two_point=False),
@@ -60,8 +60,10 @@ VIEWS = {
                       strength=1.0, exposure=1.8, night=True, night_level=0.25, pano=True),
     "pano_veranda": dict(cam=(35.2, 87.4, D.HARDSCAPE + 5.2), tgt=(33.0, 110.0, 5.3), lens=20, hdri="afternoon",
                          sun=284, strength=1.0, exposure=0.9, night=True, night_level=0.35, pano=True),
-    "bath": dict(cam=(52.45, 72.2, D.FF + 4.7), tgt=(46.3, 78.9, D.FF + 3.2), lens=15, hdri="day", sun=95,
-                 strength=1.0, exposure=2.25, night=True, night_level=0.2),
+    "bath": dict(cam=(58.4, 72.3, D.FF + 4.9), tgt=(52.0, 79.0, D.FF + 5.3), lens=15, hdri="day", sun=95,
+                 strength=1.0, exposure=2.25, night=True, night_level=0.2, hide=["Interior doors"]),
+    "bath2": dict(cam=(20.45, 42.2, D.FF + 4.8), tgt=(14.2, 46.4, D.FF + 5.0), lens=14, hdri="day", sun=160,
+                  strength=1.0, exposure=2.4, night=True, night_level=0.2, hide=["Interior doors"]),
     # orthographic presentation renders (rendered plan, landscape plan, elevations).
     # center/width in feet; rot in degrees; res in px. Also written to renders/ortho/ortho_views.json
     "plan_render": dict(ortho=True, center=(32.5, 59.5, 60.0), rot=(0, 0, 0), width=67.0, res=(2400, 2687),
@@ -237,23 +239,31 @@ def build_night_lights(coll):
 
     c = D.CEIL - 0.08
     # interior downlights
-    for x in (10, 15, 21, 26, 31, 35.5):
+    for x in (10, 15, 20, 25, 30, 35, 40):
         for y in (64, 70, 76):
             spot("dl", x, y, c, 22)
     for y in (34, 40, 46, 52, 57):
         spot("dl_gal", 25.4, y, c, 16)
-    for (x, y) in ((14, 36), (14, 54), (46, 66), (49, 76), (18, 45)):
+    for (x, y) in ((14, 36), (14, 54), (50, 66), (47, 76), (18.5, 45.0), (55.0, 74.0)):
         spot("dl_bed", x, y, c, 18)
-    # primary bath: sconces + shower downlight
+    # baths: sconces + shower downlight
     for yy in D.PRIMARY_BATH["sconces"]:
         point("sconce", D.PRIMARY_BATH["room"][0] + 0.55, yy, D.FF + 5.4, 6, radius=0.12)
-    spot("dl_shower", 49.5, 78.0, c, 18)
+    hb = getattr(D, "HALL_BATH", None)
+    if hb:
+        for xx in hb["sconces"]:
+            point("sconce", xx, hb["room"][3] - 0.5, D.FF + 5.7, 5, radius=0.1)
+    spot("dl_shower", D.PRIMARY_BATH["rain_head"][0] + 0.2, D.PRIMARY_BATH["rain_head"][1] + 0.6, c, 18)
     # pendants
     for (x, y) in ((23.0, 72.0), (26.2, 72.0), (12.5, 71.6), (16.5, 71.6)):
         point("pendant", x, y, D.CEIL - 3.0, 18, radius=0.1)
     # canopy / soffit downlights
-    for x in (30.5, 36, 42, 48, 52):
+    for x in (30.5, 36, 42, 46.5):
         spot("dl_canopy", x, 33.4, c, 22)
+    cp = getattr(D, "CARPORT", None)
+    if cp:
+        for y in (36.0, 44.0):
+            spot("dl_carport", (cp["x0"] + cp["x1"]) / 2, y, c, 20)
     for x in (20, 26, 32, 38):
         spot("dl_veranda", x, 86.5, c, 26)
     for y in (40, 46, 52):
@@ -263,7 +273,7 @@ def build_night_lights(coll):
         spot("graze", x, 28.7, 0.15, 26, size=70, blend=0.7, aim=(x, 29.75, 9.0))
     # low path lights along the stepping slabs
     for y in (4.0, 11.0, 18.0, 25.0):
-        point("path", 32.6, y, 0.9, 6, radius=0.05)
+        point("path", D.PATHS[0]["x"] + 2.1, y, 0.9, 6, radius=0.05)
     # courtyard tree uplights + cobogó backlight (wash the inside face)
     for (x, y) in ((41.5, 45.0), (46.5, 48.5), (44.5, 43.8)):
         spot("tree_up", x, y, D.HARDSCAPE + 0.2, 110, size=50, blend=0.6, aim=(44.0, 46.5, 16.0))
@@ -441,14 +451,14 @@ def main():
         bpy.context.scene.view_settings.exposure = v["exposure"]
         rs = bpy.context.scene.render
         hidden = []
+        for ob in bpy.data.objects:
+            if any(ob.name == h or ob.name.startswith(h + "_") for h in v.get("hide", [])):
+                if not ob.hide_render:
+                    ob.hide_render = True
+                    hidden.append(ob)
         if v.get("ortho"):
             set_ortho(v)
             rs.resolution_x, rs.resolution_y = (int(v["res"][0] * args.oscale), int(v["res"][1] * args.oscale))
-            for ob in bpy.data.objects:
-                if any(ob.name == h or ob.name.startswith(h + "_") for h in v.get("hide", [])):
-                    if not ob.hide_render:
-                        ob.hide_render = True
-                        hidden.append(ob)
             rs.film_transparent = bool(v.get("transparent"))
             _ortho_meta(name, v, args.out)
         else:

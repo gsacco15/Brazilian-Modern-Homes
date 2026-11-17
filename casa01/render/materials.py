@@ -435,9 +435,9 @@ def ladrilho():
     return b.set(Base_Color=col, Roughness=0.5, Normal=b.bump(h, 0.25, 0.002))
 
 
-def zellige():
-    """2.5x8 vertical stack, handmade-look glazed green tile (walls facing X or Y)."""
-    b = NB("Green zellige")
+def zellige(name="Green zellige", c1="#2B5A47", c2="#4B806A", dark="#1F4636", mortar="#D9D3C6"):
+    """2.5x8 vertical stack, handmade-look glazed tile (walls facing X or Y)."""
+    b = NB(name)
     geo = b.node("ShaderNodeNewGeometry")
     tc = b.node("ShaderNodeTexCoord")
     p = b.node("ShaderNodeSeparateXYZ")
@@ -458,16 +458,34 @@ def zellige():
     br.inputs["Brick Width"].default_value = 0.0635
     br.inputs["Row Height"].default_value = 0.2032
     br.inputs["Bias"].default_value = 0.0
-    br.inputs["Color1"].default_value = hex2lin("#2B5A47")
-    br.inputs["Color2"].default_value = hex2lin("#4B806A")
-    br.inputs["Mortar"].default_value = hex2lin("#D9D3C6")
+    br.inputs["Color1"].default_value = hex2lin(c1)
+    br.inputs["Color2"].default_value = hex2lin(c2)
+    br.inputs["Mortar"].default_value = hex2lin(mortar)
     b.link(vec.outputs[0], br.inputs["Vector"])
     nz = b.noise(tc.outputs["Object"], 26, 4, 0.5)
     wav = b.noise(tc.outputs["Object"], 9, 3, 0.5)
-    col = b.mix(b.math("MULTIPLY", wav.outputs["Factor"], 0.35), br.outputs["Color"], "#1F4636", "MULTIPLY")
+    col = b.mix(b.math("MULTIPLY", wav.outputs["Factor"], 0.35), br.outputs["Color"], dark, "MULTIPLY")
     h = b.math("SUBTRACT", b.math("ADD", b.math("MULTIPLY", nz.outputs["Factor"], 0.25),
                                   b.math("MULTIPLY", wav.outputs["Factor"], 0.35)), br.outputs["Factor"])
     return b.set(Base_Color=col, Roughness=0.06, Coat_Weight=0.4, Coat_Roughness=0.04, Normal=b.bump(h, 0.35, 0.003))
+
+
+def mosaic_floor(name="Shower mosaic", c1="#3E6B58", c2="#4F7A66", grout="#C9C3B6"):
+    """2x2 matte porcelain mosaic for a curbless shower floor (slip-resistant)."""
+    b = NB(name)
+    tc = b.node("ShaderNodeTexCoord")
+    br = b.node("ShaderNodeTexBrick", offset=0.0)
+    br.inputs["Scale"].default_value = 1.0
+    br.inputs["Mortar Size"].default_value = 0.0025
+    br.inputs["Brick Width"].default_value = 0.0508
+    br.inputs["Row Height"].default_value = 0.0508
+    br.inputs["Color1"].default_value = hex2lin(c1)
+    br.inputs["Color2"].default_value = hex2lin(c2)
+    br.inputs["Mortar"].default_value = hex2lin(grout)
+    b.link(tc.outputs["Object"], br.inputs["Vector"])
+    nz = b.noise(tc.outputs["Object"], 60, 4, 0.5)
+    h = b.math("SUBTRACT", b.math("MULTIPLY", nz.outputs["Factor"], 0.15), br.outputs["Factor"])
+    return b.set(Base_Color=br.outputs["Color"], Roughness=0.55, Normal=b.bump(h, 0.3, 0.002))
 
 
 def calcada():
@@ -692,6 +710,8 @@ def scanned_library():
         S["oak"] = scan("Rift white oak (scan)", "oak", tile=0.8, rotated=True, rand=True, tint="#D2B48C",
                         tint_mix=0.5, value=1.25, sat=0.7, val_jitter=0.08, bump=0.05, bump_dist=0.001)
         S["oak_y"] = S["oak"]
+        S["oak_door"] = scan("Rift oak door veneer (scan)", "oak", tile=0.8, rotated=False, rand=True, tint="#D2B48C",
+                             tint_mix=0.5, value=1.2, sat=0.7, val_jitter=0.06, bump=0.05, bump_dist=0.001)
     if have("walnut"):
         S["dark_wood"] = scan("Freijo / walnut (scan)", "walnut", tile=0.9, value=0.95, bump=0.04,
                               bump_dist=0.001, rough_scale=0.6)
@@ -773,6 +793,8 @@ def build_library():
         terracotta_fabric=fabric("Terracotta fabric", "#A8613F"),
         leather=leather(), rug=rug(), lamp=emission("Lamp glow"),
         ceramic=ceramic_white(), pot=terracotta_pot(), ladrilho=ladrilho(), zellige=zellige(), mirror=mirror(), calcada=calcada(),
+        zellige_terracotta=zellige("Terracotta zellige", "#A9593A", "#C47A52", "#7C3C26", "#E6DACB"),
+        shower_mosaic=mosaic_floor(), oak_door=white_oak("Rift oak door veneer", "Z"),
         light_concrete=board_concrete(),
         leaf=leaf(), leaf_shrub=leaf("Shrub leaf", "#2E3E22", "#56693A", "#93A85A"),
         bark=bark(), agave=agave_mat(),

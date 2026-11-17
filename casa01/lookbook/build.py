@@ -24,7 +24,7 @@ IMG = os.path.join(HERE, "img")
 WEB = os.path.join(HERE, "web")
 
 VIEWS = ["street", "street_dusk", "entry", "courtyard", "interior", "kitchen", "gallery", "veranda", "rear", "aerial",
-         "bath"]
+         "bath", "bath2"]
 ORTHO_VIEWS = ["plan_render", "site_render", "elev_s", "elev_n", "elev_e", "elev_w"]
 SWATCHES = [
     ("limestone", "Lueders limestone", "Pedra São Tomé / moledo", "Sawn-face ashlar, 3 course heights"),
@@ -142,7 +142,7 @@ FACTS = [
     ("12'-3\"", "to top of roof"),
 ]
 MOVES = [
-    ("One thin roof", "A single 15-inch roof edge runs the full 54-foot street front. Bedrooms, entry canopy and "
+    ("One thin roof", "A single 15-inch roof edge runs the full 57-foot street front. Bedrooms, entry canopy and "
      "courtyard all sit under one horizontal line."),
     ("Enter through a garden", "A Lueders limestone wall and a full-height cobogó screen hide a private pátio. "
      "You open a cedar gate, walk under the canopy, and reach the front door inside the garden."),

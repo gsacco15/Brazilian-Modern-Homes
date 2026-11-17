@@ -96,8 +96,7 @@ def build_site(L, coll, protos):
     g.box(0.0, -0.5, -0.1, 54.0, 27.0, 0.0, mats6=[1, 1, 1, 1, 1, 1])
     g.box(54.0, -0.5, -0.1, 65.0, 125.0, 0.0, mats6=[1, 1, 1, 1, 1, 1])
     g.box(0.0, 27.0, -0.1, 6.0, 125.0, 0.0, mats6=[1, 1, 1, 1, 1, 1])
-    for (sx0, sx1) in D.DRIVEWAY["strips"]:
-        g.box(sx0, D.DRIVEWAY["y0"], -0.1, sx1, D.DRIVEWAY["y1"], 0.05, mat=4)
+    drive(g, dg_mat=1, strip_mat=4)
     # rear: buffalo-grass lawn ground under the oak, DG paths
     g.box(6.0, 92.5, -0.1, 54.0, 125.0, -0.005, mats6=[0, 0, 0, 0, 0, 0])
     g.build(coll)
@@ -108,6 +107,30 @@ def build_site(L, coll, protos):
     _planting(L, coll, protos, rng)
     write_plant_log(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "renders", "ortho",
                                  "planting.json"))
+
+
+def drive(g, dg_mat=1, strip_mat=4):
+    """V2: the carport sits at the courtyard level, so the drive ramps up (~4%) across the front
+    yard; a graded DG wedge carries the concrete ribbons so they stay flush."""
+    dv = D.DRIVEWAY
+    ramp0, top = 8.0, D.HARDSCAPE - 0.02
+    cp = getattr(D, "CARPORT", None)
+    wx0, wx1 = (cp["x0"], cp["x1"]) if cp else (dv["strips"][0][0] - 1, dv["strips"][-1][1] + 1)
+    _ramp(g, wx0, wx1, ramp0, dv["y1"], -0.1, 0.0, top - 0.05, mat=dg_mat)
+    for (sx0, sx1) in dv["strips"]:
+        g.box(sx0, dv["y0"], -0.1, sx1, ramp0, 0.05, mat=strip_mat)
+        _ramp(g, sx0, sx1, ramp0, dv["y1"], -0.1, 0.05, top, mat=strip_mat)
+
+
+def _ramp(mb, x0, x1, y0, y1, zb, za, zc, mat=0):
+    """Box whose top slopes in y from za (at y0) to zc (at y1)."""
+    v = [(x0, y0, zb), (x1, y0, zb), (x1, y1, zb), (x0, y1, zb),
+         (x0, y0, za), (x1, y0, za), (x1, y1, zc), (x0, y1, zc)]
+    f = [(0, 3, 2, 1), (4, 5, 6, 7), (0, 1, 5, 4), (2, 3, 7, 6), (3, 0, 4, 7), (1, 2, 6, 5)]
+    mb._add(v, f, [mat] * 6, rng_global.random())
+
+
+rng_global = random.Random(17)
 
 
 def _fences(L, coll):
@@ -199,17 +222,19 @@ def _planting(L, coll, protos, rng):
         bpy.context.view_layer.layer_collection.children[c.name].exclude = True
 
     to_m = lambda pts, z=0.0: [(x * M, y * M, z) for x, y in pts]
-    path_avoid = [(28.5, -1, 33.5, 28.5)]
+    px = D.PATHS[0]["x"]
+    path_avoid = [(px - 2.0, -1, px + 2.0, 29.5)]
     # front meadow: feather grass drifts + muhly + agave + sotol + boulders
     fm = D.PLANTING[0]["poly"]
     fe = D.PLANTING[1]["poly"]
-    pts_ag = sample_poly(fm, 7, rng, path_avoid, 5.5) + sample_poly(fe, 5, rng, path_avoid + [(44, 0, 56, 27)], 5.5)
+    drive_avoid = [(47.5, -1, 61.0, 30.5)]
+    pts_ag = sample_poly(fm, 7, rng, path_avoid, 5.5) + sample_poly(fe, 5, rng, path_avoid + drive_avoid, 5.5)
     pts_so = sample_poly(fm, 4, rng, path_avoid, 7.0, pts_ag) + sample_poly(fe, 3, rng, path_avoid, 7.0, pts_ag)
     used = pts_ag + pts_so
     pts_fe = []
     for poly in (fm, fe):
-        pts_fe += sample_poly(poly, 300, rng, path_avoid + [(-1, -1, 9, 18)], 1.55, used)
-    pts_mu = sample_poly([(33, 22), (54, 22), (54, 27), (33, 27)], 26, rng, (), 1.6) + \
+        pts_fe += sample_poly(poly, 300, rng, path_avoid + drive_avoid + [(-1, -1, 9, 18)], 1.55, used)
+    pts_mu = sample_poly([(31.5, 22), (47.5, 22), (47.5, 27), (31.5, 27)], 22, rng, (), 1.6) + \
         sample_poly([(0.5, 22), (27.5, 22), (27.5, 27), (0.5, 27)], 30, rng, (), 1.6)
     _sc("Front agave", to_m(pts_ag), agv, coll, scale=(0.9, 1.4))
     _sc("Front sotol", to_m(pts_so), sot, coll, scale=(0.9, 1.3))
@@ -218,7 +243,7 @@ def _planting(L, coll, protos, rng):
     if "lawn" in protos:
         greens = []
         for poly in (fm, fe):
-            greens += sample_poly(poly, 260, rng, path_avoid, 0.0)
+            greens += sample_poly(poly, 260, rng, path_avoid + drive_avoid, 0.0)
         _sc("Front green tufts", to_m(greens, -0.02), protos["lawn"], coll, scale=(1.2, 2.2))
     if "boulder" in protos:
         _sc("Front boulders", to_m([(20.5, 14.0), (36.5, 9.0), (38.0, 11.5), (11.0, 22.0)], -0.12),
@@ -230,12 +255,13 @@ def _planting(L, coll, protos, rng):
 
     # courtyard: dwarf palmetto, ferns in the shade, muhly along the cobogó, agave accents
     zc = (D.HARDSCAPE - 0.08) * M
-    cy = [(31.6, 36.6), (53.5, 36.6), (53.5, 49.0), (39.5, 49.0), (39.5, 51.4), (31.6, 51.4)]
+    cg = [pl for pl in D.PLANTING if pl["name"] == "Courtyard garden"]
+    cy = cg[0]["poly"] if cg else [(31.6, 36.6), (47.5, 36.6), (47.5, 51.4), (31.6, 51.4)]
     tree_avoid = [(42.2, 44.8, 45.8, 48.2)]
-    pts_pa = sample_poly(cy, 11, rng, tree_avoid, 3.2)
+    pts_pa = sample_poly(cy, 13, rng, tree_avoid, 3.2)
     pts_fn = sample_poly([(31.6, 38), (36.5, 38), (36.5, 51.4), (31.6, 51.4)], 22, rng, (), 1.5, pts_pa)
-    pts_mu2 = sample_poly([(32, 36.6), (53.4, 36.6), (53.4, 39.0), (32, 39.0)], 16, rng, (), 1.5)
-    pts_ag2 = [(50.5, 49.0), (47.8, 41.0)]
+    pts_mu2 = sample_poly([(32, 36.8), (47.4, 36.8), (47.4, 39.0), (32, 39.0)], 14, rng, (), 1.5)
+    pts_ag2 = [(47.0, 49.6), (47.4, 41.0), (57.6, 52.2)]
     _sc("Courtyard palmetto", to_m(pts_pa, zc), palm, coll, scale=(1.1, 1.6))
     if "fern" in protos:
         _sc("Courtyard ferns", to_m(pts_fn, zc), protos["fern"], coll, scale=(0.9, 1.4))
@@ -243,10 +269,11 @@ def _planting(L, coll, protos, rng):
     _sc("Courtyard agave", to_m(pts_ag2, zc), agv, coll, scale=(1.0, 1.2))
 
     # private garden outside the shower window (east side yard)
-    sg = sample_poly([(55.0, 73.5), (60.5, 73.5), (60.5, 83.0), (55.0, 83.0)], 6, rng, (), 2.2)
+    ex = D.BAR["x1"] + 0.8
+    sg = sample_poly([(ex, 73.5), (64.3, 73.5), (64.3, 83.0), (ex, 83.0)], 6, rng, (), 2.2)
     _sc("Shower garden palmetto", to_m(sg), palm, coll, scale=(1.2, 1.7))
     if "fern" in protos:
-        _sc("Shower garden ferns", to_m(sample_poly([(54.6, 74), (57.5, 74), (57.5, 82), (54.6, 82)], 8, rng, (), 1.2)),
+        _sc("Shower garden ferns", to_m(sample_poly([(ex, 74), (ex + 2.6, 74), (ex + 2.6, 82), (ex, 82)], 8, rng, (), 1.2)),
                   protos["fern"], coll, scale=(1.0, 1.5))
     # rear: buffalo grass lawn clumps + native beds along the fence
     if "lawn" in protos:
@@ -256,7 +283,7 @@ def _planting(L, coll, protos, rng):
         park = sample_poly([(-30, -10.8), (95, -10.8), (95, -5.2), (-30, -5.2)], 2400, rng, [(55, -11, 64, -5)], 0.0)
         _sc("Parkway lawn", to_m(park, -0.02), protos["lawn"], coll, scale=(1.1, 1.9))
     bed = sample_poly([(1, 94), (6, 94), (6, 124), (1, 124)], 30, rng, (), 1.4) + \
-        sample_poly([(54.5, 62), (64, 62), (64, 124), (54.5, 124)], 70, rng, (), 1.4)
+        sample_poly([(D.BAR["x1"] + 0.8, 62), (64.3, 62), (64.3, 124), (D.BAR["x1"] + 0.8, 124)], 60, rng, (), 1.4)
     _sc("Rear muhly", to_m(bed), muhly, coll, scale=(0.9, 1.3))
     if "shrub" in protos:
         sb = sample_poly([(1, 32), (5.5, 32), (5.5, 92), (1, 92)], 12, rng, (), 4.0)

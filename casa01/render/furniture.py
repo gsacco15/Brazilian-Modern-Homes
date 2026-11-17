@@ -3,7 +3,8 @@ import math
 import random
 
 import bpy
-from mathutils import Vector
+import bmesh
+from mathutils import Vector, Matrix, Euler
 
 import design as D
 from geo import MB, M
@@ -98,12 +99,16 @@ def build_furniture(L, coll, protos):
                 for dx in (-1.6, 1.6):
                     place(protos["pendant"], x + dx, y, D.CEIL - 3.15, 0, coll, scale=1.0)
                 # pendants over the island too
-                place(protos["pendant"], 12.5, 71.6, D.CEIL - 3.1, 0, coll, scale=0.9)
-                place(protos["pendant"], 16.5, 71.6, D.CEIL - 3.1, 0, coll, scale=0.9)
+                isl = [f for f in D.FURNITURE if f["t"] == "island"]
+                ix, iy = (isl[0]["x"], isl[0]["y"]) if isl else (14.5, 71.6)
+                place(protos["pendant"], ix - 2.0, iy, D.CEIL - 3.1, 0, coll, scale=0.9)
+                place(protos["pendant"], ix + 2.0, iy, D.CEIL - 3.1, 0, coll, scale=0.9)
         elif t == "rug":
             soft.box(x0, y0, FF, x1, y1, FF + 0.04, mat=4)
         elif t == "sofa":
-            # low modern sofa: oak plinth, linen box, three seat + back cushions
+            _sofa(L, coll, it)
+            continue
+        elif t == "sofa_box_v1":
             base = FF + 0.3
             soft.box(x0 + 0.1, y0 + 0.1, FF, x1 - 0.1, y1 - 0.1, base, mat=1)
             soft.box(x0, y0, base, x1, y1, base + 0.75, mat=0)
@@ -150,6 +155,8 @@ def build_furniture(L, coll, protos):
                 soft.box(x1 - 1.6, py, FF + 1.75, x1 - 0.35, py + d / 2 - 0.65, FF + 2.3, mat=0)
         elif t == "nightstand":
             oak.box(x - 0.9, y - 0.9, FF, x + 0.9, y + 0.9, FF + 1.9, mat=0)
+        elif t in ("tub", "vanity", "wc") and getattr(D, "HALL_BATH", None):
+            continue   # the hall bath is built out in bath.py
         elif t in ("vanity",):
             oak.box(x0, y0, FF + 0.8, x1, y1, FF + 2.85, mat=0)
             cer.box(x0 - 0.03, y0 - 0.03, FF + 2.85, x1 + 0.03, y1 + 0.03, FF + 3.0, mat=0)
@@ -189,7 +196,8 @@ def build_furniture(L, coll, protos):
     # living-room extras: credenza, art, plants, vases
     ex = MB("Living extras", [L["oak"], L["terracotta_fabric"], L["olive_fabric"], L["linen"], L["black"]])
     # art canvas above the sofa (geometric color fields, Brazilian modernist palette)
-    xa = 38.75
+    prim = [pp for pp in D.PARTITIONS if any(o.get("name") == "Primary" for o in pp["openings"])]
+    xa = prim[0]["a"][0] - D.INT_T / 2 if prim else 38.75
     ex.box(xa - 0.08, 66.5, FF + 4.4, xa, 73.5, FF + 8.2, mat=3)
     ex.box(xa - 0.1, 67.0, FF + 4.9, xa - 0.07, 69.4, FF + 7.7, mat=1)
     ex.box(xa - 0.1, 69.7, FF + 4.9, xa - 0.07, 73.0, FF + 6.2, mat=2)
@@ -201,13 +209,16 @@ def build_furniture(L, coll, protos):
     ex.build(coll)
     import bath
     bath.build_primary_bath(L, coll, protos)
+    bath.build_hall_bath(L, coll, protos)
     if "plant" in protos:
-        place(protos["plant"], 37.9, 61.6, FF, 0.6, coll, scale=1.7)
+        place(protos["plant"], xa - 0.9, 61.3, FF, 0.6, coll, scale=1.7)
         place(protos["plant"], 29.3, 35.2, D.HARDSCAPE, 1.2, coll, scale=1.5)
         place(protos["plant"], 21.4, 91.0, D.HARDSCAPE, 2.0, coll, scale=1.4)
     if "vase" in protos:
         place(protos["vase"], 14.0, 71.4, FF + 3.05, 0, coll, scale=1.0)
-        place(protos["vase"], 22.3, 72.0, FF + 2.59, 0, coll, scale=0.8)
+        dt = [f for f in D.FURNITURE if f["t"] == "dining_table"]
+        if dt:
+            place(protos["vase"], dt[0]["x"], dt[0]["y"] + 0.6, FF + 2.59, 0, coll, scale=0.8)
 
 
 def _blade(mb, x, y, a, z):
@@ -239,3 +250,87 @@ def _chair(mb, x, y, base, face):
     for k in range(4):
         z = base + 1.9 + k * 0.25
         mb.box(x0 + 0.08, by0, z, x1 - 0.08, by0 + 0.1, z + 0.16, mat=0)
+
+
+# ------------------------------------------------------------------ sofa (V2)
+def soft_box(name, coll, mat, c, size, puff=0.12, axis=2, rot=(0, 0, 0), cuts=8, wrinkle=0.004, seed=0):
+    """Upholstered cushion: subdivided box whose two faces normal to `axis` crown outward,
+    rounded by subdivision, with a faint wrinkle displacement. c, size in feet."""
+    bm = bmesh.new()
+    bmesh.ops.create_cube(bm, size=1.0)
+    bmesh.ops.subdivide_edges(bm, edges=bm.edges[:], cuts=cuts, use_grid_fill=True)
+    o = [i for i in range(3) if i != axis]
+    for v in bm.verts:
+        co = list(v.co)
+        f = max(0.0, 1 - (2 * abs(co[o[0]])) ** 4) * max(0.0, 1 - (2 * abs(co[o[1]])) ** 4)
+        co[axis] = co[axis] * (1 + 2 * puff * f)
+        v.co = co
+    bmesh.ops.scale(bm, vec=(size[0] * M, size[1] * M, size[2] * M), verts=bm.verts)
+    me = bpy.data.meshes.new(name)
+    bm.to_mesh(me)
+    bm.free()
+    me.shade_smooth()
+    me.materials.append(mat)
+    ob = bpy.data.objects.new(name, me)
+    ob.location = (c[0] * M, c[1] * M, c[2] * M)
+    ob.rotation_euler = Euler(rot, "XYZ")
+    coll.objects.link(ob)
+    sub = ob.modifiers.new("subd", "SUBSURF")
+    sub.levels = 1
+    sub.render_levels = 2
+    if wrinkle > 0:
+        tex = bpy.data.textures.get("upholstery_wrinkle") or bpy.data.textures.new("upholstery_wrinkle", "CLOUDS")
+        tex.noise_scale = 0.06
+        tex.noise_depth = 2
+        d = ob.modifiers.new("wrinkle", "DISPLACE")
+        d.texture = tex
+        d.strength = wrinkle
+        d.mid_level = 0.5
+        d.texture_coords = "GLOBAL"
+    return ob
+
+
+def _sofa(L, coll, it):
+    """Brazilian mid-century sofa: low walnut frame with slab arms and tapered legs, loose linen
+    seat + back cushions, a folded throw and two pillows. Built for face 'w' (back to the east);
+    other facings are rotated about the sofa center."""
+    x, y = it["x"], it["y"]
+    W, Ln = it.get("w", 3.2), it.get("d", 8.5)          # depth (x) and length (y) for face 'w'
+    face = it.get("face", "w")
+    yaw = {"w": 0.0, "e": math.pi, "s": math.pi / 2, "n": -math.pi / 2}[face]
+    parts = []
+    wood = MB("Sofa frame", [L["dark_wood"]])
+    x0, x1, y0, y1 = x - W / 2, x + W / 2, y - Ln / 2, y + Ln / 2
+    arm = 0.2
+    leg_h, rail = 0.42, 0.28
+    for (lx, ly) in ((x0 + 0.2, y0 + 0.2), (x1 - 0.32, y0 + 0.2), (x0 + 0.2, y1 - 0.32), (x1 - 0.32, y1 - 0.32)):
+        wood.box(lx, ly, FF, lx + 0.12, ly + 0.12, FF + leg_h)
+    wood.box(x0 + 0.05, y0, FF + leg_h, x1, y1, FF + leg_h + rail)                     # seat deck rails
+    for (a0, a1) in ((y0, y0 + arm), (y1 - arm, y1)):
+        wood.box(x0 + 0.05, a0, FF + leg_h, x1, a1, FF + 2.0)                         # slab arms
+    wood.box(x1 - 0.16, y0 + arm, FF + leg_h + rail, x1, y1 - arm, FF + 2.35)        # back panel
+    parts.append(wood.build(coll, bevel=0.012))
+    seat_z = FF + leg_h + rail
+    inner0, inner1 = y0 + arm + 0.03, y1 - arm - 0.03
+    n = 3
+    cw = (inner1 - inner0) / n
+    back_d = 0.62
+    for k in range(n):
+        cy = inner0 + (k + 0.5) * cw
+        parts.append(soft_box("Sofa seat cushion", coll, L["linen"], (x0 + 0.08 + (W - 0.08 - 0.16 - back_d + 0.1) / 2, cy,
+                                                                       seat_z + 0.29),
+                              (W - 0.16 - back_d + 0.02, cw - 0.04, 0.56), puff=0.13, axis=2, seed=k))
+        parts.append(soft_box("Sofa back cushion", coll, L["linen"], (x1 - 0.16 - back_d / 2 - 0.02, cy, seat_z + 0.58 + 0.8),
+                              (back_d, cw - 0.06, 1.62), puff=0.16, axis=0, rot=(0, math.radians(9), 0), seed=10 + k))
+    # throw pillows leaning on the back cushions + a folded linen throw at one end
+    for (py, mat, ang) in ((inner0 + 0.95, L["terracotta_fabric"], 14), (inner1 - 0.95, L["olive_fabric"], -10)):
+        parts.append(soft_box("Sofa pillow", coll, mat, (x1 - back_d - 0.35, py, seat_z + 0.56 + 0.62), (0.42, 1.45, 1.45),
+                              puff=0.45, axis=0, rot=(math.radians(ang), math.radians(20), 0), cuts=10, wrinkle=0.003))
+    parts.append(soft_box("Sofa throw", coll, L["olive_fabric"] if "olive_fabric" in L else L["linen"],
+                          (x0 + 1.1, inner1 - 1.0, seat_z + 0.6), (1.5, 1.2, 0.12), puff=0.25, axis=2,
+                          rot=(0, 0, math.radians(8)), cuts=6, wrinkle=0.003))
+    if yaw:
+        piv = Matrix.Translation((x * M, y * M, 0)) @ Matrix.Rotation(yaw, 4, "Z") @ Matrix.Translation((-x * M, -y * M, 0))
+        for ob in parts:
+            if ob is not None:
+                ob.matrix_world = piv @ ob.matrix_world
