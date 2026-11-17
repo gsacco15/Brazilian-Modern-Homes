@@ -1,0 +1,885 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1066 1100" width="1066" height="1100" data-x0="-14" data-y0="12" data-y1="107" data-pad="18" data-scale="11.2" data-flip="1">
+<defs><pattern id="pavers" width="18" height="12" patternUnits="userSpaceOnUse"><rect width="18" height="12" fill="#f3efe6"/><path d="M0 0 H18 M0 0 V12 M9 6 V12 M0 6 H18" stroke="#d2c9b6" stroke-width="0.6"/></pattern>
+<pattern id="dg" width="7" height="7" patternUnits="userSpaceOnUse"><rect width="7" height="7" fill="#f6f1e7"/><circle cx="2" cy="2" r="0.6" fill="#d6c7ad"/><circle cx="5.5" cy="5" r="0.5" fill="#d6c7ad"/></pattern>
+<pattern id="mosaic" width="7" height="7" patternUnits="userSpaceOnUse"><rect width="7" height="7" fill="#2a2a29"/><path d="M0 2 L3 0 L7 3 M2 7 L4 4 L7 6 M0 5 L3 4" stroke="#8b847a" stroke-width="0.5" fill="none"/></pattern>
+<pattern id="planting" width="9" height="9" patternUnits="userSpaceOnUse"><rect width="9" height="9" fill="#eef1e8"/><circle cx="2.5" cy="2.5" r="1.1" fill="none" stroke="#a9b89a" stroke-width="0.5"/><circle cx="7" cy="6.5" r="0.8" fill="none" stroke="#a9b89a" stroke-width="0.5"/></pattern>
+<pattern id="lawn" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#eef1e6"/><path d="M1 5 l1 -2 M4 2 l1 -2" stroke="#b9c4a3" stroke-width="0.6"/></pattern>
+<pattern id="stone" width="16" height="8" patternUnits="userSpaceOnUse"><rect width="16" height="8" fill="#efe6d2"/><path d="M0 0 H16 M0 4 H16 M5 0 V4 M12 4 V8" stroke="#c9b993" stroke-width="0.5"/></pattern>
+<pattern id="diag" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="#ffffff"/><line x1="0" y1="0" x2="0" y2="5" stroke="#9a9a9a" stroke-width="0.6"/></pattern>
+<pattern id="earth" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#ffffff"/><line x1="0" y1="0" x2="0" y2="8" stroke="#8a8a8a" stroke-width="0.7"/></pattern>
+<pattern id="wallh" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#ffffff"/><line x1="0" y1="0" x2="0" y2="6" stroke="#111315" stroke-width="0.9"/></pattern>
+<pattern id="stoneh" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#ffffff"/><path d="M0 0 L8 8 M8 0 L0 8" stroke="#111315" stroke-width="0.7"/></pattern>
+<pattern id="cdmosaic" width="7" height="7" patternUnits="userSpaceOnUse"><rect width="7" height="7" fill="#ffffff"/><path d="M0 2 L3 0 L7 3 M2 7 L4 4 L7 6 M0 5 L3 4" stroke="#6b6f73" stroke-width="0.5" fill="none"/></pattern>
+<pattern id="paverh" width="18" height="12" patternUnits="userSpaceOnUse"><rect width="18" height="12" fill="#ffffff"/><path d="M0 0 H18 M0 0 V12" stroke="#9a9ea2" stroke-width="0.5"/></pattern>
+<pattern id="tileh" width="5" height="5" patternUnits="userSpaceOnUse"><rect width="5" height="5" fill="#ffffff"/><path d="M0 0 H5 M0 0 V5" stroke="#9a9ea2" stroke-width="0.5"/></pattern></defs>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<rect data-layer="L-PAVE" x="466.00" y="813.20" width="248.64" height="63.50" fill="url(#paverh)" stroke="none" stroke-width="0.6" />
+<rect data-layer="L-PAVE" x="466.00" y="544.40" width="39.20" height="268.80" fill="url(#paverh)" stroke="none" stroke-width="0.6" />
+<rect data-layer="L-PAVE" x="505.20" y="544.40" width="145.60" height="89.60" fill="url(#paverh)" stroke="none" stroke-width="0.6" />
+<rect data-layer="L-PAVE" x="650.80" y="544.40" width="190.40" height="50.40" fill="url(#paverh)" stroke="none" stroke-width="0.6" />
+<rect data-layer="L-PAVE" x="359.60" y="180.40" width="291.20" height="140.00" fill="url(#paverh)" stroke="#6b6f73" stroke-width="0.6" />
+<rect data-layer="L-PAVE" x="718.00" y="656.40" width="123.20" height="224.00" fill="#f4f4f2" stroke="#6b6f73" stroke-width="0.6" />
+<rect data-layer="L-PAVE" x="744.88" y="686.08" width="69.44" height="173.60" fill="none" stroke="#6b6f73" stroke-width="0.6" stroke-dasharray="5 3"/>
+<text data-layer="L-PAVE" x="779.60" y="772.88" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7" text-anchor="middle" fill="#6b6f73" font-weight="400" letter-spacing="1.5" dy="2.5">CAR</text>
+<rect data-layer="L-PAVE" x="471.60" y="818.80" width="123.20" height="51.52" fill="url(#cdmosaic)" stroke="#111315" stroke-width="0.7" />
+<polygon data-layer="L-PLNT" points="505.20,807.60 712.40,807.60 712.40,650.80 835.60,650.80 835.60,594.80 650.80,594.80 650.80,634.00 505.20,634.00" fill="none" stroke="#6b6f73" stroke-width="0.6" stroke-dasharray="4 3"/>
+<rect data-layer="A-FLOR-PATT" x="748.13" y="326.00" width="87.47" height="33.60" fill="url(#tileh)" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-FLOR-CASE" x="247.60" y="326.00" width="28.00" height="117.60" fill="#ffffff" stroke="#111315" stroke-width="0.8" />
+<circle data-layer="A-FLOR-CASE" cx="256.56" cy="373.60" r="3.58" fill="none" stroke="#6b6f73" stroke-width="0.6" />
+<circle data-layer="A-FLOR-CASE" cx="266.64" cy="373.60" r="3.58" fill="none" stroke="#6b6f73" stroke-width="0.6" />
+<circle data-layer="A-FLOR-CASE" cx="256.56" cy="360.16" r="3.58" fill="none" stroke="#6b6f73" stroke-width="0.6" />
+<circle data-layer="A-FLOR-CASE" cx="266.64" cy="360.16" r="3.58" fill="none" stroke="#6b6f73" stroke-width="0.6" />
+<rect data-layer="A-FLOR-CASE" x="271.12" y="326.00" width="105.28" height="28.00" fill="#ffffff" stroke="#111315" stroke-width="0.8" />
+<rect data-layer="A-FLOR-CASE" x="308.08" y="332.16" width="31.36" height="15.68" fill="none" stroke="#6b6f73" stroke-width="0.6" />
+<rect data-layer="A-FLOR-CASE" x="247.60" y="443.60" width="28.00" height="36.96" fill="#ffffff" stroke="#111315" stroke-width="0.8" />
+<line data-layer="A-FLOR-CASE" x1="247.60" y1="480.56" x2="275.60" y2="443.60" stroke="#6b6f73" stroke-width="0.5" />
+<line data-layer="A-FLOR-CASE" x1="247.60" y1="443.60" x2="275.60" y2="480.56" stroke="#6b6f73" stroke-width="0.5" />
+<rect data-layer="A-FLOR-CASE" x="282.32" y="394.88" width="89.60" height="39.20" fill="#ffffff" stroke="#111315" stroke-width="0.8" />
+<circle data-layer="P-FIXT" cx="830.00" cy="396.56" r="7.28" fill="none" stroke="#111315" stroke-width="0.8" />
+<rect data-layer="P-FIXT" x="322.81" y="693.36" width="29.90" height="56.00" fill="#ffffff" stroke="#111315" stroke-width="0.8" />
+<rect data-layer="P-FIXT" x="326.17" y="696.72" width="23.18" height="49.28" fill="none" stroke="#6b6f73" stroke-width="0.5" />
+<rect data-layer="P-FIXT" x="358.48" y="675.50" width="33.60" height="19.60" fill="#ffffff" stroke="#111315" stroke-width="0.8" />
+<circle data-layer="P-FIXT" cx="375.28" cy="685.30" r="5.60" fill="none" stroke="#6b6f73" stroke-width="0.6" />
+<circle data-layer="P-FIXT" cx="369.68" cy="737.60" r="7.28" fill="none" stroke="#111315" stroke-width="0.8" />
+<rect data-layer="A-FLOR-APPL" x="248.72" y="515.84" width="26.88" height="26.88" fill="#ffffff" stroke="#111315" stroke-width="0.8" />
+<text data-layer="A-FLOR-APPL" x="262.2" y="532.3" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7" text-anchor="middle" fill="#6b6f73">W/D</text>
+<circle data-layer="A-FLOR-CASE" cx="291.28" cy="530.40" r="10.64" fill="#ffffff" stroke="#111315" stroke-width="0.8" />
+<text data-layer="A-FLOR-CASE" x="291.3" y="533.4" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="6.5" text-anchor="middle" fill="#6b6f73">WH</text>
+<rect data-layer="A-FLOR-CASE" x="382.00" y="220.16" width="28.00" height="84.00" fill="#ffffff" stroke="#111315" stroke-width="0.8" />
+<rect data-layer="A-FLOR-CASE" x="351.76" y="524.80" width="56.00" height="16.80" fill="#ffffff" stroke="#111315" stroke-width="0.8" />
+<line data-layer="A-GLAZ" x1="748.13" y1="359.60" x2="800.88" y2="359.60" stroke="#111315" stroke-width="1.6" />
+<rect data-layer="A-FLOR-CASE" x="748.13" y="327.12" width="14.67" height="31.36" fill="#ffffff" stroke="#111315" stroke-width="0.8" />
+<rect data-layer="A-FLOR-CASE" x="748.13" y="362.96" width="19.71" height="44.80" fill="#ffffff" stroke="#111315" stroke-width="0.8" />
+<circle data-layer="P-FIXT" cx="757.76" cy="385.36" r="6.94" fill="none" stroke="#111315" stroke-width="0.8" />
+<rect data-layer="P-FIXT" x="821.04" y="392.98" width="14.56" height="7.17" fill="#ffffff" stroke="#111315" stroke-width="0.8" />
+<circle data-layer="P-FIXT" cx="823.84" cy="396.56" r="3.36" fill="none" stroke="#111315" stroke-width="0.7" />
+<polygon data-layer="A-ROOF-OTLN" points="208.40,914.00 846.80,914.00 846.80,656.40 712.40,656.40 712.40,813.20 499.60,813.20 499.60,589.20 846.80,589.20 846.80,286.80 656.40,286.80 656.40,180.40 354.00,180.40 354.00,286.80 208.40,286.80" fill="none" stroke="#111315" stroke-width="0.8" stroke-dasharray="10 4 2 4"/>
+<rect data-layer="A-WALL" x="242.00" y="874.80" width="28.00" height="5.60" fill="url(#wallh)" stroke="#111315" stroke-width="1.3" />
+<rect data-layer="A-WALL" x="292.40" y="874.80" width="173.60" height="5.60" fill="url(#wallh)" stroke="#111315" stroke-width="1.3" />
+<line data-layer="A-GLAZ" x1="270.00" y1="879.95" x2="292.40" y2="879.95" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-GLAZ" x1="270.00" y1="875.25" x2="292.40" y2="875.25" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-GLAZ" x1="270.00" y1="877.60" x2="292.40" y2="877.60" stroke="#111315" stroke-width="0.5" />
+<line data-layer="A-GLAZ" x1="270.00" y1="880.40" x2="270.00" y2="874.80" stroke="#111315" stroke-width="1.3" />
+<line data-layer="A-GLAZ" x1="292.40" y1="880.40" x2="292.40" y2="874.80" stroke="#111315" stroke-width="1.3" />
+<rect data-layer="A-WALL" x="460.40" y="866.40" width="5.60" height="14.00" fill="url(#wallh)" stroke="#111315" stroke-width="1.3" />
+<rect data-layer="A-WALL" x="460.40" y="816.00" width="5.60" height="5.60" fill="url(#wallh)" stroke="#111315" stroke-width="1.3" />
+<rect data-layer="A-WALL" x="460.40" y="544.40" width="5.60" height="5.60" fill="url(#wallh)" stroke="#111315" stroke-width="1.3" />
+<line data-layer="A-DOOR" x1="463.20" y1="855.20" x2="429.60" y2="855.20" stroke="#111315" stroke-width="1.6" />
+<line data-layer="A-DOOR" x1="463.20" y1="855.20" x2="474.40" y2="855.20" stroke="#111315" stroke-width="1.6" />
+<line data-layer="A-DOOR" x1="465.55" y1="816.00" x2="465.55" y2="550.00" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-DOOR" x1="460.85" y1="816.00" x2="460.85" y2="550.00" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-DOOR" x1="463.20" y1="816.00" x2="463.20" y2="550.00" stroke="#111315" stroke-width="0.5" />
+<line data-layer="A-DOOR" x1="460.40" y1="816.00" x2="466.00" y2="816.00" stroke="#111315" stroke-width="1.3" />
+<line data-layer="A-DOOR" x1="460.40" y1="550.00" x2="466.00" y2="550.00" stroke="#111315" stroke-width="1.3" />
+<line data-layer="A-DOOR" x1="461.52" y1="762.80" x2="464.88" y2="762.80" stroke="#111315" stroke-width="1.0" />
+<line data-layer="A-DOOR" x1="461.52" y1="709.60" x2="464.88" y2="709.60" stroke="#111315" stroke-width="1.0" />
+<line data-layer="A-DOOR" x1="461.52" y1="656.40" x2="464.88" y2="656.40" stroke="#111315" stroke-width="1.0" />
+<line data-layer="A-DOOR" x1="461.52" y1="603.20" x2="464.88" y2="603.20" stroke="#111315" stroke-width="1.0" />
+<rect data-layer="A-WALL" x="466.00" y="538.80" width="42.00" height="5.60" fill="url(#wallh)" stroke="#111315" stroke-width="1.3" />
+<rect data-layer="A-WALL" x="642.40" y="538.80" width="25.20" height="5.60" fill="url(#wallh)" stroke="#111315" stroke-width="1.3" />
+<rect data-layer="A-WALL" x="712.40" y="538.80" width="25.20" height="5.60" fill="url(#wallh)" stroke="#111315" stroke-width="1.3" />
+<rect data-layer="A-WALL" x="827.20" y="538.80" width="14.00" height="5.60" fill="url(#wallh)" stroke="#111315" stroke-width="1.3" />
+<line data-layer="A-DOOR" x1="508.00" y1="543.95" x2="642.40" y2="543.95" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-DOOR" x1="508.00" y1="539.25" x2="642.40" y2="539.25" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-DOOR" x1="508.00" y1="541.60" x2="642.40" y2="541.60" stroke="#111315" stroke-width="0.5" />
+<line data-layer="A-DOOR" x1="508.00" y1="544.40" x2="508.00" y2="538.80" stroke="#111315" stroke-width="1.3" />
+<line data-layer="A-DOOR" x1="642.40" y1="544.40" x2="642.40" y2="538.80" stroke="#111315" stroke-width="1.3" />
+<line data-layer="A-DOOR" x1="552.80" y1="543.28" x2="552.80" y2="539.92" stroke="#111315" stroke-width="1.0" />
+<line data-layer="A-DOOR" x1="597.60" y1="543.28" x2="597.60" y2="539.92" stroke="#111315" stroke-width="1.0" />
+<line data-layer="A-GLAZ" x1="667.60" y1="543.95" x2="712.40" y2="543.95" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-GLAZ" x1="667.60" y1="539.25" x2="712.40" y2="539.25" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-GLAZ" x1="667.60" y1="541.60" x2="712.40" y2="541.60" stroke="#111315" stroke-width="0.5" />
+<line data-layer="A-GLAZ" x1="667.60" y1="544.40" x2="667.60" y2="538.80" stroke="#111315" stroke-width="1.3" />
+<line data-layer="A-GLAZ" x1="712.40" y1="544.40" x2="712.40" y2="538.80" stroke="#111315" stroke-width="1.3" />
+<line data-layer="A-DOOR" x1="737.60" y1="543.95" x2="827.20" y2="543.95" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-DOOR" x1="737.60" y1="539.25" x2="827.20" y2="539.25" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-DOOR" x1="737.60" y1="541.60" x2="827.20" y2="541.60" stroke="#111315" stroke-width="0.5" />
+<line data-layer="A-DOOR" x1="737.60" y1="544.40" x2="737.60" y2="538.80" stroke="#111315" stroke-width="1.3" />
+<line data-layer="A-DOOR" x1="827.20" y1="544.40" x2="827.20" y2="538.80" stroke="#111315" stroke-width="1.3" />
+<line data-layer="A-DOOR" x1="782.40" y1="543.28" x2="782.40" y2="539.92" stroke="#111315" stroke-width="1.0" />
+<rect data-layer="A-WALL" x="835.60" y="510.80" width="5.60" height="33.60" fill="url(#wallh)" stroke="#111315" stroke-width="1.3" />
+<rect data-layer="A-WALL" x="835.60" y="355.12" width="5.60" height="122.08" fill="url(#wallh)" stroke="#111315" stroke-width="1.3" />
+<rect data-layer="A-WALL" x="835.60" y="320.40" width="5.60" height="8.96" fill="url(#wallh)" stroke="#111315" stroke-width="1.3" />
+<line data-layer="A-GLAZ" x1="840.75" y1="510.80" x2="840.75" y2="477.20" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-GLAZ" x1="836.05" y1="510.80" x2="836.05" y2="477.20" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-GLAZ" x1="838.40" y1="510.80" x2="838.40" y2="477.20" stroke="#111315" stroke-width="0.5" />
+<line data-layer="A-GLAZ" x1="835.60" y1="510.80" x2="841.20" y2="510.80" stroke="#111315" stroke-width="1.3" />
+<line data-layer="A-GLAZ" x1="835.60" y1="477.20" x2="841.20" y2="477.20" stroke="#111315" stroke-width="1.3" />
+<line data-layer="A-GLAZ" x1="840.75" y1="355.12" x2="840.75" y2="329.36" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-GLAZ" x1="836.05" y1="355.12" x2="836.05" y2="329.36" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-GLAZ" x1="838.40" y1="355.12" x2="838.40" y2="329.36" stroke="#111315" stroke-width="0.5" />
+<line data-layer="A-GLAZ" x1="835.60" y1="355.12" x2="841.20" y2="355.12" stroke="#111315" stroke-width="1.3" />
+<line data-layer="A-GLAZ" x1="835.60" y1="329.36" x2="841.20" y2="329.36" stroke="#111315" stroke-width="1.3" />
+<rect data-layer="A-WALL" x="824.40" y="320.40" width="16.80" height="5.60" fill="url(#wallh)" stroke="#111315" stroke-width="1.3" />
+<rect data-layer="A-WALL" x="622.80" y="320.40" width="140.00" height="5.60" fill="url(#wallh)" stroke="#111315" stroke-width="1.3" />
+<rect data-layer="A-WALL" x="376.40" y="320.40" width="67.20" height="5.60" fill="url(#wallh)" stroke="#111315" stroke-width="1.3" />
+<rect data-layer="A-WALL" x="242.00" y="320.40" width="44.80" height="5.60" fill="url(#wallh)" stroke="#111315" stroke-width="1.3" />
+<line data-layer="A-GLAZ" x1="762.80" y1="320.85" x2="824.40" y2="320.85" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-GLAZ" x1="762.80" y1="325.55" x2="824.40" y2="325.55" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-GLAZ" x1="762.80" y1="323.20" x2="824.40" y2="323.20" stroke="#111315" stroke-width="0.5" />
+<line data-layer="A-GLAZ" x1="824.40" y1="326.00" x2="824.40" y2="320.40" stroke="#111315" stroke-width="1.3" />
+<line data-layer="A-GLAZ" x1="762.80" y1="326.00" x2="762.80" y2="320.40" stroke="#111315" stroke-width="1.3" />
+<line data-layer="A-DOOR" x1="443.60" y1="320.85" x2="622.80" y2="320.85" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-DOOR" x1="443.60" y1="325.55" x2="622.80" y2="325.55" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-DOOR" x1="443.60" y1="323.20" x2="622.80" y2="323.20" stroke="#111315" stroke-width="0.5" />
+<line data-layer="A-DOOR" x1="622.80" y1="326.00" x2="622.80" y2="320.40" stroke="#111315" stroke-width="1.3" />
+<line data-layer="A-DOOR" x1="443.60" y1="326.00" x2="443.60" y2="320.40" stroke="#111315" stroke-width="1.3" />
+<line data-layer="A-DOOR" x1="578.00" y1="324.88" x2="578.00" y2="321.52" stroke="#111315" stroke-width="1.0" />
+<line data-layer="A-DOOR" x1="533.20" y1="324.88" x2="533.20" y2="321.52" stroke="#111315" stroke-width="1.0" />
+<line data-layer="A-DOOR" x1="488.40" y1="324.88" x2="488.40" y2="321.52" stroke="#111315" stroke-width="1.0" />
+<line data-layer="A-GLAZ" x1="286.80" y1="320.85" x2="376.40" y2="320.85" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-GLAZ" x1="286.80" y1="325.55" x2="376.40" y2="325.55" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-GLAZ" x1="286.80" y1="323.20" x2="376.40" y2="323.20" stroke="#111315" stroke-width="0.5" />
+<line data-layer="A-GLAZ" x1="376.40" y1="326.00" x2="376.40" y2="320.40" stroke="#111315" stroke-width="1.3" />
+<line data-layer="A-GLAZ" x1="286.80" y1="326.00" x2="286.80" y2="320.40" stroke="#111315" stroke-width="1.3" />
+<rect data-layer="A-WALL" x="242.00" y="320.40" width="5.60" height="268.80" fill="url(#wallh)" stroke="#111315" stroke-width="1.3" />
+<rect data-layer="A-WALL" x="242.00" y="634.00" width="5.60" height="156.80" fill="url(#wallh)" stroke="#111315" stroke-width="1.3" />
+<rect data-layer="A-WALL" x="242.00" y="835.60" width="5.60" height="44.80" fill="url(#wallh)" stroke="#111315" stroke-width="1.3" />
+<line data-layer="A-GLAZ" x1="242.45" y1="634.00" x2="242.45" y2="589.20" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-GLAZ" x1="247.15" y1="634.00" x2="247.15" y2="589.20" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-GLAZ" x1="244.80" y1="634.00" x2="244.80" y2="589.20" stroke="#111315" stroke-width="0.5" />
+<line data-layer="A-GLAZ" x1="242.00" y1="589.20" x2="247.60" y2="589.20" stroke="#111315" stroke-width="1.3" />
+<line data-layer="A-GLAZ" x1="242.00" y1="634.00" x2="247.60" y2="634.00" stroke="#111315" stroke-width="1.3" />
+<line data-layer="A-GLAZ" x1="242.45" y1="835.60" x2="242.45" y2="790.80" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-GLAZ" x1="247.15" y1="835.60" x2="247.15" y2="790.80" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-GLAZ" x1="244.80" y1="835.60" x2="244.80" y2="790.80" stroke="#111315" stroke-width="0.5" />
+<line data-layer="A-GLAZ" x1="242.00" y1="790.80" x2="247.60" y2="790.80" stroke="#111315" stroke-width="1.3" />
+<line data-layer="A-GLAZ" x1="242.00" y1="835.60" x2="247.60" y2="835.60" stroke="#111315" stroke-width="1.3" />
+<rect data-layer="A-WALL-STONE" x="225.20" y="880.40" width="44.80" height="3.70" fill="url(#stoneh)" stroke="#111315" stroke-width="1.1" />
+<rect data-layer="A-WALL-STONE" x="292.40" y="880.40" width="173.60" height="3.70" fill="url(#stoneh)" stroke="#111315" stroke-width="1.1" />
+<rect data-layer="A-WALL-INTR" x="407.90" y="785.20" width="4.20" height="89.60" fill="#c9cbcd" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-DOOR" x1="410.00" y1="785.20" x2="380.10" y2="785.20" stroke="#111315" stroke-width="1.1" />
+<path data-layer="A-DOOR" d="M 380.10,785.20 A 29.90 29.90 0 0 1 410.00,755.30" fill="none" stroke="#111315" stroke-width="0.5" />
+<rect data-layer="A-WALL-INTR" x="407.90" y="729.20" width="4.20" height="26.10" fill="#c9cbcd" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-DOOR" x1="410.00" y1="729.20" x2="380.10" y2="729.20" stroke="#111315" stroke-width="1.1" />
+<path data-layer="A-DOOR" d="M 380.10,729.20 A 29.90 29.90 0 0 1 410.00,699.30" fill="none" stroke="#111315" stroke-width="0.5" />
+<rect data-layer="A-WALL-INTR" x="407.90" y="667.60" width="4.20" height="31.70" fill="#c9cbcd" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-DOOR" x1="410.00" y1="667.60" x2="380.10" y2="667.60" stroke="#111315" stroke-width="1.1" />
+<path data-layer="A-DOOR" d="M 380.10,667.60 A 29.90 29.90 0 0 1 410.00,637.70" fill="none" stroke="#111315" stroke-width="0.5" />
+<rect data-layer="A-WALL-INTR" x="407.90" y="544.40" width="4.20" height="93.30" fill="#c9cbcd" stroke="#111315" stroke-width="0.9" />
+<rect data-layer="A-WALL-INTR" x="247.60" y="749.50" width="16.80" height="4.20" fill="#c9cbcd" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-DOOR" x1="263.84" y1="752.38" x2="287.36" y2="752.38" stroke="#111315" stroke-width="1.0" />
+<line data-layer="A-DOOR" x1="286.24" y1="750.82" x2="309.76" y2="750.82" stroke="#111315" stroke-width="1.0" />
+<rect data-layer="A-WALL-INTR" x="309.20" y="749.50" width="100.80" height="4.20" fill="#c9cbcd" stroke="#111315" stroke-width="0.9" />
+<rect data-layer="A-WALL-INTR" x="247.60" y="671.10" width="16.80" height="4.20" fill="#c9cbcd" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-DOOR" x1="263.84" y1="673.98" x2="287.36" y2="673.98" stroke="#111315" stroke-width="1.0" />
+<line data-layer="A-DOOR" x1="286.24" y1="672.42" x2="309.76" y2="672.42" stroke="#111315" stroke-width="1.0" />
+<rect data-layer="A-WALL-INTR" x="309.20" y="671.10" width="100.80" height="4.20" fill="#c9cbcd" stroke="#111315" stroke-width="0.9" />
+<rect data-layer="A-WALL-INTR" x="318.30" y="673.20" width="4.20" height="78.40" fill="#c9cbcd" stroke="#111315" stroke-width="0.9" />
+<rect data-layer="A-WALL-INTR" x="247.60" y="710.30" width="72.80" height="4.20" fill="#c9cbcd" stroke="#111315" stroke-width="0.9" />
+<rect data-layer="A-WALL-INTR" x="247.60" y="542.30" width="164.53" height="4.20" fill="#c9cbcd" stroke="#111315" stroke-width="0.9" />
+<rect data-layer="A-WALL-INTR" x="318.30" y="527.60" width="4.20" height="16.80" fill="#c9cbcd" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-DOOR" x1="320.40" y1="527.60" x2="350.30" y2="527.60" stroke="#111315" stroke-width="1.1" />
+<path data-layer="A-DOOR" d="M 350.30,527.60 A 29.90 29.90 0 0 0 320.40,497.70" fill="none" stroke="#111315" stroke-width="0.5" />
+<rect data-layer="A-WALL-INTR" x="318.30" y="482.80" width="4.20" height="14.90" fill="#c9cbcd" stroke="#111315" stroke-width="0.9" />
+<rect data-layer="A-WALL-INTR" x="247.60" y="480.70" width="72.80" height="4.20" fill="#c9cbcd" stroke="#111315" stroke-width="0.9" />
+<rect data-layer="A-WALL-INTR" x="654.30" y="527.60" width="4.20" height="11.20" fill="#c9cbcd" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-DOOR" x1="656.40" y1="527.60" x2="686.30" y2="527.60" stroke="#111315" stroke-width="1.1" />
+<path data-layer="A-DOOR" d="M 686.30,527.60 A 29.90 29.90 0 0 0 656.40,497.70" fill="none" stroke="#111315" stroke-width="0.5" />
+<rect data-layer="A-WALL-INTR" x="654.30" y="326.00" width="4.20" height="171.70" fill="#c9cbcd" stroke="#111315" stroke-width="0.9" />
+<rect data-layer="A-WALL-INTR" x="656.40" y="413.50" width="14.00" height="4.20" fill="#c9cbcd" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-DOOR" x1="670.40" y1="415.60" x2="670.40" y2="387.60" stroke="#111315" stroke-width="1.1" />
+<path data-layer="A-DOOR" d="M 670.40,387.60 A 28.00 28.00 0 0 1 698.40,415.60" fill="none" stroke="#111315" stroke-width="0.5" />
+<rect data-layer="A-WALL-INTR" x="698.40" y="413.50" width="70.00" height="4.20" fill="#c9cbcd" stroke="#111315" stroke-width="0.9" />
+<line data-layer="A-DOOR" x1="768.40" y1="415.60" x2="768.40" y2="387.60" stroke="#111315" stroke-width="1.1" />
+<path data-layer="A-DOOR" d="M 768.40,387.60 A 28.00 28.00 0 0 1 796.40,415.60" fill="none" stroke="#111315" stroke-width="0.5" />
+<rect data-layer="A-WALL-INTR" x="796.40" y="413.50" width="39.20" height="4.20" fill="#c9cbcd" stroke="#111315" stroke-width="0.9" />
+<rect data-layer="A-WALL-INTR" x="743.90" y="326.00" width="4.20" height="89.60" fill="#c9cbcd" stroke="#111315" stroke-width="0.9" />
+<rect data-layer="A-WALL-COBO" x="522.22" y="876.70" width="10.75" height="3.70" fill="#ffffff" stroke="#111315" stroke-width="0.7" />
+<circle data-layer="A-WALL-COBO" cx="527.60" cy="878.55" r="1.01" fill="none" stroke="#111315" stroke-width="0.4" />
+<rect data-layer="A-WALL-COBO" x="533.42" y="876.70" width="10.75" height="3.70" fill="#ffffff" stroke="#111315" stroke-width="0.7" />
+<circle data-layer="A-WALL-COBO" cx="538.80" cy="878.55" r="1.01" fill="none" stroke="#111315" stroke-width="0.4" />
+<rect data-layer="A-WALL-COBO" x="544.62" y="876.70" width="10.75" height="3.70" fill="#ffffff" stroke="#111315" stroke-width="0.7" />
+<circle data-layer="A-WALL-COBO" cx="550.00" cy="878.55" r="1.01" fill="none" stroke="#111315" stroke-width="0.4" />
+<rect data-layer="A-WALL-COBO" x="555.82" y="876.70" width="10.75" height="3.70" fill="#ffffff" stroke="#111315" stroke-width="0.7" />
+<circle data-layer="A-WALL-COBO" cx="561.20" cy="878.55" r="1.01" fill="none" stroke="#111315" stroke-width="0.4" />
+<rect data-layer="A-WALL-COBO" x="567.02" y="876.70" width="10.75" height="3.70" fill="#ffffff" stroke="#111315" stroke-width="0.7" />
+<circle data-layer="A-WALL-COBO" cx="572.40" cy="878.55" r="1.01" fill="none" stroke="#111315" stroke-width="0.4" />
+<rect data-layer="A-WALL-COBO" x="578.22" y="876.70" width="10.75" height="3.70" fill="#ffffff" stroke="#111315" stroke-width="0.7" />
+<circle data-layer="A-WALL-COBO" cx="583.60" cy="878.55" r="1.01" fill="none" stroke="#111315" stroke-width="0.4" />
+<rect data-layer="A-WALL-COBO" x="589.42" y="876.70" width="10.75" height="3.70" fill="#ffffff" stroke="#111315" stroke-width="0.7" />
+<circle data-layer="A-WALL-COBO" cx="594.80" cy="878.55" r="1.01" fill="none" stroke="#111315" stroke-width="0.4" />
+<rect data-layer="A-WALL-COBO" x="600.62" y="876.70" width="10.75" height="3.70" fill="#ffffff" stroke="#111315" stroke-width="0.7" />
+<circle data-layer="A-WALL-COBO" cx="606.00" cy="878.55" r="1.01" fill="none" stroke="#111315" stroke-width="0.4" />
+<rect data-layer="A-WALL-COBO" x="611.82" y="876.70" width="10.75" height="3.70" fill="#ffffff" stroke="#111315" stroke-width="0.7" />
+<circle data-layer="A-WALL-COBO" cx="617.20" cy="878.55" r="1.01" fill="none" stroke="#111315" stroke-width="0.4" />
+<rect data-layer="A-WALL-COBO" x="623.02" y="876.70" width="10.75" height="3.70" fill="#ffffff" stroke="#111315" stroke-width="0.7" />
+<circle data-layer="A-WALL-COBO" cx="628.40" cy="878.55" r="1.01" fill="none" stroke="#111315" stroke-width="0.4" />
+<rect data-layer="A-WALL-COBO" x="634.22" y="876.70" width="10.75" height="3.70" fill="#ffffff" stroke="#111315" stroke-width="0.7" />
+<circle data-layer="A-WALL-COBO" cx="639.60" cy="878.55" r="1.01" fill="none" stroke="#111315" stroke-width="0.4" />
+<rect data-layer="A-WALL-COBO" x="645.42" y="876.70" width="10.75" height="3.70" fill="#ffffff" stroke="#111315" stroke-width="0.7" />
+<circle data-layer="A-WALL-COBO" cx="650.80" cy="878.55" r="1.01" fill="none" stroke="#111315" stroke-width="0.4" />
+<rect data-layer="A-WALL-COBO" x="656.62" y="876.70" width="10.75" height="3.70" fill="#ffffff" stroke="#111315" stroke-width="0.7" />
+<circle data-layer="A-WALL-COBO" cx="662.00" cy="878.55" r="1.01" fill="none" stroke="#111315" stroke-width="0.4" />
+<rect data-layer="A-WALL-COBO" x="667.82" y="876.70" width="10.75" height="3.70" fill="#ffffff" stroke="#111315" stroke-width="0.7" />
+<circle data-layer="A-WALL-COBO" cx="673.20" cy="878.55" r="1.01" fill="none" stroke="#111315" stroke-width="0.4" />
+<rect data-layer="A-WALL-COBO" x="679.02" y="876.70" width="10.75" height="3.70" fill="#ffffff" stroke="#111315" stroke-width="0.7" />
+<circle data-layer="A-WALL-COBO" cx="684.40" cy="878.55" r="1.01" fill="none" stroke="#111315" stroke-width="0.4" />
+<rect data-layer="A-WALL-COBO" x="690.22" y="876.70" width="10.75" height="3.70" fill="#ffffff" stroke="#111315" stroke-width="0.7" />
+<circle data-layer="A-WALL-COBO" cx="695.60" cy="878.55" r="1.01" fill="none" stroke="#111315" stroke-width="0.4" />
+<rect data-layer="A-WALL-COBO" x="701.42" y="876.70" width="10.75" height="3.70" fill="#ffffff" stroke="#111315" stroke-width="0.7" />
+<circle data-layer="A-WALL-COBO" cx="706.80" cy="878.55" r="1.01" fill="none" stroke="#111315" stroke-width="0.4" />
+<line data-layer="A-DOOR" x1="472.72" y1="878.72" x2="495.20" y2="846.61" stroke="#111315" stroke-width="1.3" />
+<path data-layer="A-DOOR" d="M 515.28,878.72 A 42.56 42.56 0 0 0 497.13,843.86" fill="none" stroke="#111315" stroke-width="0.5" />
+<rect data-layer="A-SCRN" x="714.73" y="868.36" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="865.09" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="861.83" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="858.56" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="816.09" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="812.83" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="809.56" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="806.29" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="803.03" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="799.76" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="796.49" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="793.23" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="789.96" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="786.69" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="783.43" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="780.16" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="776.89" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="773.63" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="770.36" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="767.09" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="763.83" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="760.56" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="757.29" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="754.03" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="750.76" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="747.49" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="744.23" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="740.96" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="737.69" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="734.43" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="731.16" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="727.89" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="724.63" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="721.36" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="718.09" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="714.83" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="711.56" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="708.29" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="705.03" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="701.76" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="698.49" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="695.23" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="691.96" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="688.69" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="685.43" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="682.16" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="678.89" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="675.63" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="672.36" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="669.09" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="665.83" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="662.56" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="659.29" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="714.73" y="656.03" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="721.36" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="724.63" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="727.89" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="731.16" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="734.43" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="737.69" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="740.96" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="744.23" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="747.49" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="750.76" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="754.03" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="757.29" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="760.56" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="763.83" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="767.09" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="770.36" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="773.63" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="776.89" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="780.16" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="783.43" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="786.69" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="789.96" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="793.23" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="796.49" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="799.76" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="803.03" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="806.29" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="809.56" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="812.83" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="816.09" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="819.36" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="822.63" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="825.89" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="829.16" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="832.43" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="835.69" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="838.96" y="653.13" width="1.40" height="3.27" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="653.88" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="650.61" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="647.35" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="644.08" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="640.81" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="637.55" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="634.28" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="631.01" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="627.75" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="624.48" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="621.21" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="617.95" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="614.68" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="611.41" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="608.15" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="604.88" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="601.61" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="598.35" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="595.08" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="591.81" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="588.55" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="585.28" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="582.01" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="578.75" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="575.48" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="572.21" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="568.95" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="565.68" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="562.41" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="559.15" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="555.88" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="552.61" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="549.35" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-SCRN" x="837.93" y="546.08" width="3.27" height="1.40" fill="#111315" stroke="none" stroke-width="1.0" />
+<rect data-layer="A-GATE-RGH" x="589.20" y="868.08" width="252.00" height="11.20" fill="none" stroke="#6b6f73" stroke-width="0.5" stroke-dasharray="3 2"/>
+<rect data-layer="A-GATE-RGH" x="692.24" y="859.68" width="22.40" height="11.20" fill="#ffffff" stroke="#111315" stroke-width="0.7" />
+<line data-layer="A-GATE-RGH" x1="692.24" y1="870.88" x2="714.64" y2="859.68" stroke="#6b6f73" stroke-width="0.4" />
+<line data-layer="A-GATE-RGH" x1="692.24" y1="859.68" x2="714.64" y2="870.88" stroke="#6b6f73" stroke-width="0.4" />
+<polyline data-layer="A-GATE-RGH" points="703.44,865.28 703.44,862.48 466.00,862.48" fill="none" stroke="#6b6f73" stroke-width="0.6" stroke-dasharray="8 2 2 2"/>
+<polyline data-layer="A-GATE-RGH" points="714.64,862.48 838.40,862.48 838.40,866.96" fill="none" stroke="#6b6f73" stroke-width="0.6" stroke-dasharray="8 2 2 2"/>
+<line data-layer="A-DOOR" x1="718.00" y1="858.00" x2="737.60" y2="824.05" stroke="#111315" stroke-width="1.3" />
+<path data-layer="A-DOOR" d="M 737.60,824.05 A 39.20 39.20 0 0 0 718.00,818.80" fill="none" stroke="#111315" stroke-width="0.5" />
+<rect data-layer="S-COLS" x="718.90" y="865.06" width="3.81" height="3.81" fill="#111315" stroke="#111315" stroke-width="0.3" />
+<rect data-layer="S-COLS" x="836.50" y="865.06" width="3.81" height="3.81" fill="#111315" stroke="#111315" stroke-width="0.3" />
+<rect data-layer="S-COLS" x="718.90" y="658.98" width="3.81" height="3.81" fill="#111315" stroke="#111315" stroke-width="0.3" />
+<rect data-layer="S-COLS" x="836.50" y="658.98" width="3.81" height="3.81" fill="#111315" stroke="#111315" stroke-width="0.3" />
+<rect data-layer="S-COLS" x="378.98" y="188.58" width="3.81" height="3.81" fill="#111315" stroke="#111315" stroke-width="0.3" />
+<rect data-layer="S-COLS" x="627.62" y="188.58" width="3.81" height="3.81" fill="#111315" stroke="#111315" stroke-width="0.3" />
+<rect data-layer="A-ROOF-SKYL" x="352.88" y="701.20" width="44.80" height="22.40" fill="none" stroke="#111315" stroke-width="0.7" stroke-dasharray="6 3"/>
+<line data-layer="A-ROOF-SKYL" x1="352.88" y1="723.60" x2="397.68" y2="701.20" stroke="#6b6f73" stroke-width="0.4" stroke-dasharray="6 3"/>
+<line data-layer="A-ROOF-SKYL" x1="352.88" y1="701.20" x2="397.68" y2="723.60" stroke="#6b6f73" stroke-width="0.4" stroke-dasharray="6 3"/>
+<rect data-layer="A-ROOF-SKYL" x="690.00" y="358.48" width="22.40" height="22.40" fill="none" stroke="#111315" stroke-width="0.7" stroke-dasharray="6 3"/>
+<line data-layer="A-ROOF-SKYL" x1="690.00" y1="380.88" x2="712.40" y2="358.48" stroke="#6b6f73" stroke-width="0.4" stroke-dasharray="6 3"/>
+<line data-layer="A-ROOF-SKYL" x1="690.00" y1="358.48" x2="712.40" y2="380.88" stroke="#6b6f73" stroke-width="0.4" stroke-dasharray="6 3"/>
+<rect data-layer="M-HVAC" x="250.40" y="487.84" width="64.96" height="51.52" fill="none" stroke="#7b8085" stroke-width="0.6" stroke-dasharray="10 3 2 3"/>
+<rect data-layer="M-HVAC" x="661.44" y="328.80" width="79.52" height="81.76" fill="none" stroke="#7b8085" stroke-width="0.6" stroke-dasharray="10 3 2 3"/>
+<rect data-layer="M-HVAC" x="325.44" y="678.24" width="79.52" height="68.32" fill="none" stroke="#7b8085" stroke-width="0.6" stroke-dasharray="10 3 2 3"/>
+<rect data-layer="M-HVAC" x="250.40" y="678.24" width="64.96" height="68.32" fill="none" stroke="#7b8085" stroke-width="0.6" stroke-dasharray="10 3 2 3"/>
+<rect data-layer="M-HVAC" x="269.44" y="485.38" width="28.00" height="9.41" fill="#ffffff" stroke="#111315" stroke-width="0.7" stroke-dasharray="4 2"/>
+<text data-layer="M-HVAC" x="283.44" y="490.08" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="6" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.3" dy="2.2">AHU-1</text>
+<rect data-layer="M-HVAC" x="714.08" y="390.74" width="28.00" height="9.41" fill="#ffffff" stroke="#111315" stroke-width="0.7" stroke-dasharray="4 2"/>
+<text data-layer="M-HVAC" x="728.08" y="395.44" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="6" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.3" dy="2.2">AHU-2</text>
+<rect data-layer="M-HVAC" x="188.24" y="492.88" width="35.84" height="40.32" fill="#ffffff" stroke="#111315" stroke-width="0.9" />
+<circle data-layer="M-HVAC" cx="206.16" cy="513.04" r="13.44" fill="none" stroke="#111315" stroke-width="0.6" />
+<text data-layer="M-HVAC" x="206.16" y="513.04" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="6" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.6" dy="2.2">AC</text>
+<line data-layer="A-GRID" x1="242.00" y1="1052.88" x2="242.00" y2="49.36" stroke="#7b8085" stroke-width="0.6" stroke-dasharray="14 4 3 4"/>
+<circle data-layer="A-GRID" cx="242.00" cy="1068.56" r="15.68" fill="#ffffff" stroke="#111315" stroke-width="1.0" />
+<text data-layer="A-GRID" x="242.00" y="1068.56" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="10" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.6" dy="3.5">A</text>
+<circle data-layer="A-GRID" cx="242.00" cy="33.68" r="15.68" fill="#ffffff" stroke="#111315" stroke-width="1.0" />
+<text data-layer="A-GRID" x="242.00" y="33.68" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="10" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.6" dy="3.5">A</text>
+<line data-layer="A-GRID" x1="466.00" y1="1052.88" x2="466.00" y2="49.36" stroke="#7b8085" stroke-width="0.6" stroke-dasharray="14 4 3 4"/>
+<circle data-layer="A-GRID" cx="466.00" cy="1068.56" r="15.68" fill="#ffffff" stroke="#111315" stroke-width="1.0" />
+<text data-layer="A-GRID" x="466.00" y="1068.56" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="10" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.6" dy="3.5">B</text>
+<circle data-layer="A-GRID" cx="466.00" cy="33.68" r="15.68" fill="#ffffff" stroke="#111315" stroke-width="1.0" />
+<text data-layer="A-GRID" x="466.00" y="33.68" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="10" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.6" dy="3.5">B</text>
+<line data-layer="A-GRID" x1="656.40" y1="1052.88" x2="656.40" y2="49.36" stroke="#7b8085" stroke-width="0.6" stroke-dasharray="14 4 3 4"/>
+<circle data-layer="A-GRID" cx="656.40" cy="1068.56" r="15.68" fill="#ffffff" stroke="#111315" stroke-width="1.0" />
+<text data-layer="A-GRID" x="656.40" y="1068.56" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="10" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.6" dy="3.5">C</text>
+<circle data-layer="A-GRID" cx="656.40" cy="33.68" r="15.68" fill="#ffffff" stroke="#111315" stroke-width="1.0" />
+<text data-layer="A-GRID" x="656.40" y="33.68" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="10" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.6" dy="3.5">C</text>
+<line data-layer="A-GRID" x1="841.20" y1="1052.88" x2="841.20" y2="49.36" stroke="#7b8085" stroke-width="0.6" stroke-dasharray="14 4 3 4"/>
+<circle data-layer="A-GRID" cx="841.20" cy="1068.56" r="15.68" fill="#ffffff" stroke="#111315" stroke-width="1.0" />
+<text data-layer="A-GRID" x="841.20" y="1068.56" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="10" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.6" dy="3.5">D</text>
+<circle data-layer="A-GRID" cx="841.20" cy="33.68" r="15.68" fill="#ffffff" stroke="#111315" stroke-width="1.0" />
+<text data-layer="A-GRID" x="841.20" y="33.68" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="10" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.6" dy="3.5">D</text>
+<line data-layer="A-GRID" x1="57.20" y1="880.40" x2="986.80" y2="880.40" stroke="#7b8085" stroke-width="0.6" stroke-dasharray="14 4 3 4"/>
+<circle data-layer="A-GRID" cx="41.52" cy="880.40" r="15.68" fill="#ffffff" stroke="#111315" stroke-width="1.0" />
+<text data-layer="A-GRID" x="41.52" y="880.40" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="10" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.6" dy="3.5">1</text>
+<circle data-layer="A-GRID" cx="1002.48" cy="880.40" r="15.68" fill="#ffffff" stroke="#111315" stroke-width="1.0" />
+<text data-layer="A-GRID" x="1002.48" y="880.40" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="10" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.6" dy="3.5">1</text>
+<line data-layer="A-GRID" x1="57.20" y1="544.40" x2="986.80" y2="544.40" stroke="#7b8085" stroke-width="0.6" stroke-dasharray="14 4 3 4"/>
+<circle data-layer="A-GRID" cx="41.52" cy="544.40" r="15.68" fill="#ffffff" stroke="#111315" stroke-width="1.0" />
+<text data-layer="A-GRID" x="41.52" y="544.40" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="10" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.6" dy="3.5">2</text>
+<circle data-layer="A-GRID" cx="1002.48" cy="544.40" r="15.68" fill="#ffffff" stroke="#111315" stroke-width="1.0" />
+<text data-layer="A-GRID" x="1002.48" y="544.40" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="10" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.6" dy="3.5">2</text>
+<line data-layer="A-GRID" x1="57.20" y1="320.40" x2="986.80" y2="320.40" stroke="#7b8085" stroke-width="0.6" stroke-dasharray="14 4 3 4"/>
+<circle data-layer="A-GRID" cx="41.52" cy="320.40" r="15.68" fill="#ffffff" stroke="#111315" stroke-width="1.0" />
+<text data-layer="A-GRID" x="41.52" y="320.40" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="10" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.6" dy="3.5">3</text>
+<circle data-layer="A-GRID" cx="1002.48" cy="320.40" r="15.68" fill="#ffffff" stroke="#111315" stroke-width="1.0" />
+<text data-layer="A-GRID" x="1002.48" y="320.40" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="10" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.6" dy="3.5">3</text>
+<rect data-layer="A-ANNO-ROOM" x="554.48" y="481.12" width="47.04" height="23.52" fill="#ffffff" stroke="#111315" stroke-width="0.8" />
+<line data-layer="A-ANNO-ROOM" x1="554.48" y1="494.00" x2="601.52" y2="494.00" stroke="#111315" stroke-width="0.5" />
+<text data-layer="A-ANNO-ROOM" x="578.00" y="492.88" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.6" dy="-3">LIVING</text>
+<text data-layer="A-ANNO-ROOM" x="578.00" y="492.88" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="6.8" text-anchor="middle" fill="#6b6f73" font-weight="400" letter-spacing="0.6" dy="8.5">101  ·  262 SF</text>
+<rect data-layer="A-ANNO-ROOM" x="420.08" y="481.12" width="47.04" height="23.52" fill="#ffffff" stroke="#111315" stroke-width="0.8" />
+<line data-layer="A-ANNO-ROOM" x1="420.08" y1="494.00" x2="467.12" y2="494.00" stroke="#111315" stroke-width="0.5" />
+<text data-layer="A-ANNO-ROOM" x="443.60" y="492.88" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.6" dy="-3">DINING</text>
+<text data-layer="A-ANNO-ROOM" x="443.60" y="492.88" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="6.8" text-anchor="middle" fill="#6b6f73" font-weight="400" letter-spacing="0.6" dy="8.5">102  ·  193 SF</text>
+<rect data-layer="A-ANNO-ROOM" x="301.70" y="447.52" width="48.61" height="23.52" fill="#ffffff" stroke="#111315" stroke-width="0.8" />
+<line data-layer="A-ANNO-ROOM" x1="301.70" y1="460.40" x2="350.30" y2="460.40" stroke="#111315" stroke-width="0.5" />
+<text data-layer="A-ANNO-ROOM" x="326.00" y="459.28" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.6" dy="-3">KITCHEN</text>
+<text data-layer="A-ANNO-ROOM" x="326.00" y="459.28" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="6.8" text-anchor="middle" fill="#6b6f73" font-weight="400" letter-spacing="0.6" dy="8.5">103  ·  173 SF</text>
+<rect data-layer="A-ANNO-ROOM" x="262.78" y="495.68" width="41.32" height="23.52" fill="#ffffff" stroke="#111315" stroke-width="0.8" />
+<line data-layer="A-ANNO-ROOM" x1="262.78" y1="508.56" x2="304.10" y2="508.56" stroke="#111315" stroke-width="0.5" />
+<text data-layer="A-ANNO-ROOM" x="283.44" y="507.44" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.6" dy="-3">LAUNDRY</text>
+<text data-layer="A-ANNO-ROOM" x="283.44" y="507.44" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="6.8" text-anchor="middle" fill="#6b6f73" font-weight="400" letter-spacing="0.6" dy="8.5">104  ·  32 SF</text>
+<rect data-layer="A-ANNO-ROOM" x="664.80" y="436.32" width="104.16" height="23.52" fill="#ffffff" stroke="#111315" stroke-width="0.8" />
+<line data-layer="A-ANNO-ROOM" x1="664.80" y1="449.20" x2="768.96" y2="449.20" stroke="#111315" stroke-width="0.5" />
+<text data-layer="A-ANNO-ROOM" x="716.88" y="448.08" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.6" dy="-3">PRIMARY BEDROOM</text>
+<text data-layer="A-ANNO-ROOM" x="716.88" y="448.08" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="6.8" text-anchor="middle" fill="#6b6f73" font-weight="400" letter-spacing="0.6" dy="8.5">105  ·  171 SF</text>
+<rect data-layer="A-ANNO-ROOM" x="680.54" y="331.04" width="41.32" height="23.52" fill="#ffffff" stroke="#111315" stroke-width="0.8" />
+<line data-layer="A-ANNO-ROOM" x1="680.54" y1="343.92" x2="721.86" y2="343.92" stroke="#111315" stroke-width="0.5" />
+<text data-layer="A-ANNO-ROOM" x="701.20" y="342.80" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.6" dy="-3">WALK-IN</text>
+<text data-layer="A-ANNO-ROOM" x="701.20" y="342.80" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="6.8" text-anchor="middle" fill="#6b6f73" font-weight="400" letter-spacing="0.6" dy="8.5">106  ·  59 SF</text>
+<rect data-layer="A-ANNO-ROOM" x="766.59" y="364.64" width="70.83" height="23.52" fill="#ffffff" stroke="#111315" stroke-width="0.8" />
+<line data-layer="A-ANNO-ROOM" x1="766.59" y1="377.52" x2="837.41" y2="377.52" stroke="#111315" stroke-width="0.5" />
+<text data-layer="A-ANNO-ROOM" x="802.00" y="376.40" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.6" dy="-3">PRIMARY BATH</text>
+<text data-layer="A-ANNO-ROOM" x="802.00" y="376.40" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="6.8" text-anchor="middle" fill="#6b6f73" font-weight="400" letter-spacing="0.6" dy="8.5">107  ·  61 SF</text>
+<rect data-layer="A-ANNO-ROOM" x="295.87" y="581.92" width="62.50" height="23.52" fill="#ffffff" stroke="#111315" stroke-width="0.8" />
+<line data-layer="A-ANNO-ROOM" x1="295.87" y1="594.80" x2="358.37" y2="594.80" stroke="#111315" stroke-width="0.5" />
+<text data-layer="A-ANNO-ROOM" x="327.12" y="593.68" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.6" dy="-3">BEDROOM 3</text>
+<text data-layer="A-ANNO-ROOM" x="327.12" y="593.68" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="6.8" text-anchor="middle" fill="#6b6f73" font-weight="400" letter-spacing="0.6" dy="8.5">108  ·  159 SF</text>
+<rect data-layer="A-ANNO-ROOM" x="345.21" y="700.64" width="39.98" height="23.52" fill="#ffffff" stroke="#111315" stroke-width="0.8" />
+<line data-layer="A-ANNO-ROOM" x1="345.21" y1="713.52" x2="385.19" y2="713.52" stroke="#111315" stroke-width="0.5" />
+<text data-layer="A-ANNO-ROOM" x="365.20" y="712.40" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.6" dy="-3">BATH 2</text>
+<text data-layer="A-ANNO-ROOM" x="365.20" y="712.40" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="6.8" text-anchor="middle" fill="#6b6f73" font-weight="400" letter-spacing="0.6" dy="8.5">109  ·  50 SF</text>
+<rect data-layer="A-ANNO-ROOM" x="295.87" y="817.12" width="62.50" height="23.52" fill="#ffffff" stroke="#111315" stroke-width="0.8" />
+<line data-layer="A-ANNO-ROOM" x1="295.87" y1="830.00" x2="358.37" y2="830.00" stroke="#111315" stroke-width="0.5" />
+<text data-layer="A-ANNO-ROOM" x="327.12" y="828.88" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.6" dy="-3">BEDROOM 2</text>
+<text data-layer="A-ANNO-ROOM" x="327.12" y="828.88" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="6.8" text-anchor="middle" fill="#6b6f73" font-weight="400" letter-spacing="0.6" dy="8.5">110  ·  154 SF</text>
+<text data-layer="A-ANNO-ROOM" x="436.3" y="690.0" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="middle" fill="#111315" font-weight="700" letter-spacing="1.5" transform="rotate(-90 436.3 690.0)">GALLERY 111</text>
+<text data-layer="A-ANNO-ROOM" x="591.44" y="779.60" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7" text-anchor="middle" fill="#111315" font-weight="700" letter-spacing="1.2" >PÁTIO (COURTYARD)</text>
+<text data-layer="A-ANNO-ROOM" x="659.76" y="844.56" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#111315" font-weight="700" letter-spacing="1.2" >COVERED ENTRY</text>
+<text data-layer="A-ANNO-ROOM" x="522.00" y="201.68" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#111315" font-weight="700" letter-spacing="1.2" >VERANDA</text>
+<text data-layer="A-ANNO-ROOM" x="779.60" y="673.20" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#111315" font-weight="700" letter-spacing="1.2" >CARPORT</text>
+<circle data-layer="A-DOOR-IDEN" cx="445.84" cy="844.00" r="10.64" fill="#ffffff" stroke="#111315" stroke-width="1.0" />
+<text data-layer="A-DOOR-IDEN" x="445.84" y="844.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.3" dy="3">D1</text>
+<circle data-layer="A-DOOR-IDEN" cx="575.20" cy="526.48" r="10.64" fill="#ffffff" stroke="#111315" stroke-width="1.0" />
+<text data-layer="A-DOOR-IDEN" x="575.20" y="526.48" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.3" dy="3">D2</text>
+<circle data-layer="A-DOOR-IDEN" cx="782.40" cy="526.48" r="10.64" fill="#ffffff" stroke="#111315" stroke-width="1.0" />
+<text data-layer="A-DOOR-IDEN" x="782.40" y="526.48" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.3" dy="3">D3</text>
+<circle data-layer="A-DOOR-IDEN" cx="533.20" cy="337.20" r="10.64" fill="#ffffff" stroke="#111315" stroke-width="1.0" />
+<text data-layer="A-DOOR-IDEN" x="533.20" y="337.20" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.3" dy="3">D4</text>
+<circle data-layer="A-DOOR-IDEN" cx="410.00" cy="752.33" r="10.64" fill="#ffffff" stroke="#111315" stroke-width="1.0" />
+<text data-layer="A-DOOR-IDEN" x="410.00" y="752.33" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.3" dy="3">D5</text>
+<circle data-layer="A-DOOR-IDEN" cx="410.00" cy="696.33" r="10.64" fill="#ffffff" stroke="#111315" stroke-width="1.0" />
+<text data-layer="A-DOOR-IDEN" x="410.00" y="696.33" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.3" dy="3">D6</text>
+<circle data-layer="A-DOOR-IDEN" cx="410.00" cy="634.73" r="10.64" fill="#ffffff" stroke="#111315" stroke-width="1.0" />
+<text data-layer="A-DOOR-IDEN" x="410.00" y="634.73" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.3" dy="3">D7</text>
+<circle data-layer="A-DOOR-IDEN" cx="286.80" cy="733.68" r="10.64" fill="#ffffff" stroke="#111315" stroke-width="1.0" />
+<text data-layer="A-DOOR-IDEN" x="286.80" y="733.68" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.3" dy="3">D8</text>
+<circle data-layer="A-DOOR-IDEN" cx="286.80" cy="655.28" r="10.64" fill="#ffffff" stroke="#111315" stroke-width="1.0" />
+<text data-layer="A-DOOR-IDEN" x="286.80" y="655.28" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.3" dy="3">D9</text>
+<circle data-layer="A-DOOR-IDEN" cx="320.40" cy="494.73" r="10.64" fill="#ffffff" stroke="#111315" stroke-width="1.0" />
+<text data-layer="A-DOOR-IDEN" x="320.40" y="494.73" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.3" dy="3">D10</text>
+<circle data-layer="A-DOOR-IDEN" cx="656.40" cy="494.73" r="10.64" fill="#ffffff" stroke="#111315" stroke-width="1.0" />
+<text data-layer="A-DOOR-IDEN" x="656.40" y="494.73" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.3" dy="3">D11</text>
+<circle data-layer="A-DOOR-IDEN" cx="684.40" cy="397.68" r="10.64" fill="#ffffff" stroke="#111315" stroke-width="1.0" />
+<text data-layer="A-DOOR-IDEN" x="684.40" y="397.68" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.3" dy="3">D12</text>
+<circle data-layer="A-DOOR-IDEN" cx="782.40" cy="397.68" r="10.64" fill="#ffffff" stroke="#111315" stroke-width="1.0" />
+<text data-layer="A-DOOR-IDEN" x="782.40" y="397.68" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.3" dy="3">D13</text>
+<circle data-layer="A-DOOR-IDEN" cx="494.00" cy="898.32" r="10.64" fill="#ffffff" stroke="#111315" stroke-width="1.0" />
+<text data-layer="A-DOOR-IDEN" x="494.00" y="898.32" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.3" dy="3">D14</text>
+<circle data-layer="A-DOOR-IDEN" cx="718.00" cy="820.48" r="10.64" fill="#ffffff" stroke="#111315" stroke-width="1.0" />
+<text data-layer="A-DOOR-IDEN" x="718.00" y="820.48" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.3" dy="3">D15</text>
+<polygon data-layer="A-GLAZ-IDEN" points="266.2,899.4 271.2,891.4 291.2,891.4 296.2,899.4 291.2,907.4 271.2,907.4" fill="#ffffff" stroke="#111315" stroke-width="1"/>
+<text data-layer="A-GLAZ-IDEN" x="281.2" y="902.4" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="middle" font-weight="700" fill="#111315">W-1</text>
+<polygon data-layer="A-GLAZ-IDEN" points="472.3,683.0 477.3,675.0 497.3,675.0 502.3,683.0 497.3,691.0 477.3,691.0" fill="#ffffff" stroke="#111315" stroke-width="1"/>
+<text data-layer="A-GLAZ-IDEN" x="487.3" y="686.0" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="middle" font-weight="700" fill="#111315">W-2</text>
+<polygon data-layer="A-GLAZ-IDEN" points="675.0,563.4 680.0,555.4 700.0,555.4 705.0,563.4 700.0,571.4 680.0,571.4" fill="#ffffff" stroke="#111315" stroke-width="1"/>
+<text data-layer="A-GLAZ-IDEN" x="690.0" y="566.4" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="middle" font-weight="700" fill="#111315">W-3</text>
+<polygon data-layer="A-GLAZ-IDEN" points="852.0,494.0 857.0,486.0 877.0,486.0 882.0,494.0 877.0,502.0 857.0,502.0" fill="#ffffff" stroke="#111315" stroke-width="1"/>
+<text data-layer="A-GLAZ-IDEN" x="867.0" y="497.0" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="middle" font-weight="700" fill="#111315">W-4</text>
+<polygon data-layer="A-GLAZ-IDEN" points="852.0,342.2 857.0,334.2 877.0,334.2 882.0,342.2 877.0,350.2 857.0,350.2" fill="#ffffff" stroke="#111315" stroke-width="1"/>
+<text data-layer="A-GLAZ-IDEN" x="867.0" y="345.2" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="middle" font-weight="700" fill="#111315">W-5</text>
+<polygon data-layer="A-GLAZ-IDEN" points="778.6,301.4 783.6,293.4 803.6,293.4 808.6,301.4 803.6,309.4 783.6,309.4" fill="#ffffff" stroke="#111315" stroke-width="1"/>
+<text data-layer="A-GLAZ-IDEN" x="793.6" y="304.4" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="middle" font-weight="700" fill="#111315">W-6</text>
+<polygon data-layer="A-GLAZ-IDEN" points="316.6,301.4 321.6,293.4 341.6,293.4 346.6,301.4 341.6,309.4 321.6,309.4" fill="#ffffff" stroke="#111315" stroke-width="1"/>
+<text data-layer="A-GLAZ-IDEN" x="331.6" y="304.4" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="middle" font-weight="700" fill="#111315">W-7</text>
+<polygon data-layer="A-GLAZ-IDEN" points="201.2,611.6 206.2,603.6 226.2,603.6 231.2,611.6 226.2,619.6 206.2,619.6" fill="#ffffff" stroke="#111315" stroke-width="1"/>
+<text data-layer="A-GLAZ-IDEN" x="216.2" y="614.6" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="middle" font-weight="700" fill="#111315">W-8</text>
+<polygon data-layer="A-GLAZ-IDEN" points="201.2,813.2 206.2,805.2 226.2,805.2 231.2,813.2 226.2,821.2 206.2,821.2" fill="#ffffff" stroke="#111315" stroke-width="1"/>
+<text data-layer="A-GLAZ-IDEN" x="216.2" y="816.2" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7.5" text-anchor="middle" font-weight="700" fill="#111315">W-8</text>
+<line data-layer="A-ANNO-KEYN" x1="617.20" y1="878.72" x2="639.60" y2="934.16" stroke="#6b6f73" stroke-width="0.6" />
+<circle data-layer="A-ANNO-KEYN" cx="617.2" cy="878.7" r="2.2" fill="#111315"/>
+<polygon data-layer="A-ANNO-KEYN" points="639.6,925.2 648.6,934.2 639.6,943.2 630.6,934.2" fill="#ffffff" stroke="#111315" stroke-width="1"/>
+<text data-layer="A-ANNO-KEYN" x="639.6" y="937.4" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" font-weight="700" fill="#111315">1</text>
+<line data-layer="A-ANNO-KEYN" x1="494.00" y1="878.16" x2="494.00" y2="934.16" stroke="#6b6f73" stroke-width="0.6" />
+<circle data-layer="A-ANNO-KEYN" cx="494.0" cy="878.2" r="2.2" fill="#111315"/>
+<polygon data-layer="A-ANNO-KEYN" points="494.0,925.2 503.0,934.2 494.0,943.2 485.0,934.2" fill="#ffffff" stroke="#111315" stroke-width="1"/>
+<text data-layer="A-ANNO-KEYN" x="494.0" y="937.4" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" font-weight="700" fill="#111315">2</text>
+<line data-layer="A-ANNO-KEYN" x1="342.80" y1="882.64" x2="342.80" y2="934.16" stroke="#6b6f73" stroke-width="0.6" />
+<circle data-layer="A-ANNO-KEYN" cx="342.8" cy="882.6" r="2.2" fill="#111315"/>
+<polygon data-layer="A-ANNO-KEYN" points="342.8,925.2 351.8,934.2 342.8,943.2 333.8,934.2" fill="#ffffff" stroke="#111315" stroke-width="1"/>
+<text data-layer="A-ANNO-KEYN" x="342.8" y="937.4" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" font-weight="700" fill="#111315">3</text>
+<line data-layer="A-ANNO-KEYN" x1="718.00" y1="746.00" x2="684.40" y2="746.00" stroke="#6b6f73" stroke-width="0.6" />
+<circle data-layer="A-ANNO-KEYN" cx="718.0" cy="746.0" r="2.2" fill="#111315"/>
+<polygon data-layer="A-ANNO-KEYN" points="684.4,737.0 693.4,746.0 684.4,755.0 675.4,746.0" fill="#ffffff" stroke="#111315" stroke-width="1"/>
+<text data-layer="A-ANNO-KEYN" x="684.4" y="749.2" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" font-weight="700" fill="#111315">4</text>
+<line data-layer="A-ANNO-KEYN" x1="522.00" y1="846.80" x2="550.00" y2="790.80" stroke="#6b6f73" stroke-width="0.6" />
+<circle data-layer="A-ANNO-KEYN" cx="522.0" cy="846.8" r="2.2" fill="#111315"/>
+<polygon data-layer="A-ANNO-KEYN" points="550.0,781.8 559.0,790.8 550.0,799.8 541.0,790.8" fill="#ffffff" stroke="#111315" stroke-width="1"/>
+<text data-layer="A-ANNO-KEYN" x="550.0" y="794.0" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" font-weight="700" fill="#111315">5</text>
+<polygon data-layer="A-ANNO-KEYN" points="566.8,580.2 575.8,589.2 566.8,598.2 557.8,589.2" fill="#ffffff" stroke="#111315" stroke-width="1"/>
+<text data-layer="A-ANNO-KEYN" x="566.8" y="592.4" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" font-weight="700" fill="#111315">6</text>
+<polygon data-layer="A-ANNO-KEYN" points="582.5,356.2 591.5,365.2 582.5,374.2 573.5,365.2" fill="#ffffff" stroke="#111315" stroke-width="1"/>
+<text data-layer="A-ANNO-KEYN" x="582.5" y="368.4" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" font-weight="700" fill="#111315">7</text>
+<line data-layer="A-ANNO-KEYN" x1="656.40" y1="180.40" x2="690.00" y2="158.00" stroke="#6b6f73" stroke-width="0.6" />
+<circle data-layer="A-ANNO-KEYN" cx="656.4" cy="180.4" r="2.2" fill="#111315"/>
+<polygon data-layer="A-ANNO-KEYN" points="690.0,149.0 699.0,158.0 690.0,167.0 681.0,158.0" fill="#ffffff" stroke="#111315" stroke-width="1"/>
+<text data-layer="A-ANNO-KEYN" x="690.0" y="161.2" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" font-weight="700" fill="#111315">8</text>
+<line data-layer="A-ANNO-KEYN" x1="380.88" y1="190.48" x2="331.60" y2="158.00" stroke="#6b6f73" stroke-width="0.6" />
+<circle data-layer="A-ANNO-KEYN" cx="380.9" cy="190.5" r="2.2" fill="#111315"/>
+<polygon data-layer="A-ANNO-KEYN" points="331.6,149.0 340.6,158.0 331.6,167.0 322.6,158.0" fill="#ffffff" stroke="#111315" stroke-width="1"/>
+<text data-layer="A-ANNO-KEYN" x="331.6" y="161.2" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" font-weight="700" fill="#111315">9</text>
+<polygon data-layer="A-ANNO-KEYN" points="396.0,253.2 405.0,262.2 396.0,271.2 387.0,262.2" fill="#ffffff" stroke="#111315" stroke-width="1"/>
+<text data-layer="A-ANNO-KEYN" x="396.0" y="265.4" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" font-weight="700" fill="#111315">10</text>
+<polygon data-layer="A-ANNO-KEYN" points="667.6,686.6 676.6,695.6 667.6,704.6 658.6,695.6" fill="#ffffff" stroke="#111315" stroke-width="1"/>
+<text data-layer="A-ANNO-KEYN" x="667.6" y="698.8" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" font-weight="700" fill="#111315">11</text>
+<polygon data-layer="A-ANNO-KEYN" points="825.5,330.4 834.5,339.4 825.5,348.4 816.5,339.4" fill="#ffffff" stroke="#111315" stroke-width="1"/>
+<text data-layer="A-ANNO-KEYN" x="825.5" y="342.6" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" font-weight="700" fill="#111315">12</text>
+<polygon data-layer="A-ANNO-KEYN" points="733.7,759.4 742.7,768.4 733.7,777.4 724.7,768.4" fill="#ffffff" stroke="#111315" stroke-width="1"/>
+<text data-layer="A-ANNO-KEYN" x="733.7" y="771.6" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" font-weight="700" fill="#111315">13</text>
+<line data-layer="A-ANNO-KEYN" x1="698.96" y1="870.88" x2="690.00" y2="914.00" stroke="#6b6f73" stroke-width="0.6" />
+<circle data-layer="A-ANNO-KEYN" cx="699.0" cy="870.9" r="2.2" fill="#111315"/>
+<polygon data-layer="A-ANNO-KEYN" points="690.0,905.0 699.0,914.0 690.0,923.0 681.0,914.0" fill="#ffffff" stroke="#111315" stroke-width="1"/>
+<text data-layer="A-ANNO-KEYN" x="690.0" y="917.2" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" font-weight="700" fill="#111315">18</text>
+<line data-layer="A-ANNO-KEYN" x1="206.16" y1="492.88" x2="206.16" y2="466.00" stroke="#6b6f73" stroke-width="0.6" />
+<circle data-layer="A-ANNO-KEYN" cx="206.2" cy="492.9" r="2.2" fill="#111315"/>
+<polygon data-layer="A-ANNO-KEYN" points="206.2,457.0 215.2,466.0 206.2,475.0 197.2,466.0" fill="#ffffff" stroke="#111315" stroke-width="1"/>
+<text data-layer="A-ANNO-KEYN" x="206.2" y="469.2" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" font-weight="700" fill="#111315">14</text>
+<line data-layer="A-ANNO-KEYN" x1="397.68" y1="701.20" x2="415.60" y2="683.28" stroke="#6b6f73" stroke-width="0.6" />
+<circle data-layer="A-ANNO-KEYN" cx="397.7" cy="701.2" r="2.2" fill="#111315"/>
+<polygon data-layer="A-ANNO-KEYN" points="415.6,674.3 424.6,683.3 415.6,692.3 406.6,683.3" fill="#ffffff" stroke="#111315" stroke-width="1"/>
+<text data-layer="A-ANNO-KEYN" x="415.6" y="686.5" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" font-weight="700" fill="#111315">15</text>
+<line data-layer="A-ANNO-KEYN" x1="712.40" y1="358.48" x2="730.32" y2="340.56" stroke="#6b6f73" stroke-width="0.6" />
+<circle data-layer="A-ANNO-KEYN" cx="712.4" cy="358.5" r="2.2" fill="#111315"/>
+<polygon data-layer="A-ANNO-KEYN" points="730.3,331.6 739.3,340.6 730.3,349.6 721.3,340.6" fill="#ffffff" stroke="#111315" stroke-width="1"/>
+<text data-layer="A-ANNO-KEYN" x="730.3" y="343.8" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" font-weight="700" fill="#111315">15</text>
+<line data-layer="A-ANNO-KEYN" x1="250.96" y1="678.80" x2="206.16" y2="662.00" stroke="#6b6f73" stroke-width="0.6" />
+<circle data-layer="A-ANNO-KEYN" cx="251.0" cy="678.8" r="2.2" fill="#111315"/>
+<polygon data-layer="A-ANNO-KEYN" points="206.2,653.0 215.2,662.0 206.2,671.0 197.2,662.0" fill="#ffffff" stroke="#111315" stroke-width="1"/>
+<text data-layer="A-ANNO-KEYN" x="206.2" y="665.2" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" font-weight="700" fill="#111315">16</text>
+<line data-layer="A-ANNO-DIMS" x1="225.20" y1="949.84" x2="242.00" y2="949.84" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="225.20" y1="884.40" x2="225.20" y2="953.84" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="222.20" y1="952.84" x2="228.20" y2="946.84" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="242.00" y1="884.40" x2="242.00" y2="953.84" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="239.00" y1="952.84" x2="245.00" y2="946.84" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="233.60" y="949.84" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="-3"> </text>
+<text data-layer="A-ANNO-DIMS" x="207.78" y="949.84" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="-3">1'-6"</text>
+<line data-layer="A-ANNO-DIMS" x1="242.00" y1="949.84" x2="270.00" y2="949.84" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="242.00" y1="884.40" x2="242.00" y2="953.84" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="239.00" y1="952.84" x2="245.00" y2="946.84" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="270.00" y1="884.40" x2="270.00" y2="953.84" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="267.00" y1="952.84" x2="273.00" y2="946.84" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="256.00" y="949.84" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="-3">2'-6"</text>
+<line data-layer="A-ANNO-DIMS" x1="270.00" y1="949.84" x2="292.40" y2="949.84" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="270.00" y1="884.40" x2="270.00" y2="953.84" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="267.00" y1="952.84" x2="273.00" y2="946.84" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="292.40" y1="884.40" x2="292.40" y2="953.84" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="289.40" y1="952.84" x2="295.40" y2="946.84" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="281.20" y="949.84" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="-3"> </text>
+<text data-layer="A-ANNO-DIMS" x="281.20" y="949.84" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="10">2'-0"</text>
+<line data-layer="A-ANNO-DIMS" x1="292.40" y1="949.84" x2="466.00" y2="949.84" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="292.40" y1="884.40" x2="292.40" y2="953.84" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="289.40" y1="952.84" x2="295.40" y2="946.84" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="466.00" y1="884.40" x2="466.00" y2="953.84" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="463.00" y1="952.84" x2="469.00" y2="946.84" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="379.20" y="949.84" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="-3">15'-6"</text>
+<line data-layer="A-ANNO-DIMS" x1="466.00" y1="949.84" x2="471.60" y2="949.84" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="466.00" y1="884.40" x2="466.00" y2="953.84" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="463.00" y1="952.84" x2="469.00" y2="946.84" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="471.60" y1="884.40" x2="471.60" y2="953.84" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="468.60" y1="952.84" x2="474.60" y2="946.84" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="468.80" y="949.84" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="-3"> </text>
+<text data-layer="A-ANNO-DIMS" x="468.80" y="949.84" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="10">0'-6"</text>
+<line data-layer="A-ANNO-DIMS" x1="471.60" y1="949.84" x2="516.40" y2="949.84" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="471.60" y1="884.40" x2="471.60" y2="953.84" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="468.60" y1="952.84" x2="474.60" y2="946.84" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="516.40" y1="884.40" x2="516.40" y2="953.84" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="513.40" y1="952.84" x2="519.40" y2="946.84" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="494.00" y="949.84" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="-3">4'-0"</text>
+<line data-layer="A-ANNO-DIMS" x1="516.40" y1="949.84" x2="718.00" y2="949.84" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="516.40" y1="884.40" x2="516.40" y2="953.84" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="513.40" y1="952.84" x2="519.40" y2="946.84" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="718.00" y1="884.40" x2="718.00" y2="953.84" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="715.00" y1="952.84" x2="721.00" y2="946.84" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="617.20" y="949.84" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="-3">18'-0"</text>
+<line data-layer="A-ANNO-DIMS" x1="718.00" y1="949.84" x2="841.20" y2="949.84" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="718.00" y1="884.40" x2="718.00" y2="953.84" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="715.00" y1="952.84" x2="721.00" y2="946.84" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="841.20" y1="884.40" x2="841.20" y2="953.84" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="838.20" y1="952.84" x2="844.20" y2="946.84" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="779.60" y="949.84" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="-3">11'-0"</text>
+<line data-layer="A-ANNO-DIMS" x1="242.00" y1="981.20" x2="466.00" y2="981.20" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="242.00" y1="884.40" x2="242.00" y2="985.20" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="239.00" y1="984.20" x2="245.00" y2="978.20" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="466.00" y1="884.40" x2="466.00" y2="985.20" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="463.00" y1="984.20" x2="469.00" y2="978.20" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="354.00" y="981.20" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="-3">20'-0"</text>
+<line data-layer="A-ANNO-DIMS" x1="466.00" y1="981.20" x2="718.00" y2="981.20" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="466.00" y1="884.40" x2="466.00" y2="985.20" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="463.00" y1="984.20" x2="469.00" y2="978.20" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="718.00" y1="884.40" x2="718.00" y2="985.20" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="715.00" y1="984.20" x2="721.00" y2="978.20" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="592.00" y="981.20" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="-3">22'-6"</text>
+<line data-layer="A-ANNO-DIMS" x1="718.00" y1="981.20" x2="841.20" y2="981.20" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="718.00" y1="884.40" x2="718.00" y2="985.20" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="715.00" y1="984.20" x2="721.00" y2="978.20" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="841.20" y1="884.40" x2="841.20" y2="985.20" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="838.20" y1="984.20" x2="844.20" y2="978.20" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="779.60" y="981.20" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="-3">11'-0"</text>
+<line data-layer="A-ANNO-DIMS" x1="242.00" y1="1012.56" x2="841.20" y2="1012.56" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="242.00" y1="884.40" x2="242.00" y2="1016.56" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="239.00" y1="1015.56" x2="245.00" y2="1009.56" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="841.20" y1="884.40" x2="841.20" y2="1016.56" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="838.20" y1="1015.56" x2="844.20" y2="1009.56" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="541.60" y="1012.56" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="9" text-anchor="middle" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="-3">53'-6"</text>
+<line data-layer="A-ANNO-DIMS" x1="242.00" y1="142.32" x2="286.80" y2="142.32" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="242.00" y1="176.40" x2="242.00" y2="138.32" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="239.00" y1="145.32" x2="245.00" y2="139.32" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="286.80" y1="176.40" x2="286.80" y2="138.32" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="283.80" y1="145.32" x2="289.80" y2="139.32" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="264.40" y="142.32" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="-3">4'-0"</text>
+<line data-layer="A-ANNO-DIMS" x1="286.80" y1="142.32" x2="376.40" y2="142.32" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="286.80" y1="176.40" x2="286.80" y2="138.32" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="283.80" y1="145.32" x2="289.80" y2="139.32" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="376.40" y1="176.40" x2="376.40" y2="138.32" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="373.40" y1="145.32" x2="379.40" y2="139.32" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="331.60" y="142.32" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="-3">8'-0"</text>
+<line data-layer="A-ANNO-DIMS" x1="376.40" y1="142.32" x2="443.60" y2="142.32" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="376.40" y1="176.40" x2="376.40" y2="138.32" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="373.40" y1="145.32" x2="379.40" y2="139.32" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="443.60" y1="176.40" x2="443.60" y2="138.32" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="440.60" y1="145.32" x2="446.60" y2="139.32" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="410.00" y="142.32" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="-3">6'-0"</text>
+<line data-layer="A-ANNO-DIMS" x1="443.60" y1="142.32" x2="622.80" y2="142.32" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="443.60" y1="176.40" x2="443.60" y2="138.32" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="440.60" y1="145.32" x2="446.60" y2="139.32" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="622.80" y1="176.40" x2="622.80" y2="138.32" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="619.80" y1="145.32" x2="625.80" y2="139.32" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="533.20" y="142.32" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="-3">16'-0"</text>
+<line data-layer="A-ANNO-DIMS" x1="622.80" y1="142.32" x2="762.80" y2="142.32" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="622.80" y1="176.40" x2="622.80" y2="138.32" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="619.80" y1="145.32" x2="625.80" y2="139.32" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="762.80" y1="176.40" x2="762.80" y2="138.32" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="759.80" y1="145.32" x2="765.80" y2="139.32" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="692.80" y="142.32" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="-3">12'-6"</text>
+<line data-layer="A-ANNO-DIMS" x1="762.80" y1="142.32" x2="824.40" y2="142.32" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="762.80" y1="176.40" x2="762.80" y2="138.32" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="759.80" y1="145.32" x2="765.80" y2="139.32" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="824.40" y1="176.40" x2="824.40" y2="138.32" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="821.40" y1="145.32" x2="827.40" y2="139.32" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="793.60" y="142.32" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="-3">5'-6"</text>
+<line data-layer="A-ANNO-DIMS" x1="824.40" y1="142.32" x2="841.20" y2="142.32" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="824.40" y1="176.40" x2="824.40" y2="138.32" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="821.40" y1="145.32" x2="827.40" y2="139.32" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="841.20" y1="176.40" x2="841.20" y2="138.32" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="838.20" y1="145.32" x2="844.20" y2="139.32" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="832.80" y="142.32" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="-3"> </text>
+<text data-layer="A-ANNO-DIMS" x="858.62" y="142.32" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="-3">1'-6"</text>
+<line data-layer="A-ANNO-DIMS" x1="242.00" y1="110.96" x2="354.00" y2="110.96" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="242.00" y1="176.40" x2="242.00" y2="106.96" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="239.00" y1="113.96" x2="245.00" y2="107.96" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="354.00" y1="176.40" x2="354.00" y2="106.96" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="351.00" y1="113.96" x2="357.00" y2="107.96" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="298.00" y="110.96" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="-3">10'-0"</text>
+<line data-layer="A-ANNO-DIMS" x1="354.00" y1="110.96" x2="380.88" y2="110.96" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="354.00" y1="176.40" x2="354.00" y2="106.96" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="351.00" y1="113.96" x2="357.00" y2="107.96" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="380.88" y1="176.40" x2="380.88" y2="106.96" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="377.88" y1="113.96" x2="383.88" y2="107.96" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="367.44" y="110.96" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="-3">2'-5"</text>
+<line data-layer="A-ANNO-DIMS" x1="380.88" y1="110.96" x2="629.52" y2="110.96" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="380.88" y1="176.40" x2="380.88" y2="106.96" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="377.88" y1="113.96" x2="383.88" y2="107.96" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="629.52" y1="176.40" x2="629.52" y2="106.96" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="626.52" y1="113.96" x2="632.52" y2="107.96" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="505.20" y="110.96" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="-3">22'-2"</text>
+<line data-layer="A-ANNO-DIMS" x1="629.52" y1="110.96" x2="656.40" y2="110.96" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="629.52" y1="176.40" x2="629.52" y2="106.96" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="626.52" y1="113.96" x2="632.52" y2="107.96" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="656.40" y1="176.40" x2="656.40" y2="106.96" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="653.40" y1="113.96" x2="659.40" y2="107.96" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="642.96" y="110.96" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="-3">2'-5"</text>
+<line data-layer="A-ANNO-DIMS" x1="656.40" y1="110.96" x2="841.20" y2="110.96" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="656.40" y1="176.40" x2="656.40" y2="106.96" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="653.40" y1="113.96" x2="659.40" y2="107.96" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="841.20" y1="176.40" x2="841.20" y2="106.96" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="838.20" y1="113.96" x2="844.20" y2="107.96" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="748.80" y="110.96" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="-3">16'-6"</text>
+<line data-layer="A-ANNO-DIMS" x1="242.00" y1="75.12" x2="841.20" y2="75.12" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="242.00" y1="176.40" x2="242.00" y2="71.12" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="239.00" y1="78.12" x2="245.00" y2="72.12" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="841.20" y1="176.40" x2="841.20" y2="71.12" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="838.20" y1="78.12" x2="844.20" y2="72.12" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="541.60" y="75.12" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="9" text-anchor="middle" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="-3">53'-6"</text>
+<line data-layer="A-ANNO-DIMS" x1="174.80" y1="880.40" x2="174.80" y2="835.60" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="238.00" y1="880.40" x2="170.80" y2="880.40" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="171.80" y1="883.40" x2="177.80" y2="877.40" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="238.00" y1="835.60" x2="170.80" y2="835.60" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="171.80" y1="838.60" x2="177.80" y2="832.60" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="174.80" y="858.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" letter-spacing="0.6" transform="rotate(-90 174.80 858.00)" dy="-3">4'-0"</text>
+<line data-layer="A-ANNO-DIMS" x1="174.80" y1="835.60" x2="174.80" y2="790.80" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="238.00" y1="835.60" x2="170.80" y2="835.60" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="171.80" y1="838.60" x2="177.80" y2="832.60" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="238.00" y1="790.80" x2="170.80" y2="790.80" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="171.80" y1="793.80" x2="177.80" y2="787.80" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="174.80" y="813.20" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" letter-spacing="0.6" transform="rotate(-90 174.80 813.20)" dy="-3">4'-0"</text>
+<line data-layer="A-ANNO-DIMS" x1="174.80" y1="790.80" x2="174.80" y2="634.00" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="238.00" y1="790.80" x2="170.80" y2="790.80" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="171.80" y1="793.80" x2="177.80" y2="787.80" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="238.00" y1="634.00" x2="170.80" y2="634.00" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="171.80" y1="637.00" x2="177.80" y2="631.00" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="174.80" y="712.40" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" letter-spacing="0.6" transform="rotate(-90 174.80 712.40)" dy="-3">14'-0"</text>
+<line data-layer="A-ANNO-DIMS" x1="174.80" y1="634.00" x2="174.80" y2="589.20" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="238.00" y1="634.00" x2="170.80" y2="634.00" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="171.80" y1="637.00" x2="177.80" y2="631.00" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="238.00" y1="589.20" x2="170.80" y2="589.20" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="171.80" y1="592.20" x2="177.80" y2="586.20" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="174.80" y="611.60" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" letter-spacing="0.6" transform="rotate(-90 174.80 611.60)" dy="-3">4'-0"</text>
+<line data-layer="A-ANNO-DIMS" x1="174.80" y1="589.20" x2="174.80" y2="544.40" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="238.00" y1="589.20" x2="170.80" y2="589.20" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="171.80" y1="592.20" x2="177.80" y2="586.20" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="238.00" y1="544.40" x2="170.80" y2="544.40" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="171.80" y1="547.40" x2="177.80" y2="541.40" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="174.80" y="566.80" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" letter-spacing="0.6" transform="rotate(-90 174.80 566.80)" dy="-3">4'-0"</text>
+<line data-layer="A-ANNO-DIMS" x1="174.80" y1="544.40" x2="174.80" y2="320.40" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="238.00" y1="544.40" x2="170.80" y2="544.40" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="171.80" y1="547.40" x2="177.80" y2="541.40" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="238.00" y1="320.40" x2="170.80" y2="320.40" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="171.80" y1="323.40" x2="177.80" y2="317.40" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="174.80" y="432.40" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" letter-spacing="0.6" transform="rotate(-90 174.80 432.40)" dy="-3">20'-0"</text>
+<line data-layer="A-ANNO-DIMS" x1="143.44" y1="880.40" x2="143.44" y2="544.40" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="238.00" y1="880.40" x2="139.44" y2="880.40" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="140.44" y1="883.40" x2="146.44" y2="877.40" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="238.00" y1="544.40" x2="139.44" y2="544.40" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="140.44" y1="547.40" x2="146.44" y2="541.40" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="143.44" y="712.40" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" letter-spacing="0.6" transform="rotate(-90 143.44 712.40)" dy="-3">30'-0"</text>
+<line data-layer="A-ANNO-DIMS" x1="143.44" y1="544.40" x2="143.44" y2="320.40" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="238.00" y1="544.40" x2="139.44" y2="544.40" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="140.44" y1="547.40" x2="146.44" y2="541.40" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="238.00" y1="320.40" x2="139.44" y2="320.40" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="140.44" y1="323.40" x2="146.44" y2="317.40" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="143.44" y="432.40" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" letter-spacing="0.6" transform="rotate(-90 143.44 432.40)" dy="-3">20'-0"</text>
+<line data-layer="A-ANNO-DIMS" x1="143.44" y1="320.40" x2="143.44" y2="180.40" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="238.00" y1="320.40" x2="139.44" y2="320.40" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="140.44" y1="323.40" x2="146.44" y2="317.40" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="238.00" y1="180.40" x2="139.44" y2="180.40" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="140.44" y1="183.40" x2="146.44" y2="177.40" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="143.44" y="250.40" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" letter-spacing="0.6" transform="rotate(-90 143.44 250.40)" dy="-3">12'-6"</text>
+<line data-layer="A-ANNO-DIMS" x1="112.08" y1="880.40" x2="112.08" y2="180.40" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="238.00" y1="880.40" x2="108.08" y2="880.40" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="109.08" y1="883.40" x2="115.08" y2="877.40" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="238.00" y1="180.40" x2="108.08" y2="180.40" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="109.08" y1="183.40" x2="115.08" y2="177.40" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="112.08" y="530.40" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="9" text-anchor="middle" fill="#23262a" letter-spacing="0.6" transform="rotate(-90 112.08 530.40)" dy="-3">62'-6"</text>
+<line data-layer="A-ANNO-DIMS" x1="908.40" y1="880.40" x2="908.40" y2="656.40" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="845.20" y1="880.40" x2="912.40" y2="880.40" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="905.40" y1="883.40" x2="911.40" y2="877.40" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="845.20" y1="656.40" x2="912.40" y2="656.40" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="905.40" y1="659.40" x2="911.40" y2="653.40" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="908.40" y="768.40" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" letter-spacing="0.6" transform="rotate(-90 908.40 768.40)" dy="-3">20'-0"</text>
+<line data-layer="A-ANNO-DIMS" x1="908.40" y1="656.40" x2="908.40" y2="544.40" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="845.20" y1="656.40" x2="912.40" y2="656.40" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="905.40" y1="659.40" x2="911.40" y2="653.40" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="845.20" y1="544.40" x2="912.40" y2="544.40" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="905.40" y1="547.40" x2="911.40" y2="541.40" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="908.40" y="600.40" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" letter-spacing="0.6" transform="rotate(-90 908.40 600.40)" dy="-3">10'-0"</text>
+<line data-layer="A-ANNO-DIMS" x1="908.40" y1="544.40" x2="908.40" y2="510.80" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="845.20" y1="544.40" x2="912.40" y2="544.40" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="905.40" y1="547.40" x2="911.40" y2="541.40" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="845.20" y1="510.80" x2="912.40" y2="510.80" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="905.40" y1="513.80" x2="911.40" y2="507.80" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="908.40" y="527.60" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" letter-spacing="0.6" transform="rotate(-90 908.40 527.60)" dy="-3">3'-0"</text>
+<line data-layer="A-ANNO-DIMS" x1="908.40" y1="510.80" x2="908.40" y2="477.20" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="845.20" y1="510.80" x2="912.40" y2="510.80" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="905.40" y1="513.80" x2="911.40" y2="507.80" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="845.20" y1="477.20" x2="912.40" y2="477.20" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="905.40" y1="480.20" x2="911.40" y2="474.20" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="908.40" y="494.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" letter-spacing="0.6" transform="rotate(-90 908.40 494.00)" dy="-3">3'-0"</text>
+<line data-layer="A-ANNO-DIMS" x1="908.40" y1="477.20" x2="908.40" y2="355.12" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="845.20" y1="477.20" x2="912.40" y2="477.20" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="905.40" y1="480.20" x2="911.40" y2="474.20" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="845.20" y1="355.12" x2="912.40" y2="355.12" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="905.40" y1="358.12" x2="911.40" y2="352.12" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="908.40" y="416.16" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" letter-spacing="0.6" transform="rotate(-90 908.40 416.16)" dy="-3">10'-11"</text>
+<line data-layer="A-ANNO-DIMS" x1="908.40" y1="355.12" x2="908.40" y2="329.36" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="845.20" y1="355.12" x2="912.40" y2="355.12" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="905.40" y1="358.12" x2="911.40" y2="352.12" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="845.20" y1="329.36" x2="912.40" y2="329.36" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="905.40" y1="332.36" x2="911.40" y2="326.36" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="908.40" y="342.24" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" letter-spacing="0.6" transform="rotate(-90 908.40 342.24)" dy="-3">2'-4"</text>
+<line data-layer="A-ANNO-DIMS" x1="908.40" y1="329.36" x2="908.40" y2="320.40" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="845.20" y1="329.36" x2="912.40" y2="329.36" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="905.40" y1="332.36" x2="911.40" y2="326.36" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="845.20" y1="320.40" x2="912.40" y2="320.40" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="905.40" y1="323.40" x2="911.40" y2="317.40" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="908.40" y="324.88" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" letter-spacing="0.6" transform="rotate(-90 908.40 324.88)" dy="-3"> </text>
+<text data-layer="A-ANNO-DIMS" x="908.40" y="300.28" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" letter-spacing="0.6" transform="rotate(-90 908.40 300.28)" dy="-3">0'-10"</text>
+<line data-layer="A-ANNO-DIMS" x1="939.76" y1="914.00" x2="939.76" y2="880.40" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="845.20" y1="914.00" x2="943.76" y2="914.00" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="936.76" y1="917.00" x2="942.76" y2="911.00" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="845.20" y1="880.40" x2="943.76" y2="880.40" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="936.76" y1="883.40" x2="942.76" y2="877.40" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="939.76" y="897.20" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" letter-spacing="0.6" transform="rotate(-90 939.76 897.20)" dy="-3">3'-0"</text>
+<line data-layer="A-ANNO-DIMS" x1="939.76" y1="880.40" x2="939.76" y2="544.40" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="845.20" y1="880.40" x2="943.76" y2="880.40" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="936.76" y1="883.40" x2="942.76" y2="877.40" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="845.20" y1="544.40" x2="943.76" y2="544.40" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="936.76" y1="547.40" x2="942.76" y2="541.40" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="939.76" y="712.40" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" letter-spacing="0.6" transform="rotate(-90 939.76 712.40)" dy="-3">30'-0"</text>
+<line data-layer="A-ANNO-DIMS" x1="939.76" y1="544.40" x2="939.76" y2="320.40" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="845.20" y1="544.40" x2="943.76" y2="544.40" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="936.76" y1="547.40" x2="942.76" y2="541.40" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="845.20" y1="320.40" x2="943.76" y2="320.40" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="936.76" y1="323.40" x2="942.76" y2="317.40" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="939.76" y="432.40" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" letter-spacing="0.6" transform="rotate(-90 939.76 432.40)" dy="-3">20'-0"</text>
+<line data-layer="A-ANNO-DIMS" x1="939.76" y1="320.40" x2="939.76" y2="286.80" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="845.20" y1="320.40" x2="943.76" y2="320.40" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="936.76" y1="323.40" x2="942.76" y2="317.40" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="845.20" y1="286.80" x2="943.76" y2="286.80" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="936.76" y1="289.80" x2="942.76" y2="283.80" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="939.76" y="303.60" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" letter-spacing="0.6" transform="rotate(-90 939.76 303.60)" dy="-3">3'-0"</text>
+<line data-layer="A-ANNO-DIMS" x1="394.32" y1="874.80" x2="394.32" y2="751.60" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="406.00" y1="874.80" x2="390.32" y2="874.80" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="391.32" y1="877.80" x2="397.32" y2="871.80" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="406.00" y1="751.60" x2="390.32" y2="751.60" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="391.32" y1="754.60" x2="397.32" y2="748.60" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="394.32" y="813.20" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7" text-anchor="middle" fill="#23262a" letter-spacing="0.6" transform="rotate(-90 394.32 813.20)" dy="-3">11'-0"</text>
+<line data-layer="A-ANNO-DIMS" x1="394.32" y1="751.60" x2="394.32" y2="673.20" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="406.00" y1="751.60" x2="390.32" y2="751.60" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="391.32" y1="754.60" x2="397.32" y2="748.60" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="406.00" y1="673.20" x2="390.32" y2="673.20" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="391.32" y1="676.20" x2="397.32" y2="670.20" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="394.32" y="712.40" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7" text-anchor="middle" fill="#23262a" letter-spacing="0.6" transform="rotate(-90 394.32 712.40)" dy="-3">7'-0"</text>
+<line data-layer="A-ANNO-DIMS" x1="394.32" y1="673.20" x2="394.32" y2="544.40" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="406.00" y1="673.20" x2="390.32" y2="673.20" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="391.32" y1="676.20" x2="397.32" y2="670.20" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="406.00" y1="544.40" x2="390.32" y2="544.40" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="391.32" y1="547.40" x2="397.32" y2="541.40" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="394.32" y="608.80" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="7" text-anchor="middle" fill="#23262a" letter-spacing="0.6" transform="rotate(-90 394.32 608.80)" dy="-3">11'-6"</text>
+<line data-layer="A-ANNO-DIMS" x1="466.00" y1="678.80" x2="718.00" y2="678.80" stroke="#6b6f73" stroke-width="0.6" />
+<line data-layer="A-ANNO-DIMS" x1="466.00" y1="682.80" x2="466.00" y2="682.80" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="463.00" y1="681.80" x2="469.00" y2="675.80" stroke="#23262a" stroke-width="1.1"/>
+<line data-layer="A-ANNO-DIMS" x1="718.00" y1="682.80" x2="718.00" y2="682.80" stroke="#6b6f73" stroke-width="0.5"/>
+<line data-layer="A-ANNO-DIMS" x1="715.00" y1="681.80" x2="721.00" y2="675.80" stroke="#23262a" stroke-width="1.1"/>
+<text data-layer="A-ANNO-DIMS" x="592.00" y="678.80" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" font-weight="400" letter-spacing="0.6" dy="-3">22'-6"</text>
+<line data-layer="A-ANNO-SYMB" x1="555.60" y1="1032.72" x2="555.60" y2="1003.60" stroke="#111315" stroke-width="2" />
+<circle data-layer="A-ANNO-SYMB" cx="555.60" cy="1043.92" r="12.32" fill="#ffffff" stroke="#111315" stroke-width="1.1" />
+<text data-layer="A-ANNO-SYMB" x="555.60" y="1043.92" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.6" dy="3">A</text>
+<line data-layer="A-ANNO-SYMB" x1="555.60" y1="91.92" x2="555.60" y2="121.04" stroke="#111315" stroke-width="2" />
+<circle data-layer="A-ANNO-SYMB" cx="555.60" cy="80.72" r="12.32" fill="#ffffff" stroke="#111315" stroke-width="1.1" />
+<text data-layer="A-ANNO-SYMB" x="555.60" y="80.72" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" text-anchor="middle" fill="#23262a" font-weight="700" letter-spacing="0.6" dy="3">A</text>
+<g data-layer="A-ANNO-SYMB" transform="translate(421.2,1035.0)"><g data-layer="A-ANNO-SYMB" transform="rotate(-90)"><path data-layer="A-ANNO-SYMB" d="M 11 -9 L 22 0 L 11 9 Z" fill="#111315"/></g><circle data-layer="A-ANNO-SYMB" r="11" fill="#ffffff" stroke="#111315" stroke-width="1.2"/><line data-layer="A-ANNO-SYMB" x1="-11" y1="0" x2="11" y2="0" stroke="#111315" stroke-width="0.8"/><text data-layer="A-ANNO-SYMB" y="-2" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" font-weight="700" text-anchor="middle" fill="#111315">1</text><text data-layer="A-ANNO-SYMB" y="8" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="6.5" text-anchor="middle" fill="#111315">A-202</text></g>
+<g data-layer="A-ANNO-SYMB" transform="translate(421.2,96.4)"><g data-layer="A-ANNO-SYMB" transform="rotate(90)"><path data-layer="A-ANNO-SYMB" d="M 11 -9 L 22 0 L 11 9 Z" fill="#111315"/></g><circle data-layer="A-ANNO-SYMB" r="11" fill="#ffffff" stroke="#111315" stroke-width="1.2"/><line data-layer="A-ANNO-SYMB" x1="-11" y1="0" x2="11" y2="0" stroke="#111315" stroke-width="0.8"/><text data-layer="A-ANNO-SYMB" y="-2" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" font-weight="700" text-anchor="middle" fill="#111315">2</text><text data-layer="A-ANNO-SYMB" y="8" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="6.5" text-anchor="middle" fill="#111315">A-202</text></g>
+<g data-layer="A-ANNO-SYMB" transform="translate(1009.2,410.0)"><g data-layer="A-ANNO-SYMB" transform="rotate(180)"><path data-layer="A-ANNO-SYMB" d="M 11 -9 L 22 0 L 11 9 Z" fill="#111315"/></g><circle data-layer="A-ANNO-SYMB" r="11" fill="#ffffff" stroke="#111315" stroke-width="1.2"/><line data-layer="A-ANNO-SYMB" x1="-11" y1="0" x2="11" y2="0" stroke="#111315" stroke-width="0.8"/><text data-layer="A-ANNO-SYMB" y="-2" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" font-weight="700" text-anchor="middle" fill="#111315">3</text><text data-layer="A-ANNO-SYMB" y="8" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="6.5" text-anchor="middle" fill="#111315">A-203</text></g>
+<g data-layer="A-ANNO-SYMB" transform="translate(42.6,432.4)"><g data-layer="A-ANNO-SYMB" transform="rotate(0)"><path data-layer="A-ANNO-SYMB" d="M 11 -9 L 22 0 L 11 9 Z" fill="#111315"/></g><circle data-layer="A-ANNO-SYMB" r="11" fill="#ffffff" stroke="#111315" stroke-width="1.2"/><line data-layer="A-ANNO-SYMB" x1="-11" y1="0" x2="11" y2="0" stroke="#111315" stroke-width="0.8"/><text data-layer="A-ANNO-SYMB" y="-2" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8" font-weight="700" text-anchor="middle" fill="#111315">4</text><text data-layer="A-ANNO-SYMB" y="8" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="6.5" text-anchor="middle" fill="#111315">A-203</text></g>
+<g data-layer="A-ANNO-SYMB" transform="translate(1022.3999999999999,42)"><circle data-layer="A-ANNO-SYMB" r="12.4" fill="none" stroke="#23262a" stroke-width="0.8"/><path data-layer="A-ANNO-SYMB" d="M0 -11.0 L4.4 7.0 L0 3.5999999999999996 L-4.4 7.0 Z" fill="#23262a"/><text data-layer="A-ANNO-SYMB" y="-14.399999999999999" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="10" text-anchor="middle" font-weight="700" fill="#23262a">N</text></g>
+<g data-layer="A-ANNO-SYMB" transform="translate(30,1082.0)"><rect data-layer="A-ANNO-SYMB" x="0.0" y="0" width="44.8" height="5" fill="#23262a" stroke="#23262a" stroke-width="0.7"/><rect data-layer="A-ANNO-SYMB" x="44.8" y="0" width="44.8" height="5" fill="#ffffff" stroke="#23262a" stroke-width="0.7"/><rect data-layer="A-ANNO-SYMB" x="89.6" y="0" width="89.6" height="5" fill="#23262a" stroke="#23262a" stroke-width="0.7"/><text data-layer="A-ANNO-SYMB" x="0.0" y="16" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="middle" fill="#23262a">0'</text><text data-layer="A-ANNO-SYMB" x="44.8" y="16" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="middle" fill="#23262a">4'</text><text data-layer="A-ANNO-SYMB" x="89.6" y="16" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="middle" fill="#23262a">8'</text><text data-layer="A-ANNO-SYMB" x="179.2" y="16" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="8.5" text-anchor="middle" fill="#23262a">16'</text></g>
+</svg>

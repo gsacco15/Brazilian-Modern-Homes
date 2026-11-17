@@ -187,17 +187,26 @@ BLOCK = 1.0  # 12" x 12" x 4" precast concrete breeze block
 COBOGO = dict(x0=31.0, x1=48.0, y=30.0, t=0.33, z0=FF, z1=CEIL,    # V2: 17 blocks wide (V1: 21)
               base=(GRADE, FF))   # cast concrete curb under the blocks
 ENTRY_GATE = dict(x0=26.5, x1=30.5, y=30.0, z0=HARDSCAPE, z1=CEIL)  # cedar slat pivot gate
-CEDAR_SCREEN = dict(x=48.5, y0=30.33, y1=50.0, z0=HARDSCAPE, z1=CEIL,       # V2: carport | courtyard
-                    slat_w=1.5 / 12, slat_d=3.5 / 12, gap=2.0 / 12,
-                    openings=[(31.0, 34.5)])                    # V2: gate from the carport to the entry
+CEDAR_SCREEN = dict(x=48.5, y0=30.95, y1=50.0, z0=HARDSCAPE, z1=CEIL,       # V2: carport | courtyard
+                    slat_w=1.5 / 12, slat_d=3.5 / 12, gap=2.0 / 12,  # starts behind the sliding gate's path
+                    openings=[(32.0, 35.5)])                    # V2: gate from the carport to the entry
 CARPORT = dict(x0=48.5, x1=59.5, y0=30.0, y1=50.0)            # one car, open to the street, under the roof
-CARPORT_GATE = dict(x=48.5, y0=31.0, y1=34.5, z0=HARDSCAPE, z1=CEIL)
+CARPORT_GATE = dict(x=48.5, y0=32.0, y1=35.5, z0=HARDSCAPE, z1=CEIL)   # 1 ft north, clear of the gate motor
 # Other cedar slat screens (same slats as CEDAR_SCREEN): carport | courtyard ell, and the ell's
 # east edge to the side yard, which brings morning light into the courtyard
 SLAT_SCREENS = [dict(name="Carport north", axis="x", y=50.0, x0=48.5, x1=59.5),
                 dict(name="Courtyard east", axis="y", x=59.5, y0=50.0, y1=60.0)]   # in line with the house + carport
-# Motorized sliding cedar gate across the carport; when open it parks behind the cobogó
-CARPORT_SLIDER = dict(x0=48.5, x1=59.5, y=30.55, park_x0=37.5, z0=HARDSCAPE, z1=CEIL)
+# Motorized sliding cedar gate across the carport; when open it parks behind the cobogó.
+# Optional (add alternate 1): installed=False draws the house without it.
+CARPORT_SLIDER = dict(x0=48.5, x1=59.5, y=30.6, park_x0=37.5, z0=HARDSCAPE, z1=CEIL, installed=True)
+# Gate rough-in, built with the slab either way, so the gate can be added later without
+# breaking up concrete: a 12" thickened concrete strip under the whole travel path (the track
+# bolts to it), a motor pad on the courtyard side, conduit to the house and across the drive
+# (photo-eyes), and blocking in the soffit for the top guide rollers.
+GATE_ROUGH_IN = dict(strip=(37.0, 59.5, 30.6, 1.0),           # x0, x1, y center, width
+                     motor_pad=(46.2, 30.85, 48.2, 31.85),
+                     conduit=[[(47.2, 31.35), (47.2, 31.6), (26.0, 31.6)],        # power + low voltage to the house
+                              [(48.2, 31.6), (59.25, 31.6), (59.25, 31.2)]])    # photo-eye at the east post
 
 # --------------------------------------------------------------------------
 # Furniture & fixtures (plan symbols + 3D). x,y = center; w along x, d along y

@@ -48,6 +48,8 @@ LAYERS = {
     "A-ANNO-SYMB": (7, "Continuous", 13, "North arrow, markers, scale bar"),
     "A-ROOF-SKYL": (6, "DASHED", 18, "Skylights above"),
     "M-HVAC": (140, "Continuous", 13, "AC pad, air handlers, dropped-ceiling zones"),
+    "A-GATE-ALT": (3, "Continuous", 25, "Add alternate 1: sliding carport gate, tag + keynote (freeze = no gate)"),
+    "A-GATE-RGH": (6, "DASHED", 13, "Gate rough-in, built either way: track strip, motor pad, conduit"),
 }
 PATTERNS = {"wallh": ("ANSI31", 12), "stoneh": ("ANSI33", 12), "paverh": ("NET", 192),
             "cdmosaic": ("GRAVEL", 6), "tileh": ("NET", 24)}

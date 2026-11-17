@@ -69,10 +69,10 @@ def openings_schedule():
                           type="Swing gate, cedar slats", mat="Cedar / steel", x=cg["x"], y=(cg["y0"] + cg["y1"]) / 2,
                           wall="carport"))
     sl = getattr(D, "CARPORT_SLIDER", None)
-    if sl:
+    if sl and sl.get("installed", True):
         dn += 1
         doors.append(dict(tag=f"D{dn}", name="Carport sliding gate", w=sl["x1"] - sl["x0"], h=sl["z1"] - sl["z0"],
-                          type="Sliding gate, cedar slats, motorized", mat="Cedar / steel",
+                          type="Sliding gate, cedar slats, motorized (add alt. 1)", mat="Cedar / steel",
                           x=(sl["x0"] + sl["x1"]) / 2, y=sl["y"], wall="carport-front"))
     return doors, wins
 
@@ -94,7 +94,8 @@ KEYNOTES = [
     "AC condenser pad: 1 outdoor heat pump (2 concealed air handlers inside)",
     "Skylight above (low-slope roof)",
     "Dropped ceiling 8'-6\" for ducts + air handler (dash-dot); living spaces stay 10'-0\"",
-    "Motorized sliding cedar gate across the carport; parks behind the cobogó when open (dashed)",
+    "Add alternate 1: motorized sliding cedar gate; parks behind the cobogó when open (dashed)",
+    "Gate rough-in, built with the slab: 12\" concrete track strip, motor pad, conduit to house + east post",
 ]
 
 
@@ -160,13 +161,33 @@ def grid(svg, xs, ys, xr, yr):
 
 def chain(svg, pts, at, horizontal, off, size=8):
     pts = sorted(set(round(p, 3) for p in pts))
-    for a, b in zip(pts, pts[1:]):
-        if b - a < 0.2:
+    segs = [(a, b) for a, b in zip(pts, pts[1:]) if b - a >= 0.2]
+    for i, (a, b) in enumerate(segs):
+        lab = fmt_ft(b - a)
+        L = len(lab) * (0.6 * size + 0.6) / svg.s          # label length in feet
+        if L <= (b - a) + 0.15:
+            if horizontal:
+                svg.dim(a, at, b, at, off, size=size)
+            else:
+                svg.dim(at, a, at, b, off, horizontal=False, size=size)
             continue
+        # label wider than its segment: past the chain's end, or on the other side of the line
         if horizontal:
-            svg.dim(a, at, b, at, off, size=size)
+            svg.dim(a, at, b, at, off, label=" ", size=size)
         else:
-            svg.dim(at, a, at, b, off, horizontal=False, size=size)
+            svg.dim(at, a, at, b, off, label=" ", horizontal=False, size=size)
+        if i == len(segs) - 1:
+            c, dy = b + L / 2 + 0.35, -3
+        elif i == 0:
+            c, dy = a - L / 2 - 0.35, -3
+        else:
+            c, dy = (a + b) / 2, size + 2
+        if horizontal:
+            svg.text(c, at + off, lab, size, extra=f'dy="{dy}"')
+        else:
+            X, Y = svg.X(at + off), svg.Y(c)
+            svg.add(f'<text x="{X:.2f}" y="{Y:.2f}" font-family="{FONT}" font-size="{size}" text-anchor="middle" '
+                    f'fill="{INK}" letter-spacing="0.6" transform="rotate(-90 {X:.2f} {Y:.2f})" dy="{dy}">{lab}</text>')
 
 
 def elev_marker(svg, x, y, n, sheet, dirn):
@@ -353,9 +374,22 @@ def floor_plan_cd():
             while y < sc["y1"] - 0.1:
                 svg.rect(sc["x"] - s_["slat_d"], y, sc["x"], y + s_["slat_w"], fill=LINE, stroke="none")
                 y += s_["slat_w"] + s_["gap"]
+    ri = getattr(D, "GATE_ROUGH_IN", None)
+    if ri:   # built either way: track strip, motor pad, conduit (dashed)
+        svg.layer = "A-GATE-RGH"
+        x0, x1, yc, w = ri["strip"]
+        svg.rect(x0, yc - w / 2, x1, yc + w / 2, fill="none", stroke=MID, sw=0.5, extra='stroke-dasharray="3 2"')
+        svg.rect(*ri["motor_pad"], fill="#ffffff", stroke=LINE, sw=0.7)
+        mx0, my0, mx1, my1 = ri["motor_pad"]
+        svg.line(mx0, my0, mx1, my1, MID, 0.4)
+        svg.line(mx0, my1, mx1, my0, MID, 0.4)
+        for run in ri["conduit"]:
+            svg.pline(run, stroke=MID, sw=0.6, extra='stroke-dasharray="8 2 2 2"')
     sl = getattr(D, "CARPORT_SLIDER", None)
+    if sl and not sl.get("installed", True):
+        sl = None
     if sl:   # closed position: a band of slats; open position: dashed, parked behind the cobogó
-        svg.layer = "A-DOOR"
+        svg.layer = "A-GATE-ALT"
         x = sl["x0"] + 0.1
         while x < sl["x1"] - 0.1:
             svg.rect(x, sl["y"] - 0.12, x + s_["slat_w"], sl["y"] + 0.12, fill=LINE, stroke="none")
@@ -428,8 +462,8 @@ def floor_plan_cd():
         svg.text(lx, ly, o["name"].upper(), 8 if len(o["name"]) < 15 else 7, weight=700, fill=LINE, ls=1.2)
     # door + window tags
     doors, wins = openings_schedule()
-    svg.layer = "A-DOOR-IDEN"
     for d in doors:
+        svg.layer = "A-GATE-ALT" if d["name"] == "Carport sliding gate" else "A-DOOR-IDEN"
         off = (0, 1.6)
         if d.get("wall") in ("N-bar",):
             off = (0, -1.5)
@@ -465,7 +499,12 @@ def floor_plan_cd():
     if cp:
         keynote(svg, cp["x0"] + 1.4, (cp["y0"] + cp["y1"]) / 2, 13)
     if sl:
+        svg.layer = "A-GATE-ALT"
         keynote(svg, sl["x1"] - 1.5, sl["y"], 17, sl["x1"] + 1.8, sl["y"] - 3.2)
+        svg.layer = "A-ANNO-KEYN"
+    if ri:
+        mx0, my0, mx1, my1 = ri["motor_pad"]
+        keynote(svg, (mx0 + mx1) / 2 - 0.4, my0, 18, mx0 - 0.2, 27.0)
     if hv:
         x0, y0, x1, y1 = hv["pad"]
         keynote(svg, (x0 + x1) / 2, y1, 14, (x0 + x1) / 2, y1 + 2.4)

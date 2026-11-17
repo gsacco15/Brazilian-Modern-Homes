@@ -760,7 +760,23 @@ def window_elev(svg, x0, x1, z0, z1, panels=1, fill="#dfe3e2"):
     svg.line(x0 + (x1 - x0) * 0.15, z0 + (z1 - z0) * 0.25, x0 + (x1 - x0) * 0.32, z0 + (z1 - z0) * 0.55, "#ffffff", 1.6)
 
 
-def south_elevation(ztop=40):
+def car_rear(svg, cx, zb):
+    """A plain car seen from behind, ghosted (for scale in the open carport)."""
+    for sx in (-1, 1):
+        svg.rect(cx + sx * 2.1, zb, cx + sx * 2.85, zb + 0.8, fill="#55595d", stroke="none")
+    body = [(cx - 3.05, zb + 0.55), (cx + 3.05, zb + 0.55), (cx + 3.1, zb + 2.7), (cx + 2.8, zb + 3.05),
+            (cx - 2.8, zb + 3.05), (cx - 3.1, zb + 2.7)]
+    svg.poly(body, fill="#eceae5", stroke=MID, sw=0.8)
+    svg.poly([(cx - 2.6, zb + 3.05), (cx + 2.6, zb + 3.05), (cx + 2.05, zb + 4.6), (cx - 2.05, zb + 4.6)],
+             fill="#eceae5", stroke=MID, sw=0.8)
+    svg.poly([(cx - 2.2, zb + 3.25), (cx + 2.2, zb + 3.25), (cx + 1.8, zb + 4.4), (cx - 1.8, zb + 4.4)],
+             fill="#c9ccce", stroke=MID, sw=0.5)
+    for sx in (-1, 1):
+        svg.rect(cx + sx * 2.95, zb + 2.25, cx + sx * 2.1, zb + 2.55, fill="#8b3a33", stroke="none")
+    svg.rect(cx - 0.55, zb + 1.2, cx + 0.55, zb + 1.7, fill="#ffffff", stroke=MID, sw=0.5)
+
+
+def south_elevation(ztop=40, notes=True):
     svg = SVG(-6, -2, 74, ztop, scale=12, pad=30)
     hatch_defs(svg)
     FF, C, FT = D.FF, D.CEIL, D.FASCIA_TOP
@@ -792,14 +808,24 @@ def south_elevation(ztop=40):
     cobogo_elev(svg, c["x0"], c["x1"], c["z0"], c["z1"])
     rx0, rx1 = min(p[0] for p in D.ROOF), max(p[0] for p in D.ROOF)
     sl = getattr(D, "CARPORT_SLIDER", None)
-    if sl:   # carport: bronze posts + full-height sliding cedar gate (shown closed)
+    gate_in = bool(sl) and sl.get("installed", True)
+    if sl and not gate_in:   # open carport: back slat screen, the car, then the posts in front
+        svg.rect(sl["x0"], D.HARDSCAPE, sl["x1"], C, fill="#f3ebe1", stroke=MID, sw=0.5)
+        x = sl["x0"] + 0.15
+        while x + 0.125 < sl["x1"]:
+            svg.rect(x, D.HARDSCAPE + 0.1, x + 0.125, C - 0.1, fill="#dcb592", stroke="none")
+            x += 0.29
+        car_rear(svg, (sl["x0"] + sl["x1"]) / 2, D.HARDSCAPE * 0.5)
+    if sl:   # carport: bronze posts (+ the full-height sliding cedar gate, shown closed)
         for px in (sl["x0"] + 0.25, sl["x1"] - 0.25):
             svg.rect(px - 0.17, 0, px + 0.17, C, fill=POCHE, stroke=POCHE, sw=0.4)
+    if gate_in:
         svg.rect(sl["x0"] + 0.45, sl["z0"], sl["x1"] - 0.45, C - 0.05, fill="#e8c7a6", stroke=INK, sw=0.9)
         x = sl["x0"] + 0.5
         while x + 0.125 < sl["x1"] - 0.45:
             svg.rect(x, sl["z0"] + 0.15, x + 0.125, C - 0.2, fill=CEDAR, stroke="none")
             x += 0.29
+    if sl:
         svg.rect(sl["x0"], 0, sl["x1"], D.HARDSCAPE * 0.5, fill="#dad6cf", stroke=INK, sw=0.5)   # drive apron
     else:    # cedar screen end (edge-on) + side yard
         sx = D.CEDAR_SCREEN["x"]
@@ -810,6 +836,8 @@ def south_elevation(ztop=40):
     # entry step
     svg.rect(g["x0"] - 0.3, 0, g["x1"] + 0.3, D.HARDSCAPE * 0.5, fill="#efe6d2", stroke=INK, sw=0.6)
     human(svg, g["x1"] + 4.5, 0)
+    if not notes:   # clean view (comparison sheets): no leaders or level marks
+        return svg.save("03_elevation_south.svg")
     level_marks(svg, rx1 + 3.5, [(FT, "T.O. ROOF  +12'-3\""), (C, "SOFFIT / CLG  +11'-0\""),
                                  (FF, "F.F.  +1'-0\""), (0, "GRADE  0'-0\"")])
     svg.leader(14.0, 6.0, 14.0, 17.5, "LUEDERS LIMESTONE ASHLAR, 3 COURSE HEIGHTS")
@@ -817,7 +845,7 @@ def south_elevation(ztop=40):
     svg.leader(cxm, 7.0, cxm, 17.5, "12x12x4 CONCRETE COBOGÓ, CIRCLE PATTERN")
     gxm = (g["x0"] + g["x1"]) / 2
     svg.leader(gxm, 8.0, gxm - 3.5, 15.0, "CEDAR SLAT PIVOT GATE", anchor="end")
-    if sl:
+    if gate_in:
         smx = (sl["x0"] + sl["x1"]) / 2
         svg.leader(smx, 6.0, smx + 1.5, 15.8, "SLIDING CEDAR CARPORT GATE")
     if sl:

@@ -152,7 +152,7 @@
    "type": "Swing gate, cedar slats",
    "mat": "Cedar / steel",
    "x": 48.5,
-   "y": 32.75,
+   "y": 33.75,
    "wall": "carport"
   },
   {
@@ -160,10 +160,10 @@
    "name": "Carport sliding gate",
    "w": 11.0,
    "h": 10.15,
-   "type": "Sliding gate, cedar slats, motorized",
+   "type": "Sliding gate, cedar slats, motorized (add alt. 1)",
    "mat": "Cedar / steel",
    "x": 54.0,
-   "y": 30.55,
+   "y": 30.6,
    "wall": "carport-front"
   }
  ],
@@ -285,6 +285,7 @@
   "AC condenser pad: 1 outdoor heat pump (2 concealed air handlers inside)",
   "Skylight above (low-slope roof)",
   "Dropped ceiling 8'-6\" for ducts + air handler (dash-dot); living spaces stay 10'-0\"",
-  "Motorized sliding cedar gate across the carport; parks behind the cobog\u00f3 when open (dashed)"
+  "Add alternate 1: motorized sliding cedar gate; parks behind the cobog\u00f3 when open (dashed)",
+  "Gate rough-in, built with the slab: 12\" concrete track strip, motor pad, conduit to house + east post"
  ]
 }

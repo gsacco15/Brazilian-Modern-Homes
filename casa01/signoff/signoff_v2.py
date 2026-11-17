@@ -23,14 +23,17 @@ CHANGES = [
     ((36.6, 75.6), "Bigger great room",
      "Living bar extended 4 ft east. Living is now about 14 ft wide (262 sf, was 196); dining 193 sf (was 164). "
      "The dining table turns north-south, so it no longer crowds the sofa."),
-    ((51.5, 64.0), "Primary suite moved 4 ft east",
-     "Same bedroom, walk-in and spa bath, shifted with the new east wall. The bath door moved so it clears the vanity."),
+    ((51.5, 64.0), "Primary suite moved east and 1.5 ft wider",
+     "The east wall now lines up with the carport and the courtyard screen, so the suite gains 1.5 ft: bedroom 171 sf, "
+     "walk-in 59 sf, spa bath 61 sf. The bath door moved so it clears the vanity."),
     ((54.0, 40.5), "Carport behind a sliding cedar gate",
-     "One car, 11 x 20 ft, at the front-east corner under the same thin roof. A motorized sliding cedar gate (D16) closes "
-     "it from the street and parks behind the cobogó when open. Cedar gate D15 leads into the covered entry and the front door."),
+     "One car, 11 x 20 ft, at the front-east corner under the same thin roof. An optional motorized sliding cedar gate (D16) "
+     "closes it from the street and parks behind the cobogó when open; the track strip, motor pad and conduit go in with the "
+     "slab either way (sheet V2-5). Cedar gate D15 leads into the covered entry and the front door."),
     ((53.2, 54.0), "One L-shaped courtyard",
      "The courtyard wraps behind the carport to the primary bedroom, whose 8 ft slider (D3) and window open onto it. "
-     "Cedar slats line the carport's two courtyard sides, and a new slat screen on the east edge brings in morning light. "
+     "Cedar slats line the carport's two courtyard sides, and a new slat screen on the east edge, in line with the house "
+     "and the carport, brings in morning light. "
      "763 sf with the covered entry (V1: 771)."),
     ((10.2, 52.6), "Bedroom wing 2 ft narrower",
      "Bedrooms 2 and 3 are 14'-3\" wide (were 16'-3\"), about 155 sf each, still fitting a queen bed and desk. "
@@ -84,6 +87,15 @@ def svg_file(path, markers=None, mapping=None):
                      f'font-size="10.5" font-weight="900" fill="{RED}">{i}</text></g>')
         s = s.replace("</svg>", "".join(g) + "</svg>")
     return s
+
+
+def svg_crop(path, x0, x1, y0, y1):
+    """The drawing cropped to a window in feet (uses the svg's data-* mapping)."""
+    m = mapping_of(path)
+    s = svg_file(path)
+    vx, vy = m["pad"] + (x0 - m["x0"]) * m["scale"], m["pad"] + (m["y1"] - y1) * m["scale"]
+    return re.sub(r'viewBox="[^"]+"', f'viewBox="{vx:.1f} {vy:.1f} {(x1 - x0) * m["scale"]:.1f} '
+                  f'{(y1 - y0) * m["scale"]:.1f}"', s, count=1)
 
 
 def mapping_of(path):
@@ -161,12 +173,13 @@ def main():
                 ("Bath 2", "63 sf", f"{rooms['Bath 2']:.0f} sf"),
                 ("Courtyard + covered entry", "771 sf", f"{area['courtyard']:,.0f} sf"),
                 ("Courtyard width / cobogó", "26'-0\" / 21 ft", "22'-6\" / 17 ft"),
-                ("Carport", "—", f"{area['carport']:,.0f} sf, sliding cedar gate"),
+                ("Carport", "—", f"{area['carport']:,.0f} sf, cedar gate optional"),
                 ("Roof plate", "2,760 sf", f"{area['roof']:,.0f} sf"), ("Bedrooms / baths", "3 / 2", "3 / 2"),
                 ("Skylights", "—", "2")]
     cmp = "".join(f"<tr><td>{a}</td><td class='n'>{b}</td><td class='n'><b>{c}</b></td></tr>" for a, b, c in cmp_rows)
-    cost = [("Conditioned area +20 sf net (great room +80, bedroom wing −60)", "Adds about $5–10K"),
-            ("Carport, no storage", "Adds about $15–25K"), ("Motorized sliding cedar gate", "Adds about $6–10K"),
+    cost = [("Conditioned area +50 sf net (great room +80, primary suite +30, bedroom wing −60)", "Adds about $12–18K"),
+            ("Carport, no storage", "Adds about $15–25K"), ("Gate rough-in: track strip, motor pad, conduit", "Adds about $1–1.5K"),
+            ("Sliding cedar gate, optional", "Adds about $7–12K if chosen"),
             ("East slat screen", "Adds about $1–2K"), ("Two skylights", "Adds $4–8K"), ("HVAC option A", "About $0–8K"),
             ("Cedar ceilings scaled back", "Saves $15–30K"), ("Stock-size glass", "Saves about $10–25K"),
             ("Zellige-look porcelain", "Saves $3–8K")]
@@ -188,13 +201,13 @@ def main():
         f'<div class="elev"><div class="plan">{svg_file(os.path.join(V1, "32_elev_s_cd.svg"))}</div>'
         f'<div class="cap">V1 · limestone 23\'-6" · cedar gate 4\' · cobogó 21\' · open parking pad beside it</div></div>'
         f'<div class="elev"><div class="plan">{svg_file(os.path.join(V2, "32_elev_s_cd.svg"))}</div>'
-        f'<div class="cap" style="color:#c0392b">V2 · limestone 21\'-6" · cedar gate 4\' · cobogó 17\' · sliding cedar carport gate 11\'</div></div>'
+        f'<div class="cap" style="color:#c0392b">V2 · limestone 21\'-6" · cedar gate 4\' · cobogó 17\' · sliding cedar carport gate 11\' (optional)</div></div>'
         f'<div class="two"><div class="box"><b>How the front reads</b>One long roof edge over four screened parts: stone, cedar, '
         f'cobogó, cedar. The carport gate repeats the pivot gate\'s slats, so the car is never part of the facade and the front '
         f'reads as one composition rather than a house plus a garage.</div>'
-        f'<div class="box"><b>How the gate works</b>Motorized, full height to the soffit. Closed when the car is in. When it '
-        f'opens it slides west and parks behind the cobogó, where the slats show through the circles. Remote, keypad and '
-        f'safety sensors standard.</div></div></div>' + tb2 + '</section>')
+        f'<div class="box"><b>How the gate works</b>Optional. Motorized, full height to the soffit, closed when the car is in. '
+        f'When it opens it slides west and parks behind the cobogó, where the slats show through the circles. Remote, keypad '
+        f'and safety sensors. Without it, the carport is open to the drive (sheet V2-5).</div></div></div>' + tb2 + '</section>')
     # 3: V1 vs V2 plans
     pages.append(
         f'<section class="page"><div class="main" style="grid-template-rows:auto 1fr auto"><h1>V1 vs V2 plans, same scale</h1>'
@@ -223,7 +236,35 @@ def main():
         f'<h2 style="margin-top:6px">Rough cost effect vs V1 (estimates)</h2><table>{costr}'
         f'<tr><td><b>Net</b></td><td><b>About break-even, give or take $30K; confirmed in the budget re-run (P1-44)</b></td></tr></table>'
         f'</div></div></div>' + tb4 + '</section>')
-    # 5: decision log + doors + sign-off
+    # 5: carport gate, with or without
+    pe, pn = os.path.join(V2, "32_front_gate.svg"), os.path.join(V2, "32_front_nogate.svg")
+    qe, qn = p2, os.path.join(V2, "30_floor_plan_cd_nogate.svg")
+    ecrop, pcrop = (24.5, 62.5, -1.5, 13.5), (34.6, 66, 22.5, 53.5)
+    rough = "".join(f"<li>{t}</li>" for t in [
+        "12\" thickened concrete strip under the gate's whole travel path, 22\'-6\" long (the track bolts to it later)",
+        "Motor pad on the courtyard side, behind the cobogó's east end",
+        "Conduit to the house (power + low voltage) and across the drive to the east post (photo-eye)",
+        "Blocking in the soffit for the top guide rollers",
+        "Carport cedar screen stops 4\" short of the front so the gate can roll past; side door D15 moved 1 ft north"])
+    pages.append(
+        f'<section class="page"><div class="main" style="grid-template-rows:auto auto 1fr auto"><h1>Carport gate · with or without</h1>'
+        f'<div class="two"><div class="elev"><div class="plan">{svg_crop(pe, *ecrop)}</div>'
+        f'<div class="cap" style="color:#c0392b">With the gate · add alternate 1 · street front</div></div>'
+        f'<div class="elev"><div class="plan">{svg_crop(pn, *ecrop)}</div>'
+        f'<div class="cap">Without the gate · open carport, prepped · street front</div></div></div>'
+        f'<div class="two"><div class="elev"><div class="plan">{svg_crop(qe, *pcrop)}</div>'
+        f'<div class="cap" style="color:#c0392b">With the gate · plan · closed (slats) and open (dashed, behind the cobogó)</div></div>'
+        f'<div class="elev"><div class="plan">{svg_crop(qn, *pcrop)}</div>'
+        f'<div class="cap">Without the gate · plan · rough-in only (keynote 18)</div></div></div>'
+        f'<div style="display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:.2in">'
+        f'<div class="box"><b>Built either way (in the base price)</b><ul style="padding-left:14px">{rough}</ul></div>'
+        f'<div class="box"><b>Adding the gate later</b>Bolt the track to the strip, set the motor on its pad, hang the gate and '
+        f'wire the photo-eyes. About 1–2 days, no concrete cut, nothing else changes. The house drawings stay the same: the gate '
+        f'is one layer (A-GATE-ALT) in the DWG; freeze it to see the house without it.</div>'
+        f'<div class="box rec"><b>Cost (estimates)</b>Rough-in: about $1–1.5K, in the base.<br>Gate, if chosen: about $7–12K '
+        f'(cedar slats on a steel frame, motor, remote, keypad, safety sensors).<br>Offer it as a line-item upgrade per client.</div>'
+        f'</div></div>{title_block("V2-5", "Carport gate options", "Enlarged (approx.)")}</section>')
+    # 6: decision log + doors + sign-off
     pages.append(
         f'<section class="page"><div class="main" style="grid-template-rows:auto 1fr auto"><h1>Decision log + sign-off</h1>'
         f'<div style="display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:.25in;min-height:0">'
@@ -234,7 +275,7 @@ def main():
         f'<span>Approved with the changes noted</span><span>Revise and resubmit</span></div>'
         f'<div class="box" style="min-height:.8in"><b>Changes / notes</b></div>'
         f'<div class="sign"><div>Name</div><div>Signature</div><div>Date</div></div></div></div>'
-        f'{title_block("V2-5", "Decisions + sign-off", "—")}</section>')
+        f'{title_block("V2-6", "Decisions + sign-off", "—")}</section>')
     html = ('<!doctype html><html><head><meta charset="utf-8"><title>Casa 01 V2 Layout Sign-off</title>'
             '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Lato:wght@400;700;900&display=swap">'
             f'<style>{CSS}</style></head><body>{"".join(pages)}</body></html>')
