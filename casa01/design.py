@@ -276,7 +276,8 @@ TREES = [
     dict(kind="live_oak", x=44.0, y=46.5, h=24, spread=22, seed=3, crown=0.42, leaf=0.75,
          note="Courtyard tree (Monterrey or live oak), limbed up to ~9 ft"),
     dict(kind="live_oak", x=-3.0, y=6.0, h=28, spread=34, seed=11, note="Front yard live oak (lot corner)"),
-    dict(kind="live_oak", x=58.0, y=-8.0, h=24, spread=28, seed=19, note="Street tree"),
+    dict(kind="live_oak", x=40.0, y=-8.0, h=24, spread=28, seed=19,
+         note="Street tree, in front of the cobogó; V2 moved it 18 ft west, clear of the drive"),
 ]
 
 PATHS = [
