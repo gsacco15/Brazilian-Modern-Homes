@@ -76,6 +76,7 @@ class Sheet:
             self.text((x, y + size * 0.36), title, size, ls=size * 0.06)
 
     def callout(self, a, b, label, size=24, anchor="start"):
+        self.line(a, b, "rgba(255,255,255,0.85)", 6)   # halo keeps the leader readable over foliage
         self.line(a, b, "#2b2e31", 2)
         self.add(f'<circle cx="{a[0]:.1f}" cy="{a[1]:.1f}" r="5" fill="#2b2e31"/>')
         w = len(label) * size * 0.72 + 22  # bold caps + letter-spacing; text must never spill onto dark foliage
@@ -291,21 +292,40 @@ def elevation(view, title, callouts):
     return sh.save(f"22_{view}.svg", extra_w=margin, extra_h=below)
 
 
+def _opening(wall_id, name):
+    """(center along the elevation's h axis, opening) for a named opening in an exterior wall."""
+    w = next(w for w in D.EXT_WALLS if w["id"] == wall_id)
+    o = next(o for o in w["openings"] if o["name"] == name)
+    (ax, ay), (bx, by) = w["a"], w["b"]
+    L = math.hypot(bx - ax, by - ay)
+    t = (o["off"] + o["w"] / 2) / L
+    return (ax + (bx - ax) * t, ay + (by - ay) * t), o
+
+
 def elevations():
-    out = [elevation("elev_s", "SOUTH ELEVATION (STREET)", [
-        (14, 6, 14, 16.5, "LUEDERS LIMESTONE ASHLAR", "start"),
-        (44, 7, 44, 16.5, "12x12 CONCRETE COBOGÓ", "start"),
-        (30.5, 8, 26, 19.0, "CEDAR SLAT PIVOT GATE", "end"),
-        (52, 11.6, 56, 19.0, "15\" DARK BRONZE FASCIA", "start")]),
+    # south: labels step down left to right so no leader crosses another label
+    lw, eg, cb, cs = D.LIMESTONE_WALL, D.ENTRY_GATE, D.COBOGO, D.CARPORT_SLIDER
+    south = [
+        (lw["x0"] + 2.0, D.FASCIA_TOP - 0.6, lw["x0"] + 2.0, 26.0, "15\" DARK BRONZE FASCIA", "start"),
+        (14.0, 6.0, 14.0, 23.5, "LUEDERS LIMESTONE ASHLAR", "start"),
+        ((eg["x0"] + eg["x1"]) / 2, 6.0, (eg["x0"] + eg["x1"]) / 2, 21.0, "CEDAR SLAT PIVOT GATE", "start"),
+        (cb["x0"] + 9.0, 6.5, cb["x0"] + 9.0, 18.5, "12x12 CONCRETE COBOGÓ", "start")]
+    if cs.get("installed", True):
+        south.append((cs["x0"] + 5.5, 6.0, cs["x0"] + 5.5, 16.0, "SLIDING CARPORT GATE (OPTION)", "start"))
+    (cx, _), _o = _opening("N-bar", "Primary bath clerestory")
+    (sx, _), so = _opening("N-bar", "Great room to veranda")
+    (_, b3), _o = _opening("W", "Bed 3 window")
+    (_, b2), _o = _opening("W", "Bed 2 window")
+    out = [elevation("elev_s", "SOUTH ELEVATION (STREET)", south),
         elevation("elev_n", "NORTH ELEVATION (VERANDA)", [
-            (29, 5, 29, 16.5, "9' SLIDING GLASS WALL", "end"),
+            (sx, 5, sx, 19.0, f"{so['w']:.0f}' SLIDING GLASS WALL", "end"),
             (19.8, 3, 14, 18.5, "LIMESTONE GRILL COUNTER", "start"),
-            (49.8, 8.5, 50, 16.5, "BATH CLERESTORY", "end")]),
+            (cx, 7.8, cx, 16.5, "BATH CLERESTORY", "start")]),
         elevation("elev_e", "EAST ELEVATION", [
             (45, 6, 45, 16.5, "CEDAR SLAT SCREEN", "start"),
             (78, 6.5, 80, 16.5, "SHOWER GARDEN WINDOW", "start")]),
         elevation("elev_w", "WEST ELEVATION", [
-            (54, 6, 54, 16.5, "BEDROOM 3", "start"), (36, 6, 36, 16.5, "BEDROOM 2", "start"),
+            (b3, 6, b3, 16.5, "BEDROOM 3", "end"), (b2, 6, b2, 16.5, "BEDROOM 2", "end"),
             (29.8, 9, 29.8, 19, "LIMESTONE FIN", "end")])]
     return out
 

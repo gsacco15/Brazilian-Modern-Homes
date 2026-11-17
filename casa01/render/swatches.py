@@ -23,7 +23,7 @@ OUT = os.path.join(os.path.dirname(HERE), "renders", "swatches")
 SW = [
     ("limestone", "Lueders limestone"), ("cobogo", "Cobogó block"), ("cedar_z", "Western red cedar"),
     ("stucco", "Warm-white stucco"), ("floor", "Polished concrete"), ("pavers", "Limestone pavers"),
-    ("oak", "Rift white oak"), ("granite", "Honed black granite"), ("tile", "Green glazed tile"),
+    ("oak", "Rift white oak"), ("granite", "Honed black granite"), ("tile", "Glazed tile, green + terracotta"),
     ("bronze", "Dark bronze metal"), ("dg", "Decomposed granite"), ("calcada", "Calçada portuguesa"),
 ]
 
@@ -74,6 +74,17 @@ def main():
                 mb.box(-2, y, -0.1, 2, y + 0.45, 0.0, r=rng.random())
                 y += 0.47
             mb.build(coll, bevel=0.002)
+        elif key == "tile":
+            # split sample: green (kitchen + primary bath) | terracotta (hall bath)
+            mb = MB("tile", [L["tile"]])
+            mb.box(-2, -2, -0.1, -0.01, 2, 0.0, r=0.37)
+            mb.build(coll, bevel=0.002)
+            # the zellige shader maps wall coords, so build it as a wall and turn it to face the camera
+            mb = MB("tile_tc", [L["zellige_terracotta"]])
+            mb.box(-0.1, 0.01, -2, 0.0, 2, 2, r=0.37)
+            ob = mb.build(coll, bevel=0.002)
+            from mathutils import Matrix
+            ob.matrix_world = Matrix(((0, 1, 0, 0), (0, 0, 1, 0), (1, 0, 0, 0), (0, 0, 0, 1)))
         else:
             mb = MB("tile", [L[key]])
             mb.box(-2, -2, -0.1, 2, 2, 0.0, r=0.37)

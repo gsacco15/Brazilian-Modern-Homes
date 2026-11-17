@@ -33,15 +33,18 @@ def main():
     cams = bpy.data.collections.new("Cameras")
     bpy.context.scene.collection.children.link(cams)
     for name, v in R.VIEWS.items():
-        R.set_camera(v, 1920, 1080)
+        if v.get("ortho"):
+            R.set_ortho(v)
+        else:
+            R.set_camera(v, 1920, 1080)
         cam = bpy.data.objects["Cam"]
         c = cam.copy()
         c.data = cam.data.copy()
         c.name = f"Cam_{name}"
         cams.objects.link(c)
-        c["hdri"] = v["hdri"]
-        c["sun_azimuth"] = v["sun"]
-        c["exposure"] = v["exposure"]
+        for key, prop in (("hdri", "hdri"), ("sun", "sun_azimuth"), ("exposure", "exposure")):
+            if key in v:
+                c[prop] = v[key]
     bpy.data.objects.remove(bpy.data.objects["Cam"])
     bpy.context.scene.camera = bpy.data.objects["Cam_street"]
     bpy.context.scene.view_settings.exposure = R.VIEWS["street"]["exposure"]

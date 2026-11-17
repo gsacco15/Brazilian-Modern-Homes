@@ -527,12 +527,12 @@ def hall_bath_plan():
     gx, gy0, gy1 = B["glass"]
     svg.leader(gx - 0.1, (gy0 + gy1) / 2, rx1 + 1.6, ry0 - 1.2, "FIXED GLASS PANEL (NO CURTAIN)", size=9)
     nx, ny0, ny1, _z0, _z1 = B["niche"]
-    svg.leader(nx + 0.14, (ny0 + ny1) / 2, rx0 - 1.8, (ny0 + ny1) / 2 + 1.0, "TILED NICHE", size=9, anchor="end")
-    svg.leader(tx0 + 0.15, ty0 + 0.6, rx0 - 1.8, ty0 - 0.6, "TERRACOTTA ZELLIGE-LOOK TO CEILING", size=9, anchor="end")
+    svg.leader(nx + 0.14, (ny0 + ny1) / 2, rx0 - 1.8, (ny0 + ny1) / 2 + 1.65, "TILED NICHE", size=9, anchor="end")
+    svg.leader(tx0 + 0.15, ty0 + 0.6, rx0 - 0.5, ry0 - 2.0, "TERRACOTTA TILE TO CEILING", size=9, anchor="end")
     sk = [k for k in getattr(D, "SKYLIGHTS", []) if k["name"] == "Bath 2"]
     if sk:
         x0, y0, x1, y1 = sk[0]["rect"]
-        svg.leader((x0 + x1) / 2, y1 - 0.4, rx0 - 1.8, y1 + 0.6, "SKYLIGHT ABOVE, 2' x 4'", size=9, anchor="end")
+        svg.leader((x0 + x1) / 2 + 0.45, y1 - 1.0, rx0 - 1.8, y1 + 0.6, "SKYLIGHT ABOVE, 2' x 4'", size=9, anchor="end")
     sh = B["shelf"]
     svg.leader((sh[0] + sh[2]) / 2, (sh[1] + D.INT_T + sh[3]) / 2, rx0 - 1.8, ry1 + 1.6, "OPEN OAK SHELVES", size=9,
                anchor="end")

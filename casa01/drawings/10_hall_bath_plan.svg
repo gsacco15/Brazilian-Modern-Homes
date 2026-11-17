@@ -111,14 +111,14 @@
 <line x1="464.80" y1="333.70" x2="715.60" y2="426.80" stroke="#6b6f73" stroke-width="0.6" />
 <circle cx="464.80" cy="333.70" r="2.6" fill="#23262a"/>
 <text x="715.60" y="426.80" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="9" text-anchor="start" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="4" dy="3">FIXED GLASS PANEL (NO CURTAIN)</text>
-<line x1="371.32" y1="286.20" x2="297.60" y2="248.20" stroke="#6b6f73" stroke-width="0.6" />
+<line x1="371.32" y1="286.20" x2="297.60" y2="223.50" stroke="#6b6f73" stroke-width="0.6" />
 <circle cx="371.32" cy="286.20" r="2.6" fill="#23262a"/>
-<text x="297.60" y="248.20" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="9" text-anchor="end" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="-4" dy="3">TILED NICHE</text>
-<line x1="371.70" y1="358.40" x2="297.60" y2="404.00" stroke="#6b6f73" stroke-width="0.6" />
+<text x="297.60" y="223.50" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="9" text-anchor="end" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="-4" dy="3">TILED NICHE</text>
+<line x1="371.70" y1="358.40" x2="347.00" y2="457.20" stroke="#6b6f73" stroke-width="0.6" />
 <circle cx="371.70" cy="358.40" r="2.6" fill="#23262a"/>
-<text x="297.60" y="404.00" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="9" text-anchor="end" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="-4" dy="3">TERRACOTTA ZELLIGE-LOOK TO CEILING</text>
-<line x1="417.30" y1="225.40" x2="297.60" y2="187.40" stroke="#6b6f73" stroke-width="0.6" />
-<circle cx="417.30" cy="225.40" r="2.6" fill="#23262a"/>
+<text x="347.00" y="457.20" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="9" text-anchor="end" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="-4" dy="3">TERRACOTTA TILE TO CEILING</text>
+<line x1="434.40" y1="248.20" x2="297.60" y2="187.40" stroke="#6b6f73" stroke-width="0.6" />
+<circle cx="434.40" cy="248.20" r="2.6" fill="#23262a"/>
 <text x="297.60" y="187.40" font-family="Lato, 'Helvetica Neue', Arial, sans-serif" font-size="9" text-anchor="end" fill="#23262a" font-weight="400" letter-spacing="0.6" dx="-4" dy="3">SKYLIGHT ABOVE, 2' x 4'</text>
 <line x1="417.30" y1="153.67" x2="297.60" y2="69.60" stroke="#6b6f73" stroke-width="0.6" />
 <circle cx="417.30" cy="153.67" r="2.6" fill="#23262a"/>
