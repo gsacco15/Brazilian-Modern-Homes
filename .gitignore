@@ -7,3 +7,5 @@ casa01/lookbook/img/ortho_prev/
 casa01/renders/pano/*.png
 # Vercel build output (assembled by scripts/vercel-build.sh)
 public/
+# generated sign-off HTML (the PDF is committed)
+casa01/signoff/*.html

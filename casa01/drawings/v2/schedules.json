@@ -1,0 +1,278 @@
+{
+ "doors": [
+  {
+   "tag": "D1",
+   "name": "Front door (cedar pivot)",
+   "w": 4.0,
+   "h": 9.0,
+   "type": "Cedar-clad pivot, steel frame",
+   "mat": "Cedar / steel",
+   "x": 28.0,
+   "y": 33.25,
+   "wall": "E-gallery"
+  },
+  {
+   "tag": "D2",
+   "name": "Great room to courtyard",
+   "w": 12.0,
+   "h": 9.0,
+   "type": "3-panel sliding glass",
+   "mat": "Dk. bronze alum., low-E",
+   "x": 35.75,
+   "y": 60.0,
+   "wall": "S-bar"
+  },
+  {
+   "tag": "D3",
+   "name": "Primary bedroom to garden",
+   "w": 8.0,
+   "h": 9.0,
+   "type": "2-panel sliding glass",
+   "mat": "Dk. bronze alum., low-E",
+   "x": 53.25,
+   "y": 60.0,
+   "wall": "S-bar"
+  },
+  {
+   "tag": "D4",
+   "name": "Great room to veranda",
+   "w": 16.0,
+   "h": 9.0,
+   "type": "4-panel sliding glass",
+   "mat": "Dk. bronze alum., low-E",
+   "x": 32.0,
+   "y": 80.0,
+   "wall": "N-bar"
+  },
+  {
+   "tag": "D5",
+   "name": "Bed 2",
+   "w": 2.67,
+   "h": 8.0,
+   "type": "Flush, solid core",
+   "mat": "Rift oak veneer",
+   "x": 23.0,
+   "y": 39.835
+  },
+  {
+   "tag": "D6",
+   "name": "Bath",
+   "w": 2.67,
+   "h": 8.0,
+   "type": "Flush, solid core",
+   "mat": "Rift oak veneer",
+   "x": 23.0,
+   "y": 44.835
+  },
+  {
+   "tag": "D7",
+   "name": "Bed 3",
+   "w": 2.67,
+   "h": 8.0,
+   "type": "Flush, solid core",
+   "mat": "Rift oak veneer",
+   "x": 23.0,
+   "y": 50.335
+  },
+  {
+   "tag": "D8",
+   "name": "Closet",
+   "w": 4.0,
+   "h": 8.0,
+   "type": "Bypass sliding, 2 leaf",
+   "mat": "Rift oak veneer",
+   "x": 10.0,
+   "y": 41.5
+  },
+  {
+   "tag": "D9",
+   "name": "Closet",
+   "w": 4.0,
+   "h": 8.0,
+   "type": "Bypass sliding, 2 leaf",
+   "mat": "Rift oak veneer",
+   "x": 10.0,
+   "y": 48.5
+  },
+  {
+   "tag": "D10",
+   "name": "Laundry",
+   "w": 2.67,
+   "h": 8.0,
+   "type": "Flush, solid core",
+   "mat": "Rift oak veneer",
+   "x": 13.0,
+   "y": 62.835
+  },
+  {
+   "tag": "D11",
+   "name": "Primary",
+   "w": 2.67,
+   "h": 8.0,
+   "type": "Flush, solid core",
+   "mat": "Rift oak veneer",
+   "x": 43.0,
+   "y": 62.835
+  },
+  {
+   "tag": "D12",
+   "name": "WIC",
+   "w": 2.5,
+   "h": 8.0,
+   "type": "Flush, solid core",
+   "mat": "Rift oak veneer",
+   "x": 45.5,
+   "y": 71.5
+  },
+  {
+   "tag": "D13",
+   "name": "Primary bath",
+   "w": 2.5,
+   "h": 8.0,
+   "type": "Flush, solid core",
+   "mat": "Rift oak veneer",
+   "x": 52.75,
+   "y": 71.5
+  },
+  {
+   "tag": "D14",
+   "name": "Entry gate",
+   "w": 4.0,
+   "h": 10.15,
+   "type": "Pivot gate, cedar slats",
+   "mat": "Cedar / steel",
+   "x": 30.5,
+   "y": 30.0
+  },
+  {
+   "tag": "D15",
+   "name": "Carport gate",
+   "w": 3.5,
+   "h": 10.15,
+   "type": "Swing gate, cedar slats",
+   "mat": "Cedar / steel",
+   "x": 48.5,
+   "y": 32.75,
+   "wall": "carport"
+  }
+ ],
+ "windows": [
+  {
+   "tag": "W-1",
+   "name": "Bed 2 slot window",
+   "w": 2.0,
+   "h": 8.0,
+   "sill": 1.0,
+   "kind": "fixed",
+   "x": 9.5,
+   "y": 30.0,
+   "wall": "S-wing"
+  },
+  {
+   "tag": "W-2",
+   "name": "Gallery glass wall",
+   "w": 23.75,
+   "h": 9.0,
+   "sill": 0.0,
+   "kind": "slider",
+   "x": 28.0,
+   "y": 47.625,
+   "wall": "E-gallery"
+  },
+  {
+   "tag": "W-3",
+   "name": "Primary bedroom to courtyard",
+   "w": 4.0,
+   "h": 7.5,
+   "sill": 1.5,
+   "kind": "fixed",
+   "x": 46.0,
+   "y": 60.0,
+   "wall": "S-bar"
+  },
+  {
+   "tag": "W-4",
+   "name": "Primary bedroom east",
+   "w": 3.0,
+   "h": 6.0,
+   "sill": 3.0,
+   "kind": "casement",
+   "x": 58.0,
+   "y": 64.5,
+   "wall": "E-bar"
+  },
+  {
+   "tag": "W-5",
+   "name": "Shower garden window",
+   "w": 2.3,
+   "h": 5.4,
+   "sill": 3.6,
+   "kind": "fixed",
+   "x": 58.0,
+   "y": 78.05,
+   "wall": "E-bar"
+  },
+  {
+   "tag": "W-6",
+   "name": "Primary bath clerestory",
+   "w": 5.5,
+   "h": 3.0,
+   "sill": 6.0,
+   "kind": "fixed",
+   "x": 53.75,
+   "y": 80.0,
+   "wall": "N-bar"
+  },
+  {
+   "tag": "W-7",
+   "name": "Kitchen window",
+   "w": 8.0,
+   "h": 5.4,
+   "sill": 3.6,
+   "kind": "fixed",
+   "x": 14.0,
+   "y": 80.0,
+   "wall": "N-bar"
+  },
+  {
+   "tag": "W-8",
+   "name": "Bed 3 window",
+   "w": 4.0,
+   "h": 6.5,
+   "sill": 2.5,
+   "kind": "casement",
+   "x": 6.0,
+   "y": 54.0,
+   "wall": "W"
+  },
+  {
+   "tag": "W-8",
+   "name": "Bed 2 window",
+   "w": 4.0,
+   "h": 6.5,
+   "sill": 2.5,
+   "kind": "casement",
+   "x": 6.0,
+   "y": 36.0,
+   "wall": "W"
+  }
+ ],
+ "keynotes": [
+  "12x12x4 precast concrete cobog\u00f3 screen, white cement, on cast curb",
+  "Cedar slat pivot gate on dark bronze steel frame",
+  "Lueders limestone veneer, sawn-face ashlar",
+  "Cedar 2x4 slat screen @ 5\" o.c. on steel rails",
+  "Black cal\u00e7ada portuguesa, 6\" light concrete band (50 sf)",
+  "Limestone pavers 24x36, thermal finish",
+  "Polished concrete slab, all interior floors",
+  "Roof edge above, 15\" dark bronze fascia (dashed)",
+  "4\" sq. HSS steel post, dark bronze",
+  "Limestone-clad grill counter (churrasqueira)",
+  "Courtyard planting bed + tree",
+  "Walk-in shower, green zellige-look porcelain to ceiling",
+  "Carport: concrete slab under the main roof, open to the drive",
+  "AC condenser pad: 1 outdoor heat pump (2 concealed air handlers inside)",
+  "Skylight above (low-slope roof)",
+  "Dropped ceiling 8'-6\" for ducts + air handler (dash-dot); living spaces stay 10'-0\""
+ ]
+}

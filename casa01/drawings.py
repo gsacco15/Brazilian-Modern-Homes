@@ -621,12 +621,21 @@ def site_plan():
     for (a, b) in D.FENCES:
         svg.line(a[0], a[1], b[0], b[1], CEDAR, 1.6)
     # roof (as the building reads from above)
-    svg.poly(D.ROOF, fill="#ffffff", stroke=INK, sw=1.6)
-    svg.rect(31, 36, 57, 56, fill="url(#dg)", stroke=INK, sw=0.9)   # courtyard open to sky
+    svg.poly(D.ROOF, fill="#ffffff", stroke=INK, sw=1.6)    # notches in the plate = courtyard + gardens open to sky
     svg.rect(D.COBOGO["x0"], 30, D.COBOGO["x1"], 30.33, fill=INK, stroke="none")
     svg.text(24.0, 64.0, "CASA 01", 11, weight=700, ls=2)
-    svg.text(24.0, 64.0, "1,620 SF CONDITIONED", 7.5, fill=MID, extra='dy="12"')
-    svg.text(44, 44, "PÁTIO", 8, weight=700, fill=GREEN, ls=1.5)
+    svg.text(24.0, 64.0, f"{D.conditioned_area():,.0f} SF CONDITIONED", 7.5, fill=MID, extra='dy="12"')
+    svg.text((D.COURTYARD["x0"] + D.COURTYARD["x1"]) / 2 + 1.5, 44, "PÁTIO", 8, weight=700, fill=GREEN, ls=1.5)
+    cp = getattr(D, "CARPORT", None)
+    if cp:   # carport under the roof plate (dashed = below the roof)
+        svg.rect(cp["x0"], cp["y0"], cp["x1"], cp["y1"], fill="none", stroke=INK, sw=0.8, extra='stroke-dasharray="5 3"')
+        svg.text((cp["x0"] + cp["x1"]) / 2, (cp["y0"] + cp["y1"]) / 2 + 2, "CARPORT", 6.5, weight=700, fill=MID, ls=1.0)
+        svg.text((cp["x0"] + cp["x1"]) / 2, (cp["y0"] + cp["y1"]) / 2 + 2, "UNDER ROOF", 5.5, fill=MID, extra='dy="8"')
+    hv = getattr(D, "HVAC", None)
+    if hv:
+        x0, y0, x1, y1 = hv["pad"]
+        svg.rect(x0, y0, x1, y1, fill="#ffffff", stroke=INK, sw=0.8)
+        svg.leader((x0 + x1) / 2, (y0 + y1) / 2, -9.0, 72.0, "AC PAD", size=6, anchor="end")
     svg.text(29.5, 88.2, "VERANDA", 7, weight=700, fill=GREEN, ls=1.2)
     # trees
     for i, t in enumerate(D.TREES):
@@ -635,7 +644,8 @@ def site_plan():
     svg.leader(31.0, 110.0, 44.0, 119.0, "HERITAGE LIVE OAK (PROTECTED)", size=6.5)
     svg.text(15.0, 13.0, "NATIVE MEADOW", 6.5, fill=GREEN, weight=700, ls=1.2)
     svg.text(15.0, 13.0, "DG + AGAVE + GRASSES", 6, fill=MID, extra='dy="9"')
-    svg.text(59.3, 13.0, "PARKING", 6, fill=MID, ls=1.0, extra='transform="rotate(-90 ' + f"{svg.X(59.3):.1f} {svg.Y(13.0):.1f}" + ')"')
+    dx = (D.DRIVEWAY["strips"][0][0] + D.DRIVEWAY["strips"][-1][1]) / 2
+    svg.text(dx, 13.0, "DRIVE", 6, fill=MID, ls=1.0, extra='transform="rotate(-90 ' + f"{svg.X(dx):.1f} {svg.Y(13.0):.1f}" + ')"')
     svg.text(32.5, 108.0, "LAWN / BUFFALO GRASS", 6, fill=MID, ls=1.0)
     # dims
     svg.dim(0, 125, 65, 125, 4.0, fmt_ft(65) + " LOT", size=7.5)

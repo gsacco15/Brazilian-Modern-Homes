@@ -46,6 +46,8 @@ LAYERS = {
     "A-GLAZ-IDEN": (4, "Continuous", 13, "Window tags"),
     "A-ANNO-KEYN": (2, "Continuous", 13, "Keynotes"),
     "A-ANNO-SYMB": (7, "Continuous", 13, "North arrow, markers, scale bar"),
+    "A-ROOF-SKYL": (6, "DASHED", 18, "Skylights above"),
+    "M-HVAC": (140, "Continuous", 13, "AC pad, air handlers, dropped-ceiling zones"),
 }
 PATTERNS = {"wallh": ("ANSI31", 12), "stoneh": ("ANSI33", 12), "paverh": ("NET", 192),
             "cdmosaic": ("GRAVEL", 6), "tileh": ("NET", 24)}

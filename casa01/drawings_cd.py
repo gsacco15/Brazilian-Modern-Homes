@@ -62,6 +62,12 @@ def openings_schedule():
     g = D.ENTRY_GATE
     doors.append(dict(tag=f"D{dn}", name="Entry gate", w=g["x1"] - g["x0"], h=g["z1"] - g["z0"],
                       type="Pivot gate, cedar slats", mat="Cedar / steel", x=(g["x0"] + g["x1"]) / 2, y=g["y"]))
+    cg = getattr(D, "CARPORT_GATE", None)
+    if cg:
+        dn += 1
+        doors.append(dict(tag=f"D{dn}", name="Carport gate", w=cg["y1"] - cg["y0"], h=cg["z1"] - cg["z0"],
+                          type="Swing gate, cedar slats", mat="Cedar / steel", x=cg["x"], y=(cg["y0"] + cg["y1"]) / 2,
+                          wall="carport"))
     return doors, wins
 
 
@@ -77,7 +83,11 @@ KEYNOTES = [
     "4\" sq. HSS steel post, dark bronze",
     "Limestone-clad grill counter (churrasqueira)",
     "Courtyard planting bed + tree",
-    "Walk-in shower, green zellige to ceiling",
+    "Walk-in shower, green zellige-look porcelain to ceiling",
+    "Carport: concrete slab under the main roof, open to the drive",
+    "AC condenser pad: 1 outdoor heat pump (2 concealed air handlers inside)",
+    "Skylight above (low-slope roof)",
+    "Dropped ceiling 8'-6\" for ducts + air handler (dash-dot); living spaces stay 10'-0\"",
 ]
 
 
@@ -170,15 +180,21 @@ def floor_plan_cd():
     cd_defs(svg)
     svg.layer = "L-PAVE"
     # outdoor hardscape, light linework only
-    svg.rect(28, 30.33, 53.7, 36.0, fill="url(#paverh)", stroke="none")
-    svg.rect(28, 36, 31.5, 60, fill="url(#paverh)", stroke="none")
-    svg.rect(31.5, 52, 39.5, 60, fill="url(#paverh)", stroke="none")
-    svg.rect(16.5, 80, 42.5, 92.5, fill="url(#paverh)", stroke=MID, sw=0.6)
+    for pv in D.PAVING:
+        svg.rect(*pv["rect"], fill="url(#paverh)", stroke=MID if pv["name"] == "Veranda" else "none", sw=0.6)
+    cp = getattr(D, "CARPORT", None)
+    if cp:   # carport slab + a car outline for scale
+        svg.rect(cp["x0"], cp["y0"], cp["x1"], cp["y1"], fill="#f4f4f2", stroke=MID, sw=0.6)
+        cx, cy = (cp["x0"] + cp["x1"]) / 2, cp["y0"] + 9.6
+        svg.rect(cx - 3.1, cy - 7.75, cx + 3.1, cy + 7.75, fill="none", stroke=MID, sw=0.6, extra='stroke-dasharray="5 3"')
+        svg.text(cx, cy, "CAR", 7, fill=MID, ls=1.5, extra='dy="2.5"')
     em = D.ENTRY_MOSAIC
     svg.rect(em["x0"] + em["band"], em["y0"] + em["band"], em["x1"] - em["band"], em["y1"] - em["band"],
              fill="url(#cdmosaic)", stroke=LINE, sw=0.7)
     svg.layer = "L-PLNT"
-    svg.rect(31.5, 36.5, 53.5, 52, fill="none", stroke=MID, sw=0.6, extra='stroke-dasharray="4 3"')
+    for pl in D.PLANTING:
+        if pl["name"] in ("Courtyard garden", "Primary garden"):
+            svg.poly(pl["poly"], fill="none", stroke=MID, sw=0.6, extra='stroke-dasharray="4 3"')
     B = D.PRIMARY_BATH
     sx0, sy0, sx1, sy1 = B["shower"]
     svg.layer = "A-FLOR-PATT"
@@ -210,8 +226,13 @@ def floor_plan_cd():
             svg.circle(x, y, 0.65, stroke=LINE, sw=0.8)
         elif t in ("washer", "dryer"):
             svg.rect(x - 1.2, y - 1.2, x + 1.2, y + 1.2, fill="#ffffff", stroke=LINE, sw=0.8)
+            lab = it.get("label") or ("W" if t == "washer" else "D")
             svg.add(f'<text x="{svg.X(x):.1f}" y="{svg.Y(y) + 3:.1f}" font-family="{FONT}" font-size="7" '
-                    f'text-anchor="middle" fill="{MID}">{"W" if t == "washer" else "D"}</text>')
+                    f'text-anchor="middle" fill="{MID}">{lab}</text>')
+        elif t == "wh":
+            svg.circle(x, y, 0.95, fill="#ffffff", stroke=LINE, sw=0.8)
+            svg.add(f'<text x="{svg.X(x):.1f}" y="{svg.Y(y) + 3:.1f}" font-family="{FONT}" font-size="6.5" '
+                    f'text-anchor="middle" fill="{MID}">WH</text>')
     gx0, gx1, gy = B["glass"]
     svg.layer = "A-GLAZ"
     svg.line(gx0, gy, gx1, gy, LINE, 1.6)
@@ -222,8 +243,9 @@ def floor_plan_cd():
     svg.rect(vx0, vy0, vx1, vy1, fill="#ffffff", stroke=LINE, sw=0.8)
     svg.layer = "P-FIXT"
     svg.circle(*B["sink"], 0.62, stroke=LINE, sw=0.8)
-    svg.rect(52.2, 72.88, 53.5, 73.52, fill="#ffffff", stroke=LINE, sw=0.8)
-    svg.circle(52.45, 73.2, 0.3, stroke=LINE, sw=0.7)
+    rx1 = B["room"][2]
+    svg.rect(rx1 - 1.3, 72.88, rx1, 73.52, fill="#ffffff", stroke=LINE, sw=0.8)
+    svg.circle(rx1 - 1.05, 73.2, 0.3, stroke=LINE, sw=0.7)
     svg.layer = "A-ROOF-OTLN"
     # roof edge above + courtyard tree (thin)
     svg.poly(D.ROOF, fill="none", stroke=LINE, sw=0.8, extra='stroke-dasharray="10 4 2 4"')
@@ -285,7 +307,7 @@ def floor_plan_cd():
                         svg.line(ax + ux * a0 + nx * dd, ay + uy * a0 + ny * dd,
                                  ax + ux * a1 + nx * dd, ay + uy * a1 + ny * dd, LINE, 1.0)
                 else:
-                    sw_ = -1 if p["a"] == (39.0, 60.5) else 1
+                    sw_ = o.get("swing", 1)
                     hx, hy = ax + ux * s0, ay + uy * s0
                     lx, ly = hx + nx * o["w"] * sw_, hy + ny * o["w"] * sw_
                     svg.line(hx, hy, lx, ly, LINE, 1.1)
@@ -310,14 +332,54 @@ def floor_plan_cd():
     s_ = D.CEDAR_SCREEN
     y = s_["y0"]
     while y < s_["y1"]:
-        svg.rect(s_["x"] - s_["slat_d"], y, s_["x"], y + s_["slat_w"], fill=LINE, stroke="none")
+        if not any(a - 0.05 < y < b for (a, b) in s_.get("openings", [])):
+            svg.rect(s_["x"] - s_["slat_d"], y, s_["x"], y + s_["slat_w"], fill=LINE, stroke="none")
         y += s_["slat_w"] + s_["gap"]
+    gs = getattr(D, "GARDEN_SCREEN", None)
+    if gs:
+        svg.layer = "A-SCRN"
+        x = gs["x0"] + 0.3
+        while x < gs["x1"]:
+            svg.rect(x, gs["y"], x + s_["slat_w"], gs["y"] + s_["slat_d"], fill=LINE, stroke="none")
+            x += s_["slat_w"] + s_["gap"]
+    cg = getattr(D, "CARPORT_GATE", None)
+    if cg:   # gate leaf swings into the carport
+        svg.layer = "A-DOOR"
+        w_ = cg["y1"] - cg["y0"]
+        svg.line(cg["x"], cg["y0"], cg["x"] + w_ * math.cos(math.radians(60)), cg["y0"] + w_ * math.sin(math.radians(60)), LINE, 1.3)
+        svg.arc(cg["x"], cg["y0"], w_, math.radians(60), math.radians(90), LINE, 0.5)
     svg.layer = "S-COLS"
     for (x, y) in D.POSTS:
         svg.rect(x - 0.17, y - 0.17, x + 0.17, y + 0.17, fill=LINE, stroke=LINE, sw=0.3)
+    sk = getattr(D, "SKYLIGHTS", [])
+    if sk:
+        svg.layer = "A-ROOF-SKYL"
+        for k in sk:
+            x0, y0, x1, y1 = k["rect"]
+            svg.rect(x0, y0, x1, y1, fill="none", stroke=LINE, sw=0.7, extra='stroke-dasharray="6 3"')
+            svg.line(x0, y0, x1, y1, MID, 0.4, extra='stroke-dasharray="6 3"')
+            svg.line(x0, y1, x1, y0, MID, 0.4, extra='stroke-dasharray="6 3"')
+    hv = getattr(D, "HVAC", None)
+    if hv:
+        svg.layer = "M-HVAC"
+        for z in hv["dropped"]:
+            x0, y0, x1, y1 = z["rect"]
+            svg.rect(x0 + 0.25, y0 + 0.25, x1 - 0.25, y1 - 0.25, fill="none", stroke="#7b8085", sw=0.6,
+                     extra='stroke-dasharray="10 3 2 3"')
+        for a in hv["ahu"]:
+            ax_, ay_ = a["at"]
+            svg.rect(ax_ - 1.25, ay_ - 0.42, ax_ + 1.25, ay_ + 0.42, fill="#ffffff", stroke=LINE, sw=0.7,
+                     extra='stroke-dasharray="4 2"')
+            svg.text(ax_, ay_, a["name"], 6, weight=700, ls=0.3, extra='dy="2.2"')
+        x0, y0, x1, y1 = hv["pad"]
+        svg.rect(x0, y0, x1, y1, fill="#ffffff", stroke=LINE, sw=0.9)
+        svg.circle((x0 + x1) / 2, (y0 + y1) / 2, 1.2, fill="none", stroke=LINE, sw=0.6)
+        svg.text((x0 + x1) / 2, (y0 + y1) / 2, "AC", 6, weight=700, extra='dy="2.2"')
     # grid
     svg.layer = "A-GRID"
-    grid(svg, [6, 28, 39, 54], [30, 60, 80], (-10.5, 72.5), (14.6, 104.2))
+    part_x = D.PARTITIONS[[i for i, p in enumerate(D.PARTITIONS) if p.get("openings") and
+                           any(o.get("name") == "Primary" for o in p["openings"])][0]]["a"][0]
+    grid(svg, [D.BAR["x0"], D.WING["x1"], part_x, D.BAR["x1"]], [30, 60, 80], (-10.5, 72.5), (14.6, 104.2))
     # room tags
     svg.layer = "A-ANNO-ROOM"
     for r in D.ROOMS:
@@ -339,9 +401,7 @@ def floor_plan_cd():
         svg.text(lx, ly, f"{no}  ·  {D.poly_area(r['poly']):.0f} SF", 6.8, fill=MID, extra='dy="8.5"')
     for o in D.OUTDOOR:
         lx, ly = o["label"]
-        if o["name"] == "Covered entry":
-            lx = 47.0
-        svg.text(lx, ly, o["name"].upper(), 8, weight=700, fill=LINE, ls=1.2)
+        svg.text(lx, ly, o["name"].upper(), 8 if len(o["name"]) < 15 else 7, weight=700, fill=LINE, ls=1.2)
     # door + window tags
     doors, wins = openings_schedule()
     svg.layer = "A-DOOR-IDEN"
@@ -363,38 +423,60 @@ def floor_plan_cd():
         tag_hex(svg, wn["x"] + dx, wn["y"] + dy, wn["tag"], 7.5)
     # keynotes
     svg.layer = "A-ANNO-KEYN"
-    keynote(svg, 44.0, 30.15, 1, 46.0, 25.2)
+    cbx = (D.COBOGO["x0"] + D.COBOGO["x1"]) / 2
+    keynote(svg, cbx, 30.15, 1, cbx + 2.0, 25.2)
     keynote(svg, 30.5, 30.2, 2, 30.5, 25.2)
     keynote(svg, 15.0, 29.8, 3, 15.0, 25.2)
-    keynote(svg, 54.0, 46.0, 4, 57.0, 46.0)
+    keynote(svg, D.CEDAR_SCREEN["x"], 42.0, 4, D.CEDAR_SCREEN["x"] - 3.0, 42.0)
     keynote(svg, 33.0, 33.0, 5, 35.5, 38.0)
     keynote(svg, 35.0, 56.0, 6)
-    keynote(svg, 33.5, 75.5, 7)
+    keynote(svg, 36.4, 76.0, 7)
     keynote(svg, 43.0, 92.5, 8, 46.0, 94.5)
     keynote(svg, 18.4, 91.6, 9, 14.0, 94.5)
     keynote(svg, 19.75, 85.2, 10)
     keynote(svg, 44.0, 46.5, 11)
-    keynote(svg, 52.6, 78.3, 12)
+    keynote(svg, D.PRIMARY_BATH["shower"][2] - 0.9, 78.3, 12)
+    if cp:
+        keynote(svg, (cp["x0"] + cp["x1"]) / 2, cp["y0"] + 1.4, 13)
+    if hv:
+        x0, y0, x1, y1 = hv["pad"]
+        keynote(svg, (x0 + x1) / 2, y1, 14, (x0 + x1) / 2, y1 + 2.4)
+    for k in sk:
+        x0, y0, x1, y1 = k["rect"]
+        keynote(svg, x1, y1, 15, x1 + 1.6, y1 + 1.6)
+    if hv:
+        x0, y0, x1, y1 = hv["dropped"][3]["rect"]
+        keynote(svg, x0 + 0.3, y1 - 0.3, 16, x0 - 3.7, y1 + 1.2)
     # dimension chains (exterior faces)
     svg.layer = "A-ANNO-DIMS"
-    s_ops = [4.5, 6, 8.5, 10.5, 28, 28.5, 32.5, 54]
+    def wall_edges(wid):
+        w = [w for w in D.EXT_WALLS if w["id"] == wid][0]
+        (ax, ay), (bx, by) = w["a"], w["b"]
+        L = math.hypot(bx - ax, by - ay)
+        ux, uy = (bx - ax) / L, (by - ay) / L
+        pts = [ax if abs(ux) > 0.5 else ay, bx if abs(ux) > 0.5 else by]
+        for o in w["openings"]:
+            for t in (o["off"], o["off"] + o["w"]):
+                pts.append(ax + ux * t if abs(ux) > 0.5 else ay + uy * t)
+        return pts
+    X0, X1 = D.BAR["x0"], D.BAR["x1"]
+    cpx = [cp["x1"]] if cp else []
+    s_ops = wall_edges("S-wing") + [D.LIMESTONE_WALL["x0"], D.ENTRY_GATE["x0"], D.ENTRY_GATE["x1"],
+                                    D.CEDAR_SCREEN["x"]] + cpx
     chain(svg, s_ops, 30, True, -6.2)
-    chain(svg, [6, 28, 54], 30, True, -9.0)
-    chain(svg, [6, 54], 30, True, -11.8, size=9)
-    n_ops = [6, 9, 17, 20.5, 38.5, 47, 52.5, 54]
-    chain(svg, n_ops, 92.5, True, 3.4)
-    chain(svg, [6, 16, 18.4, 40.6, 43, 54], 92.5, True, 6.2)
-    chain(svg, [6, 54], 92.5, True, 9.4, size=9)
-    w_ops = [30, 34, 38, 52, 56, 60, 80]
-    chain(svg, w_ops, 6, False, -6.0)
+    chain(svg, [X0, D.WING["x1"], D.CEDAR_SCREEN["x"]] + cpx, 30, True, -9.0)
+    chain(svg, [X0, X1], 30, True, -11.8, size=9)
+    chain(svg, wall_edges("N-bar"), 92.5, True, 3.4)
+    chain(svg, [X0, 16, 18.4, 40.6, 43, X1], 92.5, True, 6.2)
+    chain(svg, [X0, X1], 92.5, True, 9.4, size=9)
+    chain(svg, wall_edges("W") + [60], 6, False, -6.0)
     chain(svg, [30, 60, 80, 92.5], 6, False, -8.8)
     chain(svg, [30, 92.5], 6, False, -11.6, size=9)
-    e_ops = [30, 60, 63, 66, 76.9, 79.2, 80]
-    chain(svg, e_ops, 54, False, 6.0)
-    chain(svg, [27, 30, 60, 80, 83], 54, False, 8.8)
+    chain(svg, wall_edges("E-bar") + [30, (cp["y1"] if cp else 60)], X1, False, 6.0)
+    chain(svg, [27, 30, 60, 80, 83], X1, False, 8.8)
     # interior: wing rooms + courtyard clear
     chain(svg, [30.5, 41.5, 48.5, 60], 23.0, False, -1.4, size=7)
-    chain(svg, [28, 54], 48, True, 0.0, size=8)
+    chain(svg, [D.COURTYARD["x0"], D.COURTYARD["x1"]], 48, True, 0.0, size=8)
     # section + elevation markers
     svg.layer = "A-ANNO-SYMB"
     for (yy, up) in ((16.4, True), (100.4, False)):
@@ -403,7 +485,7 @@ def floor_plan_cd():
         svg.text(34, yy + (-1.0 if up else 1.0), "A", 8, weight=700, extra='dy="3"')
     elev_marker(svg, 22, 16.2, 1, "A-202", "n")
     elev_marker(svg, 22, 100.0, 2, "A-202", "s")
-    elev_marker(svg, 74.5, 72, 3, "A-203", "w")
+    elev_marker(svg, max(74.5, D.BAR["x1"] + 13.5), 72, 3, "A-203", "w")
     elev_marker(svg, -11.8, 70, 4, "A-203", "e")
     north_arrow(svg, svg.w - 44, 42, 20)
     scale_bar(svg, 30, svg.h - 18)
