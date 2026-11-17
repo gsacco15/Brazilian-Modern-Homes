@@ -16,6 +16,7 @@ os.makedirs(V2, exist_ok=True)
 drawings.OUT = drawings_cd.OUT = V2
 print(drawings_cd.floor_plan_cd())
 print(drawings.site_plan())
+print(drawings_cd.elev_cd("32_elev_s_cd.svg", "s"))
 try:
     import drawings_dxf
     drawings_dxf.main(os.path.join(V2, "30_floor_plan_cd.svg"), os.path.join(V2, "A-101_Floor_Plan_V2.dxf"))

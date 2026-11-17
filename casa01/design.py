@@ -12,8 +12,9 @@ courtyard. One long horizontal roof plate ties the street facade together.
 Street side: a Texas limestone wall + a full-height cobogó screen.
 Rear: a deep cedar-lined veranda facing a heritage live oak.
 
-V2 (in review, Nov 2026): living bar +4 ft east for a larger great room, carport at the
-front-east under the same roof with a private primary garden behind it, Bath 2 re-planned,
+V2 (in review, Nov 2026): living bar +4 ft east for a larger great room; one-car carport at the
+front-east under the same roof behind a sliding cedar gate; one L-shaped courtyard that wraps
+behind the carport; bedroom wing 2 ft narrower to keep the courtyard wide; Bath 2 re-planned,
 stock-size sliders, two skylights, HVAC (1 outdoor unit + 2 concealed air handlers),
 water heater in the laundry, door swings cleared. V1 is in git history.
 """
@@ -50,10 +51,10 @@ VENEER_T = 0.33          # limestone veneer thickness incl. air gap
 # --------------------------------------------------------------------------
 # Building footprint (outer face of exterior walls), CCW, interior on left
 # --------------------------------------------------------------------------
-FOOTPRINT = [(6, 30), (28, 30), (28, 60), (58, 60), (58, 80), (6, 80)]
-WING = dict(x0=6, x1=28, y0=30, y1=60)     # bedroom wing
+FOOTPRINT = [(6, 30), (26, 30), (26, 60), (58, 60), (58, 80), (6, 80)]
+WING = dict(x0=6, x1=26, y0=30, y1=60)     # bedroom wing (V2: 2 ft narrower)
 BAR = dict(x0=6, x1=58, y0=60, y1=80)      # living bar (V2: +4 ft east)
-COURTYARD = dict(x0=28, x1=48.5, y0=30, y1=60)   # V2: east 5.5 ft given to the carport
+COURTYARD = dict(x0=26, x1=48.5, y0=30, y1=60)   # main rectangle; V2 adds an ell behind the carport (OUTDOOR)
 
 # --------------------------------------------------------------------------
 # Exterior walls: outer-face line a->b, thickness to the LEFT (inside).
@@ -61,20 +62,20 @@ COURTYARD = dict(x0=28, x1=48.5, y0=30, y1=60)   # V2: east 5.5 ft given to the 
 # kind: fixed | casement | slider | pivot | door
 # --------------------------------------------------------------------------
 EXT_WALLS = [
-    dict(id="S-wing", a=(6, 30), b=(28, 30), finish="limestone", openings=[
+    dict(id="S-wing", a=(6, 30), b=(26, 30), finish="limestone", openings=[
         dict(kind="fixed", off=2.5, w=2.0, sill=1.0, head=9.0, name="Bed 2 slot window"),
     ]),
-    dict(id="E-gallery", a=(28, 30), b=(28, 60), finish="stucco", openings=[
+    dict(id="E-gallery", a=(26, 30), b=(26, 60), finish="stucco", openings=[
         dict(kind="pivot", off=1.25, w=4.0, sill=0.0, head=9.0, name="Front door (cedar pivot)"),
         dict(kind="slider", off=5.75, w=23.75, sill=0.0, head=9.0, panels=5,
              name="Gallery glass wall"),
     ]),
-    dict(id="S-bar", a=(28, 60), b=(58, 60), finish="stucco", openings=[
-        dict(kind="slider", off=1.75, w=12.0, sill=0.0, head=9.0, panels=3,
+    dict(id="S-bar", a=(26, 60), b=(58, 60), finish="stucco", openings=[
+        dict(kind="slider", off=3.75, w=12.0, sill=0.0, head=9.0, panels=3,
              name="Great room to courtyard"),                       # stock 12' 3-panel
-        dict(kind="fixed", off=16.0, w=4.0, sill=1.5, head=9.0, name="Primary bedroom to courtyard"),
-        dict(kind="slider", off=21.25, w=8.0, sill=0.0, head=9.0, panels=2,
-             name="Primary bedroom to garden"),                     # stock 8' 2-panel
+        dict(kind="fixed", off=18.0, w=4.0, sill=1.5, head=9.0, name="Primary bedroom window"),
+        dict(kind="slider", off=23.25, w=8.0, sill=0.0, head=9.0, panels=2,
+             name="Primary bedroom to courtyard"),                  # stock 8' 2-panel, onto the courtyard ell
     ]),
     dict(id="E-bar", a=(58, 60), b=(58, 80), finish="stucco", openings=[
         dict(kind="casement", off=3.0, w=3.0, sill=3.0, head=9.0, name="Primary bedroom east"),
@@ -93,7 +94,7 @@ EXT_WALLS = [
 ]
 
 # Limestone feature plane: slides past the west wall like a free-standing fin
-LIMESTONE_WALL = dict(x0=4.5, x1=28.0, y_face=30.0 - VENEER_T, y_back=30.0,
+LIMESTONE_WALL = dict(x0=4.5, x1=26.0, y_face=30.0 - VENEER_T, y_back=30.0,
                       z0=GRADE, z1=CEIL)
 
 # --------------------------------------------------------------------------
@@ -101,17 +102,17 @@ LIMESTONE_WALL = dict(x0=4.5, x1=28.0, y_face=30.0 - VENEER_T, y_back=30.0,
 # --------------------------------------------------------------------------
 PARTITIONS = [
     # Bedroom wing
-    dict(a=(23.0, 30.5), b=(23.0, 60.0), openings=[       # gallery wall
+    dict(a=(21.0, 30.5), b=(21.0, 60.0), openings=[       # gallery wall
         dict(off=8.0, w=2.67, kind="door", name="Bed 2"),            # V2: clear of the bed
         dict(off=13.0, w=2.67, kind="door", name="Bath"),
         dict(off=18.5, w=2.67, kind="door", name="Bed 3"),           # V2: clear of the bed
     ]),
-    dict(a=(6.5, 41.5), b=(23.0, 41.5), openings=[dict(off=1.5, w=4.0, kind="closet")]),
-    dict(a=(6.5, 48.5), b=(23.0, 48.5), openings=[dict(off=1.5, w=4.0, kind="closet")]),
+    dict(a=(6.5, 41.5), b=(21.0, 41.5), openings=[dict(off=1.5, w=4.0, kind="closet")]),
+    dict(a=(6.5, 48.5), b=(21.0, 48.5), openings=[dict(off=1.5, w=4.0, kind="closet")]),
     dict(a=(13.0, 41.5), b=(13.0, 48.5), openings=[]),
     dict(a=(6.5, 45.0), b=(13.0, 45.0), openings=[]),
     # Bed 3 / kitchen
-    dict(a=(6.5, 60.0), b=(23.19, 60.0), openings=[]),
+    dict(a=(6.5, 60.0), b=(21.19, 60.0), openings=[]),
     # Laundry + mechanical
     dict(a=(13.0, 60.0), b=(13.0, 65.5), openings=[dict(off=1.5, w=2.67, kind="door", name="Laundry", swing=-1)]),
     dict(a=(6.5, 65.5), b=(13.0, 65.5), openings=[]),
@@ -135,34 +136,34 @@ ROOMS = [
     dict(name="Primary Bedroom", poly=[(43.2, 60.5), (57.5, 60.5), (57.5, 71.3), (43.2, 71.3)], label=(47.6, 68.6)),
     dict(name="Walk-in", poly=[(43.2, 71.7), (49.3, 71.7), (49.3, 79.5), (43.2, 79.5)], label=(46.2, 78.0), small=True),
     dict(name="Primary Bath", poly=[(49.7, 71.7), (57.5, 71.7), (57.5, 79.5), (49.7, 79.5)], label=(54.5, 75.0), small=True),
-    dict(name="Bedroom 3", poly=[(6.5, 48.7), (22.8, 48.7), (22.8, 59.8), (6.5, 59.8)], label=(14.6, 55.6)),
-    dict(name="Bath 2", poly=[(13.2, 41.7), (22.8, 41.7), (22.8, 48.3), (13.2, 48.3)], label=(18.0, 45.0), small=True),
+    dict(name="Bedroom 3", poly=[(6.5, 48.7), (20.8, 48.7), (20.8, 59.8), (6.5, 59.8)], label=(13.6, 55.6)),
+    dict(name="Bath 2", poly=[(13.2, 41.7), (20.8, 41.7), (20.8, 48.3), (13.2, 48.3)], label=(17.0, 45.0), small=True),
     dict(name="Cl.", poly=[(6.5, 41.7), (12.8, 41.7), (12.8, 44.8), (6.5, 44.8)], label=(9.7, 43.3), small=True, show_area=False),
     dict(name="Cl.", poly=[(6.5, 45.2), (12.8, 45.2), (12.8, 48.3), (6.5, 48.3)], label=(9.7, 46.8), small=True, show_area=False),
-    dict(name="Bedroom 2", poly=[(6.5, 30.5), (22.8, 30.5), (22.8, 41.3), (6.5, 41.3)], label=(14.6, 34.6)),
-    dict(name="Gallery", poly=[(23.2, 30.5), (27.5, 30.5), (27.5, 60.2), (23.2, 60.2)], label=(25.35, 47.0), vertical=True),
+    dict(name="Bedroom 2", poly=[(6.5, 30.5), (20.8, 30.5), (20.8, 41.3), (6.5, 41.3)], label=(13.6, 34.6)),
+    dict(name="Gallery", poly=[(21.2, 30.5), (25.5, 30.5), (25.5, 60.2), (21.2, 60.2)], label=(23.35, 47.0), vertical=True),
 ]
 
 OUTDOOR = [
-    dict(name="Pátio (courtyard)", poly=[(28, 36), (48.5, 36), (48.5, 60), (28, 60)], label=(38.0, 39.0)),
-    dict(name="Covered entry", poly=[(28, 30.33), (48.5, 30.33), (48.5, 36), (28, 36)], label=(44.3, 33.2)),
+    dict(name="Pátio (courtyard)", poly=[(26, 36), (48.5, 36), (48.5, 50), (58, 50), (58, 60), (26, 60)],
+         label=(37.2, 39.0)),                                    # V2: one L-shaped courtyard
+    dict(name="Covered entry", poly=[(26, 30.33), (48.5, 30.33), (48.5, 36), (26, 36)], label=(43.3, 33.2)),
     dict(name="Veranda", poly=[(18, 80), (41, 80), (41, 92), (18, 92)], label=(31.0, 90.6)),
-    dict(name="Carport", poly=[(48.5, 30), (59.5, 30), (59.5, 50), (48.5, 50)], label=(54.0, 47.6)),
-    dict(name="Primary garden", poly=[(48.5, 50), (58, 50), (58, 60), (48.5, 60)], label=(53.2, 55.0)),
+    dict(name="Carport", poly=[(48.5, 30), (59.5, 30), (59.5, 50), (48.5, 50)], label=(54.0, 48.5)),
 ]
 
 # --------------------------------------------------------------------------
 # Roof: one continuous thin plate (low slope 1/4":12" to scuppers on north)
 # --------------------------------------------------------------------------
 # V2: the plate runs on over the carport; the courtyard and the primary garden stay open to the sky
-ROOF = [(3, 27), (60, 27), (60, 50), (48, 50), (48, 36), (31, 36), (31, 56), (60, 56), (60, 83),
+ROOF = [(3, 27), (60, 27), (60, 50), (48, 50), (48, 36), (29, 36), (29, 56), (60, 56), (60, 83),
         (43, 83), (43, 92.5), (16, 92.5), (16, 83), (3, 83)]
 
 # Soffit zones finished in cedar tongue & groove (the rest: smooth white)
 CEDAR_SOFFITS = [
-    dict(name="Entry canopy", x0=28.0, x1=60.0, y0=27.0, y1=36.0, dir="y"),   # street edge, over the carport too
-    dict(name="Gallery eave", x0=28.0, x1=31.0, y0=36.0, y1=56.0, dir="y"),
-    dict(name="Courtyard eave", x0=28.0, x1=60.0, y0=56.0, y1=60.0, dir="y"),
+    dict(name="Entry canopy", x0=26.0, x1=60.0, y0=27.0, y1=36.0, dir="y"),   # street edge, over the carport too
+    dict(name="Gallery eave", x0=26.0, x1=29.0, y0=36.0, y1=56.0, dir="y"),
+    dict(name="Courtyard eave", x0=26.0, x1=60.0, y0=56.0, y1=60.0, dir="y"),
     dict(name="Veranda", x0=16.0, x1=43.0, y0=80.0, y1=92.5, dir="y"),
 ]
 # Interior ceilings in cedar (continuous with the soffits outside). V2: great room only;
@@ -174,24 +175,29 @@ CEDAR_CEILINGS = [
 # Entry feature: monochrome black calçada portuguesa under the canopy, inside the gate,
 # framed by a 6" band of smooth light concrete (about 50 sf of mosaic). Shaded, so the
 # dark stone stays comfortable in summer; the pátio and veranda keep light limestone.
-ENTRY_MOSAIC = dict(x0=28.0, x1=40.0, y0=30.4, y1=36.0, band=0.5)
+ENTRY_MOSAIC = dict(x0=26.0, x1=38.0, y0=30.4, y1=36.0, band=0.5)
 
 # Slender steel posts (4" square, dark bronze)
-POSTS = [(48.75, 30.6), (59.25, 30.6), (48.75, 49.4), (59.25, 49.4), (18.4, 91.6), (40.6, 91.6)]  # carport + veranda
+POSTS = [(48.75, 31.2), (59.25, 31.2), (48.75, 49.6), (59.25, 49.6), (18.4, 91.6), (40.6, 91.6)]  # carport + veranda
 
 # --------------------------------------------------------------------------
 # Signature screens
 # --------------------------------------------------------------------------
 BLOCK = 1.0  # 12" x 12" x 4" precast concrete breeze block
-COBOGO = dict(x0=33.0, x1=48.0, y=30.0, t=0.33, z0=FF, z1=CEIL,    # V2: 15 blocks wide
+COBOGO = dict(x0=31.0, x1=48.0, y=30.0, t=0.33, z0=FF, z1=CEIL,    # V2: 17 blocks wide (V1: 21)
               base=(GRADE, FF))   # cast concrete curb under the blocks
-ENTRY_GATE = dict(x0=28.5, x1=32.5, y=30.0, z0=HARDSCAPE, z1=CEIL)  # cedar slat pivot gate
-CEDAR_SCREEN = dict(x=48.5, y0=30.33, y1=60.0, z0=HARDSCAPE, z1=CEIL,
+ENTRY_GATE = dict(x0=26.5, x1=30.5, y=30.0, z0=HARDSCAPE, z1=CEIL)  # cedar slat pivot gate
+CEDAR_SCREEN = dict(x=48.5, y0=30.33, y1=50.0, z0=HARDSCAPE, z1=CEIL,       # V2: carport | courtyard
                     slat_w=1.5 / 12, slat_d=3.5 / 12, gap=2.0 / 12,
                     openings=[(31.0, 34.5)])                    # V2: gate from the carport to the entry
 CARPORT = dict(x0=48.5, x1=59.5, y0=30.0, y1=50.0)            # one car, open to the street, under the roof
 CARPORT_GATE = dict(x=48.5, y0=31.0, y1=34.5, z0=HARDSCAPE, z1=CEIL)
-GARDEN_SCREEN = dict(x0=48.5, x1=58.5, y=50.0, z0=HARDSCAPE, z1=CEIL)   # cedar slats, carport | primary garden
+# Other cedar slat screens (same slats as CEDAR_SCREEN): carport | courtyard ell, and the ell's
+# east edge to the side yard, which brings morning light into the courtyard
+SLAT_SCREENS = [dict(name="Carport north", axis="x", y=50.0, x0=48.5, x1=59.5),
+                dict(name="Courtyard east", axis="y", x=58.0, y0=50.0, y1=60.0)]
+# Motorized sliding cedar gate across the carport; when open it parks behind the cobogó
+CARPORT_SLIDER = dict(x0=48.5, x1=59.5, y=30.55, park_x0=37.5, z0=HARDSCAPE, z1=CEIL)
 
 # --------------------------------------------------------------------------
 # Furniture & fixtures (plan symbols + 3D). x,y = center; w along x, d along y
@@ -218,21 +224,21 @@ FURNITURE = [
     # primary bath: see PRIMARY_BATH below (walk-in wet room, floating vanity, wall-hung wc)
     dict(t="wc_wall", x=57.0, y=73.2, face="w"),
     # Bedroom 2 & 3
-    dict(t="bed", x=19.2, y=36.0, w=7.0, d=5.0, face="w", size="queen"),
+    dict(t="bed", x=17.3, y=36.0, w=7.0, d=5.0, face="w", size="queen"),
     dict(t="desk", x=8.0, y=36.0, w=2.0, d=4.5),
-    dict(t="bed", x=19.2, y=55.0, w=7.0, d=5.0, face="w", size="queen"),
+    dict(t="bed", x=17.3, y=55.0, w=7.0, d=5.0, face="w", size="queen"),
     dict(t="desk", x=8.0, y=55.0, w=2.0, d=4.5),
     # Bath 2 (V2): tub/shower on the far wall, vanity + toilet on the long walls, door swing clear
     dict(t="tub", x=14.55, y=44.2, w=2.67, d=5.0, face="n"),
-    dict(t="vanity", x=18.5, y=47.42, w=4.0, d=1.75),
-    dict(t="wc", x=18.5, y=42.75, face="n"),
+    dict(t="vanity", x=17.9, y=47.42, w=3.0, d=1.75),
+    dict(t="wc", x=17.4, y=42.75, face="n"),
     # Laundry (V2): stacked washer/dryer + heat-pump water heater; door swings out
     dict(t="washer", x=7.8, y=61.35, label="W/D"), dict(t="wh", x=10.4, y=61.25),
     # Veranda
     dict(t="grill_counter", x=19.75, y=85.2, w=2.5, d=7.5),
     dict(t="outdoor_table", x=27.6, y=86.2, w=8.0, d=3.5, chairs=8),
     dict(t="planter", x=39.6, y=81.4), dict(t="planter", x=17.3, y=91.2),
-    dict(t="credenza", x=19.0, y=61.0, w=6.0, d=1.5),   # clear of the gallery opening and laundry door
+    dict(t="credenza", x=18.3, y=61.0, w=5.0, d=1.5),   # clear of the gallery opening and laundry door
     # rear yard: a pair of lounge chairs on the lawn under the heritage oak
     dict(t="lounge_chair", x=24.5, y=101.5, face="s"),
     dict(t="lounge_chair", x=28.5, y=101.0, face="s"),
@@ -275,21 +281,21 @@ TREES = [
 
 PATHS = [
     # stepping slabs from the sidewalk to the gate (3' x 1.5' limestone)
-    dict(kind="steps", x=30.5, y0=0.0, y1=29.5, w=3.0, d=1.5, gap=1.0),
+    dict(kind="steps", x=28.5, y0=0.0, y1=29.5, w=3.0, d=1.5, gap=1.0),
 ]
 # Ribbon drive into the carport (east side, beside — not in front of — the cobogó)
 DRIVEWAY = dict(strips=[(50.5, 52.5), (55.5, 57.5)], y0=CURB_Y, y1=30.0)
 
 PLANTING = [
-    dict(name="Front meadow", poly=[(0.5, 0.5), (29.0, 0.5), (29.0, 27.0), (0.5, 27.0)]),
-    dict(name="Front meadow E", poly=[(32.0, 0.5), (49.5, 0.5), (49.5, 26.5), (32.0, 26.5)]),
-    dict(name="Courtyard garden", poly=[(31.5, 36.5), (48.0, 36.5), (48.0, 52.0), (31.5, 52.0)]),
-    dict(name="Primary garden", poly=[(49.0, 50.5), (57.5, 50.5), (57.5, 55.5), (49.0, 55.5)]),
+    dict(name="Front meadow", poly=[(0.5, 0.5), (27.0, 0.5), (27.0, 27.0), (0.5, 27.0)]),
+    dict(name="Front meadow E", poly=[(30.0, 0.5), (49.5, 0.5), (49.5, 26.5), (30.0, 26.5)]),
+    dict(name="Courtyard garden", poly=[(29.5, 36.5), (48.0, 36.5), (48.0, 50.5), (57.5, 50.5), (57.5, 55.5),
+                                        (42.5, 55.5), (42.5, 52.0), (29.5, 52.0)]),
     dict(name="Rear meadow", poly=[(0.5, 93.5), (64.5, 93.5), (64.5, 124.5), (0.5, 124.5)]),
 ]
 
 # V2 skylights (low-slope roof): daylight for the windowless Bath 2 and the walk-in closet
-SKYLIGHTS = [dict(name="Bath 2", rect=(16.5, 44.0, 20.5, 46.0)),
+SKYLIGHTS = [dict(name="Bath 2", rect=(15.9, 44.0, 19.9, 46.0)),
              dict(name="Walk-in", rect=(45.25, 74.6, 47.25, 76.6))]
 
 # V2 HVAC (tracker P1-32, option A): one variable-speed outdoor heat pump on a pad in the west
@@ -299,14 +305,15 @@ HVAC = dict(pad=(1.2, 61.0, 4.4, 64.6),
                  dict(name="AHU-2", serves="primary suite", at=(48.05, 73.3))],
             dropped=[dict(name="Laundry", rect=(6.5, 60.2, 12.8, 65.3)),
                      dict(name="Walk-in", rect=(43.2, 71.7, 49.3, 79.5)),
-                     dict(name="Bath 2", rect=(13.2, 41.7, 22.8, 48.3)),
+                     dict(name="Bath 2", rect=(13.2, 41.7, 20.8, 48.3)),
                      dict(name="Closets", rect=(6.5, 41.7, 12.8, 48.3))],
             dropped_height="8'-6\"")
 
 # Hard paving shown on the plans
-PAVING = [dict(name="Covered entry", rect=(28.0, 30.33, 48.2, 36.0)),
-          dict(name="Gallery walk", rect=(28.0, 36.0, 31.5, 60.0)),
-          dict(name="Great room terrace", rect=(31.5, 52.0, 42.5, 60.0)),
+PAVING = [dict(name="Covered entry", rect=(26.0, 30.33, 48.2, 36.0)),
+          dict(name="Gallery walk", rect=(26.0, 36.0, 29.5, 60.0)),
+          dict(name="Great room terrace", rect=(29.5, 52.0, 42.5, 60.0)),
+          dict(name="Courtyard ell terrace", rect=(42.5, 55.5, 58.0, 60.0)),
           dict(name="Veranda", rect=(16.5, 80.0, 42.5, 92.5))]
 
 FENCE_H = 6.0  # horizontal-slat cedar fence on side & rear lot lines

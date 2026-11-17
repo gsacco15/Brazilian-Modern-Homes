@@ -613,9 +613,10 @@ def site_plan():
     # driveway ribbons + front path
     for (a, b) in D.DRIVEWAY["strips"]:
         svg.rect(a, D.DRIVEWAY["y0"], b, D.DRIVEWAY["y1"], fill="#dad6cf", stroke=MID, sw=0.5)
+    pth = D.PATHS[0]
     y = 0.4
     while y + 1.5 < 27.3:
-        svg.rect(29, y, 32, y + 1.5, fill="#efe6d2", stroke=MID, sw=0.4)
+        svg.rect(pth["x"] - pth["w"] / 2, y, pth["x"] + pth["w"] / 2, y + 1.5, fill="#efe6d2", stroke=MID, sw=0.4)
         y += 2.5
     # fences
     for (a, b) in D.FENCES:
@@ -789,20 +790,40 @@ def south_elevation(ztop=40):
     c = D.COBOGO
     svg.rect(c["x0"] - 0.5, 0, c["x1"] + 0.3, c["z0"], fill="#e7e3da", stroke=INK, sw=0.8)
     cobogo_elev(svg, c["x0"], c["x1"], c["z0"], c["z1"])
-    # cedar screen end (edge-on) + side yard
-    svg.rect(53.7, D.HARDSCAPE, 54.0, C, fill=CEDAR, stroke=INK, sw=0.5)
+    rx0, rx1 = min(p[0] for p in D.ROOF), max(p[0] for p in D.ROOF)
+    sl = getattr(D, "CARPORT_SLIDER", None)
+    if sl:   # carport: bronze posts + full-height sliding cedar gate (shown closed)
+        for px in (sl["x0"] + 0.25, sl["x1"] - 0.25):
+            svg.rect(px - 0.17, 0, px + 0.17, C, fill=POCHE, stroke=POCHE, sw=0.4)
+        svg.rect(sl["x0"] + 0.45, sl["z0"], sl["x1"] - 0.45, C - 0.05, fill="#e8c7a6", stroke=INK, sw=0.9)
+        x = sl["x0"] + 0.5
+        while x + 0.125 < sl["x1"] - 0.45:
+            svg.rect(x, sl["z0"] + 0.15, x + 0.125, C - 0.2, fill=CEDAR, stroke="none")
+            x += 0.29
+        svg.rect(sl["x0"], 0, sl["x1"], D.HARDSCAPE * 0.5, fill="#dad6cf", stroke=INK, sw=0.5)   # drive apron
+    else:    # cedar screen end (edge-on) + side yard
+        sx = D.CEDAR_SCREEN["x"]
+        svg.rect(sx - 0.3, D.HARDSCAPE, sx, C, fill=CEDAR, stroke=INK, sw=0.5)
     # roof plate: one continuous fascia
-    svg.rect(3, C, 57, FT, fill=POCHE, stroke=POCHE, sw=0.5)
-    svg.rect(3, C - 0.12, 57, C, fill="#d9a77d", stroke="none")   # cedar soffit edge
+    svg.rect(rx0, C, rx1, FT, fill=POCHE, stroke=POCHE, sw=0.5)
+    svg.rect(rx0, C - 0.12, rx1, C, fill="#d9a77d", stroke="none")   # cedar soffit edge
     # entry step
     svg.rect(g["x0"] - 0.3, 0, g["x1"] + 0.3, D.HARDSCAPE * 0.5, fill="#efe6d2", stroke=INK, sw=0.6)
-    human(svg, 36.0, 0)
-    level_marks(svg, 60.5, [(FT, "T.O. ROOF  +12'-3\""), (C, "SOFFIT / CLG  +11'-0\""),
-                            (FF, "F.F.  +1'-0\""), (0, "GRADE  0'-0\"")])
+    human(svg, g["x1"] + 4.5, 0)
+    level_marks(svg, rx1 + 3.5, [(FT, "T.O. ROOF  +12'-3\""), (C, "SOFFIT / CLG  +11'-0\""),
+                                 (FF, "F.F.  +1'-0\""), (0, "GRADE  0'-0\"")])
     svg.leader(14.0, 6.0, 14.0, 17.5, "LUEDERS LIMESTONE ASHLAR, 3 COURSE HEIGHTS")
-    svg.leader(44.0, 7.0, 44.0, 17.5, "12x12x4 CONCRETE COBOGÓ, CIRCLE PATTERN")
-    svg.leader(30.5, 8.0, 27.0, 15.0, "CEDAR SLAT PIVOT GATE", anchor="end")
-    svg.leader(50.0, 11.6, 54.0, 14.5, "15\" DARK BRONZE FASCIA")
+    cxm = (c["x0"] + c["x1"]) / 2 + 2
+    svg.leader(cxm, 7.0, cxm, 17.5, "12x12x4 CONCRETE COBOGÓ, CIRCLE PATTERN")
+    gxm = (g["x0"] + g["x1"]) / 2
+    svg.leader(gxm, 8.0, gxm - 3.5, 15.0, "CEDAR SLAT PIVOT GATE", anchor="end")
+    if sl:
+        smx = (sl["x0"] + sl["x1"]) / 2
+        svg.leader(smx, 6.0, smx + 1.5, 15.8, "SLIDING CEDAR CARPORT GATE")
+    if sl:
+        svg.leader(rx0 + 8.0, 11.6, rx0 + 8.0, 21.0, "15\" DARK BRONZE FASCIA")
+    else:
+        svg.leader(rx1 - 6.0, 11.6, rx1 - 2.0, 14.0, "15\" DARK BRONZE FASCIA")
     svg.leader(9.5, 5.0, 4.0, 15.0, "SLOT WINDOW", anchor="end")
     return svg.save("03_elevation_south.svg")
 

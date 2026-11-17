@@ -25,20 +25,21 @@ CHANGES = [
      "The dining table turns north-south, so it no longer crowds the sofa."),
     ((51.5, 64.0), "Primary suite moved 4 ft east",
      "Same bedroom, walk-in and spa bath, shifted with the new east wall. The bath door moved so it clears the vanity."),
-    ((54.0, 40.5), "Covered carport (one car)",
-     "At the front-east corner under the same thin roof, 11 x 20 ft, no storage closet. The drive moves to line up with it. "
-     "A cedar gate (D15) leads straight into the covered entry and the front door."),
-    ((53.2, 52.4), "Private primary garden",
-     "The back of the carport becomes a small garden open to the sky, with an 8 ft slider (D3) from the primary bedroom. "
-     "A 4 ft window (W-3) still looks onto the courtyard."),
-    ((40.4, 47.0), "Courtyard narrower",
-     "The courtyard is 20'-6\" wide (was 26'-0\") to make room for the carport. The cedar screen moves to the carport line "
-     "and the cobogó is 15 ft long (was 21 ft)."),
-    ((16.0, 42.8), "Bath 2 re-planned",
+    ((54.0, 40.5), "Carport behind a sliding cedar gate",
+     "One car, 11 x 20 ft, at the front-east corner under the same thin roof. A motorized sliding cedar gate (D16) closes "
+     "it from the street and parks behind the cobogó when open. Cedar gate D15 leads into the covered entry and the front door."),
+    ((53.2, 54.0), "One L-shaped courtyard",
+     "The courtyard wraps behind the carport to the primary bedroom, whose 8 ft slider (D3) and window open onto it. "
+     "Cedar slats line the carport's two courtyard sides, and a new slat screen on the east edge brings in morning light. "
+     "763 sf with the covered entry (V1: 771)."),
+    ((10.2, 52.6), "Bedroom wing 2 ft narrower",
+     "Bedrooms 2 and 3 are 14'-3\" wide (were 16'-3\"), about 155 sf each, still fitting a queen bed and desk. "
+     "This keeps the courtyard 22'-6\" wide (V1: 26 ft) and the cobogó 17 ft (V1: 21 ft)."),
+    ((15.8, 42.6), "Bath 2 re-planned",
      "Tub/shower on the far wall, vanity and toilet on the long walls; the door from the gallery swings into clear floor."),
-    ((21.4, 51.0), "Door swings cleared",
+    ((19.3, 51.6), "Door swings cleared",
      "Bedroom 2 and 3 doors moved clear of the beds, the laundry door now swings out, the primary bath door clears the vanity. "
-     "Every door has a tag (D1-D15), including the front pivot door D1."),
+     "Every door has a tag (D1-D16), including the front pivot door D1."),
     ((32.0, 81.6), "Stock-size glass",
      "Veranda slider 16 ft (was a custom 18 ft), courtyard slider a stock 12 ft 3-panel (was 9'-6\"), primary 8 ft slider "
      "+ 4 ft window. The gallery glass wall stays as is."),
@@ -60,12 +61,12 @@ SPEC_CHANGES = [
     "Roof: low-slope TPO behind the bronze fascia stays the working assumption (marked TBD).",
 ]
 KEPT = ["Gallery glass wall (a signature feature)", "Laundry location", "Front cedar pivot door + entry gate",
-        "East cedar screen (now on the carport line)", "Black calçada entry", "Cobogó screen, limestone wall, thin roof",
-        "Cedar veranda", "3 bedrooms / 2 baths"]
+        "Arrival: carport, cedar gate, covered entry, front door", "Black calçada entry",
+        "Cobogó screen, limestone wall, thin roof", "Cedar veranda", "3 bedrooms / 2 baths"]
 LATER = ["Roof drainage, fascia depth, hail assembly", "Powder room, flex room, drop zone, storage", "Cobogó sourcing",
          "Low-maintenance wood", "Backup power + EV", "Acoustics, screened veranda, outdoor shower",
          "Courtyard drainage, oak root zone, impervious cover", "Structure, code, budget re-run",
-         "Elevations, renders, 3D model and lookbook V2 (after sign-off)"]
+         "Other elevations, renders, 3D model and lookbook V2 (after sign-off)"]
 
 
 def svg_file(path, markers=None, mapping=None):
@@ -99,29 +100,7 @@ def title_block(sheet, title, scale):
             f'<div class="warn">Concept design. Not for construction.</div></aside>')
 
 
-def main():
-    p2 = os.path.join(V2, "30_floor_plan_cd.svg")
-    m2 = mapping_of(p2)
-    sched = json.load(open(os.path.join(V2, "schedules.json")))
-    area = D.area_schedule()
-    items = "".join(f'<li><b>{t}</b> {d}</li>' for _xy, t, d in CHANGES)
-    spec = "".join(f"<li>{t}</li>" for t in SPEC_CHANGES)
-    kept = "".join(f"<li>{t}</li>" for t in KEPT)
-    later = "".join(f"<li>{t}</li>" for t in LATER)
-    doors = "".join(f"<tr><td><b>{d['tag']}</b></td><td>{d['name']}</td><td>{d['type']}</td></tr>" for d in sched["doors"])
-    knotes = "".join(f"<li>{k}</li>" for k in sched["keynotes"])
-    cmp_rows = [("Conditioned area", "1,620 sf", f"{area['conditioned']:,.0f} sf"),
-                ("Living area", "196 sf", "262 sf"), ("Dining area", "164 sf", "193 sf"), ("Kitchen", "186 sf", "173 sf"),
-                ("Courtyard + covered entry", "771 sf", f"{area['courtyard']:,.0f} sf"),
-                ("Carport", "—", f"{area['carport']:,.0f} sf"), ("Roof plate", "2,760 sf", f"{area['roof']:,.0f} sf"),
-                ("Bedrooms / baths", "3 / 2", "3 / 2"), ("Skylights", "—", "2")]
-    cmp = "".join(f"<tr><td>{a}</td><td class='n'>{b}</td><td class='n'><b>{c}</b></td></tr>" for a, b, c in cmp_rows)
-    cost = [("Great room +80 sf", "Adds about $25–30K"), ("Carport, no storage", "Adds about $15–25K"),
-            ("Two skylights", "Adds $4–8K"), ("HVAC option A", "About $0–8K"),
-            ("Cedar ceilings scaled back", "Saves $15–30K"), ("Stock-size glass", "Saves about $10–25K"),
-            ("Zellige-look porcelain", "Saves $3–8K")]
-    costr = "".join(f"<tr><td>{a}</td><td>{b}</td></tr>" for a, b in cost)
-    css = """
+CSS = """
 @page{size:17in 11in;margin:0}
 *{box-sizing:border-box}
 body{margin:0;font-family:Lato,"Helvetica Neue",Arial,sans-serif;color:#1b1d1f;-webkit-print-color-adjust:exact;print-color-adjust:exact}
@@ -142,7 +121,7 @@ h2{margin:0 0 6px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;c
 .cols{display:grid;grid-template-columns:1.55fr 1fr;gap:.25in;min-height:0}
 .plan{min-height:0;display:flex;align-items:center;justify-content:center}
 .plan svg{max-height:100%}
-ol.chg{margin:0;padding-left:0;list-style:none;counter-reset:c;display:grid;gap:6px;font-size:10.5px;line-height:1.35}
+ol.chg{margin:0;padding-left:0;list-style:none;counter-reset:c;display:grid;gap:5px;font-size:10.2px;line-height:1.33}
 ol.chg li{counter-increment:c;padding-left:24px;position:relative}
 ol.chg li::before{content:counter(c);position:absolute;left:0;top:0;color:#c0392b;font-weight:900;border:1.6px solid #c0392b;
   width:16px;height:14px;font-size:9px;display:grid;place-items:center;clip-path:polygon(50% 0,100% 100%,0 100%);padding-top:3px}
@@ -160,46 +139,91 @@ td.n{text-align:right;font-variant-numeric:tabular-nums}
 .sign{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.2in;font-size:11px}
 .sign div{border-top:1px solid #1b1d1f;padding-top:4px}
 .chk{display:flex;gap:.3in;font-size:12px}.chk span::before{content:"";display:inline-block;width:12px;height:12px;border:1.5px solid #1b1d1f;margin-right:6px;vertical-align:-2px}
+.elev{display:grid;grid-template-rows:1fr auto;min-height:0}
 """
+
+
+def main():
+    p2 = os.path.join(V2, "30_floor_plan_cd.svg")
+    m2 = mapping_of(p2)
+    sched = json.load(open(os.path.join(V2, "schedules.json")))
+    area = D.area_schedule()
+    rooms = {r["name"]: D.poly_area(r["poly"]) for r in D.ROOMS}
+    items = "".join(f'<li><b>{t}</b> {d}</li>' for _xy, t, d in CHANGES)
+    spec = "".join(f"<li>{t}</li>" for t in SPEC_CHANGES)
+    kept = "".join(f"<li>{t}</li>" for t in KEPT)
+    later = "".join(f"<li>{t}</li>" for t in LATER)
+    doors = "".join(f"<tr><td><b>{d['tag']}</b></td><td>{d['name']}</td><td>{d['type']}</td></tr>" for d in sched["doors"])
+    knotes = "".join(f"<li>{k}</li>" for k in sched["keynotes"])
+    cmp_rows = [("Conditioned area", "1,620 sf", f"{area['conditioned']:,.0f} sf"),
+                ("Living / dining", "196 / 164 sf", f"{rooms['Living']:.0f} / {rooms['Dining']:.0f} sf"),
+                ("Bedroom 2 / Bedroom 3", "176 / 181 sf", f"{rooms['Bedroom 2']:.0f} / {rooms['Bedroom 3']:.0f} sf"),
+                ("Bath 2", "63 sf", f"{rooms['Bath 2']:.0f} sf"),
+                ("Courtyard + covered entry", "771 sf", f"{area['courtyard']:,.0f} sf"),
+                ("Courtyard width / cobogó", "26'-0\" / 21 ft", "22'-6\" / 17 ft"),
+                ("Carport", "—", f"{area['carport']:,.0f} sf, sliding cedar gate"),
+                ("Roof plate", "2,760 sf", f"{area['roof']:,.0f} sf"), ("Bedrooms / baths", "3 / 2", "3 / 2"),
+                ("Skylights", "—", "2")]
+    cmp = "".join(f"<tr><td>{a}</td><td class='n'>{b}</td><td class='n'><b>{c}</b></td></tr>" for a, b, c in cmp_rows)
+    cost = [("Conditioned area +20 sf net (great room +80, bedroom wing −60)", "Adds about $5–10K"),
+            ("Carport, no storage", "Adds about $15–25K"), ("Motorized sliding cedar gate", "Adds about $6–10K"),
+            ("East slat screen", "Adds about $1–2K"), ("Two skylights", "Adds $4–8K"), ("HVAC option A", "About $0–8K"),
+            ("Cedar ceilings scaled back", "Saves $15–30K"), ("Stock-size glass", "Saves about $10–25K"),
+            ("Zellige-look porcelain", "Saves $3–8K")]
+    costr = "".join(f"<tr><td>{a}</td><td>{b}</td></tr>" for a, b in cost)
     tb1 = title_block("V2-1", "Floor plan, changes", "1/8\" = 1'-0\" (approx.)")
-    tb3 = title_block("V2-3", "Site plan + carport", "1\" = 20'-0\" (approx.)")
+    tb2 = title_block("V2-2", "Street front", "1/8\" = 1'-0\" (approx.)")
+    tb4 = title_block("V2-4", "Site plan + carport", "1\" = 20'-0\" (approx.)")
     pages = []
     # 1: V2 plan with change markers
     pages.append(
         f'<section class="page"><div class="main" style="grid-template-rows:auto 1fr"><h1>V2 floor plan · numbered changes from V1</h1>'
         f'<div class="cols"><div class="plan">{svg_file(p2, CHANGES, m2)}</div>'
         f'<div style="min-height:0;overflow:hidden"><h2>What changed (red triangles on the plan)</h2><ol class="chg">{items}</ol>'
-        f'<h2 style="margin-top:12px">Spec changes (no plan change)</h2><ul>{spec}</ul></div></div></div>'
+        f'<h2 style="margin-top:10px">Spec changes (no plan change)</h2><ul>{spec}</ul></div></div></div>'
         + tb1 + '</section>')
-    # 2: V1 vs V2 side by side
+    # 2: street front V1 vs V2
     pages.append(
-        f'<section class="page"><div class="main" style="grid-template-rows:auto 1fr auto"><h1>V1 vs V2, same scale</h1>'
+        f'<section class="page"><div class="main" style="grid-template-rows:auto 1fr 1fr auto"><h1>Street front · V1 vs V2</h1>'
+        f'<div class="elev"><div class="plan">{svg_file(os.path.join(V1, "32_elev_s_cd.svg"))}</div>'
+        f'<div class="cap">V1 · limestone 23\'-6" · cedar gate 4\' · cobogó 21\' · open parking pad beside it</div></div>'
+        f'<div class="elev"><div class="plan">{svg_file(os.path.join(V2, "32_elev_s_cd.svg"))}</div>'
+        f'<div class="cap" style="color:#c0392b">V2 · limestone 21\'-6" · cedar gate 4\' · cobogó 17\' · sliding cedar carport gate 11\'</div></div>'
+        f'<div class="two"><div class="box"><b>How the front reads</b>One long roof edge over four screened parts: stone, cedar, '
+        f'cobogó, cedar. The carport gate repeats the pivot gate\'s slats, so the car is never part of the facade and the front '
+        f'reads as one composition rather than a house plus a garage.</div>'
+        f'<div class="box"><b>How the gate works</b>Motorized, full height to the soffit. Closed when the car is in. When it '
+        f'opens it slides west and parks behind the cobogó, where the slats show through the circles. Remote, keypad and '
+        f'safety sensors standard.</div></div></div>' + tb2 + '</section>')
+    # 3: V1 vs V2 plans
+    pages.append(
+        f'<section class="page"><div class="main" style="grid-template-rows:auto 1fr auto"><h1>V1 vs V2 plans, same scale</h1>'
         f'<div class="two"><div style="display:grid;grid-template-rows:1fr auto;min-height:0"><div class="plan">'
         f'{svg_file(os.path.join(V1, "30_floor_plan_cd.svg"))}</div><div class="cap">V1 · as presented</div></div>'
         f'<div style="display:grid;grid-template-rows:1fr auto;min-height:0"><div class="plan">{svg_file(p2)}</div>'
         f'<div class="cap" style="color:#c0392b">V2 · for sign-off</div></div></div>'
         f'<table><tr><th>Area</th><th style="text-align:right">V1</th><th style="text-align:right">V2</th></tr>{cmp}</table></div>'
-        f'{title_block("V2-2", "V1 vs V2", "Same scale")}</section>')
-    # 3: site plan + carport options
+        f'{title_block("V2-3", "V1 vs V2 plans", "Same scale")}</section>')
+    # 4: site plan + carport options
     pages.append(
         f'<section class="page"><div class="main" style="grid-template-rows:auto 1fr"><h1>Site plan · where the carport goes</h1>'
         f'<div class="cols" style="grid-template-columns:1fr 1.15fr"><div class="plan">{svg_file(os.path.join(V2, "01_site_plan.svg"))}</div>'
         f'<div style="display:grid;gap:.14in;align-content:start">'
-        f'<div class="box rec"><b>A · Front-east, under the main roof (drawn, recommended)</b>11 x 20 ft for one car, open to a ribbon '
-        f'drive. It is the only spot on a 65 ft lot that fits a car behind the 25 ft front setback and outside the 5 ft side setbacks. '
-        f'You arrive under the same roof and walk through a cedar gate into the covered entry. Costs 5.5 ft of courtyard width and '
-        f'6 ft of cobogó, and gives the primary bedroom a private garden behind it. The roof edge lands on the side setback line; '
-        f'eave rules to verify.</div>'
-        f'<div class="box"><b>A+ · Same, with a sliding cedar gate across the carport (option, later)</b>Hides the car and keeps the '
-        f'street face one continuous run of limestone, cedar and cobogó. Adds about $5–8K.</div>'
-        f'<div class="box"><b>B · Rear carport off a side driveway (not recommended)</b>Needs about 90 ft of driveway down the east '
-        f'side (about 800 sf more paving against the 45% impervious cover limit), cars pass the bedrooms, and the carport would sit '
-        f'in the heritage oak\'s protected root zone.</div>'
-        f'<div class="box"><b>C · In the front yard (not allowed)</b>Inside the 25 ft front setback.</div>'
+        f'<div class="box rec"><b>Chosen · Front-east carport, one courtyard, sliding cedar gate</b>11 x 20 ft for one car under '
+        f'the main roof, behind a sliding cedar gate. It is the only spot on a 65 ft lot that fits a car behind the 25 ft front '
+        f'setback and outside the 5 ft side setbacks. You arrive under the roof and walk through a cedar gate into the covered '
+        f'entry. The courtyard wraps behind it as one space; the bedroom wing gives up 2 ft so the courtyard stays 22\'-6" wide. '
+        f'The roof edge lands on the side setback line; eave rules to verify.</div>'
+        f'<div class="box"><b>Rear carport off a side driveway (not chosen)</b>About 90 ft of driveway down the east side (more '
+        f'paving against the 45% impervious cover limit), no room left for the bigger great room, cars beside the primary bedroom '
+        f'and veranda, the carport in the heritage oak\'s protected root zone, and no arrival through the courtyard gate.</div>'
+        f'<div class="box"><b>In the front yard (not allowed)</b>Inside the 25 ft front setback.</div>'
+        f'<div class="box"><b>Fallback · no carport on 65 ft lots</b>Keep V1\'s open parking pad and full courtyard; offer the '
+        f'carport on 70+ ft lots, where it fits in the side yard (Phase 2 lot types).</div>'
         f'<h2 style="margin-top:6px">Rough cost effect vs V1 (estimates)</h2><table>{costr}'
-        f'<tr><td><b>Net</b></td><td><b>About break-even to +$40K; confirmed in the budget re-run (P1-44)</b></td></tr></table>'
-        f'</div></div></div>' + tb3 + '</section>')
-    # 4: decision log + doors + sign-off
+        f'<tr><td><b>Net</b></td><td><b>About break-even, give or take $30K; confirmed in the budget re-run (P1-44)</b></td></tr></table>'
+        f'</div></div></div>' + tb4 + '</section>')
+    # 5: decision log + doors + sign-off
     pages.append(
         f'<section class="page"><div class="main" style="grid-template-rows:auto 1fr auto"><h1>Decision log + sign-off</h1>'
         f'<div style="display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:.25in;min-height:0">'
@@ -210,10 +234,10 @@ td.n{text-align:right;font-variant-numeric:tabular-nums}
         f'<span>Approved with the changes noted</span><span>Revise and resubmit</span></div>'
         f'<div class="box" style="min-height:.8in"><b>Changes / notes</b></div>'
         f'<div class="sign"><div>Name</div><div>Signature</div><div>Date</div></div></div></div>'
-        f'{title_block("V2-4", "Decisions + sign-off", "—")}</section>')
+        f'{title_block("V2-5", "Decisions + sign-off", "—")}</section>')
     html = ('<!doctype html><html><head><meta charset="utf-8"><title>Casa 01 V2 Layout Sign-off</title>'
             '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Lato:wght@400;700;900&display=swap">'
-            f'<style>{css}</style></head><body>{"".join(pages)}</body></html>')
+            f'<style>{CSS}</style></head><body>{"".join(pages)}</body></html>')
     out = os.path.join(HERE, "signoff_v2.html")
     open(out, "w").write(html)
     print("wrote", out)
