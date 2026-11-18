@@ -38,6 +38,7 @@
     "tone": "note"
    }
   ],
+  "bay": "Optional",
   "fails": [],
   "flags": [],
   "verdict": "Fits",
@@ -83,6 +84,7 @@
     "tone": "ok"
    }
   ],
+  "bay": "Needed",
   "fails": [],
   "flags": [],
   "verdict": "Tight",
@@ -137,6 +139,7 @@
     "tone": "ok"
    }
   ],
+  "bay": "Needed",
   "fails": [],
   "flags": [
    "1 home(s) without on-site parking"
@@ -193,6 +196,7 @@
     "tone": "ok"
    }
   ],
+  "bay": null,
   "fails": [
    "Casita is outside the setbacks",
    "Impervious cover 3,740 sf is over the 2,812 sf cap",
@@ -242,6 +246,7 @@
     "tone": "note"
    }
   ],
+  "bay": "Optional",
   "fails": [],
   "flags": [],
   "verdict": "Fits",
@@ -296,6 +301,7 @@
     "tone": "ok"
    }
   ],
+  "bay": "Needed",
   "fails": [],
   "flags": [],
   "verdict": "Tight",
@@ -350,6 +356,7 @@
     "tone": "note"
    }
   ],
+  "bay": "Needed",
   "fails": [],
   "flags": [
    "1 home(s) without on-site parking"
@@ -397,6 +404,7 @@
     "tone": "note"
    }
   ],
+  "bay": "Optional",
   "fails": [],
   "flags": [],
   "verdict": "Fits",
@@ -451,6 +459,7 @@
     "tone": "ok"
    }
   ],
+  "bay": "Needed",
   "fails": [],
   "flags": [],
   "verdict": "Fits",
@@ -505,6 +514,7 @@
     "tone": "note"
    }
   ],
+  "bay": "Needed",
   "fails": [],
   "flags": [],
   "verdict": "Fits",
@@ -543,6 +553,7 @@
     "tone": "ok"
    }
   ],
+  "bay": null,
   "fails": [
    "Building coverage 3,636 sf is over the 3,250 sf cap",
    "Impervious cover 3,904 sf is over the 3,656 sf cap"
@@ -593,6 +604,7 @@
     "tone": "ok"
    }
   ],
+  "bay": "Optional",
   "fails": [],
   "flags": [],
   "verdict": "Fits",
@@ -647,6 +659,7 @@
     "tone": "ok"
    }
   ],
+  "bay": "Needed",
   "fails": [],
   "flags": [
    "A-B 5 ft apart: rated walls, no windows facing",
@@ -704,6 +717,7 @@
     "tone": "note"
    }
   ],
+  "bay": null,
   "fails": [
    "Home C is outside the setbacks",
    "Front-yard paving 450 sf is over the 390 sf limit"
@@ -752,6 +766,7 @@
     "tone": "ok"
    }
   ],
+  "bay": "Optional",
   "fails": [],
   "flags": [],
   "verdict": "Fits",
@@ -806,6 +821,7 @@
     "tone": "ok"
    }
   ],
+  "bay": "Needed",
   "fails": [],
   "flags": [],
   "verdict": "Fits",
@@ -860,6 +876,7 @@
     "tone": "ok"
    }
   ],
+  "bay": null,
   "fails": [
    "Impervious cover 4,136 sf is over the 3,938 sf cap"
   ],
@@ -924,6 +941,7 @@
     "tone": "note"
    }
   ],
+  "bay": "Optional",
   "fails": [],
   "flags": [
    "Small-lot setbacks, coverage and size limits assumed; confirm with the city"
@@ -1005,6 +1023,7 @@
     "tone": "note"
    }
   ],
+  "bay": null,
   "fails": [
    "Home A is outside the setbacks",
    "Home B is outside the setbacks",

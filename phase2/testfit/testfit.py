@@ -506,6 +506,16 @@ def check(o):
     if res["parking"] < n:
         flags.append(f"{n - res['parking']} home(s) without on-site parking")
 
+    nb = sum(1 for h in homes if h["kind"] == "C2" and h.get("bay"))
+    if not nb or fails:
+        res["bay"] = None
+    else:
+        if small:
+            room = min(s["ic_cap"] - s["ic"] for s in res["sub"]) - BAY >= TERRACE_PER_HOME
+        else:
+            room = (res["ic_left"] - BAY * nb >= TERRACE_PER_HOME * n and
+                    (not res.get("fa_cap") or fa + BAY * nb <= res["fa_cap"]))
+        res["bay"] = "Optional" if room else "Needed"
     res["fails"] = list(dict.fromkeys(fails))
     res["flags"] = list(dict.fromkeys(flags))
     if fails:
@@ -662,6 +672,10 @@ def metric_rows(r):
     rows.append(("Parking on site", f"{r['parking']} of {r['n']} homes", r["parking"] == r["n"]))
     pats = "; ".join(f"{p['home']} {p['dir']}, {fmt(p['area'])} sf" for p in r["patios"])
     rows.append(("Pátios", pats, all(p["tone"] != "bad" for p in r["patios"])))
+    if r.get("bay") == "Needed":
+        rows.append(("Carport bay", "Needed: no paving left for a parking pad", True))
+    elif r.get("bay") == "Optional":
+        rows.append(("Carport bay", "Optional: room for a pad, so the bay can be a 200 sf room", True))
     return rows
 
 
@@ -731,7 +745,7 @@ def main():
                  f'{" corner" if lot.get("corner") else ""}{" split" if lot.get("small") else ""}</td><td>{r["name"]}</td>'
                  f'<td class="n">{fmt(r["fa"])}</td><td class="n">{r["bc"] / r["lot_area"]:.0%}</td>'
                  f'<td class="n">{r["ic"] / r["lot_area"]:.0%}</td><td class="n">{fmt(r["ic_left_home"])}</td>'
-                 f'<td class="n">{r["parking"]}/{r["n"]}</td><td>{md}</td>'
+                 f'<td class="n">{r["parking"]}/{r["n"]}</td><td>{r.get("bay") or "–"}</td><td>{md}</td>'
                  f'<td><b style="color:{col}">{r["verdict"]}</b></td></tr>')
     pages.append(summary_page(rows, results))
     for i, l in enumerate(LOTS):
@@ -757,12 +771,14 @@ def summary_page(rows, results):
     lead = ("Each layout below is a set of plain boxes on a standard Austin lot, checked against the rules for 2–3 homes "
             "on one lot (HOME Phase 1) or for a small-lot split (Phase 2). Casa 02 is drawn 20 × 40 ft (1,400 sf, two "
             "stories, its carport under the upper floor); the Casita 20 × 32 ft (640 sf, one story). "
-            "\"Deepest Casa 02\" is the longest Casa 02 that still passes with 100 sf of terrace paving per home.")
+            "\"Deepest Casa 02\" is the longest Casa 02 that still passes with 100 sf of terrace paving per home. "
+            "\"Carport bay\" says whether the open bay under the upper floor is needed to stay under the paving cap, or "
+            "optional: the lot has room for a parking pad, so the bay can be enclosed as a 200 sf room.")
     return (f'<section class="page"><div class="main" style="grid-template-rows:auto auto auto;align-content:start">'
             f'<h1>Test-fit study · 19 layouts on 6 standard lots</h1><p class="lead">{lead}</p>'
             f'<table class="sum"><thead><tr><th>Layout</th><th>Lot (ft)</th><th>Option</th><th class="n">Floor area sf</th>'
             f'<th class="n">Footprint</th><th class="n">Impervious</th><th class="n">Paving left per home sf</th>'
-            f'<th class="n">Parking</th><th>Deepest Casa 02</th><th>Verdict</th></tr></thead><tbody>{rows}</tbody></table>'
+            f'<th class="n">Parking</th><th>Carport bay</th><th>Deepest Casa 02</th><th>Verdict</th></tr></thead><tbody>{rows}</tbody></table>'
             f'</div>{title_block("T-0", "Summary")}</section>')
 
 
@@ -798,9 +814,10 @@ def findings_page(results):
         "65-ft lot (L4-T2): a row of three 20-ft homes needs a 70-ft lot.",
         "A 50-ft lot splits into two small lots that each take a Casa 02 (L6-S2), but not three (L6-S3): "
         "16.7-ft lots are too narrow.",
-        "Parking under the upper floor costs each Casa 02 200 sf of floor area but adds no footprint or paving. "
-        "An open pad instead would add 200 sf of paving per home, which the trios cannot spare.",
     ]
+    lessons.append("The bay under Casa 02's upper floor is needed only where paving is short: on every trio and on the "
+                   "front-and-back duo on a 50-ft lot. On the other duos the lot has room for a 200 sf parking pad, so "
+                   "the bay can be enclosed as a ground-floor room (Casa 02 then grows from about 1,360 to 1,560 sf).")
     li = "".join(f"<li>{t}</li>" for t in lessons)
     return (f'<section class="page"><div class="main" style="grid-template-rows:auto auto auto auto 1fr">'
             f'<h1>What the test-fit tells us</h1>'
@@ -808,7 +825,8 @@ def findings_page(results):
             f'<th class="n">Deepest Casa 02</th><th class="n">Casa 02 sf at that depth</th></tr></thead>'
             f'<tbody>{wr}</tbody></table>'
             f'<div class="k"><div class="box rec"><b>Casa 02 design target: 20 × {target} ft</b>'
-            f'About {fmt(c2_area(target))} sf on two floors, plus the carport bay under the upper floor. At this depth '
+            f'About {fmt(c2_area(target))} sf with an open carport bay under the upper floor, or {fmt(c2_area(target) + BAY)} sf '
+            f'with the bay enclosed as a room where the lot has paving to spare (most duos). At this depth '
             f'every winning layout passes with room for a terrace per home. {", ".join(binding)} sets the limit; '
             f'at 40 ft it is tight, with {fmt(t40["ic_left_home"])} sf of paving left per home. A 3-bed, 2.5-bath plan '
             f'in that size is a compact townhouse; a 2-bed + flex plan is the fallback.</div>'
