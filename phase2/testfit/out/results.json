@@ -1,0 +1,1025 @@
+[
+ {
+  "id": "L1-D1",
+  "lot": "L1",
+  "name": "Duo, side by side",
+  "n": 2,
+  "lot_area": 6250.0,
+  "homes": "A: Casa 02, B: Casa 02",
+  "fa": 2800.0,
+  "bc": 1600.0,
+  "pave": 300.0,
+  "ic": 1900.0,
+  "fy": 300.0,
+  "fy_cap": 300.0,
+  "parking": 2,
+  "gaps": [
+   0.0
+  ],
+  "bc_cap": 2500.0,
+  "ic_cap": 2812.5,
+  "fa_cap": 3437.5000000000005,
+  "unit_cap": 2500.0,
+  "ic_left": 912.5,
+  "ic_left_home": 456.25,
+  "patios": [
+   {
+    "home": "A",
+    "area": 480.0,
+    "dir": "north",
+    "sun": "In the house's shadow",
+    "tone": "note"
+   },
+   {
+    "home": "B",
+    "area": 480.0,
+    "dir": "north",
+    "sun": "In the house's shadow",
+    "tone": "note"
+   }
+  ],
+  "fails": [],
+  "flags": [],
+  "verdict": "Fits",
+  "max_depth": 47,
+  "max_depth_fa": 1680.0
+ },
+ {
+  "id": "L1-D2",
+  "lot": "L1",
+  "name": "Duo, front and back on a side drive",
+  "n": 2,
+  "lot_area": 6250.0,
+  "homes": "A: Casa 02, B: Casa 02",
+  "fa": 2800.0,
+  "bc": 1600.0,
+  "pave": 1020.0,
+  "ic": 2620.0,
+  "fy": 180.0,
+  "fy_cap": 300.0,
+  "parking": 2,
+  "gaps": [
+   20.0
+  ],
+  "bc_cap": 2500.0,
+  "ic_cap": 2812.5,
+  "fa_cap": 3437.5000000000005,
+  "unit_cap": 2500.0,
+  "ic_left": 192.5,
+  "ic_left_home": 96.25,
+  "patios": [
+   {
+    "home": "A",
+    "area": 680.0,
+    "dir": "east",
+    "sun": "Afternoon shade",
+    "tone": "ok"
+   },
+   {
+    "home": "B",
+    "area": 680.0,
+    "dir": "east",
+    "sun": "Afternoon shade",
+    "tone": "ok"
+   }
+  ],
+  "fails": [],
+  "flags": [],
+  "verdict": "Tight",
+  "max_depth": 39,
+  "max_depth_fa": 1360.0
+ },
+ {
+  "id": "L1-T1",
+  "lot": "L1",
+  "name": "Trio, two at the street, Casita on foot",
+  "n": 3,
+  "lot_area": 6250.0,
+  "homes": "A: Casa 02, B: Casa 02, Casita: Casita",
+  "fa": 3440.0,
+  "bc": 2240.0,
+  "pave": 300.0,
+  "ic": 2540.0,
+  "fy": 300.0,
+  "fy_cap": 300.0,
+  "parking": 2,
+  "gaps": [
+   0.0,
+   33.0,
+   33.0
+  ],
+  "bc_cap": 2500.0,
+  "ic_cap": 2812.5,
+  "fa_cap": 4350.0,
+  "unit_cap": 2500.0,
+  "ic_left": 272.5,
+  "ic_left_home": 90.83333333333333,
+  "patios": [
+   {
+    "home": "A",
+    "area": 400.0,
+    "dir": "north",
+    "sun": "In the house's shadow",
+    "tone": "note"
+   },
+   {
+    "home": "B",
+    "area": 400.0,
+    "dir": "north",
+    "sun": "In the house's shadow",
+    "tone": "note"
+   },
+   {
+    "home": "Casita",
+    "area": 640.0,
+    "dir": "east",
+    "sun": "One story",
+    "tone": "ok"
+   }
+  ],
+  "fails": [],
+  "flags": [
+   "1 home(s) without on-site parking"
+  ],
+  "verdict": "Tight",
+  "max_depth": 39,
+  "max_depth_fa": 1360.0
+ },
+ {
+  "id": "L1-T2",
+  "lot": "L1",
+  "name": "Trio, front to back on a shared drive",
+  "n": 3,
+  "lot_area": 6250.0,
+  "homes": "A: Casa 02, B: Casa 02, Casita: Casita",
+  "fa": 3440.0,
+  "bc": 2240.0,
+  "pave": 1500.0,
+  "ic": 3740.0,
+  "fy": 180.0,
+  "fy_cap": 300.0,
+  "parking": 3,
+  "gaps": [
+   10.0,
+   60.0,
+   10.0
+  ],
+  "bc_cap": 2500.0,
+  "ic_cap": 2812.5,
+  "fa_cap": 4350.0,
+  "unit_cap": 2500.0,
+  "ic_left": -927.5,
+  "ic_left_home": -309.1666666666667,
+  "patios": [
+   {
+    "home": "A",
+    "area": 680.0,
+    "dir": "east",
+    "sun": "Afternoon shade",
+    "tone": "ok"
+   },
+   {
+    "home": "B",
+    "area": 680.0,
+    "dir": "east",
+    "sun": "Afternoon shade",
+    "tone": "ok"
+   },
+   {
+    "home": "Casita",
+    "area": 544.0,
+    "dir": "east",
+    "sun": "One story",
+    "tone": "ok"
+   }
+  ],
+  "fails": [
+   "Casita is outside the setbacks",
+   "Impervious cover 3,740 sf is over the 2,812 sf cap",
+   "Does not fit the lot depth"
+  ],
+  "flags": [],
+  "verdict": "Fails",
+  "max_depth": null,
+  "max_depth_fa": null
+ },
+ {
+  "id": "L2-D1",
+  "lot": "L2",
+  "name": "Duo on the alley, walled gardens to the street",
+  "n": 2,
+  "lot_area": 6250.0,
+  "homes": "A: Casa 02, B: Casa 02",
+  "fa": 2800.0,
+  "bc": 1600.0,
+  "pave": 100.0,
+  "ic": 1700.0,
+  "fy": 0.0,
+  "fy_cap": 300.0,
+  "parking": 2,
+  "gaps": [
+   0.0
+  ],
+  "bc_cap": 2500.0,
+  "ic_cap": 2812.5,
+  "fa_cap": 3437.5000000000005,
+  "unit_cap": 2500.0,
+  "ic_left": 1112.5,
+  "ic_left_home": 556.25,
+  "patios": [
+   {
+    "home": "A",
+    "area": 480.0,
+    "dir": "south",
+    "sun": "Full sun; needs a tree",
+    "tone": "note"
+   },
+   {
+    "home": "B",
+    "area": 480.0,
+    "dir": "south",
+    "sun": "Full sun; needs a tree",
+    "tone": "note"
+   }
+  ],
+  "fails": [],
+  "flags": [],
+  "verdict": "Fits",
+  "max_depth": 47,
+  "max_depth_fa": 1680.0
+ },
+ {
+  "id": "L2-T1",
+  "lot": "L2",
+  "name": "Trio, two at the street, Casita on the alley",
+  "n": 3,
+  "lot_area": 6250.0,
+  "homes": "A: Casa 02, B: Casa 02, Casita: Casita",
+  "fa": 3440.0,
+  "bc": 2240.0,
+  "pave": 500.0,
+  "ic": 2740.0,
+  "fy": 300.0,
+  "fy_cap": 300.0,
+  "parking": 3,
+  "gaps": [
+   0.0,
+   33.0,
+   33.0
+  ],
+  "bc_cap": 2500.0,
+  "ic_cap": 2812.5,
+  "fa_cap": 4350.0,
+  "unit_cap": 2500.0,
+  "ic_left": 72.5,
+  "ic_left_home": 24.166666666666668,
+  "patios": [
+   {
+    "home": "A",
+    "area": 400.0,
+    "dir": "north",
+    "sun": "In the house's shadow",
+    "tone": "note"
+   },
+   {
+    "home": "B",
+    "area": 400.0,
+    "dir": "north",
+    "sun": "In the house's shadow",
+    "tone": "note"
+   },
+   {
+    "home": "Casita",
+    "area": 320.0,
+    "dir": "east",
+    "sun": "One story",
+    "tone": "ok"
+   }
+  ],
+  "fails": [],
+  "flags": [],
+  "verdict": "Tight",
+  "max_depth": 34,
+  "max_depth_fa": 1160.0
+ },
+ {
+  "id": "L2-T2",
+  "lot": "L2",
+  "name": "Trio, Casita at the street, pair on the alley",
+  "n": 3,
+  "lot_area": 6250.0,
+  "homes": "Casita: Casita, A: Casa 02, B: Casa 02",
+  "fa": 3440.0,
+  "bc": 2240.0,
+  "pave": 100.0,
+  "ic": 2340.0,
+  "fy": 0.0,
+  "fy_cap": 300.0,
+  "parking": 2,
+  "gaps": [
+   33.0,
+   33.0,
+   0.0
+  ],
+  "bc_cap": 2500.0,
+  "ic_cap": 2812.5,
+  "fa_cap": 4350.0,
+  "unit_cap": 2500.0,
+  "ic_left": 472.5,
+  "ic_left_home": 157.5,
+  "patios": [
+   {
+    "home": "Casita",
+    "area": 640.0,
+    "dir": "east",
+    "sun": "One story",
+    "tone": "ok"
+   },
+   {
+    "home": "A",
+    "area": 400.0,
+    "dir": "south",
+    "sun": "Full sun; needs a tree",
+    "tone": "note"
+   },
+   {
+    "home": "B",
+    "area": 400.0,
+    "dir": "south",
+    "sun": "Full sun; needs a tree",
+    "tone": "note"
+   }
+  ],
+  "fails": [],
+  "flags": [
+   "1 home(s) without on-site parking"
+  ],
+  "verdict": "Fits",
+  "max_depth": 44,
+  "max_depth_fa": 1560.0
+ },
+ {
+  "id": "L3-D1",
+  "lot": "L3",
+  "name": "Duo, one home facing each street",
+  "n": 2,
+  "lot_area": 7500.0,
+  "homes": "A: Casa 02, B: Casa 02",
+  "fa": 2800.0,
+  "bc": 1600.0,
+  "pave": 200.0,
+  "ic": 1800.0,
+  "fy": 150.0,
+  "fy_cap": 360.0,
+  "parking": 2,
+  "gaps": [
+   45.0
+  ],
+  "bc_cap": 3000.0,
+  "ic_cap": 3375.0,
+  "fa_cap": 4125.0,
+  "unit_cap": 3000.0,
+  "ic_left": 1575.0,
+  "ic_left_home": 787.5,
+  "patios": [
+   {
+    "home": "A",
+    "area": 800.0,
+    "dir": "east",
+    "sun": "Afternoon shade",
+    "tone": "ok"
+   },
+   {
+    "home": "B",
+    "area": 880.0,
+    "dir": "south",
+    "sun": "Full sun; needs a tree",
+    "tone": "note"
+   }
+  ],
+  "fails": [],
+  "flags": [],
+  "verdict": "Fits",
+  "max_depth": 50,
+  "max_depth_fa": 1800.0
+ },
+ {
+  "id": "L3-T1",
+  "lot": "L3",
+  "name": "Trio, Casita facing the side street",
+  "n": 3,
+  "lot_area": 7500.0,
+  "homes": "A: Casa 02, B: Casa 02, Casita: Casita",
+  "fa": 3440.0,
+  "bc": 2240.0,
+  "pave": 500.0,
+  "ic": 2740.0,
+  "fy": 300.0,
+  "fy_cap": 360.0,
+  "parking": 3,
+  "gaps": [
+   0.0,
+   45.0,
+   45.0
+  ],
+  "bc_cap": 3000.0,
+  "ic_cap": 3375.0,
+  "fa_cap": 4875.0,
+  "unit_cap": 3000.0,
+  "ic_left": 635.0,
+  "ic_left_home": 211.66666666666666,
+  "patios": [
+   {
+    "home": "A",
+    "area": 400.0,
+    "dir": "north",
+    "sun": "In the house's shadow",
+    "tone": "note"
+   },
+   {
+    "home": "B",
+    "area": 400.0,
+    "dir": "north",
+    "sun": "In the house's shadow",
+    "tone": "note"
+   },
+   {
+    "home": "Casita",
+    "area": 345.0,
+    "dir": "south",
+    "sun": "One story",
+    "tone": "ok"
+   }
+  ],
+  "fails": [],
+  "flags": [],
+  "verdict": "Fits",
+  "max_depth": 48,
+  "max_depth_fa": 1720.0
+ },
+ {
+  "id": "L3-T2",
+  "lot": "L3",
+  "name": "Trio, three Casa 02",
+  "n": 3,
+  "lot_area": 7500.0,
+  "homes": "A: Casa 02, B: Casa 02, C: Casa 02",
+  "fa": 4200.0,
+  "bc": 2400.0,
+  "pave": 350.0,
+  "ic": 2750.0,
+  "fy": 300.0,
+  "fy_cap": 360.0,
+  "parking": 3,
+  "gaps": [
+   0.0,
+   45.0,
+   45.0
+  ],
+  "bc_cap": 3000.0,
+  "ic_cap": 3375.0,
+  "fa_cap": 4875.0,
+  "unit_cap": 3000.0,
+  "ic_left": 625.0,
+  "ic_left_home": 208.33333333333334,
+  "patios": [
+   {
+    "home": "A",
+    "area": 400.0,
+    "dir": "north",
+    "sun": "In the house's shadow",
+    "tone": "note"
+   },
+   {
+    "home": "B",
+    "area": 400.0,
+    "dir": "north",
+    "sun": "In the house's shadow",
+    "tone": "note"
+   },
+   {
+    "home": "C",
+    "area": 920.0,
+    "dir": "south",
+    "sun": "Full sun; needs a tree",
+    "tone": "note"
+   }
+  ],
+  "fails": [],
+  "flags": [],
+  "verdict": "Fits",
+  "max_depth": 45,
+  "max_depth_fa": 1600.0
+ },
+ {
+  "id": "L4-D1",
+  "lot": "L4",
+  "name": "Duo, Casa 01 + Casita",
+  "n": 2,
+  "lot_area": 8125.0,
+  "homes": "Casa 01: Casa 01, Casita: Casita",
+  "fa": 2310.0,
+  "bc": 3636.5,
+  "pave": 267.5,
+  "ic": 3904.0,
+  "fy": 105.0,
+  "fy_cap": 390.0,
+  "parking": 1,
+  "gaps": [
+   23.0
+  ],
+  "bc_cap": 3250.0,
+  "ic_cap": 3656.25,
+  "fa_cap": 4468.75,
+  "unit_cap": 3250.0,
+  "ic_left": -247.75,
+  "ic_left_home": -123.875,
+  "patios": [
+   {
+    "home": "Casita",
+    "area": 832.0,
+    "dir": "west",
+    "sun": "One story",
+    "tone": "ok"
+   }
+  ],
+  "fails": [
+   "Building coverage 3,636 sf is over the 3,250 sf cap",
+   "Impervious cover 3,904 sf is over the 3,656 sf cap"
+  ],
+  "flags": [
+   "1 home(s) without on-site parking"
+  ],
+  "verdict": "Fails",
+  "max_depth": null,
+  "max_depth_fa": null
+ },
+ {
+  "id": "L4-D2",
+  "lot": "L4",
+  "name": "Duo, front and back on a side drive",
+  "n": 2,
+  "lot_area": 8125.0,
+  "homes": "A: Casa 02, B: Casa 02",
+  "fa": 2800.0,
+  "bc": 1600.0,
+  "pave": 1020.0,
+  "ic": 2620.0,
+  "fy": 180.0,
+  "fy_cap": 390.0,
+  "parking": 2,
+  "gaps": [
+   20.0
+  ],
+  "bc_cap": 3250.0,
+  "ic_cap": 3656.25,
+  "fa_cap": 4468.75,
+  "unit_cap": 3250.0,
+  "ic_left": 1036.25,
+  "ic_left_home": 518.125,
+  "patios": [
+   {
+    "home": "A",
+    "area": 1280.0,
+    "dir": "east",
+    "sun": "Afternoon shade",
+    "tone": "ok"
+   },
+   {
+    "home": "B",
+    "area": 1280.0,
+    "dir": "east",
+    "sun": "Afternoon shade",
+    "tone": "ok"
+   }
+  ],
+  "fails": [],
+  "flags": [],
+  "verdict": "Fits",
+  "max_depth": 42,
+  "max_depth_fa": 1480.0
+ },
+ {
+  "id": "L4-T1",
+  "lot": "L4",
+  "name": "Trio, shared drive stops at the middle home",
+  "n": 3,
+  "lot_area": 8125.0,
+  "homes": "A: Casa 02, B: Casa 02, Casita: Casita",
+  "fa": 3440.0,
+  "bc": 2240.0,
+  "pave": 960.0,
+  "ic": 3200.0,
+  "fy": 180.0,
+  "fy_cap": 390.0,
+  "parking": 3,
+  "gaps": [
+   5.0,
+   33.37663853655727,
+   5.0
+  ],
+  "bc_cap": 3250.0,
+  "ic_cap": 3656.25,
+  "fa_cap": 5281.25,
+  "unit_cap": 3250.0,
+  "ic_left": 456.25,
+  "ic_left_home": 152.08333333333334,
+  "patios": [
+   {
+    "home": "A",
+    "area": 1120.0,
+    "dir": "east",
+    "sun": "Afternoon shade",
+    "tone": "ok"
+   },
+   {
+    "home": "B",
+    "area": 616.0,
+    "dir": "east",
+    "sun": "Afternoon shade",
+    "tone": "ok"
+   },
+   {
+    "home": "Casita",
+    "area": 500.0,
+    "dir": "west",
+    "sun": "One story",
+    "tone": "ok"
+   }
+  ],
+  "fails": [],
+  "flags": [
+   "A-B 5 ft apart: rated walls, no windows facing",
+   "B-Casita 5 ft apart: rated walls, no windows facing"
+  ],
+  "verdict": "Fits",
+  "max_depth": 43,
+  "max_depth_fa": 1520.0
+ },
+ {
+  "id": "L4-T2",
+  "lot": "L4",
+  "name": "Trio, three in a row",
+  "n": 3,
+  "lot_area": 8125.0,
+  "homes": "A: Casa 02, B: Casa 02, C: Casa 02",
+  "fa": 4200.0,
+  "bc": 2400.0,
+  "pave": 450.0,
+  "ic": 2850.0,
+  "fy": 450.0,
+  "fy_cap": 390.0,
+  "parking": 3,
+  "gaps": [
+   0.0,
+   20.0,
+   0.0
+  ],
+  "bc_cap": 3250.0,
+  "ic_cap": 3656.25,
+  "fa_cap": 5281.25,
+  "unit_cap": 3250.0,
+  "ic_left": 806.25,
+  "ic_left_home": 268.75,
+  "patios": [
+   {
+    "home": "A",
+    "area": 480.0,
+    "dir": "north",
+    "sun": "In the house's shadow",
+    "tone": "note"
+   },
+   {
+    "home": "B",
+    "area": 480.0,
+    "dir": "north",
+    "sun": "In the house's shadow",
+    "tone": "note"
+   },
+   {
+    "home": "C",
+    "area": 480.0,
+    "dir": "north",
+    "sun": "In the house's shadow",
+    "tone": "note"
+   }
+  ],
+  "fails": [
+   "Home C is outside the setbacks",
+   "Front-yard paving 450 sf is over the 390 sf limit"
+  ],
+  "flags": [],
+  "verdict": "Fails",
+  "max_depth": null,
+  "max_depth_fa": null
+ },
+ {
+  "id": "L5-D1",
+  "lot": "L5",
+  "name": "Duo, front and back on a side drive",
+  "n": 2,
+  "lot_area": 8750.0,
+  "homes": "A: Casa 02, B: Casa 02",
+  "fa": 2800.0,
+  "bc": 1600.0,
+  "pave": 1020.0,
+  "ic": 2620.0,
+  "fy": 180.0,
+  "fy_cap": 300.0,
+  "parking": 2,
+  "gaps": [
+   20.0
+  ],
+  "bc_cap": 3500.0,
+  "ic_cap": 3937.5,
+  "fa_cap": 4812.5,
+  "unit_cap": 3500.0,
+  "ic_left": 1317.5,
+  "ic_left_home": 658.75,
+  "patios": [
+   {
+    "home": "A",
+    "area": 680.0,
+    "dir": "east",
+    "sun": "Afternoon shade",
+    "tone": "ok"
+   },
+   {
+    "home": "B",
+    "area": 680.0,
+    "dir": "east",
+    "sun": "Afternoon shade",
+    "tone": "ok"
+   }
+  ],
+  "fails": [],
+  "flags": [],
+  "verdict": "Fits",
+  "max_depth": 50,
+  "max_depth_fa": 1800.0
+ },
+ {
+  "id": "L5-T1",
+  "lot": "L5",
+  "name": "Trio, drive stops at the middle home",
+  "n": 3,
+  "lot_area": 8750.0,
+  "homes": "A: Casa 02, B: Casa 02, Casita: Casita",
+  "fa": 3440.0,
+  "bc": 2240.0,
+  "pave": 1140.0,
+  "ic": 3380.0,
+  "fy": 180.0,
+  "fy_cap": 300.0,
+  "parking": 3,
+  "gaps": [
+   20.0,
+   83.0,
+   23.0
+  ],
+  "bc_cap": 3500.0,
+  "ic_cap": 3937.5,
+  "fa_cap": 5687.5,
+  "unit_cap": 3500.0,
+  "ic_left": 557.5,
+  "ic_left_home": 185.83333333333334,
+  "patios": [
+   {
+    "home": "A",
+    "area": 680.0,
+    "dir": "east",
+    "sun": "Afternoon shade",
+    "tone": "ok"
+   },
+   {
+    "home": "B",
+    "area": 680.0,
+    "dir": "east",
+    "sun": "Afternoon shade",
+    "tone": "ok"
+   },
+   {
+    "home": "Casita",
+    "area": 544.0,
+    "dir": "east",
+    "sun": "One story",
+    "tone": "ok"
+   }
+  ],
+  "fails": [],
+  "flags": [],
+  "verdict": "Fits",
+  "max_depth": 44,
+  "max_depth_fa": 1560.0
+ },
+ {
+  "id": "L5-T2",
+  "lot": "L5",
+  "name": "Trio, drive to every home",
+  "n": 3,
+  "lot_area": 8750.0,
+  "homes": "A: Casa 02, B: Casa 02, Casita: Casita",
+  "fa": 3440.0,
+  "bc": 2240.0,
+  "pave": 1896.0,
+  "ic": 4136.0,
+  "fy": 180.0,
+  "fy_cap": 300.0,
+  "parking": 3,
+  "gaps": [
+   20.0,
+   83.0,
+   23.0
+  ],
+  "bc_cap": 3500.0,
+  "ic_cap": 3937.5,
+  "fa_cap": 5687.5,
+  "unit_cap": 3500.0,
+  "ic_left": -198.5,
+  "ic_left_home": -66.16666666666667,
+  "patios": [
+   {
+    "home": "A",
+    "area": 680.0,
+    "dir": "east",
+    "sun": "Afternoon shade",
+    "tone": "ok"
+   },
+   {
+    "home": "B",
+    "area": 680.0,
+    "dir": "east",
+    "sun": "Afternoon shade",
+    "tone": "ok"
+   },
+   {
+    "home": "Casita",
+    "area": 544.0,
+    "dir": "east",
+    "sun": "One story",
+    "tone": "ok"
+   }
+  ],
+  "fails": [
+   "Impervious cover 4,136 sf is over the 3,938 sf cap"
+  ],
+  "flags": [],
+  "verdict": "Fails",
+  "max_depth": null,
+  "max_depth_fa": null
+ },
+ {
+  "id": "L6-S2",
+  "lot": "L6",
+  "name": "Two small lots, one Casa 02 each",
+  "n": 2,
+  "lot_area": 6250.0,
+  "homes": "A: Casa 02, B: Casa 02",
+  "fa": 2800.0,
+  "bc": 1600.0,
+  "pave": 300.0,
+  "ic": 1900.0,
+  "fy": 300.0,
+  "fy_cap": 300.0,
+  "parking": 2,
+  "gaps": [
+   0.0
+  ],
+  "sub": [
+   {
+    "area": 3125.0,
+    "width": 25,
+    "bc": 800.0,
+    "bc_cap": 1250.0,
+    "ic": 950.0,
+    "ic_cap": 1406.25
+   },
+   {
+    "area": 3125.0,
+    "width": 25,
+    "bc": 800.0,
+    "bc_cap": 1250.0,
+    "ic": 950.0,
+    "ic_cap": 1406.25
+   }
+  ],
+  "bc_cap": 2500.0,
+  "ic_cap": 2812.5,
+  "fa_cap": null,
+  "ic_left": 912.5,
+  "ic_left_home": 456.25,
+  "patios": [
+   {
+    "home": "A",
+    "area": 480.0,
+    "dir": "north",
+    "sun": "In the house's shadow",
+    "tone": "note"
+   },
+   {
+    "home": "B",
+    "area": 480.0,
+    "dir": "north",
+    "sun": "In the house's shadow",
+    "tone": "note"
+   }
+  ],
+  "fails": [],
+  "flags": [
+   "Small-lot setbacks, coverage and size limits assumed; confirm with the city"
+  ],
+  "verdict": "Fits",
+  "max_depth": 50,
+  "max_depth_fa": 1800.0
+ },
+ {
+  "id": "L6-S3",
+  "lot": "L6",
+  "name": "Three small lots, one Casa 02 each",
+  "n": 3,
+  "lot_area": 6250.0,
+  "homes": "A: Casa 02, B: Casa 02, C: Casa 02",
+  "fa": 4200.0,
+  "bc": 2400.0,
+  "pave": 450.0,
+  "ic": 2850.0,
+  "fy": 450.0,
+  "fy_cap": 300.0,
+  "parking": 3,
+  "gaps": [
+   0.0,
+   8.333333333333336,
+   0.0
+  ],
+  "sub": [
+   {
+    "area": 2083.3333333333335,
+    "width": 16.666666666666668,
+    "bc": 800.0,
+    "bc_cap": 833.3333333333335,
+    "ic": 950.0,
+    "ic_cap": 937.5000000000001
+   },
+   {
+    "area": 2083.3333333333335,
+    "width": 16.666666666666668,
+    "bc": 800.0000000000001,
+    "bc_cap": 833.3333333333335,
+    "ic": 950.0000000000001,
+    "ic_cap": 937.5000000000001
+   },
+   {
+    "area": 2083.333333333333,
+    "width": 16.666666666666664,
+    "bc": 800.0,
+    "bc_cap": 833.3333333333333,
+    "ic": 950.0,
+    "ic_cap": 937.4999999999999
+   }
+  ],
+  "bc_cap": 2500.0,
+  "ic_cap": 2812.5,
+  "fa_cap": null,
+  "ic_left": -37.5,
+  "ic_left_home": -12.500000000000114,
+  "patios": [
+   {
+    "home": "A",
+    "area": 400.0,
+    "dir": "north",
+    "sun": "In the house's shadow",
+    "tone": "note"
+   },
+   {
+    "home": "B",
+    "area": 400.00000000000006,
+    "dir": "north",
+    "sun": "In the house's shadow",
+    "tone": "note"
+   },
+   {
+    "home": "C",
+    "area": 400.0,
+    "dir": "north",
+    "sun": "In the house's shadow",
+    "tone": "note"
+   }
+  ],
+  "fails": [
+   "Home A is outside the setbacks",
+   "Home B is outside the setbacks",
+   "Home C is outside the setbacks",
+   "Homes overlap",
+   "Impervious cover over 45% on a small lot",
+   "Front yard paving over 40% on a small lot",
+   "Front-yard paving 450 sf is over the 300 sf limit"
+  ],
+  "flags": [
+   "A-C 8 ft apart: rated walls, few windows facing",
+   "Small-lot setbacks, coverage and size limits assumed; confirm with the city"
+  ],
+  "verdict": "Fails",
+  "max_depth": null,
+  "max_depth_fa": null
+ }
+]
