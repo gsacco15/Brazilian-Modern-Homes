@@ -56,6 +56,10 @@ SERVICE_ROOMS = [
     dict(name="Living + dining", rect=(0.0, 27.0, 20.0, 39.0), lab=(14.6, 30.4)),
 ]
 STAIR = dict(rect=(16.5, 6.0, 20.0, 19.5), up=True)   # 16 treads at 10 in, 17 risers at about 7 in
+# The cobogó lantern (facade direction C, chosen in the study): 12 in concrete blocks in a 9 ft wide screen,
+# 1 ft in front of the entry and stair, rising both floors to the roof. It stays open for 4 ft in front of
+# the front door, under a header of blocks.
+LANTERN = dict(x=(11.0, 20.0), y=(-1.0, -0.67), opening=(11.0, 15.0), note="cobogó screen, two stories")
 BACK_GLASS = {2: [slider(2.0, 16.0)]}                 # back wall: 16 ft slider to the pátio
 EAST_GLASS = [slider(28.0, 8.0)]                       # long wall, where the pátio is at the side
 KITCHEN_FIX = [
@@ -81,6 +85,7 @@ CASA02_GF_CARPORT = dict(
     stair=STAIR,
     columns=[(0.35, 0.35), (0.35, 10.0)],
     gate=((0.0, 0.0), (10.5, 0.0)),
+    lantern=LANTERN,
     enclosed=W2 * D2 - (BAY[2] - BAY[0]) * (BAY[3] - BAY[1]),
 )
 
@@ -104,6 +109,7 @@ CASA02_GF_SUITE = dict(
         dict(kind="lav", rect=(7.6, 17.9, 10.1, 19.6)),
     ],
     stair=STAIR,
+    lantern=LANTERN,
     enclosed=W2 * D2,
 )
 
@@ -148,6 +154,7 @@ CASA02_UPPER = dict(
     ],
     stair=dict(rect=(16.5, 6.0, 20.0, 19.5), up=False),
     void=(16.5, 6.0, 20.0, 19.5),
+    lantern=dict(LANTERN, opening=None),
     enclosed=W2 * D2,
 )
 
@@ -188,6 +195,9 @@ CASITA = dict(
         dict(kind="lav", rect=(17.5, 18.9, 19.6, 20.6)),
         dict(kind="wd", rect=(16.8, 15.4, 19.6, 18.1)),
     ],
+    # covered porch on the pátio side (facade direction C): roof on two bronze posts, cedar ceiling. It runs
+    # along the living room and flex room only (22 ft), which keeps the 50-ft trios under the impervious cap.
+    porch=dict(rect=(20.0, 0.0, 27.75, 22.0), roof=(20.0, -1.0, 28.0, 23.0), posts=[(27.45, 0.25), (27.45, 21.75)]),
     enclosed=W3 * D3,
 )
 

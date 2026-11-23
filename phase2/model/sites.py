@@ -125,12 +125,13 @@ def s3_alley_trio():
                       ("Terrace", (8, 75, 22, 81)), ("Terrace", (28, 75, 42, 81)), ("Carts", (27, 9, 37.5, 12.5))],
                 paths=[[(2.5, 2), (2.5, 56), (15, 56), (15, 61)], [(2.5, 56), (35, 56), (35, 61)]],
                 walls=[[(25, 61), (25, 81)], [(5, 51), (45, 51)]],
-                street_wall=[(25, 15), (45, 15)],
+                street_wall=[(25, 15), (45, 15)], garden_gate=(27.0, 31.0),
                 trees=[(38, 34, 9), (12, 70, 9), (38, 70, 9)],
                 fence=[[(0, 15), (0, 125)], [(50, 125), (50, 15)]],
                 notes=["The street sees a one-story Casita behind its walled garden; the two-story pair sits back.",
                        "The pair parks off the alley with no curb cut on the street; guests enter through the garden.",
-                       "The Casita parks on the street.",
+                       "The Casita parks on the street. Its garden wall is cobogó between limestone piers, with a "
+                       "4 ft cedar gate into its pátio.",
                        "Fire access from the street is about 140 ft to the pair's far corners; confirm whether the "
                        "alley counts as fire access."])
 
@@ -180,16 +181,45 @@ def s5_wide_duo():
                        "Both pátios face east off the two-story block, shaded in the afternoon."])
 
 
+def porch_rect(h):
+    """The roofed porch of a home on the lot (x0, y0, x1, y1), or None."""
+    p = h["plan"].get("porch")
+    if not p:
+        return None
+    pts = tpoly(h["t"], rect_pts(p["rect"]))
+    xs, ys = [q[0] for q in pts], [q[1] for q in pts]
+    return (min(xs), min(ys), max(xs), max(ys))
+
+
+def garden_wall(s):
+    """The Casita's wall at the street: limestone piers, a cedar gate, cobogó between (facade direction C).
+    Returns dict(y, piers=[(x0, x1)], gate=(x0, x1) or None, cobogo=(x0, x1)), or None."""
+    sw = s.get("street_wall")
+    if not sw:
+        return None
+    (x0, y), (x1, _y) = sw
+    g = s.get("garden_gate")
+    piers = [(x0, x0 + 2.0)] + ([(g[1], g[1] + 1.0)] if g else []) + [(x1 - 2.0, x1)]
+    return dict(y=y, piers=piers, gate=g, cobogo=((g[1] + 1.0) if g else x0 + 2.0, x1 - 2.0))
+
+
+def _overlap(a, b):
+    return max(0.0, min(a[2], b[2]) - max(a[0], b[0])) * max(0.0, min(a[3], b[3]) - max(a[1], b[1]))
+
+
 def check_site(s):
     W, L = s["lot"]["W"], s["lot"]["L"]
     A = W * L
     n = len(s["homes"])
     bc = sum((footprint(h["t"])[2] - footprint(h["t"])[0]) * (footprint(h["t"])[3] - footprint(h["t"])[1])
              for h in s["homes"])
+    porches = [r for r in (porch_rect(h) for h in s["homes"]) if r]
+    bc += sum((r[2] - r[0]) * (r[3] - r[1]) for r in porches)          # a roofed porch counts as footprint
     pave = 0.0
     for _k, r in s["pave"]:
         x0, y0, x1, y1 = max(r[0], 0), max(r[1], 0), min(r[2], W), min(r[3], L)
         pave += max(0, x1 - x0) * max(0, y1 - y0)
+        pave -= sum(_overlap((x0, y0, x1, y1), p) for p in porches)       # paving under a porch roof counts once
     fy = 0.0
     for k, r in s["pave"]:
         x0, y0, x1, y1 = max(r[0], 0), max(r[1], 0), min(r[2], W), min(r[3], HOME_RULES["front"])

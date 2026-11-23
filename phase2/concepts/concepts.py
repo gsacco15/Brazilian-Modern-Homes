@@ -17,8 +17,8 @@ OUT = os.path.join(HERE, "out")
 sys.path.insert(0, os.path.dirname(HERE))
 sys.path.insert(0, os.path.join(ROOT, "casa01"))
 from model import homes as H  # noqa: E402
-from model.sites import (SITES, HOME_RULES, T, check_site, ellipse_pts, footprint, rect_pts, tp,  # noqa: E402
-                         tpoly)
+from model.sites import (SITES, HOME_RULES, T, check_site, ellipse_pts, footprint, garden_wall,  # noqa: E402
+                         rect_pts, tp, tpoly)
 import drawings as DR  # noqa: E402  (Casa 01 drawing kit: SVG class, colours, trees, north arrow)
 
 INK, POCHE, MID, LIGHT, FAINT, GREEN = DR.INK, DR.POCHE, DR.MID, DR.LIGHT, DR.FAINT, DR.GREEN
@@ -174,6 +174,80 @@ def room_label(svg, room, t, detail, fs):
         svg.text(cx, cy, room.get("short", room["name"]), fs, fill=MID, ls=0.3, extra='dy="2"')
 
 
+LIMESTONE = "#ddd3c2"
+
+
+def cobogo_band(svg, pts_a, pts_b, n, full, t=None):
+    """A cobogó screen in plan: an outlined band with one ring per 12 in block when drawn at plan scale.
+    pts_a, pts_b: (x0, y0, x1, y1) of the band in the frame of t."""
+    x0, y0, x1, y1 = pts_a
+    svg.poly(tpoly(t, rect_pts(pts_a)), fill="#ffffff", stroke=INK, sw=0.7 if full else 0.6)
+    if full:
+        for i in range(n):
+            cx, cy = tp(t, x0 + (x1 - x0) * (i + 0.5) / n, (y0 + y1) / 2) if t else (x0 + (x1 - x0) * (i + 0.5) / n,
+                                                                                     (y0 + y1) / 2)
+            svg.circle(cx, cy, 0.1, fill="none", stroke=INK, sw=0.45)
+    else:
+        a, b = tp(t, x0, (y0 + y1) / 2), tp(t, x1, (y0 + y1) / 2)
+        svg.line(a[0], a[1], b[0], b[1], INK, 0.5, extra='stroke-dasharray="0.8 1.2"')
+
+
+def draw_lantern(svg, plan, t, detail):
+    """The two-story cobogó screen in front of the entry and stair (facade direction C)."""
+    lan = plan.get("lantern")
+    if not lan:
+        return
+    (x0, x1), (y0, y1) = lan["x"], lan["y"]
+    op = lan.get("opening")
+    segs = [(a, b) for a, b in ([(x0, op[0]), (op[1], x1)] if op else [(x0, x1)]) if b - a > 0.01]
+    for a, b in segs:
+        cobogo_band(svg, (a, y0, b, y1), None, int(round(b - a)), detail == "full", t)
+    if op:   # the blocks run on overhead, above the door
+        svg.poly(tpoly(t, rect_pts((op[0], y0, op[1], y1))), fill="none", stroke=MID, sw=0.5,
+                 extra='stroke-dasharray="3 2"')
+    if detail == "full":
+        cx, cy = tp(t, (x0 + x1) / 2, y0 - 1.0)
+        svg.text(cx, cy, lan["note"].upper(), 5.8, fill=MID, ls=0.6, extra='dy="2"')
+
+
+def draw_porch(svg, plan, t, detail, fs):
+    """The Casita's covered porch: roof outline (dashed), two posts, and its size."""
+    pr = plan.get("porch")
+    if not pr:
+        return
+    if detail == "full":
+        svg.poly(tpoly(t, rect_pts(pr["rect"])), fill="#f4f1ea", stroke="none")
+    svg.poly(tpoly(t, rect_pts(pr["roof"])), fill="none", stroke=MID, sw=0.6, extra='stroke-dasharray="6 3"')
+    for cx, cy in pr["posts"]:
+        svg.poly(tpoly(t, rect_pts((cx - 0.25, cy - 0.25, cx + 0.25, cy + 0.25))), fill=INK, stroke="none")
+    x0, y0, x1, y1 = pr["rect"]
+    cx, cy = tp(t, (x0 + x1) / 2, (y0 + y1) / 2)
+    if detail == "full":
+        svg.text(cx, cy, "COVERED PORCH", fs, weight=700, ls=0.8, extra='dy="-2"')
+        svg.text(cx, cy, f"{fmt_ft(x1 - x0)} × {fmt_ft(y1 - y0)}", fs * 0.85, fill=MID, extra=f'dy="{fs * 1.05:.1f}"')
+        svg.text(cx, cy, "cedar ceiling", fs * 0.78, fill=MID, extra=f'dy="{fs * 2.1:.1f}"')
+    else:
+        svg.text(cx, cy, "Porch", fs, fill=MID, ls=0.3, extra='dy="2"')
+
+
+def draw_garden_wall(svg, s):
+    """The Casita's street wall: limestone piers, a cedar gate swinging into the garden, cobogó between."""
+    gw = garden_wall(s)
+    if not gw:
+        return
+    y = gw["y"]
+    for p0, p1 in gw["piers"]:
+        svg.rect(p0, y - 0.4, p1, y + 0.4, fill=LIMESTONE, stroke=INK, sw=0.6)
+    c0, c1 = gw["cobogo"]
+    cobogo_band(svg, (c0, y - 0.17, c1, y + 0.17), None, int(round(c1 - c0)), True)
+    if gw["gate"]:
+        g0, g1 = gw["gate"]
+        svg.line(g0, y, g0, y + (g1 - g0), DR.CEDAR, 1.4)                  # leaf, open into the garden
+        svg.arc(g0, y, g1 - g0, 0.0, math.pi / 2, stroke=MID, sw=0.45, extra='stroke-dasharray="2 1.5"')
+        svg.text((g0 + g1) / 2, y - 2.1, "CEDAR GATE", 5.0, fill="#6e5a3c", ls=0.4, extra='dy="2"')
+    svg.text((c0 + c1) / 2, y - 2.1, "COBOGÓ", 5.0, fill=MID, ls=0.4, extra='dy="2"')
+
+
 def draw_plan(svg, plan, t=None, detail="full", fs=8.5, labels=True):
     """Draw one floor plan into svg. t maps the home's frame to the drawing; detail: full | site."""
     fp = rect_pts((0, 0, plan["W"], plan["D"]))
@@ -201,6 +275,8 @@ def draw_plan(svg, plan, t=None, detail="full", fs=8.5, labels=True):
         (gx0, gy0), (gx1, gy1) = plan["gate"]
         a, b = tp(t, gx0, gy0 + 0.25), tp(t, gx1, gy1 + 0.25)
         svg.line(a[0], a[1], b[0], b[1], DR.CEDAR, 1.6 if detail == "full" else 1.0, extra='stroke-dasharray="1.5 1.5"')
+    draw_lantern(svg, plan, t, detail)
+    draw_porch(svg, plan, t, detail, fs)
     if labels:
         for room in plan["rooms"]:
             room_label(svg, room, t, detail, fs)
@@ -215,10 +291,14 @@ def svg_str(svg):
 
 def plan_svg(plan, scale=13.0, note_front="FRONT: STREET, ALLEY OR SIDE STREET"):
     W, Dd = plan["W"], plan["D"]
-    svg = DR.SVG(-5.5, -7.5, W + 5.5, Dd + 4.0, scale=scale, pad=14)
+    xr = plan["porch"]["roof"][2] if plan.get("porch") else W        # the Casita's porch sits off the right side
+    svg = DR.SVG(-5.5, -7.5, xr + 5.5, Dd + 4.0, scale=scale, pad=14)
     draw_plan(svg, plan, None, "full", fs=8.2)
     svg.dim(0, 0, W, 0, -4.2, size=8.5)
-    svg.dim(W, 0, W, Dd, 3.0, horizontal=False, size=8.5)
+    if plan.get("porch"):
+        svg.dim(0, 0, 0, Dd, -3.0, horizontal=False, size=8.5)
+    else:
+        svg.dim(W, 0, W, Dd, 3.0, horizontal=False, size=8.5)
     svg.text(W / 2, -6.6, note_front, 7.2, fill=MID, ls=1.2)
     return svg_str(svg)
 
@@ -279,8 +359,9 @@ def site_svg(s):
         DR.tree_canopy(svg, x, y, rr, int(x * 7 + y), fill="rgba(95,116,88,0.10)", stroke=GREEN, sw=0.7)
     for pts in s.get("fence", []):
         fence(svg, pts)
-    for pts in s.get("walls", []) + ([s["street_wall"]] if s.get("street_wall") else []):
+    for pts in s.get("walls", []):
         svg.pline(pts, stroke=INK, sw=1.6)
+    draw_garden_wall(svg, s)
     svg.rect(0, 0, W, L, fill="none", stroke=INK, sw=0.9, extra='stroke-dasharray="10 3 2 3"')
     # homes
     for h in s["homes"]:
@@ -343,6 +424,8 @@ def floor_sheet():
         "becomes the den).",
         "20 × 39 ft footprint from the test-fit. Mirror it so the bay and the bedrooms are always on the outside wall; "
         "stairs, closets and baths then line the shared wall of a side-by-side pair.",
+        "Facade (direction C): a cobogó screen rises both floors 1 ft in front of the entry and stair, open at the "
+        "front door; cedar gates close the carport. It lights up at night like Casa 01's screen.",
         "The open-riser oak stair sits behind cedar slats with a slot window; it is the house's signature.",
         "Upstairs side windows are high, or fluted below 5 ft where a bedroom needs an egress window.",
         "Ground floor meets Austin's visitability rules: a half bath, and a no-step entry from the carport or the front.",
@@ -367,6 +450,8 @@ def casita_sheet():
         "bedroom, bath, laundry and a walk-in closet at the back.",
         "The living room opens to its own pátio through a 10 ft slider on the long wall; mirror the plan to put the "
         "pátio on the other side.",
+        "A covered porch, 7'-9\" × 22', runs along the living room and flex room on the pátio side, under a cedar ceiling.",
+        "At the street its garden wall is cobogó between limestone piers, with a 4 ft cedar slat gate into the pátio.",
         "Same frames, stucco, cedar and thin roof edge as Casa 01 and Casa 02.",
         "Works with or without its own parking: on a plain 50-ft lot it has none, on corners and wide lots it does.",
         "As a backyard home for an existing house it is the Pátio Casita (tracker P2-18).",
@@ -382,7 +467,7 @@ def casita_sheet():
 def views_html(s):
     """The site's two massing renders (phase2/render), if they have been made."""
     imgs = []
-    for v in ("aerial", "street"):
+    for v in ("aerial", "street"):           # rendered in the chosen facade direction (render/build.py --fac)
         f = os.path.join(os.path.dirname(HERE), "render", "out", f"{s['id']}_{v}.png")
         if os.path.exists(f):
             imgs.append(f'<img src="../../render/out/{s["id"]}_{v}.png" style="width:100%;border:1px solid #dcd6c8">')
@@ -407,14 +492,15 @@ def site_sheet(s, i):
     leg = ('<div class="leg"><span><i style="background:#f3f1ea"></i>Garden</span><span><i style="background:#e1ead6"></i>'
            'Pátio</span><span><i style="background:#d8d4ca"></i>Drive, apron, parking</span><span><i style="background:'
            '#e6e0d2"></i>Terrace, walk</span><span><i style="border-color:#8a6a4a;background:#fff"></i>Cedar fence</span>'
-           '<span><i style="background:#2b2e31"></i>Pátio wall</span></div>')
+           '<span><i style="background:#2b2e31"></i>Pátio wall</span><span><i style="background:#fff;border-color:'
+           '#23262a;border-style:dotted"></i>Cobogó screen</span></div>')
     return (f'<section class="page"><div class="main" style="grid-template-rows:auto 1fr">'
             f'<h1>{s["id"]} · {s["name"]}, {s["lot"]["W"]:.0f} × {s["lot"]["L"]:.0f} ft</h1>'
             f'<div class="sp"><div class="s">{site_svg(s)}</div><div style="display:grid;gap:.18in;align-content:start">'
             f'<div><h2>Checks (2–3 homes on one lot)</h2><table class="kv2">{tr}</table></div>'
             f'<div><h2>How it works</h2><ul>{li}</ul></div>{leg}{views_html(s)}'
             f'<p class="lead" style="font-size:10px;color:#5b625b">Ground-floor plans shown. Dashed outline over a '
-            f'carport: the upper floor above it. Paved terraces and walks are counted in the impervious total; '
+            f'carport: the upper floor above it; beside a Casita: its porch roof. Paved terraces and walks are counted in the impervious total; '
             f'stepping stones set in planting are not.</p></div></div></div>'
             f'{title_block(f"C-{i}", "Site plan concept", SC_SITE)}</section>')
 

@@ -19,7 +19,7 @@ from ezdxf.enums import TextEntityAlignment
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
 from model import homes as H  # noqa: E402
-from model.sites import SITES, HOME_RULES, footprint, tp  # noqa: E402
+from model.sites import SITES, HOME_RULES, footprint, garden_wall, tp  # noqa: E402
 
 OUT = os.path.join(HERE, "Phase2_Concepts.dxf")
 IN = 12.0  # inches per foot
@@ -29,6 +29,7 @@ LAYERS = [  # name, colour, lineweight (1/100 mm), linetype
     ("A-DOOR", 3, 18, "Continuous"), ("A-GLAZ", 4, 18, "Continuous"), ("A-FLOR-FIXT", 8, 13, "Continuous"),
     ("A-FURN", 9, 13, "Continuous"), ("A-FLOR-STRS", 7, 18, "Continuous"), ("A-COLS", 7, 35, "Continuous"),
     ("A-GATE", 30, 25, "DASHED"), ("A-OVHD", 8, 18, "DASHED"), ("A-AREA-IDEN", 7, 18, "Continuous"),
+    ("A-WALL-SCRN", 7, 25, "Continuous"), ("A-ROOF-OTLN", 8, 18, "DASHED"),
     ("A-ANNO-DIMS", 7, 13, "Continuous"), ("A-ANNO-TEXT", 7, 18, "Continuous"),
     ("C-PROP", 1, 35, "PHANTOM"), ("C-SETB", 8, 13, "DASHED"), ("C-ROAD", 8, 13, "Continuous"),
     ("C-PAVE", 8, 13, "Continuous"), ("L-PLNT", 3, 13, "Continuous"), ("L-TREE", 3, 18, "Continuous"),
@@ -168,7 +169,34 @@ def build_block(doc, name, plan):
     if plan.get("gate"):
         (gx0, gy0), (gx1, gy1) = plan["gate"]
         line((gx0, gy0 + 0.25), (gx1, gy1 + 0.25), "A-GATE")
+    lan = plan.get("lantern")                     # cobogó screen, two stories (facade direction C)
+    if lan:
+        (x0, x1), (y0, y1) = lan["x"], lan["y"]
+        op = lan.get("opening")
+        for a, b in ([(x0, op[0]), (op[1], x1)] if op else [(x0, x1)]):
+            if b - a > 0.01:
+                cobogo(blk, a, b, y0, y1)
+        if op:
+            poly([(op[0], y0), (op[1], y0), (op[1], y1), (op[0], y1)], "A-OVHD")
+    pr = plan.get("porch")                        # the Casita's covered porch: roof outline and two posts
+    if pr:
+        x0, y0, x1, y1 = pr["roof"]
+        poly([(x0, y0), (x1, y0), (x1, y1), (x0, y1)], "A-ROOF-OTLN")
+        for cx, cy in pr["posts"]:
+            poly([(cx - 0.25, cy - 0.25), (cx + 0.25, cy - 0.25), (cx + 0.25, cy + 0.25), (cx - 0.25, cy + 0.25)],
+                 "A-COLS", hatch=True)
     return blk
+
+
+def cobogo(space, x0, x1, y0, y1, ox=0.0, oy=0.0):
+    """A cobogó screen in plan on layer A-WALL-SCRN: the band, and one ring per 12 in block."""
+    space.add_lwpolyline([((ox + x0) * IN, (oy + y0) * IN), ((ox + x1) * IN, (oy + y0) * IN),
+                          ((ox + x1) * IN, (oy + y1) * IN), ((ox + x0) * IN, (oy + y1) * IN)], close=True,
+                         dxfattribs={"layer": "A-WALL-SCRN"})
+    n = max(1, int(round(x1 - x0)))
+    for i in range(n):
+        cx = ox + x0 + (x1 - x0) * (i + 0.5) / n
+        space.add_circle((cx * IN, (oy + (y0 + y1) / 2) * IN), 1.2, dxfattribs={"layer": "A-WALL-SCRN"})
 
 
 # ---------------------------------------------------------------- model space helpers
@@ -206,6 +234,45 @@ def insert(msp, block, t, origin):
     x, y = tp(t, 0.0, 0.0)
     return msp.add_blockref(block, ((x + origin[0]) * IN, (y + origin[1]) * IN),
                             dxfattribs={"rotation": t["rot"], "xscale": -1 if t["mirror"] else 1, "layer": "0"})
+
+
+def feature_labels(msp, plan, t, origin, h, full=True):
+    """Labels for the facade features drawn in the blocks: the cobogó screen and the Casita's porch."""
+    def at(x, y):
+        X, Y = tp(t, x, y) if t else (x, y)
+        return (X + origin[0]) * IN, (Y + origin[1]) * IN
+    lan = plan.get("lantern")
+    if lan and full:
+        text(msp, *at(sum(lan["x"]) / 2, lan["y"][0] - 1.4), "COBOGÓ SCREEN, TWO STORIES", h * 0.6)
+    pr = plan.get("porch")
+    if pr:
+        x0, y0, x1, y1 = pr["rect"]
+        X, Y = at((x0 + x1) / 2, (y0 + y1) / 2)
+        if full:
+            text(msp, X, Y + h * 0.6, "COVERED PORCH", h, "A-AREA-IDEN")
+            text(msp, X, Y - h * 0.8, f"{ft_in(x1 - x0)} x {ft_in(y1 - y0)}", h * 0.75, "A-AREA-IDEN")
+        else:
+            text(msp, X, Y, "PORCH", h, "A-AREA-IDEN")
+
+
+def draw_garden_wall(msp, s, origin):
+    """The Casita's street wall: limestone piers, a cedar gate into the garden, cobogó between."""
+    gw = garden_wall(s)
+    if not gw:
+        return
+    ox, oy = origin
+    y = gw["y"]
+    for p0, p1 in gw["piers"]:
+        rect(msp, ox + p0, oy + y - 0.4, ox + p1, oy + y + 0.4, "L-WALL", hatch="AR-SAND", color=8)
+    c0, c1 = gw["cobogo"]
+    cobogo(msp, c0, c1, y - 0.17, y + 0.17, ox, oy)
+    text(msp, (ox + (c0 + c1) / 2) * IN, (oy + y - 2.1) * IN, "COBOGÓ", 8)
+    if gw["gate"]:
+        g0, g1 = gw["gate"]
+        msp.add_line(((ox + g0) * IN, (oy + y) * IN), ((ox + g0) * IN, (oy + y + g1 - g0) * IN),
+                     dxfattribs={"layer": "A-GATE"})
+        msp.add_arc(((ox + g0) * IN, (oy + y) * IN), (g1 - g0) * IN, 0, 90, dxfattribs={"layer": "A-GATE"})
+        text(msp, (ox + (g0 + g1) / 2) * IN, (oy + y - 2.1) * IN, "CEDAR GATE", 8)
 
 
 def room_labels(msp, plan, t, origin, h, dims=True):
@@ -263,12 +330,14 @@ def draw_site(msp, s, origin):
         msp.add_circle(((ox + x) * IN, (oy + y) * IN), 0.4 * IN, dxfattribs={"layer": "L-TREE"})
     for pts in s.get("fence", []):
         msp.add_lwpolyline([((ox + x) * IN, (oy + y) * IN) for x, y in pts], dxfattribs={"layer": "L-FENC"})
-    for pts in s.get("walls", []) + ([s["street_wall"]] if s.get("street_wall") else []):
+    for pts in s.get("walls", []):
         msp.add_lwpolyline([((ox + x) * IN, (oy + y) * IN) for x, y in pts], dxfattribs={"layer": "L-WALL",
                                                                                          "const_width": 6})
+    draw_garden_wall(msp, s, origin)
     for h in s["homes"]:
         insert(msp, BLOCK_OF[id(h["plan"])], h["t"], origin)
         room_labels(msp, h["plan"], h["t"], origin, 9, dims=False)
+        feature_labels(msp, h["plan"], h["t"], origin, 9, full=False)
         x0, y0, x1, y1 = footprint(h["t"])
         tx, ty = h.get("tag") or ((x0 + x1) / 2, (y0 - 2.4 if y0 > 18 else y1 + 3.2))
         fa = h["plan"]["enclosed"] + (H.CASA02_UPPER["enclosed"] if h["plan"] is not H.CASITA else 0)
@@ -339,20 +408,24 @@ def main():
         build_block(doc, name, plan)
     msp = doc.modelspace()
 
-    # plans, side by side, 32 ft apart
+    # plans side by side: the three Casa 02 floors 32 ft apart (one sheet), the Casita 48 ft further (its own sheet)
     plan_x = {}
     for i, (name, plan, title) in enumerate(PLANS):
-        ox = i * 32.0
+        ox = i * 32.0 + (16.0 if name == "CS" else 0.0)
         plan_x[name] = ox
         msp.add_blockref(name, (ox * IN, 0), dxfattribs={"layer": "0"})
         room_labels(msp, plan, None, (ox, 0), 9)
-        dim(msp, (ox, 0), (ox + plan["W"], 0), (ox, -4))
-        dim(msp, (ox + plan["W"], 0), (ox + plan["W"], plan["D"]), (ox + plan["W"] + 4, 0), angle=90)
+        feature_labels(msp, plan, None, (ox, 0), 9)
+        dim(msp, (ox, 0), (ox + plan["W"], 0), (ox, -5))
+        if plan.get("porch"):      # the porch is on the right, so dimension the depth on the left
+            dim(msp, (ox, 0), (ox, plan["D"]), (ox - 4, 0), angle=90)
+        else:
+            dim(msp, (ox + plan["W"], 0), (ox + plan["W"], plan["D"]), (ox + plan["W"] + 4, 0), angle=90)
         text(msp, (ox + plan["W"] / 2) * IN, -9 * IN, title, 12)
 
     # sites, to the right of the plans
     site_origin = {}
-    x = 150.0
+    x = 300.0           # far enough right that no site sheet's viewport reaches the plans
     for fn in SITES:
         s = fn()
         site_origin[s["id"]] = (x, 0.0)
@@ -361,7 +434,7 @@ def main():
 
     # sheets
     sheet(doc, "C-1 Casa 02", "C-1", "CASA 02 PLANS", '1/8" = 1\'-0"', 96, (plan_x["C02-UP"] / 2 + 10, 18))
-    sheet(doc, "C-2 Casita", "C-2", "CASITA PLAN", '1/4" = 1\'-0"', 48, (plan_x["CS"] + 10, 14))
+    sheet(doc, "C-2 Casita", "C-2", "CASITA PLAN", '1/4" = 1\'-0"', 48, (plan_x["CS"] + 12, 14))
     for i, fn in enumerate(SITES):
         s = fn()
         ox, oy = site_origin[s["id"]]

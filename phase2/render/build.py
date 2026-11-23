@@ -1,7 +1,7 @@
 """Phase 2 massing renders: each site built in 3D from the same model as the drawings and the AutoCAD file.
 
-    <bpy venv>/bin/python phase2/render/build.py [--sites L1-D1,L1-T1] [--res 1100] [--samples 24]
-        -> phase2/render/out/<site>_aerial.png, <site>_street.png
+    <bpy venv>/bin/python phase2/render/build.py [--sites L1-D1,L1-T1] [--fac Cplus] [--res 1100] [--samples 24]
+        -> phase2/render/out/<site>_aerial.png, <site>_street.png   (in the chosen facade direction, Cplus)
 
 Low-detail on purpose: walls with real openings and glass, floor slabs, the thin roof edge, columns and
 cedar gates at the carports, plus the site (paving, pátios, fences, walls, trees, street, neighbours).
@@ -14,6 +14,8 @@ Facade options for Casa 02 (the three-option study, phase2/study):
     C     cobogó lantern: the entry and stair column clad two stories high in cobogó
     Cplus the direction chosen from the study: C as is, plus a cedar slat gate in the Casita's cobogó garden wall
 A, B, C and Cplus also give the Casita a covered porch over its pátio, and its street wall becomes cobogó.
+The cobogó screen, the porch and the garden gate come from the model (homes.LANTERN, CASITA["porch"],
+sites.garden_wall), so the drawings and the 3D views match.
 """
 import argparse
 import math
@@ -36,7 +38,7 @@ import materials as MAT  # noqa: E402
 from geo import MB, M, merge_copies  # noqa: E402
 import house as CASA01_HOUSE  # noqa: E402  (the Casa 01 cobogó block)
 from model import homes as H  # noqa: E402
-from model.sites import SITES, tp  # noqa: E402
+from model.sites import SITES, garden_wall, tp  # noqa: E402
 
 OUT = os.path.join(HERE, "out")
 
@@ -158,8 +160,9 @@ def build_home(h, origin, L, idx, fac="base"):
             lbox(sb, t, 0, 0.1, W, 0.45, UP_FF + 3.4, UP_FF + 3.55, mat=1)
     else:
         lbox(sb, t, -o, -o, W + o, D + o, ONE_STORY_ROOF[0], ONE_STORY_ROOF[1], mats6=[2, 0, 1, 1, 1, 1])
-        if fac != "base":                                                                # Casita porch over its pátio
-            lbox(sb, t, W + o, -o, W + 8.0, D + o, ONE_STORY_ROOF[0], ONE_STORY_ROOF[1], mats6=[2, 0, 1, 1, 1, 1])
+        if plan.get("porch") and fac != "base":                                         # Casita porch over its pátio
+            x0, y0, x1, y1 = plan["porch"]["roof"]
+            lbox(sb, t, W + o, y0, x1, y1, ONE_STORY_ROOF[0], ONE_STORY_ROOF[1], mats6=[2, 0, 1, 1, 1, 1])
     sb.build(bpy.context.scene.collection, bevel=0.003)
 
     det = MB(f"{h['id']} details", [L["bronze"], L["cedar_z"]])
@@ -168,9 +171,9 @@ def build_home(h, origin, L, idx, fac="base"):
     if step:                                                                             # cantilever columns
         for cx in (0.4, W - 0.4):
             lbox(det, t, cx - 0.25, D + step - 0.65, cx + 0.25, D + step - 0.15, FF - 0.9, UP_FF - 1.25, mat=0)
-    if not casa and fac != "base":
-        for cy in (0.0, D - 0.5):
-            lbox(det, t, W + 7.2, cy, W + 7.7, cy + 0.5, FF - 0.9, ONE_STORY_ROOF[0], mat=0)
+    if plan.get("porch") and fac != "base":
+        for cx, cy in plan["porch"]["posts"]:
+            lbox(det, t, cx - 0.25, cy - 0.25, cx + 0.25, cy + 0.25, FF - 0.9, ONE_STORY_ROOF[0], mat=0)
     if plan.get("gate") and h.get("gate", True):
         (gx0, gy0), (gx1, gy1) = plan["gate"]
         n = int(abs(gx1 - gx0) / 0.42)
@@ -187,21 +190,14 @@ def build_home(h, origin, L, idx, fac="base"):
             for z in (UP_FF - 1.4, ROOF[0] - 0.15):
                 lbox(det, t, 0, y0, W, y1, z, z + 0.15, mat=0)
     det.build(bpy.context.scene.collection, bevel=0.002)
-    if casa and fac in ("C", "Cplus") and t["rot"] in (0, 180):                          # cobogó lantern
-        a, b = tp(t, 10.5, 0.0), tp(t, 20.0, 0.0)
-        xa, xb = min(a[0], b[0]) + ox, max(a[0], b[0]) + ox
-        front_y = a[1] + oy
-        y = front_y - 1.0 if t["rot"] == 0 else front_y + 0.67
+    lan = plan.get("lantern")
+    if casa and lan and fac in ("C", "Cplus") and t["rot"] in (0, 180):                  # cobogó lantern
+        (xa, ya), (xb, yb) = tp(t, lan["x"][0], lan["y"][0]), tp(t, lan["x"][1], lan["y"][1])
         holes = []
-        for w in plan["walls"]:
-            if w["ext"] and w["a"][1] == 0 and w["b"][1] == 0:
-                for op in w["openings"]:
-                    if op["kind"] == "door":
-                        p0 = tp(t, w["a"][0] + op["off"], 0.0)
-                        p1 = tp(t, w["a"][0] + op["off"] + op["w"], 0.0)
-                        holes.append((math.floor(min(p0[0], p1[0]) + ox), math.ceil(max(p0[0], p1[0]) + ox),
-                                      FF - 0.1, FF + 8.0))
-        cobogo_panel(L, f"{h['id']} cobogo", round(xa), round(xa) + 9, y, FF, ROOF[0], holes)
+        if lan.get("opening"):                                                           # open at the front door
+            pa, pb = tp(t, lan["opening"][0], 0.0)[0], tp(t, lan["opening"][1], 0.0)[0]
+            holes.append((min(pa, pb) + ox, max(pa, pb) + ox, FF - 0.1, FF + 8.0))
+        cobogo_panel(L, f"{h['id']} cobogo", min(xa, xb) + ox, max(xa, xb) + ox, min(ya, yb) + oy, FF, ROOF[0], holes)
 
 
 def tree(x, y, r, L, seed):
@@ -263,22 +259,20 @@ def build_site(s, L, fac="base"):
         (x0, y0), (x1, y1) = sw
         f.box(min(x0, x1) - 0.25, min(y0, y1) - 0.25, 0.0, max(x0, x1) + 0.25, max(y0, y1) + 0.25, 6.0, mat=1)
     f.build(bpy.context.scene.collection, bevel=0.003)
-    if sw and fac != "base":
-        (x0, y0), (x1, y1) = sw
+    if sw and fac != "base":                            # limestone piers, cobogó, and in Cplus a cedar gate
+        gw = garden_wall(s if fac == "Cplus" else dict(s, garden_gate=None))
+        y0 = gw["y"]
         pier = MB("garden wall piers", [L["limestone"], L["cedar_z"]])
-        pier.box(x0, y0 - 0.4, 0.0, x0 + 2.0, y0 + 0.4, 8.5, mat=0)
-        pier.box(x1 - 2.0, y0 - 0.4, 0.0, x1, y0 + 0.4, 8.5, mat=0)
-        c0 = x0 + 2.0
-        if fac == "Cplus":                                  # a 4 ft cedar gate beside the Casita, a pier, then cobogó
-            g0, g1 = x0 + 2.0, x0 + 6.0
+        for p0, p1 in gw["piers"]:
+            pier.box(p0, y0 - 0.4, 0.0, p1, y0 + 0.4, 8.5, mat=0)
+        if gw["gate"]:
+            g0, g1 = gw["gate"]
             n = int((g1 - g0) / 0.42)
             for i in range(n):
                 x = g0 + (i + 0.5) * (g1 - g0) / n
                 pier.box(x - 0.14, y0 - 0.09, 0.25, x + 0.14, y0 + 0.09, 7.5, mat=1)
-            pier.box(g1, y0 - 0.4, 0.0, g1 + 1.0, y0 + 0.4, 8.5, mat=0)
-            c0 = g1 + 1.0
         pier.build(bpy.context.scene.collection, bevel=0.003)
-        cobogo_panel(L, "Casita garden cobogo", c0, x1 - 2.0, y0 - 0.165, 0.5, 8.5)
+        cobogo_panel(L, "Casita garden cobogo", gw["cobogo"][0], gw["cobogo"][1], y0 - 0.165, 0.5, 8.5)
     for i, (x, y, r) in enumerate(s["trees"]):
         tree(x, y, r, L, i * 13 + int(x))
     # neighbouring houses for scale
@@ -304,6 +298,7 @@ def main():
     ap.add_argument("--sites", default="")
     ap.add_argument("--res", type=int, default=1100)
     ap.add_argument("--samples", type=int, default=24)
+    ap.add_argument("--fac", default="Cplus")
     a = ap.parse_args([x for x in sys.argv[1:] if x != "--"])
     want = set(filter(None, a.sites.split(",")))
     os.makedirs(OUT, exist_ok=True)
@@ -312,8 +307,9 @@ def main():
         if want and s["id"] not in want:
             continue
         R.reset()
+        _COBOGO.clear()                      # the cached block mesh went with the old scene
         L = MAT.build_library()
-        build_site(s, L)
+        build_site(s, L, a.fac)
         R.setup_render(a.samples, a.res, int(a.res * 9 / 16))
         R.set_world("day", 215, 1.0)
         bpy.context.scene.view_settings.exposure = -0.3
