@@ -86,9 +86,7 @@ CSS = CSS.replace("url(fonts/", "url(../../casa01/lookbook/fonts/")
 CSS += """
 .bleed{background:#111}
 .bleed img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.bleed .label{position:absolute;left:44px;bottom:40px;max-width:520px;background:rgba(246,244,238,.94);padding:22px 26px}
-.bleed .label h2{font-size:34px}
-.bleed .label p{margin:8px 0 0;font-size:13px;line-height:1.5;color:#3d433e}
+.bleed .label.top{bottom:auto;top:40px}
 .bleed .callouts{position:absolute;right:40px;bottom:40px;display:flex;flex-direction:column;gap:6px;align-items:flex-end}
 .bleed .callouts span{background:rgba(29,37,32,.82);color:#f3efe4;font:700 10px/1 var(--sans);letter-spacing:.12em;
   text-transform:uppercase;padding:8px 10px}
@@ -124,10 +122,10 @@ def page(n, eyebrow, title, sub, inner):
             f'Casita</span><span>{n:02d}</span></div></section>')
 
 
-def bleed(src, eyebrow, title, text, callouts=()):
+def bleed(src, eyebrow, title, text, callouts=(), top=False):
     co = "".join(f"<span>{c}</span>" for c in callouts)
     return (f'<section class="page bleed"><img src="{src}" alt="{html.escape(title)}">'
-            f'<div class="label"><div class="eyebrow">{eyebrow}</div><h2>{title}</h2><p>{text}</p></div>'
+            f'<div class="label{" top" if top else ""}"><div class="eyebrow">{eyebrow}</div><h2>{title}</h2><p>{text}</p></div>'
             f'<div class="callouts">{co}</div></section>')
 
 
@@ -174,7 +172,7 @@ and a white upper floor.</p>
                    "A garden wall, a cedar gate",
                    "On an alley lot the one-story Casita faces the street behind its own walled garden: limestone piers, "
                    "a cobogó panel and a cedar slat gate, with a covered porch inside. The pair parks off the alley.",
-                   ["Limestone piers", "Cedar garden gate", "Covered porch"]))
+                   ["Limestone piers", "Cedar garden gate", "Covered porch"], top=True))
     # plans
     pl = [("Ground floor, carport", C.plan_svg(H.CASA02_GF_CARPORT), f"{A['carport_gf']:,.0f} sf + 210 sf carport"),
           ("Ground floor, suite", C.plan_svg(H.CASA02_GF_SUITE), f"{A['suite_gf']:,.0f} sf · for wide lots"),
