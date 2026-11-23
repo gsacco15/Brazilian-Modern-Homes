@@ -213,6 +213,44 @@ def room_label(svg, room, t, detail, fs):
 
 
 LIMESTONE = "#ddd3c2"
+CALCADA, CALCADA_BAND = "#363531", "#dcd7cd"
+
+
+def draw_calcada(svg, plan, t, detail):
+    """Black calçada portuguesa rugs with their light concrete band."""
+    for r in plan.get("calcada", []):
+        svg.poly(tpoly(t, rect_pts(r)), fill=CALCADA_BAND, stroke="none")
+        x0, y0, x1, y1 = r
+        b = 0.3 if min(x1 - x0, y1 - y0) > 1.5 else 0.12
+        svg.poly(tpoly(t, rect_pts((x0 + b, y0 + b, x1 - b, y1 - b))), fill=CALCADA, stroke="none")
+
+
+def draw_stone(svg, plan, t, detail):
+    """Lueders limestone ashlar: a band on the outer face of the stone walls (cut at the openings), and the piers."""
+    full = detail == "full"
+    for run in H.stone_runs(plan):
+        (ax, ay), (ux, uy), (nx, ny), L = run["a"], run["u"], run["n"], run["L"]
+        free, s0 = [], 0.0
+        for h0, h1, _o in run["holes"]:
+            if h0 > s0:
+                free.append((s0, h0))
+            s0 = max(s0, h1)
+        if s0 < L:
+            free.append((s0, L))
+        dd = 0.34
+        for q0, q1 in free:
+            P = [(ax + ux * q + nx * d, ay + uy * q + ny * d) for q, d in ((q0, 0), (q1, 0), (q1, dd), (q0, dd))]
+            svg.poly(tpoly(t, P), fill=LIMESTONE, stroke=INK, sw=0.45 if full else 0.3)
+            if full:
+                q = q0 + 0.9
+                while q < q1 - 0.3:
+                    a_, b_ = tp(t, ax + ux * q, ay + uy * q), tp(t, ax + ux * q + nx * dd, ay + uy * q + ny * dd)
+                    svg.line(a_[0], a_[1], b_[0], b_[1], MID, 0.35)
+                    q += 1.6
+    for r in plan.get("stone", {}).get("piers", []):
+        svg.poly(tpoly(t, rect_pts(r)), fill=LIMESTONE, stroke=INK, sw=0.7 if full else 0.5)
+
+
 
 
 def cobogo_band(svg, pts_a, pts_b, n, full, t=None):
@@ -300,6 +338,7 @@ def draw_plan(svg, plan, t=None, detail="full", fs=8.5, labels=True):
             svg.poly(tpoly(t, rect_pts(room["rect"])), fill="#ecebe6", stroke="none")
     if "void" in plan:
         pass
+    draw_calcada(svg, plan, t, detail)
     for f in plan.get("fixtures", []):
         if detail == "site" and f["kind"] in ("table", "sofa", "range", "sink", "lav", "wd", "island"):
             continue
@@ -310,6 +349,7 @@ def draw_plan(svg, plan, t=None, detail="full", fs=8.5, labels=True):
     # the upper floor over an open bay, and the columns that carry it
     if any(r.get("outdoor") for r in plan["rooms"]):
         svg.poly(tpoly(t, fp), fill="none", stroke=MID, sw=0.6, extra='stroke-dasharray="6 3"')
+    draw_stone(svg, plan, t, detail)
     for cx, cy in plan.get("columns", []):
         svg.poly(tpoly(t, rect_pts((cx - 0.3, cy - 0.3, cx + 0.3, cy + 0.3))), fill=INK, stroke="none")
     if plan.get("gate"):
@@ -405,6 +445,7 @@ def site_svg(s):
         fence(svg, pts)
     for pts in s.get("walls", []):
         svg.pline(pts, stroke=INK, sw=1.6)
+    draw_calcada(svg, dict(calcada=s.get("calcada", [])), None, "site")
     draw_garden_wall(svg, s)
     svg.rect(0, 0, W, L, fill="none", stroke=INK, sw=0.9, extra='stroke-dasharray="10 3 2 3"')
     # homes
@@ -470,6 +511,8 @@ def floor_sheet():
         "stairs, closets and baths then line the shared wall of a side-by-side pair.",
         "Facade (direction C): a cobogó screen rises both floors 1 ft in front of the entry and stair, open at the "
         "front door; cedar gates close the carport. It lights up at night like Casa 01's screen.",
+        "The Casa 01 staples, once per home: a Lueders limestone ashlar base on the outer side (a corner pier "
+        "carries the upper floor), about 50 sf of black calçada at the entries, São Tomé limestone pavers outside.",
         "A gallery hall runs from the front door and the carport door to the kitchen. The open-riser oak stair "
         "rises from the kitchen behind cedar slats to a landing behind the cobogó: the house's signature.",
         "Upstairs side windows are high, or fluted below 5 ft where a bedroom needs an egress window.",
@@ -540,7 +583,8 @@ def site_sheet(s, i):
            'Pátio</span><span><i style="background:#d8d4ca"></i>Drive, apron, parking</span><span><i style="background:'
            '#e6e0d2"></i>Terrace, walk</span><span><i style="border-color:#8a6a4a;background:#fff"></i>Cedar fence</span>'
            '<span><i style="background:#2b2e31"></i>Pátio wall</span><span><i style="background:#fff;border-color:'
-           '#23262a;border-style:dotted"></i>Cobogó screen</span></div>')
+           '#23262a;border-style:dotted"></i>Cobogó screen</span><span><i style="background:#ddd3c2"></i>Lueders '
+           'limestone</span><span><i style="background:#363531"></i>Calçada</span></div>')
     return (f'<section class="page"><div class="main" style="grid-template-rows:auto 1fr">'
             f'<h1>{s["id"]} · {s["name"]}, {s["lot"]["W"]:.0f} × {s["lot"]["L"]:.0f} ft</h1>'
             f'<div class="sp"><div class="s">{site_svg(s)}</div><div style="display:grid;gap:.18in;align-content:start">'

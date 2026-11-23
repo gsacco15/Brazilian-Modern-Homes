@@ -34,6 +34,7 @@ LAYERS = [  # name, colour, lineweight (1/100 mm), linetype
     ("A-GATE", 30, 25, "DASHED"), ("A-OVHD", 8, 18, "DASHED"), ("A-AREA-IDEN", 7, 18, "Continuous"),
     ("A-WALL-SCRN", 7, 25, "Continuous"), ("A-ROOF-OTLN", 8, 18, "DASHED"),
     ("A-ANNO-SYMB", 7, 18, "Continuous"), ("A-ANNO-SCHD", 7, 18, "Continuous"),
+    ("A-WALL-STON", 41, 35, "Continuous"), ("L-PAVE-CALC", 250, 18, "Continuous"),
     ("A-ANNO-DIMS", 7, 13, "Continuous"), ("A-ANNO-TEXT", 7, 18, "Continuous"),
     ("C-PROP", 1, 35, "PHANTOM"), ("C-SETB", 8, 13, "DASHED"), ("C-ROAD", 8, 13, "Continuous"),
     ("C-PAVE", 8, 13, "Continuous"), ("L-PLNT", 3, 13, "Continuous"), ("L-TREE", 3, 18, "Continuous"),
@@ -198,6 +199,39 @@ def build_block(doc, name, plan):
     if plan.get("gate"):
         (gx0, gy0), (gx1, gy1) = plan["gate"]
         line((gx0, gy0 + 0.25), (gx1, gy1 + 0.25), "A-GATE")
+    for run in H.stone_runs(plan):                # Lueders limestone ashlar on the outer face
+        (ax, ay), (ux, uy), (nx, ny), L_ = run["a"], run["u"], run["n"], run["L"]
+        s0 = 0.0
+        spans = []
+        for h0, h1, _o in run["holes"]:
+            if h0 > s0:
+                spans.append((s0, h0))
+            s0 = max(s0, h1)
+        if s0 < L_:
+            spans.append((s0, L_))
+        for q0, q1 in spans:
+            P = [(ax + ux * q + nx * d, ay + uy * q + ny * d) for q, d in ((q0, 0), (q1, 0), (q1, 0.34), (q0, 0.34))]
+            p_ = pts_in(P)
+            blk.add_lwpolyline(p_, close=True, dxfattribs={"layer": "A-WALL-STON"})
+            hh = blk.add_hatch(color=41, dxfattribs={"layer": "A-WALL-STON"})
+            hh.set_pattern_fill("ANSI31", scale=2.0)
+            hh.paths.add_polyline_path(p_, is_closed=True)
+    for r in plan.get("stone", {}).get("piers", []):
+        x0, y0, x1, y1 = r
+        p_ = pts_in([(x0, y0), (x1, y0), (x1, y1), (x0, y1)])
+        blk.add_lwpolyline(p_, close=True, dxfattribs={"layer": "A-WALL-STON"})
+        hh = blk.add_hatch(color=41, dxfattribs={"layer": "A-WALL-STON"})
+        hh.set_pattern_fill("ANSI31", scale=2.0)
+        hh.paths.add_polyline_path(p_, is_closed=True)
+    for r in plan.get("calcada", []):             # black calçada with its light band
+        x0, y0, x1, y1 = r
+        poly([(x0, y0), (x1, y0), (x1, y1), (x0, y1)], "L-PAVE-CALC")
+        b = 0.3 if min(x1 - x0, y1 - y0) > 1.5 else 0.12
+        p_ = pts_in([(x0 + b, y0 + b), (x1 - b, y0 + b), (x1 - b, y1 - b), (x0 + b, y1 - b)])
+        blk.add_lwpolyline(p_, close=True, dxfattribs={"layer": "L-PAVE-CALC"})
+        hh = blk.add_hatch(color=250, dxfattribs={"layer": "L-PAVE-CALC"})
+        hh.set_pattern_fill("AR-SAND", scale=1.0)
+        hh.paths.add_polyline_path(p_, is_closed=True)
     lan = plan.get("lantern")                     # cobogó screen, two stories (facade direction C)
     if lan:
         (x0, x1), (y0, y1) = lan["x"], lan["y"]
@@ -362,6 +396,8 @@ def draw_site(msp, s, origin):
     for pts in s.get("walls", []):
         msp.add_lwpolyline([((ox + x) * IN, (oy + y) * IN) for x, y in pts], dxfattribs={"layer": "L-WALL",
                                                                                          "const_width": 6})
+    for r in s.get("calcada", []):                 # site calçada (the Casita's garden landing)
+        rect(msp, ox + r[0], oy + r[1], ox + r[2], oy + r[3], "L-PAVE-CALC", hatch="AR-SAND", color=250)
     draw_garden_wall(msp, s, origin)
     for h in s["homes"]:
         insert(msp, BLOCK_OF[id(h["plan"])], h["t"], origin)

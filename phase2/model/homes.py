@@ -68,6 +68,17 @@ STAIR_SLATS = [((STAIR_X, 9.5), (STAIR_X, 19.5))]                  # cedar slats
 # 1 ft in front of the entry, WC and the landing above, rising both floors to the roof. It stays open for 4 ft
 # in front of the front door, under a header of blocks.
 LANTERN = dict(x=(11.0, 20.0), y=(-1.0, -0.67), opening=(11.0, 15.0), note="cobogó screen, two stories")
+# The Casa 01 staples, used once per home (Nov 2026):
+# - Lueders limestone, sawn-face ashlar in three course heights, on the outer side of the ground floor: a pier at
+#   the carport's street corner (it carries the upper floor in place of the front column) and the outer wall of
+#   the kitchen and living room; on the suite version, the whole outer side and the suite's street wall. The
+#   white upper floor floats over a stone base, and a pair reads stone | cedar gate | cobogó | cobogó | gate | stone.
+# - Black calçada portuguesa, about 50 sf at the entry, as at Casa 01: a rug in the carport at the no-step door
+#   and a threshold under the cobogó at the front door. Both sit under the house, so they add no impervious cover.
+# - Pedra São Tomé (Lueders limestone pavers, 24 x 36 thermal) on the terraces and the stepping stones.
+STONE_GC = dict(walls=[((0.0, 39.0), (0.0, 20.0))], piers=[(0.0, 0.0, 1.5, 1.5)])
+STONE_GS = dict(walls=[((0.0, 39.0), (0.0, 0.0)), ((0.0, 0.0), (10.5, 0.0))], piers=[])
+CALCADA_THRESHOLD = (11.0, -0.95, 20.0, 0.0)
 BACK_GLASS = {2: [slider(2.0, 16.0)]}                 # back wall: 16 ft slider to the pátio
 EAST_GLASS = [slider(28.0, 8.0)]                       # outer long wall of a detached home, where the pátio is
 SERVICE_FIX = [
@@ -93,11 +104,13 @@ CASA02_GF_CARPORT = dict(
                {0: [door(0.5, 3.0, "L", "s"), win(6.0, 2.5, "high")],
                 2: BACK_GLASS[2], 3: [win(5.0, 6.0, "sill 3'-6\"")],
                 5: [door(10.0, 3.0, "L", "e")]}) + SERVICE_PARTS,
-    rooms=SERVICE_ROOMS + [dict(name="Carport", rect=BAY, outdoor=True, note="open bay · cedar gate")],
+    rooms=SERVICE_ROOMS + [dict(name="Carport", rect=BAY, outdoor=True, note="open bay · cedar gate", lab=(5.25, 17.3))],
     fixtures=KITCHEN_FIX + SERVICE_FIX + [dict(kind="car", rect=(2.15, 2.0, 8.35, 17.5))],
     stair=STAIR, slats=STAIR_SLATS,
-    columns=[(0.35, 0.35), (0.35, 10.0)],
-    gate=((0.0, 0.0), (10.5, 0.0)),
+    columns=[(0.35, 10.0)],                                            # the street corner is the stone pier
+    gate=((1.5, 0.0), (10.5, 0.0)),                                    # 9 ft cedar slat gate
+    stone=STONE_GC,
+    calcada=[(4.75, 4.5, 10.25, 13.5), CALCADA_THRESHOLD],              # rug at the carport door + threshold
     lantern=LANTERN,
     enclosed=W2 * D2 - (BAY[2] - BAY[0]) * (BAY[3] - BAY[1]),
 )
@@ -122,6 +135,8 @@ CASA02_GF_SUITE = dict(
         dict(kind="lav", rect=(7.6, 17.9, 10.1, 19.6)),
     ],
     stair=STAIR, slats=STAIR_SLATS,
+    stone=STONE_GS,
+    calcada=[CALCADA_THRESHOLD],
     lantern=LANTERN,
     enclosed=W2 * D2,
 )
@@ -213,8 +228,38 @@ CASITA = dict(
     # covered porch on the pátio side (facade direction C): roof on two bronze posts, cedar ceiling. It runs
     # along the living room and flex room only (22 ft), which keeps the 50-ft trios under the impervious cap.
     porch=dict(rect=(20.0, 0.0, 27.75, 22.0), roof=(20.0, -1.0, 28.0, 23.0), posts=[(27.45, 0.25), (27.45, 21.75)]),
+    calcada=[(13.0, -3.0, 17.0, 0.0)],                                 # calçada stoop at the front door, 12 sf
     enclosed=W3 * D3,
 )
+
+
+def stone_runs(plan):
+    """The stone-clad stretches of exterior wall in a plan, in the home's frame. Each run: a (start point),
+    u (unit direction), n (unit normal into the house), L (length) and holes: the openings of the wall it lies on,
+    as (s0, s1, opening) measured along the run. Used by the drawings, the AutoCAD file and the renders."""
+    import math
+    runs = []
+    for a, b in plan.get("stone", {}).get("walls", []):
+        L = math.hypot(b[0] - a[0], b[1] - a[1])
+        u = ((b[0] - a[0]) / L, (b[1] - a[1]) / L)
+        n = (-u[1], u[0])
+        holes = []
+        for w in plan["walls"]:
+            if not w["ext"]:
+                continue
+            (wx0, wy0), (wx1, wy1) = w["a"], w["b"]
+            on = all(abs((px - a[0]) * u[1] - (py - a[1]) * u[0]) < 1e-6 for px, py in ((wx0, wy0), (wx1, wy1)))
+            if not on:
+                continue
+            WL = math.hypot(wx1 - wx0, wy1 - wy0)
+            wu = ((wx1 - wx0) / WL, (wy1 - wy0) / WL)
+            for o in w["openings"]:
+                pts = [(wx0 + wu[0] * q, wy0 + wu[1] * q) for q in (o["off"], o["off"] + o["w"])]
+                ts = sorted((px - a[0]) * u[0] + (py - a[1]) * u[1] for px, py in pts)
+                if ts[1] > 0 and ts[0] < L:
+                    holes.append((max(ts[0], 0.0), min(ts[1], L), o))
+        runs.append(dict(a=a, b=b, u=u, n=n, L=L, holes=sorted(holes, key=lambda h: h[0])))
+    return runs
 
 
 def area_summary():

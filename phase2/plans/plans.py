@@ -289,10 +289,15 @@ SHEET_NOTES = {
     "A-101": ["The front door and the carport door both open into the gallery hall; the hall leads straight to the "
               "kitchen, past a built-in bench, coat hooks and a floor-to-ceiling pantry.",
               "The stair rises from the kitchen toward the front and lands upstairs behind the cobogó.",
-              "Carport: open bay under the upper floor, cedar slat gate at the street, two steel columns."],
+              "Carport: open bay under the upper floor, open on the street and outer sides; a 9 ft cedar slat gate, "
+              "a Lueders limestone pier at the corner and one steel column carry the floor above.",
+              "Lueders limestone ashlar on the outer wall of the kitchen and living room. Black calçada rug at the "
+              "carport door and a calçada threshold under the cobogó (about 58 sf, all under the house)."],
     "A-102": ["For wide lots where the car parks on a pad: the bay becomes a bedroom suite with its own bath.",
               "Drawn for a detached site (L4-D2), so the outer long wall takes an 8 ft slider to the side pátio. In a "
-              "pair, that wall is the shared wall: no openings."],
+              "pair, that wall is the shared wall: no openings.",
+              "Lueders limestone ashlar on the whole outer side and on the suite's street wall, as at Casa 01; a "
+              "calçada threshold under the cobogó."],
     "A-103": ["The stair lands at the front, in a bright landing behind the cobogó (room for a desk); the hall runs "
               "back along the open stair to the primary suite.",
               "Bath 2 sits between the two front bedrooms on the outer wall, with a window. Laundry upstairs, beside "
@@ -342,7 +347,7 @@ def sheet_html(sh):
             f'<div><h2>General notes</h2><ul class="gn">{gen}</ul></div>'
             f'<p class="lead" style="font-size:9px;color:#5b625b">Circle: door tag. Diamond: window tag. Dashed: '
             f'overhead (the upper floor over the carport, the top of the stair, the cobogó header). Dotted cedar '
-            f'line: cedar slats.</p></div></div></div>{title_block(sh["no"], sh["title"])}</section>')
+            f'line: cedar slats. Stone band: Lueders limestone ashlar. Dark rug: calçada portuguesa.</p></div></div></div>{title_block(sh["no"], sh["title"])}</section>')
 
 
 def main():

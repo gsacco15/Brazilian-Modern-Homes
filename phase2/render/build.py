@@ -137,7 +137,7 @@ def build_home(h, origin, L, idx, fac="base"):
     casa = plan is not H.CASITA
     W, D = plan["W"], plan["D"]
     step = 8.0 if (casa and fac == "B") else 0.0
-    clad = {"A": "limestone", "B": "cedar_z", "C": "stucco"}.get(h["id"], "stucco") if casa else "stucco"
+    clad = "stucco"                      # stone is added on top where the plan has it (stone_runs, piers)
     mb = MB(f"{h['id']} walls", [L[clad], L["stucco"], L["glass"], L["oak_door"], L["paint"]])
     for x0, y0, x1, y1, za, zb, kind in wall_pieces(plan, t, FF, GF_TOP if casa else ONE_STORY_ROOF[0], ext_only=False):
         m = {"wall": 0, "inner": 4, "glass": 2, "door": 3}[kind]
@@ -191,6 +191,8 @@ def build_home(h, origin, L, idx, fac="base"):
             for z in (UP_FF - 1.4, ROOF[0] - 0.15):
                 lbox(det, t, 0, y0, W, y1, z, z + 0.15, mat=0)
     det.build(bpy.context.scene.collection, bevel=0.002)
+    if fac in ("C", "Cplus"):                                                            # the Casa 01 staples
+        stone_and_calcada(plan, t, L, h["id"], casa)
     lan = plan.get("lantern")
     if casa and lan and fac in ("C", "Cplus") and t["rot"] in (0, 180):                  # cobogó lantern
         (xa, ya), (xb, yb) = tp(t, lan["x"][0], lan["y"][0]), tp(t, lan["x"][1], lan["y"][1])
@@ -199,6 +201,44 @@ def build_home(h, origin, L, idx, fac="base"):
             pa, pb = tp(t, lan["opening"][0], 0.0)[0], tp(t, lan["opening"][1], 0.0)[0]
             holes.append((min(pa, pb) + ox, max(pa, pb) + ox, FF - 0.1, FF + 8.0))
         cobogo_panel(L, f"{h['id']} cobogo", min(xa, xb) + ox, max(xa, xb) + ox, min(ya, yb) + oy, FF, ROOF[0], holes)
+
+
+def stone_and_calcada(plan, t, L, hid, casa):
+    """Lueders limestone on the plan's stone runs (cut at the openings) and piers; calçada rugs; the carport slab."""
+    st = MB(f"{hid} stone", [L["limestone"], L["calcada"], L["concrete"]])
+    top = GF_TOP if casa else ONE_STORY_ROOF[0]
+    for run in H.stone_runs(plan):
+        (ax, ay), (ux, uy), (nx, ny), Lr = run["a"], run["u"], run["n"], run["L"]
+
+        def face(q0, q1, z0, z1):
+            pts = [tp(t, ax + ux * q + nx * d, ay + uy * q + ny * d) for q in (q0, q1) for d in (-0.08, 0.02)]
+            xs, ys = [p[0] for p in pts], [p[1] for p in pts]
+            st.box(min(xs), min(ys), z0, max(xs), max(ys), z1, mat=0)
+        s0 = 0.0
+        for h0, h1, o in run["holes"]:
+            if h0 > s0:
+                face(s0, h0, 0.0, top)
+            sill = 0.0 if o["kind"] in ("door", "slider") else SILLS.get(o.get("note", ""), 2.5)
+            head = DOOR_HEAD if o["kind"] in ("door", "slider") else WIN_HEAD
+            if sill > 0:
+                face(h0, h1, 0.0, FF + sill)
+            face(h0, h1, FF + head, top)
+            s0 = max(s0, h1)
+        if s0 < Lr:
+            face(s0, Lr, 0.0, top)
+    for r in plan.get("stone", {}).get("piers", []):
+        lbox(st, t, r[0], r[1], r[2], r[3], 0.0, UP_FF - 1.25, mat=0)
+    for r in plan["rooms"]:                                                          # carport slab
+        if r.get("outdoor"):
+            lbox(st, t, *r["rect"], -0.2, 0.15, mat=2)
+    for r in plan.get("calcada", []):
+        x0, y0, x1, y1 = r
+        under_door = y1 <= 0.01                                                      # threshold: a step to FF
+        z1 = FF - 0.01 if under_door else 0.17
+        lbox(st, t, x0, y0, x1, y1, z1 - 0.12, z1, mats6=[2, 2, 2, 2, 2, 2])
+        b = 0.3 if min(x1 - x0, y1 - y0) > 1.5 else 0.1
+        lbox(st, t, x0 + b, y0 + b, x1 - b, y1 - b, z1 - 0.1, z1 + 0.006, mats6=[2, 1, 2, 2, 2, 2])
+    st.build(bpy.context.scene.collection, bevel=0.003)
 
 
 def tree(x, y, r, L, seed):

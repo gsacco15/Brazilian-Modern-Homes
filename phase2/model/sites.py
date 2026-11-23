@@ -126,6 +126,7 @@ def s3_alley_trio():
                 paths=[[(2.5, 2), (2.5, 56), (15, 56), (15, 61)], [(2.5, 56), (35, 56), (35, 61)]],
                 walls=[[(25, 61), (25, 81)], [(5, 51), (45, 51)]],
                 street_wall=[(25, 15), (45, 15)], garden_gate=(27.0, 31.0),
+                calcada=[(27.0, 15.4, 31.0, 19.4)],              # calçada landing inside the garden gate
                 trees=[(38, 34, 9), (12, 70, 9), (38, 70, 9)],
                 fence=[[(0, 15), (0, 125)], [(50, 125), (50, 15)]],
                 notes=["The street sees a one-story Casita behind its walled garden; the two-story pair sits back.",
@@ -203,6 +204,17 @@ def garden_wall(s):
     return dict(y=y, piers=piers, gate=g, cobogo=((g[1] + 1.0) if g else x0 + 2.0, x1 - 2.0))
 
 
+def calcada_rects(s):
+    """Every calçada mosaic on the lot (x0, y0, x1, y1): the homes' (from their plans) and the site's own."""
+    out = list(s.get("calcada", []))
+    for h in s["homes"]:
+        for r in h["plan"].get("calcada", []):
+            pts = tpoly(h["t"], rect_pts(r))
+            xs, ys = [q[0] for q in pts], [q[1] for q in pts]
+            out.append((min(xs), min(ys), max(xs), max(ys)))
+    return out
+
+
 def _overlap(a, b):
     return max(0.0, min(a[2], b[2]) - max(a[0], b[0])) * max(0.0, min(a[3], b[3]) - max(a[1], b[1]))
 
@@ -220,6 +232,10 @@ def check_site(s):
         x0, y0, x1, y1 = max(r[0], 0), max(r[1], 0), min(r[2], W), min(r[3], L)
         pave += max(0, x1 - x0) * max(0, y1 - y0)
         pave -= sum(_overlap((x0, y0, x1, y1), p) for p in porches)       # paving under a porch roof counts once
+    roofed = porches + [footprint(h["t"]) for h in s["homes"]]
+    for r in calcada_rects(s):                                            # mosaic outside the roofs is paving
+        a = (r[2] - r[0]) * (r[3] - r[1])
+        pave += max(0.0, a - sum(_overlap(r, q) for q in roofed))
     fy = 0.0
     for k, r in s["pave"]:
         x0, y0, x1, y1 = max(r[0], 0), max(r[1], 0), min(r[2], W), min(r[3], HOME_RULES["front"])
