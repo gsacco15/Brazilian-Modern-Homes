@@ -1,0 +1,201 @@
+"""Phase 2 model: where each home sits on each lot.
+
+One source of truth for every output (concept sheets, AutoCAD, Blender).
+IDs: a site uses its test-fit layout ID (L1-D1, L1-T1, ...); a home uses A, B, C on its lot.
+Plans (homes.py): CASA02_GF_CARPORT, CASA02_GF_SUITE, CASA02_UPPER, CASITA.
+
+A transform T places a home plan on a lot: mirror (left-right), then rotate 0/90/180/270 deg
+counter-clockwise, then move by (dx, dy). Lot coordinates: x east from the west lot line, y north
+from the street lot line, in feet.
+"""
+import math
+
+from . import homes as H
+
+
+HOME_RULES = dict(front=15.0, side=5.0, rear=5.0, bc=0.40, ic=0.45, fy=0.40,
+                  far2=(0.55, 3200.0), far3=(0.65, 4350.0))
+
+
+
+# ---------------------------------------------------------------- transforms
+def T(plan, dx=0.0, dy=0.0, mirror=False, rot=0):
+    return dict(W=plan["W"], D=plan["D"], dx=dx, dy=dy, mirror=mirror, rot=rot)
+
+
+def tp(t, x, y):
+    if t is None:
+        return x, y
+    W, Dd = t["W"], t["D"]
+    if t["mirror"]:
+        x = W - x
+    r = t["rot"]
+    if r == 90:
+        x, y = Dd - y, x
+    elif r == 180:
+        x, y = W - x, Dd - y
+    elif r == 270:
+        x, y = y, W - x
+    return x + t["dx"], y + t["dy"]
+
+
+def footprint(t):
+    w, d = (t["W"], t["D"]) if t["rot"] in (0, 180) else (t["D"], t["W"])
+    return (t["dx"], t["dy"], t["dx"] + w, t["dy"] + d)
+
+
+def tpoly(t, pts):
+    return [tp(t, x, y) for x, y in pts]
+
+
+def rect_pts(r):
+    x0, y0, x1, y1 = r
+    return [(x0, y0), (x1, y0), (x1, y1), (x0, y1)]
+
+
+def ellipse_pts(cx, cy, rx, ry, n=18):
+    return [(cx + rx * math.cos(2 * math.pi * k / n), cy + ry * math.sin(2 * math.pi * k / n)) for k in range(n)]
+
+
+SITES = []
+
+
+def site(fn):
+    SITES.append(fn)
+    return fn
+
+
+@site
+def s1_duo_side():
+    W, L = 50.0, 125.0
+    gf = H.CASA02_GF_CARPORT
+    homes = [dict(id="A", plan=gf, t=T(gf, 5, 15), park=True, kind="Casa 02", beds="3 bed / 2.5 bath"),
+             dict(id="B", plan=gf, t=T(gf, 25, 15, mirror=True), park=True, kind="Casa 02", beds="3 bed / 2.5 bath")]
+    return dict(id="L1-D1", name="Duo, side by side", lot=dict(W=W, L=L), homes=homes,
+                patios=[(5, 54, 25, 78), (25, 54, 45, 78)],
+                pave=[("Apron", (5.25, 0, 15.25, 15)), ("Apron", (34.75, 0, 44.75, 15)),
+                      ("Terrace", (7, 54, 23, 62)), ("Terrace", (27, 54, 43, 62))],
+                paths=[[(18.0, 0.5), (18.0, 14.5)], [(32.0, 0.5), (32.0, 14.5)]],
+                walls=[[(25, 54), (25, 120)]], trees=[(12, 72, 11), (38, 72, 11), (14, 104, 13), (38, 108, 12)],
+                fence=[[(0, 15), (0, 125), (50, 125), (50, 15)]],
+                notes=["Bays on the outside, so every bedroom has an outside wall and stairs, closets and the "
+                       "carports buffer the shared wall.",
+                       "Two 10-ft curb cuts at the outer edges use exactly the 40% front-yard limit. If the city allows "
+                       "only one, use the small-lot split or a front-and-back duo instead.",
+                       "Front walks are stepping stones in planting, and carts live in each carport: the front "
+                       "yard has no paving to spare. The step-free route is up the apron to the side door.",
+                       "Cedar gates close both carports from the street, as at Casa 01."])
+
+
+@site
+def s2_trio_onfoot():
+    W, L = 50.0, 125.0
+    gf, cs = H.CASA02_GF_CARPORT, H.CASITA
+    homes = [dict(id="A", plan=gf, t=T(gf, 5, 15), park=True, kind="Casa 02", beds="3 bed / 2.5 bath"),
+             dict(id="B", plan=gf, t=T(gf, 25, 15, mirror=True), park=True, kind="Casa 02", beds="3 bed / 2.5 bath"),
+             dict(id="C", plan=cs, t=T(cs, 5, 88), park=False, kind="Casita", beds="1 bed + flex", tag=(37, 93.5))]
+    return dict(id="L1-T1", name="Trio, Casita on foot", lot=dict(W=W, L=L), homes=homes,
+                patios=[(5, 54, 25, 74), (25, 54, 45, 74), (25, 88, 45, 120)],
+                pave=[("Apron", (5.25, 0, 15.25, 15)), ("Apron", (34.75, 0, 44.75, 15)),
+                      ("Terrace", (8, 54, 16, 60)), ("Terrace", (34, 54, 42, 60)), ("Terrace", (25, 92, 31, 100))],
+                paths=[[(2.5, 2), (2.5, 84), (20, 84), (20, 87.5)], [(18.0, 0.5), (18.0, 14.5)], [(32.0, 0.5), (32.0, 14.5)]],
+                walls=[[(25, 54), (25, 74)], [(25, 84), (25, 88)], [(5, 74), (45, 74)]],
+                trees=[(12, 68, 10), (38, 68, 10), (37, 108, 11), (12, 81, 7)],
+                fence=[[(0, 15), (0, 125), (50, 125), (50, 15)]],
+                notes=["The Casita has no parking: no paving is left for it on a 50-ft lot (impervious cap).",
+                       "Its path runs along the west side yard as stepping stones in planting, which add no paving.",
+                       "Fire access: about 143 ft from the street to the Casita's far corner, inside the 150-ft reach.",
+                       "Paved terraces stay small (about 50 sf per home); the rest of each pátio is planted.",
+                       "Front walks are stepping stones and carts live in the carports and side yard: the front yard "
+                       "is at its paving limit. Nine carts go to the curb on pickup day."])
+
+
+@site
+def s3_alley_trio():
+    W, L = 50.0, 125.0
+    gf, cs = H.CASA02_GF_CARPORT, H.CASITA
+    homes = [dict(id="C", plan=cs, t=T(cs, 5, 15), park=False, kind="Casita", beds="1 bed + flex"),
+             dict(id="A", plan=gf, t=T(gf, 5, 81, mirror=True, rot=180), park=True, kind="Casa 02",
+                  beds="3 bed / 2.5 bath"),
+             dict(id="B", plan=gf, t=T(gf, 25, 81, rot=180), park=True, kind="Casa 02", beds="3 bed / 2.5 bath")]
+    return dict(id="L2-T2", name="Trio, Casita at the street, pair on the alley", lot=dict(W=W, L=L, alley=True),
+                homes=homes, patios=[(25, 15, 45, 47), (5, 61, 25, 81), (25, 61, 45, 81)],
+                pave=[("Apron", (5.25, 120, 15.25, 125)), ("Apron", (34.75, 120, 44.75, 125)),
+                      ("Walk", (18.75, 0, 21.25, 15)), ("Terrace", (25, 21, 31, 31)),
+                      ("Terrace", (8, 75, 22, 81)), ("Terrace", (28, 75, 42, 81)), ("Carts", (27, 9, 37.5, 12.5))],
+                paths=[[(2.5, 2), (2.5, 56), (15, 56), (15, 61)], [(2.5, 56), (35, 56), (35, 61)]],
+                walls=[[(25, 15), (45, 15)], [(25, 61), (25, 81)], [(5, 51), (45, 51)]],
+                trees=[(38, 34, 9), (12, 70, 9), (38, 70, 9)],
+                fence=[[(0, 15), (0, 125)], [(50, 125), (50, 15)]],
+                notes=["The street sees a one-story Casita behind its walled garden; the two-story pair sits back.",
+                       "The pair parks off the alley with no curb cut on the street; guests enter through the garden.",
+                       "The Casita parks on the street.",
+                       "Fire access from the street is about 140 ft to the pair's far corners; confirm whether the "
+                       "alley counts as fire access."])
+
+
+@site
+def s4_corner_trio():
+    W, L = 60.0, 125.0
+    gf, cs = H.CASA02_GF_CARPORT, H.CASITA
+    homes = [dict(id="A", plan=gf, t=T(gf, 5, 15), park=True, kind="Casa 02", beds="3 bed / 2.5 bath"),
+             dict(id="B", plan=gf, t=T(gf, 25, 15, mirror=True), park=True, kind="Casa 02", beds="3 bed / 2.5 bath"),
+             dict(id="C", plan=cs, t=T(cs, 23, 100, mirror=True, rot=90), park=True, kind="Casita", beds="1 bed + flex")]
+    return dict(id="L3-T1", name="Trio on a corner, Casita facing the side street",
+                lot=dict(W=W, L=L, corner=True), homes=homes,
+                patios=[(5, 54, 25, 74), (25, 54, 45, 74), (23, 88, 55, 100)],
+                pave=[("Apron", (5.25, 0, 15.25, 15)), ("Apron", (34.75, 0, 44.75, 15)),
+                      ("Parking", (40, 76, 60, 86)), ("Walk", (55, 113.5, 60, 116)),
+                      ("Terrace", (8, 54, 18, 61)), ("Terrace", (32, 54, 42, 61)), ("Terrace", (42, 92, 52, 100))],
+                paths=[[(18.0, 0.5), (18.0, 14.5)], [(32.0, 0.5), (32.0, 14.5)]],
+                walls=[[(25, 54), (25, 74)], [(5, 74), (40, 74)]],
+                trees=[(12, 68, 10), (38, 68, 10), (32, 94, 7), (12, 100, 10)],
+                fence=[[(0, 15), (0, 125), (55, 125)]],
+                notes=["The Casita's door and parking face the side street, so the main street sees only the pair.",
+                       "Every home parks on site; the Casita's pad sits between the gardens, off the side street.",
+                       "A second street frontage means a second curb cut on its own street.",
+                       "Front walks are stepping stones in planting: two aprons already use the front-yard paving limit."])
+
+
+@site
+def s5_wide_duo():
+    W, L = 65.0, 125.0
+    gs = H.CASA02_GF_SUITE
+    homes = [dict(id="A", plan=gs, t=T(gs, 22, 15), park=True, kind="Casa 02 with suite",
+                  beds="3 bed + den / 3.5 bath"),
+             dict(id="B", plan=gs, t=T(gs, 22, 74), park=True, kind="Casa 02 with suite",
+                  beds="3 bed + den / 3.5 bath")]
+    return dict(id="L4-D2", name="Duo front and back, ground-floor suites", lot=dict(W=W, L=L), homes=homes,
+                patios=[(42, 15, 60, 54), (42, 74, 60, 113)],
+                pave=[("Drive", (0, 0, 12, 99)), ("Parking", (12, 20, 22, 40)), ("Parking", (12, 79, 22, 99)),
+                      ("Walk", (33.75, 0, 36.25, 15)), ("Walk", (12, 64, 34, 66.5)),
+                      ("Terrace", (42, 44, 52, 54)), ("Terrace", (42, 103, 52, 113)), ("Carts", (39, 9, 49, 12.5))],
+                walls=[[(42, 64), (60, 64)]],
+                trees=[(53, 30, 10), (53, 86, 10), (32, 118, 9)],
+                fence=[[(0, 15), (0, 125), (65, 125), (65, 15)]],
+                notes=["With paving to spare, each home parks on a pad beside the shared drive and its flex bay "
+                       "becomes a ground-floor bedroom suite (1,560 sf).",
+                       "One curb cut serves both homes; the drive stops at the back home's parking.",
+                       "Both pátios face east off the two-story block, shaded in the afternoon."])
+
+
+def check_site(s):
+    W, L = s["lot"]["W"], s["lot"]["L"]
+    A = W * L
+    n = len(s["homes"])
+    bc = sum((footprint(h["t"])[2] - footprint(h["t"])[0]) * (footprint(h["t"])[3] - footprint(h["t"])[1])
+             for h in s["homes"])
+    pave = 0.0
+    for _k, r in s["pave"]:
+        x0, y0, x1, y1 = max(r[0], 0), max(r[1], 0), min(r[2], W), min(r[3], L)
+        pave += max(0, x1 - x0) * max(0, y1 - y0)
+    fy = 0.0
+    for k, r in s["pave"]:
+        x0, y0, x1, y1 = max(r[0], 0), max(r[1], 0), min(r[2], W), min(r[3], HOME_RULES["front"])
+        fy += max(0, x1 - x0) * max(0, y1 - y0)
+    fa = sum(h["plan"]["enclosed"] + (H.CASA02_UPPER["enclosed"] if h["plan"] is not H.CASITA else 0)
+             for h in s["homes"])
+    far = HOME_RULES["far2"] if n == 2 else HOME_RULES["far3"]
+    return dict(fa=fa, fa_cap=max(far[0] * A, far[1]), bc=bc, bc_cap=HOME_RULES["bc"] * A, ic=bc + pave,
+                ic_cap=HOME_RULES["ic"] * A, fy=fy, fy_cap=HOME_RULES["fy"] * W * HOME_RULES["front"],
+                parking=sum(1 for h in s["homes"] if h["park"]), n=n, carts=3 * n)
