@@ -33,6 +33,7 @@ The test-fit study tried 19 layouts. Five are developed so far, and each keeps i
 | `concepts/` | `Phase2_Concepts.pdf`: plans, site plans, checks and 3D views | `python3 phase2/concepts/concepts.py`, then `node casa01/signoff/print_pdf.js phase2/concepts/out/concepts.html phase2/concepts/Phase2_Concepts.pdf` |
 | `cad/` | `Phase2_Concepts.dxf`: AutoCAD, in inches | `python3 phase2/cad/export_dxf.py` (needs ezdxf) |
 | `render/` | Low-detail 3D views of each layout (`out/<layout>_aerial.png`, `_street.png`) | `<blender python> phase2/render/build.py` |
+| `study/` | `Phase2_Facade_Options.pdf`: the Casa 02 facade study (as drawn, A cedar veil, B stepped, C cobogó lantern), same lots and cameras | `<blender python> phase2/study/facade_study.py`, then `python3 phase2/study/sheet.py` and `node casa01/signoff/print_pdf.js phase2/study/out/facade_options.html phase2/study/Phase2_Facade_Options.pdf` |
 
 ## The AutoCAD file
 
