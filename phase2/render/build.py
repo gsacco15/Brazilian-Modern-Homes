@@ -51,7 +51,8 @@ ROOF = (21.0, 22.25)        # roof slab with its 15 in bronze edge
 ONE_STORY_ROOF = (11.0, 12.25)
 DOOR_HEAD, WIN_HEAD = 8.0, 8.5
 SILLS = {"high": 5.5, "egress": 2.25, "slot": 0.0, "fluted below 5'": 2.25, "sill 3'-6\"": 3.5,
-         "to the pátio, cedar-screened": 1.0, "slot, cedar slats": 0.0}
+         "to the pátio, cedar-screened": 1.0, "slot, cedar slats": 0.0, "behind the cobogó": 1.0,
+         "egress, fluted below 5'": 2.25}
 
 
 def wall_pieces(plan, t, z0, z1, ext_only=True, ly=0.0):

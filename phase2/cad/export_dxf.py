@@ -7,7 +7,8 @@ Units are inches (architectural). Model space holds:
   - the five sites to the right, each built by inserting those blocks (mirrored or rotated as the site needs).
 Edit a block once and every site that uses it updates.
 Paper space has one layout per sheet: C-1 Casa 02, C-2 Casita, C-3..C-7 one per site, each with a title block
-and a viewport at a standard architectural scale.
+and a viewport at a standard architectural scale; then A-101..A-103, the developed Casa 02 plans (below the concept
+plans in model space) with dimension strings, door and window tags, and their schedules in paper space.
 """
 import math
 import os
@@ -20,6 +21,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
 from model import homes as H  # noqa: E402
 from model.sites import SITES, HOME_RULES, footprint, garden_wall, tp  # noqa: E402
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), "plans"))
+import plans as PL  # noqa: E402  (developed plans: sheets, tags, schedules, the same as the PDF)
 
 OUT = os.path.join(HERE, "Phase2_Concepts.dxf")
 IN = 12.0  # inches per foot
@@ -30,6 +33,7 @@ LAYERS = [  # name, colour, lineweight (1/100 mm), linetype
     ("A-FURN", 9, 13, "Continuous"), ("A-FLOR-STRS", 7, 18, "Continuous"), ("A-COLS", 7, 35, "Continuous"),
     ("A-GATE", 30, 25, "DASHED"), ("A-OVHD", 8, 18, "DASHED"), ("A-AREA-IDEN", 7, 18, "Continuous"),
     ("A-WALL-SCRN", 7, 25, "Continuous"), ("A-ROOF-OTLN", 8, 18, "DASHED"),
+    ("A-ANNO-SYMB", 7, 18, "Continuous"), ("A-ANNO-SCHD", 7, 18, "Continuous"),
     ("A-ANNO-DIMS", 7, 13, "Continuous"), ("A-ANNO-TEXT", 7, 18, "Continuous"),
     ("C-PROP", 1, 35, "PHANTOM"), ("C-SETB", 8, 13, "DASHED"), ("C-ROAD", 8, 13, "Continuous"),
     ("C-PAVE", 8, 13, "Continuous"), ("L-PLNT", 3, 13, "Continuous"), ("L-TREE", 3, 18, "Continuous"),
@@ -118,7 +122,7 @@ def build_block(doc, name, plan):
                 blk.add_arc((hx * IN, hy * IN), o["w"] * IN, start, end, dxfattribs={"layer": "A-DOOR"})
     for f in plan.get("fixtures", []):
         k = f["kind"]
-        lay = "A-FURN" if k in ("bed", "sofa", "table", "car") else "A-FLOR-FIXT"
+        lay = "A-FURN" if k in ("bed", "sofa", "table", "car", "desk") else "A-FLOR-FIXT"
         if k == "wc":
             x, y = f["at"]
             dirn = 1 if f.get("rot", 0) == 0 else -1
@@ -138,10 +142,17 @@ def build_block(doc, name, plan):
             blk.add_circle((cx * IN, cy * IN), 0.18 * IN, dxfattribs={"layer": lay})
             line((x0, y0), (x1, y1), lay)
         elif k == "bed":
+            south = f.get("head") == "s"
+            pa, pb = (y0 + 0.3, y0 + 1.3) if south else (y1 - 1.3, y1 - 0.3)
             for px0 in (x0 + 0.3, cx + 0.15):
-                poly([(px0, y1 - 1.3), (px0 + (x1 - x0) / 2 - 0.45, y1 - 1.3), (px0 + (x1 - x0) / 2 - 0.45, y1 - 0.3),
-                      (px0, y1 - 0.3)], lay)
-            line((x0, y1 - 2.0), (x1, y1 - 2.0), lay)
+                poly([(px0, pa), (px0 + (x1 - x0) / 2 - 0.45, pa), (px0 + (x1 - x0) / 2 - 0.45, pb), (px0, pb)], lay)
+            yl = y0 + 2.0 if south else y1 - 2.0
+            line((x0, yl), (x1, yl), lay)
+        elif k == "tub":
+            poly([(x0 + 0.3, y0 + 0.3), (x1 - 0.3, y0 + 0.3), (x1 - 0.3, y1 - 0.3), (x0 + 0.3, y1 - 0.3)], lay)
+        elif k == "mech":
+            line((x0, y0), (x1, y1), lay)
+            line((x0, y1), (x1, y0), lay)
         elif k == "wd":
             if (x1 - x0) >= (y1 - y0):
                 line(((x0 + x1) / 2, y0), ((x0 + x1) / 2, y1), lay)
@@ -150,18 +161,36 @@ def build_block(doc, name, plan):
         elif k == "car":
             pass
     st = plan.get("stair")
-    if st:
+    if st:                                        # treads to the cut line, the rest overhead (dashed); arrow
         x0, y0, x1, y1 = st["rect"]
-        poly([(x0, y0), (x1, y0), (x1, y1), (x0, y1)], "A-FLOR-STRS")
-        n = int((y1 - y0) / 0.8333)
-        for i in range(1, n + 1):
-            y = y0 + i * (y1 - y0) / (n + 1)
+        top_front = st.get("top", "back") == "front"
+        foot, top = (y1, y0) if top_front else (y0, y1)
+        sgn = -1.0 if top_front else 1.0
+        n = st.get("risers", 17) - 1
+        run = abs(top - foot) / n
+        upper = st.get("floor") == "upper"
+        cut = None if upper else st.get("cut")
+        end = top if cut is None else cut
+        ya, yb = sorted((foot, end))
+        poly([(x0, ya), (x1, ya), (x1, yb), (x0, yb)], "A-FLOR-STRS")
+        for i in range(1, n):
+            y = foot + sgn * i * run
+            if (y - end) * sgn > 1e-6:
+                break
             line((x0, y), (x1, y), "A-FLOR-STRS")
+        if cut is not None:
+            blk.add_lwpolyline(pts_in([(x0, cut - sgn * 0.35), ((x0 + x1) / 2 - 0.3, cut - sgn * 0.35),
+                                       ((x0 + x1) / 2, cut + sgn * 0.35), (x1, cut + sgn * 0.35)]),
+                               dxfattribs={"layer": "A-FLOR-STRS"})
+            za, zb = sorted((cut, top))
+            poly([(x0, za), (x1, za), (x1, zb), (x0, zb)], "A-OVHD")
         cx = (x0 + x1) / 2
-        line((cx, y0 + 0.6), (cx, y1 - 0.6), "A-FLOR-STRS")
-        tip = (cx, y1 - 0.3) if st["up"] else (cx, y0 + 0.3)
-        back = -0.6 if st["up"] else 0.6
-        poly([tip, (cx - 0.3, tip[1] + back), (cx + 0.3, tip[1] + back)], "A-FLOR-STRS")
+        a, tip = ((cx, top - sgn * 0.5), (cx, foot + sgn * 1.0)) if upper else ((cx, foot - sgn * 0.5), (cx, end - sgn * 1.0))
+        line(a, tip, "A-FLOR-STRS")
+        d = 1.0 if tip[1] > a[1] else -1.0
+        poly([tip, (cx - 0.3, tip[1] - d * 0.6), (cx + 0.3, tip[1] - d * 0.6)], "A-FLOR-STRS")
+    for (ax, ay), (bx, by) in plan.get("slats", []):        # cedar slats beside the stair
+        line((ax, ay), (bx, by), "A-GATE")
     if any(r.get("outdoor") for r in plan["rooms"]):
         poly([(0, 0), (plan["W"], 0), (plan["W"], plan["D"]), (0, plan["D"])], "A-OVHD")
     for cx, cy in plan.get("columns", []):
@@ -348,8 +377,115 @@ def draw_site(msp, s, origin):
     text(msp, (ox + W / 2) * IN, (oy - 20) * IN, f"{s['id']}  {s['name'].upper()}", 24)
 
 
+# ---------------------------------------------------------------- developed plans (A-101..A-103)
+def developed(msp, origin, sh):
+    """One developed plan in model space: the block, room names with sizes and areas, tags and dimension strings."""
+    ox, oy = origin
+    plan = sh["plan"]
+    W, D = plan["W"], plan["D"]
+    msp.add_blockref(BLOCK_OF[id(plan)], (ox * IN, oy * IN), dxfattribs={"layer": "0"})
+    for r in plan["rooms"]:
+        if r.get("label") is False:
+            continue
+        x0, y0, x1, y1 = r["rect"]
+        lx, ly = r.get("lab", ((x0 + x1) / 2, (y0 + y1) / 2))
+        narrow = (x1 - x0) < 7.5
+        name = r.get("short", r["name"]) if narrow else r["name"]
+        area = (x1 - x0) * (y1 - y0)
+        size = f"{area:,.0f} SF" if narrow else f"{ft_in(x1 - x0)} x {ft_in(y1 - y0)} - {area:,.0f} SF"
+        text(msp, (ox + lx) * IN, (oy + ly + 0.35) * IN, name.upper(), 6.5, "A-AREA-IDEN")
+        text(msp, (ox + lx) * IN, (oy + ly - 0.6) * IN, size, 4.5, "A-AREA-IDEN")
+    doors, wins = PL.openings(plan, sh["floor"])
+    for kind, label, x, y in PL.tag_positions(plan, doors, wins):
+        X, Y = (ox + x) * IN, (oy + y) * IN
+        if kind == "door":
+            msp.add_circle((X, Y), 0.95 * IN, dxfattribs={"layer": "A-ANNO-SYMB"})
+        else:
+            r_ = 1.15 * IN
+            msp.add_lwpolyline([(X - r_, Y), (X, Y + r_ * 0.8), (X + r_, Y), (X, Y - r_ * 0.8)], close=True,
+                               dxfattribs={"layer": "A-ANNO-SYMB"})
+        text(msp, X, Y, label, 4.2, "A-ANNO-SYMB")
+    ch = sh["chains"]
+
+    def chain(pts, axis, at, off):
+        for a, b in zip(pts, pts[1:]):
+            if axis == "x":
+                dim(msp, (ox + a, oy + at), (ox + b, oy + at), (ox + a, oy + at + off))
+            else:
+                dim(msp, (ox + at, oy + a), (ox + at, oy + b), (ox + at + off, oy + a), angle=90)
+        k = 1 if off > 0 else -1
+        if axis == "x":
+            dim(msp, (ox + pts[0], oy + at), (ox + pts[-1], oy + at), (ox, oy + at + off + k * 2.3))
+        else:
+            dim(msp, (ox + at, oy + pts[0]), (ox + at, oy + pts[-1]), (ox + at + off + k * 2.3, oy), angle=90)
+    chain(ch["front"], "x", 0.0, -4.3)
+    chain(ch["west"], "y", 0.0, -3.4)
+    chain(ch["east"], "y", W, 3.4)
+    if ch.get("back"):
+        for a, b in zip(ch["back"], ch["back"][1:]):
+            dim(msp, (ox + a, oy + D), (ox + b, oy + D), (ox + a, oy + D + 3.0))
+    if plan.get("lantern"):
+        text(msp, (ox + W + 1.2) * IN, (oy - 2.0) * IN, "COBOGÓ SCREEN", 5, align=TextEntityAlignment.MIDDLE_LEFT)
+    text(msp, (ox + W / 2) * IN, (oy - 8.2) * IN, "FRONT", 6)
+    st = plan.get("stair")
+    if st:                                       # UP at the foot downstairs, DN at the top upstairs
+        x0, y0, x1, y1 = st["rect"]
+        foot, top = (y1, y0) if st.get("top") == "front" else (y0, y1)
+        sgn = -1.0 if st.get("top") == "front" else 1.0
+        up = st.get("floor") == "upper"
+        ly = (top - sgn * 1.3) if up else (foot - sgn * 1.4)
+        text(msp, (ox + (x0 + x1) / 2) * IN, (oy + ly) * IN, "DN" if up else "UP", 5)
+    return doors, wins
+
+
+def schedules(lay, sh, doors, wins):
+    """Door and window schedules and the notes, as text in paper space to the right of the viewport."""
+    def t(x, y, s, h=0.085):
+        e = lay.add_text(s, height=h, dxfattribs={"layer": "A-ANNO-SCHD", "style": "LATO"})
+        e.set_placement((x, y), align=TextEntityAlignment.LEFT)
+    plan = sh["plan"]
+    x0, y = 9.75, 10.25
+    t(x0, y, f"CASA 02 - {sh['title'].upper()}", 0.15)
+    y -= 0.42
+    t(x0, y, "DOORS", 0.1)
+    cols = (0.0, 0.45, 2.15, 3.15)
+    y -= 0.22
+    for c, h in zip(cols, ("TAG", "FROM - TO", "SIZE", "TYPE")):
+        t(x0 + c, y, h, 0.07)
+    lay.add_line((x0, y - 0.06), (14.05, y - 0.06), dxfattribs={"layer": "A-ANNO-SCHD"})
+    for d in doors:
+        row = PL.door_row(d, plan)
+        y -= 0.18
+        for c, v in zip(cols, (row[0], row[1].replace("→", "-"), row[2].replace("×", "x"), row[3])):
+            t(x0 + c, y, v)
+        if row[4]:
+            y -= 0.14
+            t(x0 + 0.45, y, row[4], 0.07)
+    y -= 0.38
+    t(x0, y, "WINDOWS", 0.1)
+    cols = (0.0, 0.5, 1.6, 2.6, 3.1, 3.6)
+    y -= 0.22
+    for c, h in zip(cols, ("TAG", "ROOM", "SIZE", "SILL", "HEAD", "")):
+        t(x0 + c, y, h, 0.07)
+    lay.add_line((x0, y - 0.06), (14.05, y - 0.06), dxfattribs={"layer": "A-ANNO-SCHD"})
+    for w_ in wins:
+        row = PL.win_row(w_, plan)
+        y -= 0.18
+        for c, v in zip(cols[:5], (row[0], row[1], row[2].replace("×", "x"), row[3], row[4])):
+            t(x0 + c, y, v)
+        if row[5]:
+            y -= 0.14
+            t(x0 + 0.5, y, row[5], 0.07)
+    y -= 0.38
+    t(x0, y, "NOTES", 0.1)
+    notes = PL.SHEET_NOTES[sh["no"]] + PL.GENERAL
+    m = lay.add_mtext(r"\P".join(f"- {n}" for n in notes), dxfattribs={"layer": "A-ANNO-SCHD", "style": "LATO",
+                                                                         "char_height": 0.07, "width": 4.3})
+    m.set_location((x0, y - 0.12))
+
+
 # ---------------------------------------------------------------- paper space
-def title_block(lay, sheet, title, scale):
+def title_block(lay, sheet, title, scale, phase="CONCEPT"):
     """17 x 11 in sheet: border, a 2.3 in title strip on the right."""
     def r(x0, y0, x1, y1):
         lay.add_lwpolyline([(x0, y0), (x1, y0), (x1, y1), (x0, y1)], close=True, dxfattribs={"layer": "G-TTLB"})
@@ -362,22 +498,22 @@ def title_block(lay, sheet, title, scale):
     t(14.5, 10.3, "BRAZILIAN MODERN HOMES", 0.11)
     t(14.5, 10.08, "RESIDENTIAL DESIGN - AUSTIN", 0.08)
     t(14.5, 9.6, "PHASE 2", 0.16)
-    t(14.5, 9.35, "CASA 02 + CASITA", 0.16)
-    t(14.5, 9.05, "CONCEPT DESIGN", 0.08)
+    t(14.5, 9.35, "CASA 02 + CASITA" if phase == "CONCEPT" else "CASA 02", 0.16)
+    t(14.5, 9.05, "CONCEPT DESIGN" if phase == "CONCEPT" else "DEVELOPED FLOOR PLANS", 0.08)
     t(14.5, 2.75, "SHEET TITLE", 0.07)
-    t(14.5, 2.55, title, 0.12)
+    t(14.5, 2.55, title, 0.12 if len(title) <= 20 else 0.095)
     t(14.5, 2.25, "SCALE", 0.07)
     t(14.5, 2.05, scale, 0.12)
     t(14.5, 1.75, "DATE / PHASE", 0.07)
-    t(14.5, 1.55, "NOV 2026 - CONCEPT", 0.12)
+    t(14.5, 1.55, "NOV 2026 - " + ("CONCEPT" if phase == "CONCEPT" else "DESIGN DEV."), 0.12)
     t(14.5, 0.85, sheet, 0.5)
-    t(14.5, 0.5, "CONCEPT. NOT FOR CONSTRUCTION.", 0.07)
+    t(14.5, 0.5, "CONCEPT. NOT FOR CONSTRUCTION." if phase == "CONCEPT" else "NOT FOR CONSTRUCTION.", 0.07)
 
 
-def sheet(doc, name, sheet_no, title, scale_txt, scale, center_ft, size_in=(13.4, 9.9)):
+def sheet(doc, name, sheet_no, title, scale_txt, scale, center_ft, size_in=(13.4, 9.9), phase="CONCEPT"):
     lay = doc.layouts.new(name)
     lay.page_setup(size=(17, 11), margins=(0, 0, 0, 0), units="inch")
-    title_block(lay, sheet_no, title, scale_txt)
+    title_block(lay, sheet_no, title, scale_txt, phase)
     cx, cy = 0.35 + 0.4 + size_in[0] / 2, 0.35 + 0.35 + size_in[1] / 2
     vp = lay.add_viewport(center=(cx, cy), size=size_in, view_center_point=(center_ft[0] * IN, center_ft[1] * IN),
                           view_height=size_in[1] * scale, dxfattribs={"layer": "G-VPRT"})
@@ -440,6 +576,14 @@ def main():
         ox, oy = site_origin[s["id"]]
         sheet(doc, f"C-{i + 3} {s['id']}", f"C-{i + 3}", f"SITE {s['id']}", '1/16" = 1\'-0"', 192,
               (ox + s["lot"]["W"] / 2, oy + s["lot"]["L"] / 2 - 8))
+    # developed plans: model space below the concept plans, one sheet each at 3/16" = 1'-0"
+    for i, sh in enumerate(PL.SHEETS):
+        origin = (i * 60.0, -130.0)
+        doors, wins = developed(msp, origin, sh)
+        cy = 17.4 if sh["chains"].get("back") else 16.2
+        lay = sheet(doc, f"{sh['no']} {BLOCK_OF[id(sh['plan'])]}", sh["no"], sh["title"].upper(), '3/16" = 1\'-0"',
+                    64, (origin[0] + 10.6, origin[1] + cy), size_in=(8.6, 9.9), phase="DESIGN DEVELOPMENT")
+        schedules(lay, sh, doors, wins)
     if "Layout1" in doc.layouts:
         doc.layouts.delete("Layout1")
     doc.saveas(OUT)

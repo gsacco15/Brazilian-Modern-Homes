@@ -38,51 +38,64 @@ def slider(off, w):
 
 
 # ------------------------------------------------------------------ Casa 02
+# Developed plans (Nov 2026). x = 20 is the shared wall of a side-by-side pair: a 1-hour fire wall with no
+# openings, so the attached versions (C02-GC and the upper floor) put every window on the front, back and outer
+# side. The service strip beside the bay (x 10.5 to 20) holds, front to back: the entry and WC behind the cobogó,
+# a 4'-9" gallery hall open to the stair through cedar slats, and the stair, which rises from the kitchen to a
+# landing behind the cobogó upstairs. The mechanical closet sits under the top of the stair.
 W2, D2 = 20.0, 39.0
 BAY = (0.0, 0.0, 10.5, 20.0)          # flex bay at the front corner (car comes straight in)
+STAIR_X = 16.0                        # stair: x 16 to 20 (3'-3 3/4" clear), y 6 to 19.5
 
-# the service column (entry, WC, pantry, stair) shared by both ground floors
 SERVICE_PARTS = [
-    part((10.5, 6.0), (16.5, 6.0), door(1.0, 2.5, "L", "s")),       # entry | WC
-    part((10.5, 11.0), (16.5, 11.0)),                                 # WC | pantry + mechanical
-    part((16.5, 6.0), (16.5, 20.0)),                                  # stair wall (cedar slats above the handrail)
-    part((10.5, 20.0), (16.5, 20.0), door(3.5, 2.5, "R", "e")),      # pantry | kitchen
+    part((14.25, 0.0), (14.25, 5.5), door(1.0, 2.83, "R", "s")),      # entry | WC (2'-10" door, visitable)
+    part((14.25, 5.5), (20.0, 5.5)),                                  # WC | mechanical
+    part((STAIR_X, 5.5), (STAIR_X, 9.5), door(0.75, 2.5, "L", "s")),   # hall | mechanical (under the stair top)
+    part((STAIR_X, 9.5), (20.0, 9.5)),                                # mechanical | storage under the stair
 ]
 SERVICE_ROOMS = [
-    dict(name="Entry", rect=(10.5, 0.0, 16.5, 6.0)),
-    dict(name="WC", rect=(10.5, 6.0, 16.5, 11.0), lab=(15.2, 7.3)),
-    dict(name="Pantry + mech", rect=(10.5, 11.0, 16.5, 20.0), short="Pantry"),
-    dict(name="Kitchen", rect=(0.0, 20.0, 20.0, 27.0), lab=(16.4, 24.6)),
+    dict(name="Entry", rect=(10.5, 0.0, 14.25, 5.5), lab=(12.4, 3.6)),
+    dict(name="WC", rect=(14.25, 0.0, 20.0, 5.5), lab=(15.7, 4.6)),
+    dict(name="Hall", rect=(10.5, 5.5, STAIR_X, 20.0), lab=(14.1, 12.8)),
+    dict(name="Mech", rect=(STAIR_X, 5.5, 20.0, 9.5), lab=(18.0, 7.2)),
+    dict(name="Kitchen", rect=(0.0, 20.0, 20.0, 27.0), lab=(15.0, 25.4)),
     dict(name="Living + dining", rect=(0.0, 27.0, 20.0, 39.0), lab=(14.6, 30.4)),
 ]
-STAIR = dict(rect=(16.5, 6.0, 20.0, 19.5), up=True)   # 16 treads at 10 in, 17 risers at about 7 in
+# 17 risers at 7 7/16 in (10'-6" floor to floor), 16 treads at 10 1/8 in. It rises toward the front.
+STAIR = dict(rect=(STAIR_X, 6.0, 20.0, 19.5), top="front", floor="lower", cut=13.0, risers=17)
+STAIR_SLATS = [((STAIR_X, 9.5), (STAIR_X, 19.5))]                  # cedar slats between the hall and the stair
 # The cobogó lantern (facade direction C, chosen in the study): 12 in concrete blocks in a 9 ft wide screen,
-# 1 ft in front of the entry and stair, rising both floors to the roof. It stays open for 4 ft in front of
-# the front door, under a header of blocks.
+# 1 ft in front of the entry, WC and the landing above, rising both floors to the roof. It stays open for 4 ft
+# in front of the front door, under a header of blocks.
 LANTERN = dict(x=(11.0, 20.0), y=(-1.0, -0.67), opening=(11.0, 15.0), note="cobogó screen, two stories")
 BACK_GLASS = {2: [slider(2.0, 16.0)]}                 # back wall: 16 ft slider to the pátio
-EAST_GLASS = [slider(28.0, 8.0)]                       # long wall, where the pátio is at the side
+EAST_GLASS = [slider(28.0, 8.0)]                       # outer long wall of a detached home, where the pátio is
+SERVICE_FIX = [
+    dict(kind="wc", at=(18.4, 5.0), rot=180),
+    dict(kind="lav", rect=(17.4, 0.55, 19.45, 2.0)),
+    dict(kind="counter", rect=(11.0, 10.4, 12.35, 14.2), note="bench, coat hooks above"),
+    dict(kind="counter", rect=(11.0, 14.6, 12.35, 19.95), note="pantry, floor to ceiling"),
+    dict(kind="mech", rect=(17.0, 6.2, 19.4, 8.6), note="air handler + heat-pump water heater"),
+]
 KITCHEN_FIX = [
-    dict(kind="counter", rect=(0.5, 20.4, 10.4, 22.4)),
-    dict(kind="range", rect=(3.0, 20.4, 5.5, 22.4)),
-    dict(kind="sink", rect=(7.0, 20.6, 9.0, 22.2)),
-    dict(kind="fridge", rect=(10.6, 20.4, 13.2, 22.9)),
-    dict(kind="island", rect=(4.0, 24.0, 12.0, 26.6)),
-    dict(kind="table", rect=(2.5, 29.0, 9.5, 32.5)),
-    dict(kind="sofa", rect=(11.0, 34.0, 18.5, 37.0)),
-    dict(kind="wc", at=(14.9, 10.55), rot=180),
-    dict(kind="lav", rect=(10.9, 9.3, 12.6, 10.8)),
+    dict(kind="fridge", rect=(0.55, 20.55, 3.1, 23.0)),
+    dict(kind="counter", rect=(3.1, 20.55, 10.45, 22.55)),
+    dict(kind="range", rect=(4.0, 20.55, 6.5, 22.55)),
+    dict(kind="sink", rect=(7.6, 20.75, 9.6, 22.35)),
+    dict(kind="island", rect=(3.5, 24.2, 11.5, 26.8)),
+    dict(kind="table", rect=(2.5, 29.5, 9.5, 33.0)),
+    dict(kind="sofa", rect=(11.5, 34.5, 18.8, 37.4)),
 ]
 
 CASA02_GF_CARPORT = dict(
     name="Casa 02 · ground floor, carport", W=W2, D=D2,
     walls=loop([(10.5, 0.0), (20.0, 0.0), (20.0, 39.0), (0.0, 39.0), (0.0, 20.0), (10.5, 20.0)],
-               {0: [door(1.0, 3.0, "L", "s"), win(6.25, 2.5, "slot")],
-                1: EAST_GLASS, 2: BACK_GLASS[2], 3: [win(5.0, 6.0, "sill 3'-6\"")],
-                5: [door(15.0, 3.0, "L", "e")]}) + SERVICE_PARTS,
-    rooms=SERVICE_ROOMS + [dict(name="Carport", rect=BAY, outdoor=True, note="open bay · cedar gate option")],
-    fixtures=KITCHEN_FIX + [dict(kind="car", rect=(2.15, 2.0, 8.35, 17.5))],
-    stair=STAIR,
+               {0: [door(0.5, 3.0, "L", "s"), win(6.0, 2.5, "high")],
+                2: BACK_GLASS[2], 3: [win(5.0, 6.0, "sill 3'-6\"")],
+                5: [door(10.0, 3.0, "L", "e")]}) + SERVICE_PARTS,
+    rooms=SERVICE_ROOMS + [dict(name="Carport", rect=BAY, outdoor=True, note="open bay · cedar gate")],
+    fixtures=KITCHEN_FIX + SERVICE_FIX + [dict(kind="car", rect=(2.15, 2.0, 8.35, 17.5))],
+    stair=STAIR, slats=STAIR_SLATS,
     columns=[(0.35, 0.35), (0.35, 10.0)],
     gate=((0.0, 0.0), (10.5, 0.0)),
     lantern=LANTERN,
@@ -92,23 +105,23 @@ CASA02_GF_CARPORT = dict(
 CASA02_GF_SUITE = dict(
     name="Casa 02 · ground floor, suite", W=W2, D=D2,
     walls=loop([(0.0, 0.0), (20.0, 0.0), (20.0, 39.0), (0.0, 39.0)],
-               {0: [win(2.25, 5.0, "egress"), door(11.5, 3.0, "L", "s"), win(16.75, 2.5, "slot")],
+               {0: [win(2.25, 5.0, "egress"), door(11.0, 3.0, "L", "s"), win(16.5, 2.5, "high")],
                 1: EAST_GLASS, 2: BACK_GLASS[2],
                 3: [win(5.0, 6.0, "sill 3'-6\""), win(22.0, 3.0, "high"), win(29.5, 4.0, "fluted below 5'")]})
     + SERVICE_PARTS + [
-        part((10.5, 20.0), (10.5, 0.0), door(15.0, 3.0, "R", "e")),    # suite door off the entry
-        part((0.0, 12.5), (10.5, 12.5), door(6.75, 2.5, "L", "s")),     # bedroom | bath
+        part((10.5, 20.0), (10.5, 0.0), door(10.33, 2.67, "R", "s")),  # suite door off the hall
+        part((0.0, 12.5), (10.5, 12.5), door(6.75, 2.67, "L", "s")),    # bedroom | bath (30 in clear)
         part((0.0, 20.0), (10.5, 20.0)),                                # bath | kitchen
     ],
     rooms=[dict(name="Suite bedroom", rect=(0.0, 0.0, 10.5, 12.5), short="Bedroom", lab=(5.25, 2.9)),
            dict(name="Suite bath", rect=(0.0, 12.5, 10.5, 20.0), short="Bath", lab=(3.4, 14.3))] + SERVICE_ROOMS,
-    fixtures=KITCHEN_FIX + [
-        dict(kind="bed", rect=(2.75, 5.6, 7.75, 12.3)),
-        dict(kind="shower", rect=(0.5, 16.0, 4.5, 19.6)),
+    fixtures=KITCHEN_FIX + SERVICE_FIX + [
+        dict(kind="bed", rect=(2.75, 5.6, 7.75, 12.1)),
+        dict(kind="shower", rect=(0.55, 16.0, 4.5, 19.6)),
         dict(kind="wc", at=(5.9, 19.5), rot=180),
         dict(kind="lav", rect=(7.6, 17.9, 10.1, 19.6)),
     ],
-    stair=STAIR,
+    stair=STAIR, slats=STAIR_SLATS,
     lantern=LANTERN,
     enclosed=W2 * D2,
 )
@@ -116,44 +129,46 @@ CASA02_GF_SUITE = dict(
 CASA02_UPPER = dict(
     name="Casa 02 · upper floor", W=W2, D=D2,
     walls=loop([(0.0, 0.0), (20.0, 0.0), (20.0, 39.0), (0.0, 39.0)],
-               {0: [win(2.0, 6.0, "egress"), win(14.0, 3.0, "high")],
-                1: [win(20.5, 2.0, "slot, cedar slats"), win(33.0, 3.0, "high")],
-                2: [win(10.0, 9.0, "to the pátio, cedar-screened")],
-                3: [win(19.0, 5.0, "egress, fluted below 5'"), win(30.0, 4.0, "high")]})
+               {0: [win(2.0, 6.0, "egress"), win(12.0, 7.0, "behind the cobogó")],
+                2: [win(1.5, 3.0, "high"), win(10.0, 9.0, "to the pátio, cedar-screened")],
+                3: [win(5.0, 4.0, "high"), win(14.5, 5.0, "egress, fluted below 5'"), win(24.0, 2.5, "high")]})
     + [
-        part((10.5, 0.0), (10.5, 24.0), door(8.25, 2.67, "L", "s"), door(13.5, 2.67, "L", "s")),
-        part((0.0, 12.0), (10.5, 12.0)),
-        part((10.5, 6.0), (20.0, 6.0), door(0.25, 2.5, "R", "s")),
-        part((16.5, 6.0), (16.5, 19.5)),
-        part((13.5, 6.0), (13.5, 19.5), door(1.25, 2.5, "L", "s"), door(8.25, 2.0, "L", "s")),
-        part((13.5, 11.0), (16.5, 11.0)),
-        part((0.0, 24.0), (20.0, 24.0), door(10.75, 2.67, "L", "e")),
-        part((13.5, 24.0), (13.5, 39.0), door(1.25, 2.5, "R", "s"), door(7.75, 2.5, "R", "s")),
-        part((13.5, 30.0), (20.0, 30.0)),
+        part((10.5, 0.0), (10.5, 27.0), door(7.0, 2.67, "L", "e"), door(12.0, 2.5, "L", "s"),
+             door(18.0, 2.67, "L", "e")),                                 # bedrooms + bath | landing and hall
+        part((0.0, 11.0), (10.5, 11.0)),                                  # Bed 2 | Bath 2
+        part((0.0, 16.5), (10.5, 16.5)),                                  # Bath 2 | Bed 3
+        part((0.0, 27.0), (14.0, 27.0), door(10.75, 2.67, "L", "s")),     # Bed 3 and hall | primary
+        part((14.0, 19.5), (20.0, 19.5)),                                 # hall + stair | laundry
+        part((14.0, 19.5), (14.0, 39.0), door(1.25, 2.5, "R", "e"), door(8.0, 2.5, "L", "e"),
+             door(13.5, 2.5, "L", "s")),                                  # laundry, closet, bath
+        part((14.0, 23.5), (20.0, 23.5)),                                 # laundry | closet
+        part((14.0, 30.0), (20.0, 30.0)),                                 # closet | primary bath
     ],
-    rooms=[dict(name="Bed 2", rect=(0.0, 0.0, 10.5, 12.0), lab=(5.25, 9.9)),
-           dict(name="Bed 3 / den", rect=(0.0, 12.0, 10.5, 24.0), short="Bed 3", lab=(5.25, 21.9)),
-           dict(name="Bath 2", rect=(10.5, 0.0, 20.0, 6.0), short="Bath", lab=(14.6, 4.5)),
-           dict(name="Hall", rect=(10.5, 6.0, 13.5, 24.0), label=False),
-           dict(name="W/D", rect=(13.5, 6.0, 16.5, 11.0), label=False),
-           dict(name="Linen", rect=(13.5, 11.0, 16.5, 19.5), label=False),
-           dict(name="Primary", rect=(0.0, 24.0, 13.5, 39.0), lab=(6.5, 27.2)),
-           dict(name="Closet", rect=(13.5, 24.0, 20.0, 30.0)),
-           dict(name="Primary bath", rect=(13.5, 30.0, 20.0, 39.0), short="Bath", lab=(15.4, 32.3))],
+    rooms=[dict(name="Bed 2", rect=(0.0, 0.0, 10.5, 11.0), lab=(5.25, 1.9)),
+           dict(name="Bath 2", rect=(0.0, 11.0, 10.5, 16.5), short="Bath", lab=(3.2, 12.4)),
+           dict(name="Bed 3 / den", rect=(0.0, 16.5, 10.5, 27.0), short="Bed 3", lab=(5.25, 18.0)),
+           dict(name="Landing", rect=(10.5, 0.0, 20.0, 6.0), lab=(15.0, 3.6), note="desk under the cobogó"),
+           dict(name="Hall", rect=(10.5, 6.0, 14.0, 27.0), label=False),
+           dict(name="Laundry", rect=(14.0, 19.5, 20.0, 23.5), short="W/D", lab=(15.4, 20.5)),
+           dict(name="Closet", rect=(14.0, 23.5, 20.0, 30.0), lab=(17.6, 25.4)),
+           dict(name="Primary", rect=(0.0, 27.0, 14.0, 39.0), lab=(7.0, 36.6)),
+           dict(name="Primary bath", rect=(14.0, 30.0, 20.0, 39.0), short="Bath", lab=(18.0, 33.9))],
     fixtures=[
-        dict(kind="bed", rect=(2.75, 1.0, 7.75, 7.7)),
-        dict(kind="bed", rect=(2.75, 13.0, 7.75, 19.7)),
-        dict(kind="bed", rect=(3.25, 30.5, 9.75, 37.5)),
-        dict(kind="shower", rect=(17.0, 0.5, 19.6, 5.6)),
-        dict(kind="wc", at=(14.5, 0.85), rot=0),
-        dict(kind="lav", rect=(11.0, 0.5, 12.9, 2.3)),
-        dict(kind="wd", rect=(13.8, 6.4, 16.2, 10.6)),
-        dict(kind="shower", rect=(16.2, 35.0, 19.6, 38.6)),
-        dict(kind="wc", at=(14.6, 38.2), rot=180),
-        dict(kind="lav", rect=(17.9, 30.5, 19.6, 34.2)),
+        dict(kind="desk", rect=(11.0, 0.55, 15.5, 2.3)),
+        dict(kind="bed", rect=(2.75, 3.9, 7.75, 10.6)),
+        dict(kind="tub", rect=(0.55, 13.95, 5.55, 16.3)),
+        dict(kind="wc", at=(6.75, 15.95), rot=180),
+        dict(kind="lav", rect=(8.0, 14.6, 10.3, 16.3)),
+        dict(kind="bed", rect=(2.75, 19.7, 7.75, 26.6)),
+        dict(kind="wd", rect=(16.8, 19.95, 19.45, 23.3), note="stacked washer + dryer"),
+        dict(kind="bed", rect=(3.75, 27.4, 10.25, 34.4), head="s"),
+        dict(kind="wc", at=(15.4, 30.5), rot=0),
+        dict(kind="lav", rect=(17.0, 30.4, 19.45, 32.2)),
+        dict(kind="shower", rect=(16.3, 35.4, 19.45, 38.5)),
     ],
-    stair=dict(rect=(16.5, 6.0, 20.0, 19.5), up=False),
-    void=(16.5, 6.0, 20.0, 19.5),
+    stair=dict(STAIR, floor="upper", cut=None),
+    slats=[((STAIR_X, 6.0), (STAIR_X, 19.5))],                         # cedar slat guard along the stair opening
+    void=(STAIR_X, 6.0, 20.0, 19.5),
     lantern=dict(LANTERN, opening=None),
     enclosed=W2 * D2,
 )

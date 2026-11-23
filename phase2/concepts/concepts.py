@@ -93,9 +93,15 @@ def draw_fixture(svg, f, t, detail):
     if k == "car":
         svg.poly(tpoly(t, rect_pts(r)), fill="none", stroke=MID, sw=0.6, extra='stroke-dasharray="3 2"')
         return
+    if k == "mech":
+        svg.poly(tpoly(t, rect_pts(r)), fill="none", stroke=MID, sw=0.5, extra='stroke-dasharray="2 1.5"')
+        for (ax, ay), (bx, by) in (((x0, y0), (x1, y1)), ((x0, y1), (x1, y0))):
+            a, b = tp(t, ax, ay), tp(t, bx, by)
+            svg.line(a[0], a[1], b[0], b[1], MID, 0.4)
+        return
     fill = {"counter": "#f1eee6", "island": "#f1eee6", "fridge": "#f1eee6", "table": "#fbf8f1", "sofa": "#efe8da",
             "bed": "#fbf8f1", "shower": "#e8eef0", "lav": "#fff", "wd": "#fff", "range": "#f1eee6",
-            "sink": "#e8eef0"}.get(k, "#fff")
+            "sink": "#e8eef0", "tub": "#e8eef0", "desk": "#fbf8f1"}.get(k, "#fff")
     svg.poly(tpoly(t, rect_pts(r)), fill=fill, stroke=INK if detail == "full" else MID, sw=sw)
     cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
     if k == "range":
@@ -110,12 +116,16 @@ def draw_fixture(svg, f, t, detail):
             a, b = tp(t, x0, y0), tp(t, x1, y1)
             svg.line(a[0], a[1], b[0], b[1], LIGHT, 0.4)
     elif k == "bed":
-        # pillows at the far end (max y) in the home's frame
+        # pillows at the head: the far end (max y) in the home's frame, or the near end with head="s"
+        south = f.get("head") == "s"
         for px0 in (x0 + 0.3, cx + 0.15):
-            svg.poly(tpoly(t, rect_pts((px0, y1 - 1.3, px0 + (x1 - x0) / 2 - 0.45, y1 - 0.3))), fill="#fff",
-                     stroke=MID, sw=0.35)
-        a, b = tp(t, x0, y1 - 2.0), tp(t, x1, y1 - 2.0)
+            pa, pb = (y0 + 0.3, y0 + 1.3) if south else (y1 - 1.3, y1 - 0.3)
+            svg.poly(tpoly(t, rect_pts((px0, pa, px0 + (x1 - x0) / 2 - 0.45, pb))), fill="#fff", stroke=MID, sw=0.35)
+        yl = y0 + 2.0 if south else y1 - 2.0
+        a, b = tp(t, x0, yl), tp(t, x1, yl)
         svg.line(a[0], a[1], b[0], b[1], MID, 0.35)
+    elif k == "tub":
+        svg.poly(tpoly(t, rect_pts((x0 + 0.3, y0 + 0.3, x1 - 0.3, y1 - 0.3))), fill="none", stroke=INK, sw=0.4)
     elif k == "sofa":
         horiz = (x1 - x0) >= (y1 - y0)
         if horiz:
@@ -134,24 +144,52 @@ def draw_fixture(svg, f, t, detail):
         svg.line(a[0], a[1], b[0], b[1], INK, 0.4)
 
 
-def draw_stair(svg, st, t, detail):
+def stair_geometry(st):
+    """Foot and top of a straight stair along y, the direction of climb, the run of one tread, and the tread count.
+    st: rect, top ("front" = the low-y end, or "back"), risers."""
     x0, y0, x1, y1 = st["rect"]
-    svg.poly(tpoly(t, rect_pts(st["rect"])), fill="#ffffff", stroke=INK, sw=0.6)
-    n = int((y1 - y0) / 0.8333)
-    for i in range(1, n + 1):
-        y = y0 + i * (y1 - y0) / (n + 1)
+    top_front = st.get("top", "back") == "front"
+    foot, top = (y1, y0) if top_front else (y0, y1)
+    sgn = -1.0 if top_front else 1.0
+    n = st.get("risers", 17) - 1
+    return foot, top, sgn, abs(top - foot) / n, n
+
+
+def draw_stair(svg, st, t, detail):
+    """Lower floor: treads from the foot up to the cut line, a break line, the rest dashed overhead; UP arrow.
+    Upper floor: the whole flight seen from above, DN arrow from the top."""
+    x0, y0, x1, y1 = st["rect"]
+    foot, top, sgn, run, n = stair_geometry(st)
+    upper = st.get("floor") == "upper"
+    cut = None if upper else st.get("cut")
+    end = top if cut is None else cut
+    ya, yb = sorted((foot, end))
+    svg.poly(tpoly(t, rect_pts((x0, ya, x1, yb))), fill="#ffffff", stroke=INK, sw=0.6)
+    for i in range(1, n):
+        y = foot + sgn * i * run
+        if (y - end) * sgn > 1e-6:
+            break
         a, b = tp(t, x0, y), tp(t, x1, y)
-        svg.line(a[0], a[1], b[0], b[1], MID if st["up"] else LIGHT, 0.45)
+        svg.line(a[0], a[1], b[0], b[1], LIGHT if upper else MID, 0.45)
+    if cut is not None:
+        p = [tp(t, x0, cut - sgn * 0.35), tp(t, (x0 + x1) / 2 - 0.3, cut - sgn * 0.35),
+             tp(t, (x0 + x1) / 2, cut + sgn * 0.35), tp(t, x1, cut + sgn * 0.35)]
+        svg.pline(p, stroke=INK, sw=0.6)
+        za, zb = sorted((cut, top))
+        svg.poly(tpoly(t, rect_pts((x0, za, x1, zb))), fill="none", stroke=MID, sw=0.45, extra='stroke-dasharray="3 2"')
     cx = (x0 + x1) / 2
-    a, b = tp(t, cx, y0 + 0.6), tp(t, cx, y1 - 0.8)
-    svg.line(a[0], a[1], b[0], b[1], INK, 0.7)
-    tip = tp(t, cx, y1 - 0.3) if st["up"] else tp(t, cx, y0 + 0.3)
-    base = (b if st["up"] else a)
-    ang = math.atan2(tip[1] - base[1], tip[0] - base[0])
+    if upper:
+        a, tip, label_at = tp(t, cx, top - sgn * 0.5), tp(t, cx, foot + sgn * 1.0), (cx, top - sgn * 1.3)
+    else:
+        a, tip, label_at = tp(t, cx, foot - sgn * 0.5), tp(t, cx, end - sgn * 1.0), (cx, foot - sgn * 1.4)
+    svg.line(a[0], a[1], tip[0], tip[1], INK, 0.7)
+    ang = math.atan2(tip[1] - a[1], tip[0] - a[0])
     L_ = 0.6
-    pts = [tip, (tip[0] - L_ * math.cos(ang - 0.45), tip[1] - L_ * math.sin(ang - 0.45)),
-           (tip[0] - L_ * math.cos(ang + 0.45), tip[1] - L_ * math.sin(ang + 0.45))]
-    svg.poly(pts, fill=INK, stroke="none")
+    svg.poly([tip, (tip[0] - L_ * math.cos(ang - 0.45), tip[1] - L_ * math.sin(ang - 0.45)),
+              (tip[0] - L_ * math.cos(ang + 0.45), tip[1] - L_ * math.sin(ang + 0.45))], fill=INK, stroke="none")
+    if detail == "full":
+        lx, ly = tp(t, *label_at)
+        svg.text(lx, ly, "DN" if upper else "UP", 6.2, weight=700, extra='dy="2"')
 
 
 def room_label(svg, room, t, detail, fs):
@@ -192,6 +230,9 @@ def cobogo_band(svg, pts_a, pts_b, n, full, t=None):
         svg.line(a[0], a[1], b[0], b[1], INK, 0.5, extra='stroke-dasharray="0.8 1.2"')
 
 
+LANTERN_LABEL = True        # the developed plans (phase2/plans) label the screen with a leader instead
+
+
 def draw_lantern(svg, plan, t, detail):
     """The two-story cobogó screen in front of the entry and stair (facade direction C)."""
     lan = plan.get("lantern")
@@ -205,7 +246,7 @@ def draw_lantern(svg, plan, t, detail):
     if op:   # the blocks run on overhead, above the door
         svg.poly(tpoly(t, rect_pts((op[0], y0, op[1], y1))), fill="none", stroke=MID, sw=0.5,
                  extra='stroke-dasharray="3 2"')
-    if detail == "full":
+    if detail == "full" and LANTERN_LABEL:
         cx, cy = tp(t, (x0 + x1) / 2, y0 - 1.0)
         svg.text(cx, cy, lan["note"].upper(), 5.8, fill=MID, ls=0.6, extra='dy="2"')
 
@@ -275,6 +316,9 @@ def draw_plan(svg, plan, t=None, detail="full", fs=8.5, labels=True):
         (gx0, gy0), (gx1, gy1) = plan["gate"]
         a, b = tp(t, gx0, gy0 + 0.25), tp(t, gx1, gy1 + 0.25)
         svg.line(a[0], a[1], b[0], b[1], DR.CEDAR, 1.6 if detail == "full" else 1.0, extra='stroke-dasharray="1.5 1.5"')
+    for (ax, ay), (bx, by) in plan.get("slats", []):            # cedar slats beside the stair
+        a, b = tp(t, ax, ay), tp(t, bx, by)
+        svg.line(a[0], a[1], b[0], b[1], DR.CEDAR, 1.5 if detail == "full" else 0.9, extra='stroke-dasharray="0.8 1"')
     draw_lantern(svg, plan, t, detail)
     draw_porch(svg, plan, t, detail, fs)
     if labels:
@@ -426,10 +470,13 @@ def floor_sheet():
         "stairs, closets and baths then line the shared wall of a side-by-side pair.",
         "Facade (direction C): a cobogó screen rises both floors 1 ft in front of the entry and stair, open at the "
         "front door; cedar gates close the carport. It lights up at night like Casa 01's screen.",
-        "The open-riser oak stair sits behind cedar slats with a slot window; it is the house's signature.",
+        "A gallery hall runs from the front door and the carport door to the kitchen. The open-riser oak stair "
+        "rises from the kitchen behind cedar slats to a landing behind the cobogó: the house's signature.",
         "Upstairs side windows are high, or fluted below 5 ft where a bedroom needs an egress window.",
         "Ground floor meets Austin's visitability rules: a half bath, and a no-step entry from the carport or the front.",
-        "Glass to the pátio on the back wall, plus an 8 ft slider on the long wall where the pátio is at the side.",
+        "Glass to the pátio on the back wall. The shared wall of a pair is a 1-hour fire wall with no openings; on "
+        "a detached site the suite version takes an 8 ft slider on its outer long wall.",
+        "Developed plans with dimensions, door and window schedules: Phase2_Casa02_Plans.pdf (sheets A-101 to A-103).",
     ]
     li = "".join(f"<li>{t}</li>" for t in notes)
     return (f'<section class="page"><div class="main" style="grid-template-rows:auto 1fr auto">'
