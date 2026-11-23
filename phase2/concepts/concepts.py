@@ -279,7 +279,7 @@ def site_svg(s):
         DR.tree_canopy(svg, x, y, rr, int(x * 7 + y), fill="rgba(95,116,88,0.10)", stroke=GREEN, sw=0.7)
     for pts in s.get("fence", []):
         fence(svg, pts)
-    for pts in s.get("walls", []):
+    for pts in s.get("walls", []) + ([s["street_wall"]] if s.get("street_wall") else []):
         svg.pline(pts, stroke=INK, sw=1.6)
     svg.rect(0, 0, W, L, fill="none", stroke=INK, sw=0.9, extra='stroke-dasharray="10 3 2 3"')
     # homes

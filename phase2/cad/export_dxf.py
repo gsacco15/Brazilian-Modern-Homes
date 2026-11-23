@@ -263,7 +263,7 @@ def draw_site(msp, s, origin):
         msp.add_circle(((ox + x) * IN, (oy + y) * IN), 0.4 * IN, dxfattribs={"layer": "L-TREE"})
     for pts in s.get("fence", []):
         msp.add_lwpolyline([((ox + x) * IN, (oy + y) * IN) for x, y in pts], dxfattribs={"layer": "L-FENC"})
-    for pts in s.get("walls", []):
+    for pts in s.get("walls", []) + ([s["street_wall"]] if s.get("street_wall") else []):
         msp.add_lwpolyline([((ox + x) * IN, (oy + y) * IN) for x, y in pts], dxfattribs={"layer": "L-WALL",
                                                                                          "const_width": 6})
     for h in s["homes"]:
