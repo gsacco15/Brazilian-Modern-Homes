@@ -488,8 +488,8 @@ def site(L, coll, s, rng):
                 yy = ye
         else:
             g.box(*r[:2], -0.05, *r[2:], 0.08, mat=4)
-            if k == "Apron":
-                g.box(r[0], -12.0, -0.3, r[2], -0.02, 0.06, mat=4)            # curb cut across the parkway
+            if k == "Apron" and r[1] <= 0.5:                                   # curb cut across the parkway
+                g.box(r[0], -12.0, -0.3, r[2], -0.02, 0.06, mat=4)
     for pts in s.get("paths", []):
         for (x0, y0), (x1, y1) in zip(pts, pts[1:]):
             n = max(1, int(math.hypot(x1 - x0, y1 - y0) / 2.2))
@@ -619,7 +619,8 @@ def trees_and_planting(L, coll, s, rng, protos):
         LS._sc("Pátio palmetto", to_m(LS.sample_poly(edge, 2, rng, avoid, 6.0)), pc["palmetto"], coll, scale=(1.0, 1.4))
     if "lawn" in protos:
         pk = LS.sample_poly([(-60, -11.8), (W + 60, -11.8), (W + 60, -6.2), (-60, -6.2)], 2600, rng,
-                            [(r[0] - 0.5, -12.5, r[2] + 0.5, -5.5) for k, r in s["pave"] if k == "Apron"], 0.0)
+                            [(r[0] - 0.5, -12.5, r[2] + 0.5, -5.5) for k, r in s["pave"] if k == "Apron" and r[1] <= 0.5],
+                            0.0)
         LS._sc("Parkway lawn", to_m(pk, -0.02), protos["lawn"], coll, scale=(1.1, 1.9))
     if "shrub" in protos:
         sh = LS.sample_poly([(0.8, 16), (4.2, 16), (4.2, Lo - 6), (0.8, Lo - 6)], 8, rng, avoid, 6.0) + \
