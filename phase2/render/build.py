@@ -12,7 +12,8 @@ Facade options for Casa 02 (the three-option study, phase2/study):
     A     cedar veil: the upper floor behind a cedar slat screen, front and back
     B     stepped: the upper floor slides 8 ft back from the front; roof terrace in front, cantilever behind
     C     cobogó lantern: the entry and stair column clad two stories high in cobogó
-A, B and C also give the Casita a covered porch over its pátio, and its street wall becomes cobogó.
+    Cplus the direction chosen from the study: C as is, plus a cedar slat gate in the Casita's cobogó garden wall
+A, B, C and Cplus also give the Casita a covered porch over its pátio, and its street wall becomes cobogó.
 """
 import argparse
 import math
@@ -186,7 +187,7 @@ def build_home(h, origin, L, idx, fac="base"):
             for z in (UP_FF - 1.4, ROOF[0] - 0.15):
                 lbox(det, t, 0, y0, W, y1, z, z + 0.15, mat=0)
     det.build(bpy.context.scene.collection, bevel=0.002)
-    if casa and fac == "C" and t["rot"] in (0, 180):                                     # cobogó lantern
+    if casa and fac in ("C", "Cplus") and t["rot"] in (0, 180):                          # cobogó lantern
         a, b = tp(t, 10.5, 0.0), tp(t, 20.0, 0.0)
         xa, xb = min(a[0], b[0]) + ox, max(a[0], b[0]) + ox
         front_y = a[1] + oy
@@ -267,8 +268,17 @@ def build_site(s, L, fac="base"):
         pier = MB("garden wall piers", [L["limestone"], L["cedar_z"]])
         pier.box(x0, y0 - 0.4, 0.0, x0 + 2.0, y0 + 0.4, 8.5, mat=0)
         pier.box(x1 - 2.0, y0 - 0.4, 0.0, x1, y0 + 0.4, 8.5, mat=0)
+        c0 = x0 + 2.0
+        if fac == "Cplus":                                  # a 4 ft cedar gate beside the Casita, a pier, then cobogó
+            g0, g1 = x0 + 2.0, x0 + 6.0
+            n = int((g1 - g0) / 0.42)
+            for i in range(n):
+                x = g0 + (i + 0.5) * (g1 - g0) / n
+                pier.box(x - 0.14, y0 - 0.09, 0.25, x + 0.14, y0 + 0.09, 7.5, mat=1)
+            pier.box(g1, y0 - 0.4, 0.0, g1 + 1.0, y0 + 0.4, 8.5, mat=0)
+            c0 = g1 + 1.0
         pier.build(bpy.context.scene.collection, bevel=0.003)
-        cobogo_panel(L, "Casita garden cobogo", x0 + 2.0, x1 - 2.0, y0 - 0.165, 0.5, 8.5)
+        cobogo_panel(L, "Casita garden cobogo", c0, x1 - 2.0, y0 - 0.165, 0.5, 8.5)
     for i, (x, y, r) in enumerate(s["trees"]):
         tree(x, y, r, L, i * 13 + int(x))
     # neighbouring houses for scale

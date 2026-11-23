@@ -52,6 +52,12 @@ RECOMMEND = ("Lead with C, the cobogó lantern, and borrow A's cedar veil for th
              "afternoon shade where the homes face each other's gardens. Keep B for wide and corner duos, where the "
              "footprint allows a roof terrace.")
 
+DIRECTION = ("Casa 02 takes option C as drawn: the two-story cobogó lantern at the entry and stair, cedar gates "
+             "at the carports. The only change is at the Casita: its cobogó garden wall gets a 4-ft cedar slat gate, "
+             "the same slats as the Casa 02 carport gates, so the Casita at the street carries both materials. "
+             "The cedar veil on the back of the upper floor (from option A) is not used. "
+             "Top: the duo by day and at dusk. Bottom: the alley trio, with the Casita and its gate at the street.")
+
 CSS = open(os.path.join(ROOT, "casa01", "signoff", "signoff_v2.py")).read().split('CSS = """')[1].split('"""')[0]
 CSS += """
 .grid{display:grid;grid-template-columns:110px repeat(4,1fr);gap:6px;align-items:center}
@@ -101,6 +107,11 @@ def main():
                      f'<div class="big">{img(k, "street")}{img(k, "dusk")}</div>'
                      f'<div class="big">{img(k, "aerial")}{img(k, "alley_trio")}</div></div>'
                      f'{title_block(f"F-{i + 3}", n)}</section>')
+    pages.append(f'<section class="page"><div class="main" style="grid-template-rows:auto auto auto auto;align-content:start">'
+                 f'<h1>Direction chosen · C, with a cedar gate at the Casita</h1><p class="lead">{DIRECTION}</p>'
+                 f'<div class="big">{img("C", "street")}{img("C", "dusk")}</div>'
+                 f'<div class="big">{img("Cplus", "alley_trio")}{img("Cplus", "alley_dusk")}</div></div>'
+                 f'{title_block("F-6", "Direction chosen")}</section>')
     html = (f'<!doctype html><html><head><meta charset="utf-8"><title>Casa 02 facade options</title>'
             f'<style>{CSS}</style></head><body>{"".join(pages)}</body></html>')
     open(os.path.join(OUT, "facade_options.html"), "w").write(html)
