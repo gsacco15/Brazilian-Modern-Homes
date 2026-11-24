@@ -1,0 +1,579 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The Homes · Brazilian Modern Homes</title>
+<meta name="description" content="Brazilian modern homes for Austin lots: Casa 01 on its own, a Casa 02 pair, or the pair plus a Casita. Photos, site layouts, floor plans and the material board.">
+<meta name="theme-color" content="#1d2520">
+<meta property="og:type" content="website"><meta property="og:title" content="The Homes · Brazilian Modern Homes">
+<meta property="og:description" content="Brazilian modern homes for Austin lots: Casa 01 on its own, a Casa 02 pair, or the pair plus a Casita. Photos, site layouts, floor plans and the material board."><meta property="og:image" content="/homes/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Lato:wght@400;700;900&display=swap"><style>
+:root{
+  --paper:#f5f2ea; --card:#fffdf7; --ink:#1d2520; --muted:#5b625b; --line:#dcd6c8; --soft:#ece7db;
+  --forest:#1d2520; --on-forest:#ece6d8; --on-forest-muted:#b7b9ab;
+  --gold:#94712f; --gold-hi:#d2b47c; --sage:#5f7458;
+  --serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+  --sans:"Lato","Helvetica Neue",Arial,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;margin:0;-webkit-font-smoothing:antialiased}
+img{max-width:100%}
+[hidden]{display:none!important}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.band{padding-block:clamp(44px,6vw,80px)}
+.band.soft{background:var(--soft)}
+.band.dark{background:var(--forest);color:var(--on-forest)}
+h1,h2,h3{font-family:var(--serif);font-weight:500;text-wrap:balance;margin:0;font-variant-numeric:lining-nums}
+h1{font-size:clamp(40px,6vw,68px);line-height:1}
+h2{font-size:clamp(30px,4vw,46px);line-height:1.05}
+h3{font-size:28px;line-height:1.1}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.eyebrow{font-size:12px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.dark .eyebrow{color:var(--gold-hi)}
+.lede{font-size:clamp(16px,1.7vw,19px);max-width:60ch;color:var(--muted)}
+.dark .lede{color:var(--on-forest-muted)}
+button{font:inherit;color:inherit}
+
+/* top */
+.top{background:var(--forest);color:var(--on-forest)}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:60px}
+.bar a{text-decoration:none;font-size:12px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
+.bar .brand{font-family:var(--serif);font-size:21px;font-weight:500;letter-spacing:0;text-transform:none}
+.bar .links{display:flex;gap:20px;align-items:center}
+.bar .links a:hover{color:var(--gold-hi)}
+.bar .pill{border:1px solid rgba(236,230,216,.75);padding:9px 13px}
+@media (max-width:640px){.bar .lg{display:none}.bar .brand{font-size:17px}.bar .links{gap:14px}}
+.hello{padding-block:clamp(36px,6vw,72px) clamp(28px,4vw,48px)}
+.hello .lede{margin-top:14px;color:var(--on-forest-muted)}
+.hello .eyebrow{color:var(--gold-hi)}
+
+/* the Single / Duo / Trio picker */
+.picker{position:sticky;top:0;z-index:10;background:rgba(245,242,234,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line)}
+.picker .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:68px}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);background:var(--card);padding:3px;gap:3px;flex:0 1 480px}
+.seg button{border:0;background:transparent;cursor:pointer;padding:8px 10px;display:grid;gap:1px;text-align:center;border-radius:1px;
+  transition:background .25s,color .25s}
+.seg b{font-family:var(--serif);font-size:22px;font-weight:500;line-height:1}
+.seg span{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);transition:color .25s}
+.seg button:hover{background:#f1ece0}
+.seg button[aria-selected="true"]{background:var(--forest);color:var(--on-forest)}
+.seg button[aria-selected="true"] span{color:var(--gold-hi)}
+.jump{display:flex;gap:22px}
+.jump a{font-size:12px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--muted)}
+.jump a:hover{color:var(--ink)}
+@media (max-width:860px){.jump{display:none}.seg{flex:1 1 auto}}
+
+/* option header + facts */
+.opt-head{display:grid;gap:14px;align-items:end}
+@media (min-width:900px){.opt-head{grid-template-columns:1fr 1fr;gap:40px}}
+.facts{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 24px;margin:26px 0 22px;padding-block:16px;border-block:1px solid var(--line)}
+@media (min-width:700px){.facts{grid-template-columns:repeat(4,1fr)}}
+.facts div{display:grid;gap:2px}
+.facts b{font-family:var(--serif);font-size:32px;font-weight:500;line-height:1;font-variant-numeric:lining-nums tabular-nums}
+.facts span{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.opt{animation:fade .45s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* photo viewer */
+.stage{margin:0}
+.frame{display:block;width:100%;padding:0;border:0;background:#2a332d;cursor:zoom-in;overflow:hidden;touch-action:pan-y}
+.frame img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;transition:opacity .35s ease}
+.frame img.out{opacity:.15}
+.stage figcaption{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-top:12px;min-height:48px}
+.cap{color:var(--muted);font-size:15px}
+.nav{display:flex;align-items:center;gap:6px;flex:none}
+.count{font-size:12px;letter-spacing:.12em;color:var(--muted);min-width:46px;text-align:center;font-variant-numeric:tabular-nums}
+.arrow{width:40px;height:40px;border:1px solid var(--line);background:var(--card);cursor:pointer;font-size:16px;border-radius:2px}
+.arrow:hover{border-color:var(--ink)}
+.thumbs{display:grid;grid-auto-flow:column;grid-auto-columns:104px;gap:8px;overflow-x:auto;padding:6px 0 4px;scrollbar-width:thin}
+.th{padding:0;border:0;background:none;cursor:pointer;opacity:.62;transition:opacity .25s;position:relative}
+.th img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover}
+.th::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:2px;background:transparent;transition:background .25s}
+.th:hover{opacity:.9}
+.th[aria-current="true"]{opacity:1}
+.th[aria-current="true"]::after{background:var(--gold)}
+
+/* section heads + chips */
+.sec-head{display:grid;gap:10px;margin-bottom:22px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.chip{display:grid;gap:0;text-align:left;min-height:44px;padding:8px 14px;border:1px solid var(--line);background:var(--card);cursor:pointer;border-radius:2px;
+  transition:background .2s,border-color .2s,color .2s}
+.chip b{font-size:13px;font-weight:700;letter-spacing:.02em}
+.chip span{font-size:11.5px;color:var(--muted)}
+.chip:hover{border-color:#b9b09c}
+.chip[aria-pressed="true"]{background:var(--forest);border-color:var(--forest);color:var(--on-forest)}
+.chip[aria-pressed="true"] span{color:var(--on-forest-muted)}
+.chips.mini .chip{min-height:36px;padding:6px 14px}
+
+/* layouts and plans: drawing + info */
+.pane{display:grid;gap:24px;align-items:start;animation:fade .4s ease}
+@media (min-width:900px){.pane{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:40px}}
+.sheet{background:#fff;border:1px solid var(--line);padding:clamp(10px,2vw,22px);display:flex;justify-content:center;cursor:zoom-in;transition:border-color .25s}
+.sheet:hover{border-color:#b9b09c}
+.sheet img{display:block;width:auto;max-width:100%;height:auto;max-height:min(78vh,820px)}
+.sheet.plan img{max-height:min(74vh,760px)}
+.info{display:grid;gap:14px;align-content:start}
+.info p{color:var(--muted)}
+.info .rooms{font-size:13px;letter-spacing:.02em;color:var(--sage)}
+.kv{display:grid;margin:4px 0 0;border-top:1px solid var(--line)}
+.kv div{display:grid;grid-template-columns:110px 1fr;gap:12px;padding:8px 0;border-bottom:1px solid var(--line)}
+.kv dt{font-size:11px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding-top:3px}
+.kv dd{margin:0;font-size:15px}
+.notes{margin:4px 0 0;padding-left:18px;color:var(--muted);display:grid;gap:6px;font-size:15px}
+.mass{margin:6px 0 0}
+.mass img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border:1px solid var(--line)}
+.mass figcaption{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding-top:6px}
+
+/* material board */
+.board{background:var(--card);border-top:1px solid var(--line)}
+.mb{display:grid;gap:28px}
+@media (min-width:900px){.mb{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:48px;align-items:start}
+  .detail{position:sticky;top:96px}}
+.detail{display:grid;gap:18px}
+.big{overflow:hidden;aspect-ratio:4/3;background:var(--soft)}
+.big img{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.02);transition:opacity .35s ease,transform 6s ease}
+.big img.out{opacity:0}
+.big:hover img{transform:scale(1.1)}
+.txt{display:grid;gap:8px}
+.txt h3{font-size:34px}
+.txt .ref{font-size:15px;color:var(--muted)}
+.txt .ref i{font-family:var(--serif);font-size:19px;color:var(--ink)}
+.txt p{color:var(--muted)}
+.txt .where b{font-size:11px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);margin-right:6px}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 12px}
+@media (min-width:560px){.tiles{grid-template-columns:repeat(4,1fr)}}
+.tile{padding:0;border:0;background:none;cursor:pointer;display:grid;gap:7px;text-align:left;align-content:start}
+.tile .sw{display:block;overflow:hidden;aspect-ratio:1;outline:1px solid transparent;outline-offset:3px;transition:outline-color .25s}
+.tile img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+.tile:hover img{transform:scale(1.08)}
+.tile .tn{font-size:12.5px;line-height:1.3;color:var(--muted);transition:color .25s}
+.tile:hover .tn{color:var(--ink)}
+.tile[aria-pressed="true"] .sw{outline-color:var(--gold)}
+.tile[aria-pressed="true"] .tn{color:var(--ink);font-weight:700}
+
+/* closing */
+.end .cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 22px;border-radius:2px;border:1px solid transparent;
+  font:900 13px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:background .2s}
+.btn.primary{background:var(--gold-hi);color:var(--forest)}
+.btn.primary:hover{background:#e2c690}
+.btn.ghost{border-color:currentColor;background:transparent}
+.btn.ghost:hover{background:rgba(236,230,216,.12)}
+footer{background:var(--forest);color:var(--on-forest-muted);font-size:13px;padding-block:32px;border-top:1px solid rgba(236,230,216,.12)}
+footer .wrap{display:grid;gap:8px}
+footer b{color:var(--on-forest);font-weight:900;letter-spacing:.14em;text-transform:uppercase;font-size:12px}
+
+/* lightbox */
+dialog.lb{padding:0;border:0;background:transparent;max-width:min(96vw,1600px);width:100%}
+dialog.lb::backdrop{background:rgba(16,20,18,.92)}
+.lb img{display:block;width:100%;max-height:86vh;object-fit:contain}
+.lb .bar2{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:10px;color:var(--on-forest)}
+.lb .bar2 p{font-size:14px;color:var(--on-forest-muted)}
+.lb .arrow{background:transparent;color:var(--on-forest);border-color:rgba(236,230,216,.4)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style></head><body>
+<header class="top">
+  <div class="wrap bar">
+    <a class="brand" href="/">Brazilian Modern Homes</a>
+    <nav class="links" aria-label="Site"><a href="/house/"><span class="lg">Casa 01 in </span>3D</a>
+      <a class="lg" href="#materials">Materials</a><a class="pill" href="/#join">Join<span class="lg"> the list</span></a></nav>
+  </div>
+  <div class="wrap hello">
+    <div class="eyebrow">The homes</div>
+    <h1>One way of building, three sizes.</h1>
+    <p class="lede">A courtyard house on its own lot, a pair of two-story homes, or the pair with a Casita. The same limestone,
+      cedar, cobogó and pátio in each, fitted to Austin lots under the HOME rules.</p>
+  </div>
+</header>
+<div class="picker">
+  <div class="wrap">
+    <div class="seg" role="tablist" aria-label="Choose a home"><button role="tab" type="button" id="t-single" aria-controls="p-single" aria-selected="true"><b>Single</b><span>1 home</span></button><button role="tab" type="button" id="t-duo" aria-controls="p-duo" aria-selected="false" tabindex="-1"><b>Duo</b><span>2 homes</span></button><button role="tab" type="button" id="t-trio" aria-controls="p-trio" aria-selected="false" tabindex="-1"><b>Trio</b><span>3 homes</span></button></div>
+    <nav class="jump" aria-label="On this page"><a data-s="photos" href="#single-photos">Photos</a><a data-s="layouts" href="#single-layouts">Site</a>
+      <a data-s="plans" href="#single-plans">Plans</a><a href="#materials">Materials</a></nav>
+  </div>
+</div>
+<main>
+<section class="opt" id="p-single" role="tabpanel" aria-labelledby="t-single">
+  <div class="band photos" data-sec="photos" id="single-photos">
+    <div class="wrap">
+      <div class="opt-head">
+        <div><div class="eyebrow">Single · 1 home</div><h2>Casa 01, the courtyard house</h2></div>
+        <p class="lede">One story in an L around a pátio. Limestone and cedar face the street; inside, every room opens to the courtyard and its live oak.</p>
+      </div>
+      <div class="facts"><div><b>1</b><span>home</span></div><div><b>1,670</b><span>sq ft</span></div><div><b>3 / 2</b><span>bed / bath</span></div><div><b>65 ft</b><span>typical lot width</span></div></div>
+      <div class="viewer" data-gal='[{&quot;s&quot;: &quot;/img/street-800.jpg&quot;, &quot;l&quot;: &quot;/img/street-1600.jpg&quot;, &quot;c&quot;: &quot;From the street: limestone, a cedar gate and the cobogó screen.&quot;}, {&quot;s&quot;: &quot;/img/street_dusk-800.jpg&quot;, &quot;l&quot;: &quot;/img/street_dusk-1600.jpg&quot;, &quot;c&quot;: &quot;At dusk the cobogó glows like a lantern.&quot;}, {&quot;s&quot;: &quot;/img/gate-800.jpg&quot;, &quot;l&quot;: &quot;/img/gate-1600.jpg&quot;, &quot;c&quot;: &quot;Through the gate, the pátio opens to the right.&quot;}, {&quot;s&quot;: &quot;/img/entry-800.jpg&quot;, &quot;l&quot;: &quot;/img/entry-1600.jpg&quot;, &quot;c&quot;: &quot;Covered entry: black calçada underfoot, the cobogó beside you.&quot;}, {&quot;s&quot;: &quot;/img/courtyard-800.jpg&quot;, &quot;l&quot;: &quot;/img/courtyard-1600.jpg&quot;, &quot;c&quot;: &quot;The pátio under a live oak. Every room opens onto it.&quot;}, {&quot;s&quot;: &quot;/img/interior-800.jpg&quot;, &quot;l&quot;: &quot;/img/interior-1600.jpg&quot;, &quot;c&quot;: &quot;The great room, under a cedar ceiling.&quot;}, {&quot;s&quot;: &quot;/img/kitchen-800.jpg&quot;, &quot;l&quot;: &quot;/img/kitchen-1600.jpg&quot;, &quot;c&quot;: &quot;Kitchen with honed black granite and green tile.&quot;}, {&quot;s&quot;: &quot;/img/bath-800.jpg&quot;, &quot;l&quot;: &quot;/img/bath-1600.jpg&quot;, &quot;c&quot;: &quot;Primary bath: green tile, a curbless shower, a skylight overhead.&quot;}, {&quot;s&quot;: &quot;/img/bath2-800.jpg&quot;, &quot;l&quot;: &quot;/img/bath2-1600.jpg&quot;, &quot;c&quot;: &quot;Hall bath: terracotta tile around the tub.&quot;}, {&quot;s&quot;: &quot;/img/veranda-800.jpg&quot;, &quot;l&quot;: &quot;/img/veranda-1600.jpg&quot;, &quot;c&quot;: &quot;The veranda faces the backyard oak.&quot;}]'>
+  <figure class="stage">
+    <button class="frame" type="button" aria-label="Open larger">
+      <img class="main" src="/img/street-1600.jpg" srcset="/img/street-800.jpg 800w, /img/street-1600.jpg 1600w"
+        sizes="(min-width:1152px) 1120px, 100vw" alt="From the street: limestone, a cedar gate and the cobogó screen." loading="lazy">
+    </button>
+    <figcaption><span class="cap">From the street: limestone, a cedar gate and the cobogó screen.</span>
+      <span class="nav"><button class="arrow prev" type="button" aria-label="Previous photo">←</button>
+      <span class="count">1 / 10</span>
+      <button class="arrow next" type="button" aria-label="Next photo">→</button></span></figcaption>
+  </figure>
+  <div class="thumbs"><button class="th" type="button" data-i="0" aria-label="Photo 1: From the street: limestone, a cedar gate and the cobogó screen." aria-current="true"><img src="/homes/img/c01_street-400.jpg" alt="" loading="lazy"></button><button class="th" type="button" data-i="1" aria-label="Photo 2: At dusk the cobogó glows like a lantern."><img src="/homes/img/c01_street_dusk-400.jpg" alt="" loading="lazy"></button><button class="th" type="button" data-i="2" aria-label="Photo 3: Through the gate, the pátio opens to the right."><img src="/homes/img/c01_gate-400.jpg" alt="" loading="lazy"></button><button class="th" type="button" data-i="3" aria-label="Photo 4: Covered entry: black calçada underfoot, the cobogó beside you."><img src="/homes/img/c01_entry-400.jpg" alt="" loading="lazy"></button><button class="th" type="button" data-i="4" aria-label="Photo 5: The pátio under a live oak. Every room opens onto it."><img src="/homes/img/c01_courtyard-400.jpg" alt="" loading="lazy"></button><button class="th" type="button" data-i="5" aria-label="Photo 6: The great room, under a cedar ceiling."><img src="/homes/img/c01_interior-400.jpg" alt="" loading="lazy"></button><button class="th" type="button" data-i="6" aria-label="Photo 7: Kitchen with honed black granite and green tile."><img src="/homes/img/c01_kitchen-400.jpg" alt="" loading="lazy"></button><button class="th" type="button" data-i="7" aria-label="Photo 8: Primary bath: green tile, a curbless shower, a skylight overhead."><img src="/homes/img/c01_bath-400.jpg" alt="" loading="lazy"></button><button class="th" type="button" data-i="8" aria-label="Photo 9: Hall bath: terracotta tile around the tub."><img src="/homes/img/c01_bath2-400.jpg" alt="" loading="lazy"></button><button class="th" type="button" data-i="9" aria-label="Photo 10: The veranda faces the backyard oak."><img src="/homes/img/c01_veranda-400.jpg" alt="" loading="lazy"></button></div>
+</div>
+    </div>
+  </div>
+  <div class="band soft" data-sec="layouts" id="single-layouts">
+    <div class="wrap">
+      <div class="sec-head"><div class="eyebrow">Site</div><h2>On the lot</h2><p class="lede">Casa 01 fits a typical Austin lot, with the oak kept and the pátio facing the sun.</p></div>
+      
+      <div class="panes"><div class="pane lay" data-k="C01">
+  <a class="sheet site" href="/homes/img/site_C01.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/site_C01.svg" alt="Site plan, Casa 01 on a typical lot" loading="lazy"></a>
+  <div class="info">
+    <div class="eyebrow">Casa 01</div>
+    <h3>Casa 01 on a typical lot</h3>
+    <dl class="kv"><div><dt>Lot</dt><dd>65 × 125 ft</dd></div><div><dt>Home</dt><dd>Casa 01, 3 bed / 2 bath</dd></div><div><dt>Floor area</dt><dd>1,670 sf</dd></div><div><dt>Parking</dt><dd>Carport behind a cedar gate</dd></div></dl>
+    <ul class="notes"><li>The house wraps the pátio on two sides; the carport and a cedar fence close the other two.</li><li>The heritage oak stays in the backyard, and the veranda faces it.</li><li>The front yard is a meadow of native grasses on decomposed granite.</li></ul>
+    <figure class="mass"><img src="/homes/img/mass_C01.jpg" alt="From above: the pátio open to the sky, Casa 01 on a typical lot" loading="lazy"><figcaption>From above: the pátio open to the sky</figcaption></figure>
+  </div>
+</div></div>
+    </div>
+  </div>
+  <div class="band" data-sec="plans" id="single-plans">
+    <div class="wrap">
+      <div class="sec-head"><div class="eyebrow">Plans</div><h2>Floor plans</h2></div>
+      
+      <div class="panes"><div class="pane pl" data-k="C01">
+  <a class="sheet plan" href="/homes/img/plan_C01.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/plan_C01.svg" alt="Floor plan: Floor plan" loading="lazy"></a>
+  <div class="info">
+    <div class="eyebrow">1,670 sf</div>
+    <h3>Floor plan</h3>
+    <p>One story in an L around the pátio: the great room, kitchen and primary suite across the back, two bedrooms along a gallery, and the carport and covered entry at the street.</p>
+    <p class="rooms">Great room · Kitchen · Primary suite · Bedrooms 2 and 3 · Bath 2 · Laundry · Pátio · Veranda · Carport</p>
+  </div>
+</div></div>
+    </div>
+  </div>
+</section><section class="opt" id="p-duo" role="tabpanel" aria-labelledby="t-duo" hidden>
+  <div class="band photos" data-sec="photos" id="duo-photos">
+    <div class="wrap">
+      <div class="opt-head">
+        <div><div class="eyebrow">Duo · 2 homes</div><h2>Casa 02, a pair on one lot</h2></div>
+        <p class="lede">Two homes of two stories, mirrored about a shared wall. Each has its own door, carport, pátio and skylit upstairs; a single cobogó lantern joins the pair at the street.</p>
+      </div>
+      <div class="facts"><div><b>2</b><span>homes</span></div><div><b>1,350–1,560</b><span>sq ft each</span></div><div><b>3 / 2.5</b><span>bed / bath each</span></div><div><b>50–65 ft</b><span>lot width</span></div></div>
+      <div class="viewer" data-gal='[{&quot;s&quot;: &quot;/homes/img/duo_street-800.jpg&quot;, &quot;l&quot;: &quot;/homes/img/duo_street-1600.jpg&quot;, &quot;c&quot;: &quot;The pair from the street: limestone corners, cedar carport gates, one cobogó lantern between the doors.&quot;}, {&quot;s&quot;: &quot;/homes/img/duo_dusk-800.jpg&quot;, &quot;l&quot;: &quot;/homes/img/duo_dusk-1600.jpg&quot;, &quot;c&quot;: &quot;At dusk the stair light turns the cobogó into a lantern.&quot;}, {&quot;s&quot;: &quot;/homes/img/duo_entry-800.jpg&quot;, &quot;l&quot;: &quot;/homes/img/duo_entry-1600.jpg&quot;, &quot;c&quot;: &quot;Each front door sits under the cobogó, on a black calçada threshold.&quot;}, {&quot;s&quot;: &quot;/homes/img/duo_garden-800.jpg&quot;, &quot;l&quot;: &quot;/homes/img/duo_garden-1600.jpg&quot;, &quot;c&quot;: &quot;Each home opens at the back to its own pátio, under a cedar sunshade.&quot;}, {&quot;s&quot;: &quot;/homes/img/upper_hall-800.jpg&quot;, &quot;l&quot;: &quot;/homes/img/upper_hall-1600.jpg&quot;, &quot;c&quot;: &quot;Upstairs, a skylight runs the length of the stair.&quot;}]'>
+  <figure class="stage">
+    <button class="frame" type="button" aria-label="Open larger">
+      <img class="main" src="/homes/img/duo_street-1600.jpg" srcset="/homes/img/duo_street-800.jpg 800w, /homes/img/duo_street-1600.jpg 1600w"
+        sizes="(min-width:1152px) 1120px, 100vw" alt="The pair from the street: limestone corners, cedar carport gates, one cobogó lantern between the doors." loading="lazy">
+    </button>
+    <figcaption><span class="cap">The pair from the street: limestone corners, cedar carport gates, one cobogó lantern between the doors.</span>
+      <span class="nav"><button class="arrow prev" type="button" aria-label="Previous photo">←</button>
+      <span class="count">1 / 5</span>
+      <button class="arrow next" type="button" aria-label="Next photo">→</button></span></figcaption>
+  </figure>
+  <div class="thumbs"><button class="th" type="button" data-i="0" aria-label="Photo 1: The pair from the street: limestone corners, cedar carport gates, one cobogó lantern between the doors." aria-current="true"><img src="/homes/img/duo_street-400.jpg" alt="" loading="lazy"></button><button class="th" type="button" data-i="1" aria-label="Photo 2: At dusk the stair light turns the cobogó into a lantern."><img src="/homes/img/duo_dusk-400.jpg" alt="" loading="lazy"></button><button class="th" type="button" data-i="2" aria-label="Photo 3: Each front door sits under the cobogó, on a black calçada threshold."><img src="/homes/img/duo_entry-400.jpg" alt="" loading="lazy"></button><button class="th" type="button" data-i="3" aria-label="Photo 4: Each home opens at the back to its own pátio, under a cedar sunshade."><img src="/homes/img/duo_garden-400.jpg" alt="" loading="lazy"></button><button class="th" type="button" data-i="4" aria-label="Photo 5: Upstairs, a skylight runs the length of the stair."><img src="/homes/img/upper_hall-400.jpg" alt="" loading="lazy"></button></div>
+</div>
+    </div>
+  </div>
+  <div class="band soft" data-sec="layouts" id="duo-layouts">
+    <div class="wrap">
+      <div class="sec-head"><div class="eyebrow">Site</div><h2>Ways to arrange it</h2><p class="lede">2 tested layouts, each checked against Austin&#x27;s HOME rules for floor area, building and paving cover. Pick one to see it.</p></div>
+      <div class="chips" role="group" aria-label="Layouts"><button class="chip" type="button" data-k="L1-D1" aria-pressed="true"><b>Side by side</b><span>50 × 125 ft lot</span></button><button class="chip" type="button" data-k="L4-D2" aria-pressed="false"><b>Front and back</b><span>65 × 125 ft lot</span></button></div>
+      <div class="panes"><div class="pane lay" data-k="L1-D1">
+  <a class="sheet site" href="/homes/img/site_L1-D1.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/site_L1-D1.svg" alt="Site plan, Duo, side by side" loading="lazy"></a>
+  <div class="info">
+    <div class="eyebrow">L1-D1</div>
+    <h3>Duo, side by side</h3>
+    <dl class="kv"><div><dt>Lot</dt><dd>50 × 125 ft</dd></div><div><dt>Homes</dt><dd>2 × Casa 02 (3 bed / 2.5 bath)</dd></div><div><dt>Floor area</dt><dd>2,700 sf in all</dd></div><div><dt>Parking</dt><dd>2 on site</dd></div><div><dt>Paving</dt><dd>2,141 of 2,812 sf allowed</dd></div></dl>
+    <ul class="notes"><li>Bays on the outside, so every bedroom has an outside wall and stairs, closets and the carports buffer the shared wall.</li><li>Two 10-ft curb cuts at the outer edges use exactly the 40% front-yard limit. If the city allows only one, use the small-lot split or a front-and-back duo instead.</li><li>Front walks are stepping stones in planting, and carts live in each carport: the front yard has no paving to spare. The step-free route is up the apron to the side door.</li></ul>
+    <figure class="mass"><img src="/homes/img/mass_L1-D1.jpg" alt="Massing view, Duo, side by side" loading="lazy"><figcaption>Massing view</figcaption></figure>
+  </div>
+</div><div class="pane lay" data-k="L4-D2" hidden>
+  <a class="sheet site" href="/homes/img/site_L4-D2.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/site_L4-D2.svg" alt="Site plan, Duo front and back, ground-floor suites" loading="lazy"></a>
+  <div class="info">
+    <div class="eyebrow">L4-D2</div>
+    <h3>Duo front and back, ground-floor suites</h3>
+    <dl class="kv"><div><dt>Lot</dt><dd>65 × 125 ft</dd></div><div><dt>Homes</dt><dd>2 × Casa 02 with suite (3 bed + den / 3.5 bath)</dd></div><div><dt>Floor area</dt><dd>3,120 sf in all</dd></div><div><dt>Parking</dt><dd>2 on site</dd></div><div><dt>Paving</dt><dd>3,497 of 3,656 sf allowed</dd></div></dl>
+    <ul class="notes"><li>With paving to spare, each home parks on a pad beside the shared drive and its flex bay becomes a ground-floor bedroom suite (1,560 sf).</li><li>One curb cut serves both homes; the drive stops at the back home&#x27;s parking.</li><li>Both pátios face east off the two-story block, shaded in the afternoon.</li></ul>
+    <figure class="mass"><img src="/homes/img/mass_L4-D2.jpg" alt="Massing view, Duo front and back, ground-floor suites" loading="lazy"><figcaption>Massing view</figcaption></figure>
+  </div>
+</div></div>
+    </div>
+  </div>
+  <div class="band" data-sec="plans" id="duo-plans">
+    <div class="wrap">
+      <div class="sec-head"><div class="eyebrow">Plans</div><h2>Floor plans</h2></div>
+      <div class="chips" role="group" aria-label="Floors"><button class="chip" type="button" data-k="GC" aria-pressed="true"><b>Ground floor, carport</b><span>570 sf + carport</span></button><button class="chip" type="button" data-k="UP" aria-pressed="false"><b>Upper floor</b><span>780 sf</span></button><button class="chip" type="button" data-k="GS" aria-pressed="false"><b>Ground floor, suite</b><span>780 sf</span></button></div>
+      <div class="panes"><div class="pane pl" data-k="GC">
+  <a class="sheet plan" href="/homes/img/plan_GC.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/plan_GC.svg" alt="Floor plan: Ground floor, carport" loading="lazy"></a>
+  <div class="info">
+    <div class="eyebrow">570 sf + carport</div>
+    <h3>Ground floor, carport</h3>
+    <p>The front door opens under the cobogó to a hall past the powder room, then one long room for cooking, dining and living that opens to the pátio. The car parks behind a cedar gate.</p>
+    <p class="rooms">Entry · WC · Hall · Mech · Kitchen · Living + dining · Carport</p>
+  </div>
+</div><div class="pane pl" data-k="UP" hidden>
+  <a class="sheet plan" href="/homes/img/plan_UP.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/plan_UP.svg" alt="Floor plan: Upper floor" loading="lazy"></a>
+  <div class="info">
+    <div class="eyebrow">780 sf</div>
+    <h3>Upper floor</h3>
+    <p>The primary suite with a walk-in and a skylit shower, two bedrooms (one works as a den), a second bath under a skylight, and the laundry.</p>
+    <p class="rooms">Bed 2 · Closet 2 · Closet 3 · Bath 2 · Bed 3 / den · Landing · Hall · Laundry · Closet · Primary · Primary bath</p>
+  </div>
+</div><div class="pane pl" data-k="GS" hidden>
+  <a class="sheet plan" href="/homes/img/plan_GS.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/plan_GS.svg" alt="Floor plan: Ground floor, suite" loading="lazy"></a>
+  <div class="info">
+    <div class="eyebrow">780 sf</div>
+    <h3>Ground floor, suite</h3>
+    <p>Where parking moves to a pad, the carport becomes a bedroom suite with its own bath and closet. The home becomes 3 bed + den, 3.5 bath, 1,560 sf.</p>
+    <p class="rooms">Suite bedroom · Suite closet · Suite bath · Entry · WC · Hall · Mech · Kitchen · Living + dining</p>
+  </div>
+</div></div>
+    </div>
+  </div>
+</section><section class="opt" id="p-trio" role="tabpanel" aria-labelledby="t-trio" hidden>
+  <div class="band photos" data-sec="photos" id="trio-photos">
+    <div class="wrap">
+      <div class="opt-head">
+        <div><div class="eyebrow">Trio · 3 homes</div><h2>The pair plus a Casita</h2></div>
+        <p class="lede">The Casa 02 pair with a one-story Casita on the same lot: at the back, at the street, on the corner or down a shared drive. Three front doors, three gardens.</p>
+      </div>
+      <div class="facts"><div><b>3</b><span>homes</span></div><div><b>3,340</b><span>sq ft in all</span></div><div><b>3 + 3 + 1</b><span>bedrooms</span></div><div><b>50–65 ft</b><span>lot width</span></div></div>
+      <div class="viewer" data-gal='[{&quot;s&quot;: &quot;/homes/img/trio_street-800.jpg&quot;, &quot;l&quot;: &quot;/homes/img/trio_street-1600.jpg&quot;, &quot;c&quot;: &quot;On an alley lot the Casita faces the street behind its walled garden; the pair sits back.&quot;}, {&quot;s&quot;: &quot;/homes/img/trio_aerial-800.jpg&quot;, &quot;l&quot;: &quot;/homes/img/trio_aerial-1600.jpg&quot;, &quot;c&quot;: &quot;From above: the pair at the street, the Casita behind with its own garden.&quot;}, {&quot;s&quot;: &quot;/homes/img/duo_entry-800.jpg&quot;, &quot;l&quot;: &quot;/homes/img/duo_entry-1600.jpg&quot;, &quot;c&quot;: &quot;Each front door sits under the cobogó, on a black calçada threshold.&quot;}, {&quot;s&quot;: &quot;/homes/img/duo_garden-800.jpg&quot;, &quot;l&quot;: &quot;/homes/img/duo_garden-1600.jpg&quot;, &quot;c&quot;: &quot;Each home opens at the back to its own pátio, under a cedar sunshade.&quot;}]'>
+  <figure class="stage">
+    <button class="frame" type="button" aria-label="Open larger">
+      <img class="main" src="/homes/img/trio_street-1600.jpg" srcset="/homes/img/trio_street-800.jpg 800w, /homes/img/trio_street-1600.jpg 1600w"
+        sizes="(min-width:1152px) 1120px, 100vw" alt="On an alley lot the Casita faces the street behind its walled garden; the pair sits back." loading="lazy">
+    </button>
+    <figcaption><span class="cap">On an alley lot the Casita faces the street behind its walled garden; the pair sits back.</span>
+      <span class="nav"><button class="arrow prev" type="button" aria-label="Previous photo">←</button>
+      <span class="count">1 / 4</span>
+      <button class="arrow next" type="button" aria-label="Next photo">→</button></span></figcaption>
+  </figure>
+  <div class="thumbs"><button class="th" type="button" data-i="0" aria-label="Photo 1: On an alley lot the Casita faces the street behind its walled garden; the pair sits back." aria-current="true"><img src="/homes/img/trio_street-400.jpg" alt="" loading="lazy"></button><button class="th" type="button" data-i="1" aria-label="Photo 2: From above: the pair at the street, the Casita behind with its own garden."><img src="/homes/img/trio_aerial-400.jpg" alt="" loading="lazy"></button><button class="th" type="button" data-i="2" aria-label="Photo 3: Each front door sits under the cobogó, on a black calçada threshold."><img src="/homes/img/duo_entry-400.jpg" alt="" loading="lazy"></button><button class="th" type="button" data-i="3" aria-label="Photo 4: Each home opens at the back to its own pátio, under a cedar sunshade."><img src="/homes/img/duo_garden-400.jpg" alt="" loading="lazy"></button></div>
+</div>
+    </div>
+  </div>
+  <div class="band soft" data-sec="layouts" id="trio-layouts">
+    <div class="wrap">
+      <div class="sec-head"><div class="eyebrow">Site</div><h2>Ways to arrange it</h2><p class="lede">4 tested layouts, each checked against Austin&#x27;s HOME rules for floor area, building and paving cover. Pick one to see it.</p></div>
+      <div class="chips" role="group" aria-label="Layouts"><button class="chip" type="button" data-k="L1-T1" aria-pressed="true"><b>Casita behind</b><span>50 × 125 ft lot</span></button><button class="chip" type="button" data-k="L2-T2" aria-pressed="false"><b>Casita at the street</b><span>50 × 125 ft, with alley</span></button><button class="chip" type="button" data-k="L3-T1" aria-pressed="false"><b>Corner lot</b><span>60 × 125 ft corner</span></button><button class="chip" type="button" data-k="L4-T1" aria-pressed="false"><b>Shared side drive</b><span>65 × 125 ft lot</span></button></div>
+      <div class="panes"><div class="pane lay" data-k="L1-T1">
+  <a class="sheet site" href="/homes/img/site_L1-T1.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/site_L1-T1.svg" alt="Site plan, Trio, Casita on foot" loading="lazy"></a>
+  <div class="info">
+    <div class="eyebrow">L1-T1</div>
+    <h3>Trio, Casita on foot</h3>
+    <dl class="kv"><div><dt>Lot</dt><dd>50 × 125 ft</dd></div><div><dt>Homes</dt><dd>2 × Casa 02 (3 bed / 2.5 bath); Casita (1 bed + flex)</dd></div><div><dt>Floor area</dt><dd>3,340 sf in all</dd></div><div><dt>Parking</dt><dd>2 on site</dd></div><div><dt>Paving</dt><dd>2,804 of 2,812 sf allowed</dd></div></dl>
+    <ul class="notes"><li>The Casita has no parking: no paving is left for it on a 50-ft lot.</li><li>Its path runs along the west side yard as stepping stones in planting, which add no paving.</li><li>Fire access: about 143 ft from the street to the Casita&#x27;s far corner, inside the 150-ft reach.</li></ul>
+    <figure class="mass"><img src="/homes/img/mass_L1-T1.jpg" alt="Massing view, Trio, Casita on foot" loading="lazy"><figcaption>Massing view</figcaption></figure>
+  </div>
+</div><div class="pane lay" data-k="L2-T2" hidden>
+  <a class="sheet site" href="/homes/img/site_L2-T2.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/site_L2-T2.svg" alt="Site plan, Trio, Casita at the street, pair on the alley" loading="lazy"></a>
+  <div class="info">
+    <div class="eyebrow">L2-T2</div>
+    <h3>Trio, Casita at the street, pair on the alley</h3>
+    <dl class="kv"><div><dt>Lot</dt><dd>50 × 125 ft, alley</dd></div><div><dt>Homes</dt><dd>Casita (1 bed + flex); 2 × Casa 02 (3 bed / 2.5 bath)</dd></div><div><dt>Floor area</dt><dd>3,340 sf in all</dd></div><div><dt>Parking</dt><dd>2 on site</dd></div><div><dt>Paving</dt><dd>2,742 of 2,812 sf allowed</dd></div></dl>
+    <ul class="notes"><li>The street sees a one-story Casita behind its walled garden; the two-story pair sits back.</li><li>The pair parks off the alley with no curb cut on the street; guests enter through the garden.</li><li>The Casita parks on the street. Its garden wall is cobogó between limestone piers, with a 4 ft cedar gate into its pátio.</li></ul>
+    <figure class="mass"><img src="/homes/img/mass_L2-T2.jpg" alt="Massing view, Trio, Casita at the street, pair on the alley" loading="lazy"><figcaption>Massing view</figcaption></figure>
+  </div>
+</div><div class="pane lay" data-k="L3-T1" hidden>
+  <a class="sheet site" href="/homes/img/site_L3-T1.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/site_L3-T1.svg" alt="Site plan, Trio on a corner, Casita facing the side street" loading="lazy"></a>
+  <div class="info">
+    <div class="eyebrow">L3-T1</div>
+    <h3>Trio on a corner, Casita facing the side street</h3>
+    <dl class="kv"><div><dt>Lot</dt><dd>60 × 125 ft, corner</dd></div><div><dt>Homes</dt><dd>2 × Casa 02 (3 bed / 2.5 bath); Casita (1 bed + flex)</dd></div><div><dt>Floor area</dt><dd>3,340 sf in all</dd></div><div><dt>Parking</dt><dd>3 on site</dd></div><div><dt>Paving</dt><dd>3,063 of 3,375 sf allowed</dd></div></dl>
+    <ul class="notes"><li>The Casita&#x27;s door and parking face the side street, so the main street sees only the pair.</li><li>Every home parks on site; the Casita&#x27;s pad sits between the gardens, off the side street.</li><li>A second street frontage means a second curb cut on its own street.</li></ul>
+    <figure class="mass"><img src="/homes/img/mass_L3-T1.jpg" alt="Massing view, Trio on a corner, Casita facing the side street" loading="lazy"><figcaption>Massing view</figcaption></figure>
+  </div>
+</div><div class="pane lay" data-k="L4-T1" hidden>
+  <a class="sheet site" href="/homes/img/site_L4-T1.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/site_L4-T1.svg" alt="Site plan, Trio on a shared drive, side-drive carports" loading="lazy"></a>
+  <div class="info">
+    <div class="eyebrow">L4-T1</div>
+    <h3>Trio on a shared drive, side-drive carports</h3>
+    <dl class="kv"><div><dt>Lot</dt><dd>65 × 125 ft</dd></div><div><dt>Homes</dt><dd>2 × Casa 02, side drive (3 bed / 2.5 bath); Casita (1 bed + flex)</dd></div><div><dt>Floor area</dt><dd>3,340 sf in all</dd></div><div><dt>Parking</dt><dd>3 on site</dd></div><div><dt>Paving</dt><dd>3,579 of 3,656 sf allowed</dd></div></dl>
+    <ul class="notes"><li>One 12 ft drive along the west line serves all three homes; one curb cut.</li><li>Each Casa 02 parks across its front, entering from the drive. The street sees a full limestone wall with the cobogó above.</li><li>Living rooms open east to their own pátios; the back walls get high windows.</li></ul>
+    <figure class="mass"><img src="/homes/img/mass_L4-T1.jpg" alt="Massing view, Trio on a shared drive, side-drive carports" loading="lazy"><figcaption>Massing view</figcaption></figure>
+  </div>
+</div></div>
+    </div>
+  </div>
+  <div class="band" data-sec="plans" id="trio-plans">
+    <div class="wrap">
+      <div class="sec-head"><div class="eyebrow">Plans</div><h2>Floor plans</h2></div>
+      <div class="chips" role="group" aria-label="Floors"><button class="chip" type="button" data-k="GC" aria-pressed="true"><b>Ground floor, carport</b><span>570 sf + carport</span></button><button class="chip" type="button" data-k="GD" aria-pressed="false"><b>Ground floor, side drive</b><span>570 sf + carport</span></button><button class="chip" type="button" data-k="UP" aria-pressed="false"><b>Upper floor</b><span>780 sf</span></button><button class="chip" type="button" data-k="CS" aria-pressed="false"><b>Casita</b><span>640 sf</span></button></div>
+      <div class="panes"><div class="pane pl" data-k="GC">
+  <a class="sheet plan" href="/homes/img/plan_GC.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/plan_GC.svg" alt="Floor plan: Ground floor, carport" loading="lazy"></a>
+  <div class="info">
+    <div class="eyebrow">570 sf + carport</div>
+    <h3>Ground floor, carport</h3>
+    <p>The front door opens under the cobogó to a hall past the powder room, then one long room for cooking, dining and living that opens to the pátio. The car parks behind a cedar gate.</p>
+    <p class="rooms">Entry · WC · Hall · Mech · Kitchen · Living + dining · Carport</p>
+  </div>
+</div><div class="pane pl" data-k="GD" hidden>
+  <a class="sheet plan" href="/homes/img/plan_GD.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/plan_GD.svg" alt="Floor plan: Ground floor, side drive" loading="lazy"></a>
+  <div class="info">
+    <div class="eyebrow">570 sf + carport</div>
+    <h3>Ground floor, side drive</h3>
+    <p>For lots with one shared drive: the car turns in from the side to a bay across the front, and the street sees a limestone wall.</p>
+    <p class="rooms">Carport · Mech · WC · Pantry · Hall · Kitchen · Living + dining</p>
+  </div>
+</div><div class="pane pl" data-k="UP" hidden>
+  <a class="sheet plan" href="/homes/img/plan_UP.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/plan_UP.svg" alt="Floor plan: Upper floor" loading="lazy"></a>
+  <div class="info">
+    <div class="eyebrow">780 sf</div>
+    <h3>Upper floor</h3>
+    <p>The primary suite with a walk-in and a skylit shower, two bedrooms (one works as a den), a second bath under a skylight, and the laundry.</p>
+    <p class="rooms">Bed 2 · Closet 2 · Closet 3 · Bath 2 · Bed 3 / den · Landing · Hall · Laundry · Closet · Primary · Primary bath</p>
+  </div>
+</div><div class="pane pl" data-k="CS" hidden>
+  <a class="sheet plan" href="/homes/img/plan_CS.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/plan_CS.svg" alt="Floor plan: Casita" loading="lazy"></a>
+  <div class="info">
+    <div class="eyebrow">640 sf</div>
+    <h3>Casita</h3>
+    <p>One story: living and kitchen, a flex room, a bedroom and bath, and a covered porch on its own walled garden.</p>
+    <p class="rooms">Living + kitchen · Flex · Hall · W/D + linen · Bath · Bedroom · Closet</p>
+  </div>
+</div></div>
+    </div>
+  </div>
+</section>
+<section class="band board" id="materials" aria-labelledby="h-mat">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">One palette</div><h2 id="h-mat">The material board</h2>
+      <p class="lede">The same fourteen materials in every home, Single, Duo or Trio. Each pairs a Brazilian
+      modern original with what an Austin builder buys.</p></div>
+    <div class="mb">
+      <div class="detail" aria-live="polite">
+        <div class="big"><img id="mbImg" src="/homes/img/sw_limestone.jpg" alt=""></div>
+        <div class="txt">
+          <div class="eyebrow" id="mbG">Outside</div>
+          <h3 id="mbName">Lueders limestone</h3>
+          <p class="ref">Brazilian reference: <i id="mbRef">Pedra São Tomé / moledo</i></p>
+          <p id="mbSpec">Thin-cut sawn-face ashlar (1 to 1.5 in), 3 course heights (4, 8, 12 in), adhered; thin limestone cap</p>
+          <p class="where"><b>Where</b> <span id="mbWhere">Corner walls, the side-drive street wall, garden and mailbox walls</span></p>
+        </div>
+      </div>
+      <div class="grid-wrap">
+        <div class="chips mini" role="group" aria-label="Filter materials">
+          <button class="chip" type="button" data-f="all" aria-pressed="true"><b>All</b></button>
+          <button class="chip" type="button" data-f="Outside" aria-pressed="false"><b>Outside</b></button>
+          <button class="chip" type="button" data-f="Inside" aria-pressed="false"><b>Inside</b></button>
+        </div>
+        <div class="tiles"><button class="tile" type="button" data-g="Outside" data-m='{&quot;name&quot;: &quot;Warm-white stucco&quot;, &quot;ref&quot;: &quot;White mineral plaster&quot;, &quot;spec&quot;: &quot;Smooth 3-coat stucco, warm white, sand finish; control joints at the floor band&quot;, &quot;where&quot;: &quot;The upper floor and most walls&quot;, &quot;g&quot;: &quot;Outside&quot;}' data-img="/homes/img/sw_stucco.jpg" aria-pressed="false"><span class="sw"><img src="/homes/img/sw_stucco.jpg" alt="" loading="lazy"></span><span class="tn">Warm-white stucco</span></button><button class="tile" type="button" data-g="Outside" data-m='{&quot;name&quot;: &quot;Lueders limestone&quot;, &quot;ref&quot;: &quot;Pedra São Tomé / moledo&quot;, &quot;spec&quot;: &quot;Thin-cut sawn-face ashlar (1 to 1.5 in), 3 course heights (4, 8, 12 in), adhered; thin limestone cap&quot;, &quot;where&quot;: &quot;Corner walls, the side-drive street wall, garden and mailbox walls&quot;, &quot;g&quot;: &quot;Outside&quot;}' data-img="/homes/img/sw_limestone.jpg" aria-pressed="true"><span class="sw"><img src="/homes/img/sw_limestone.jpg" alt="" loading="lazy"></span><span class="tn">Lueders limestone</span></button><button class="tile" type="button" data-g="Outside" data-m='{&quot;name&quot;: &quot;Concrete cobogó&quot;, &quot;ref&quot;: &quot;Cobogó, Recife 1929&quot;, &quot;spec&quot;: &quot;12x12x4 precast breeze block, white cement, circle pattern; steel frame and ties at 2 stories&quot;, &quot;where&quot;: &quot;The two-story lantern, the Casita&#x27;s garden wall&quot;, &quot;g&quot;: &quot;Outside&quot;}' data-img="/homes/img/sw_cobogo.jpg" aria-pressed="false"><span class="sw"><img src="/homes/img/sw_cobogo.jpg" alt="" loading="lazy"></span><span class="tn">Concrete cobogó</span></button><button class="tile" type="button" data-g="Outside" data-m='{&quot;name&quot;: &quot;Western red cedar&quot;, &quot;ref&quot;: &quot;Freijó / ipê&quot;, &quot;spec&quot;: &quot;Clear 2x2 slats at 3.5 in on dark bronze frames; 1x6 T&amp;G soffits; natural oil&quot;, &quot;where&quot;: &quot;Carport and garden gates, the back sunshade, soffits, carport and porch ceilings&quot;, &quot;g&quot;: &quot;Outside&quot;}' data-img="/homes/img/sw_cedar_z.jpg" aria-pressed="false"><span class="sw"><img src="/homes/img/sw_cedar_z.jpg" alt="" loading="lazy"></span><span class="tn">Western red cedar</span></button><button class="tile" type="button" data-g="Outside" data-m='{&quot;name&quot;: &quot;Dark bronze aluminum&quot;, &quot;ref&quot;: &quot;Slim steel frames&quot;, &quot;spec&quot;: &quot;Thermally broken windows and sliders, low-E; 15 in fascia; the floor band; posts and columns&quot;, &quot;where&quot;: &quot;Windows, the floor band, roof edge, posts&quot;, &quot;g&quot;: &quot;Outside&quot;}' data-img="/homes/img/sw_bronze.jpg" aria-pressed="false"><span class="sw"><img src="/homes/img/sw_bronze.jpg" alt="" loading="lazy"></span><span class="tn">Dark bronze aluminum</span></button><button class="tile" type="button" data-g="Outside" data-m='{&quot;name&quot;: &quot;Black stone mosaic&quot;, &quot;ref&quot;: &quot;Calçada portuguesa&quot;, &quot;spec&quot;: &quot;Black basalt setts on a sand-cement bed, 6 in light concrete band (or Antika Onyx Black pavers)&quot;, &quot;where&quot;: &quot;About 50 sf a home: carport rug, threshold under the cobogó, Casita stoop&quot;, &quot;g&quot;: &quot;Outside&quot;}' data-img="/homes/img/sw_calcada.jpg" aria-pressed="false"><span class="sw"><img src="/homes/img/sw_calcada.jpg" alt="" loading="lazy"></span><span class="tn">Black stone mosaic</span></button><button class="tile" type="button" data-g="Outside" data-m='{&quot;name&quot;: &quot;Limestone pavers&quot;, &quot;ref&quot;: &quot;São Tomé paving&quot;, &quot;spec&quot;: &quot;Lueders 24x36 thermal finish, sand joints&quot;, &quot;where&quot;: &quot;Terraces and stepping stones&quot;, &quot;g&quot;: &quot;Outside&quot;}' data-img="/homes/img/sw_pavers.jpg" aria-pressed="false"><span class="sw"><img src="/homes/img/sw_pavers.jpg" alt="" loading="lazy"></span><span class="tn">Limestone pavers</span></button><button class="tile" type="button" data-g="Outside" data-m='{&quot;name&quot;: &quot;Decomposed granite&quot;, &quot;ref&quot;: &quot;Terra batida&quot;, &quot;spec&quot;: &quot;Stabilized DG with steel edging; agave, sotol, feather grass, boulders&quot;, &quot;where&quot;: &quot;Front yards&quot;, &quot;g&quot;: &quot;Outside&quot;}' data-img="/homes/img/sw_dg.jpg" aria-pressed="false"><span class="sw"><img src="/homes/img/sw_dg.jpg" alt="" loading="lazy"></span><span class="tn">Decomposed granite</span></button><button class="tile" type="button" data-g="Inside" data-m='{&quot;name&quot;: &quot;Polished concrete&quot;, &quot;ref&quot;: &quot;Cimento queimado&quot;, &quot;spec&quot;: &quot;Slab on grade, light grind, penetrating sealer, warm gray&quot;, &quot;where&quot;: &quot;Ground floors&quot;, &quot;g&quot;: &quot;Inside&quot;}' data-img="/homes/img/sw_floor.jpg" aria-pressed="false"><span class="sw"><img src="/homes/img/sw_floor.jpg" alt="" loading="lazy"></span><span class="tn">Polished concrete</span></button><button class="tile" type="button" data-g="Inside" data-m='{&quot;name&quot;: &quot;Rift white oak&quot;, &quot;ref&quot;: &quot;Tauari / freijó&quot;, &quot;spec&quot;: &quot;Flat-sawn rift oak, matte oil: cabinets, vanities, doors, open stair treads; 5 in floor boards upstairs&quot;, &quot;where&quot;: &quot;Kitchen, baths, doors, stair, upper floors&quot;, &quot;g&quot;: &quot;Inside&quot;}' data-img="/homes/img/sw_oak.jpg" aria-pressed="false"><span class="sw"><img src="/homes/img/sw_oak.jpg" alt="" loading="lazy"></span><span class="tn">Rift white oak</span></button><button class="tile" type="button" data-g="Inside" data-m='{&quot;name&quot;: &quot;Honed black granite&quot;, &quot;ref&quot;: &quot;Preto São Gabriel&quot;, &quot;spec&quot;: &quot;1.25 in honed counters and island top, eased edge&quot;, &quot;where&quot;: &quot;Kitchen&quot;, &quot;g&quot;: &quot;Inside&quot;}' data-img="/homes/img/sw_granite.jpg" aria-pressed="false"><span class="sw"><img src="/homes/img/sw_granite.jpg" alt="" loading="lazy"></span><span class="tn">Honed black granite</span></button><button class="tile" type="button" data-g="Inside" data-m='{&quot;name&quot;: &quot;Green glazed tile&quot;, &quot;ref&quot;: &quot;Azulejo&quot;, &quot;spec&quot;: &quot;2.5x8 zellige-look glazed porcelain, green, stacked: backsplash to the shelf, primary shower to the ceiling&quot;, &quot;where&quot;: &quot;Kitchen backsplash, primary shower, Casita shower&quot;, &quot;g&quot;: &quot;Inside&quot;}' data-img="/homes/img/sw_tile.jpg" aria-pressed="false"><span class="sw"><img src="/homes/img/sw_tile.jpg" alt="" loading="lazy"></span><span class="tn">Green glazed tile</span></button><button class="tile" type="button" data-g="Inside" data-m='{&quot;name&quot;: &quot;Terracotta tile&quot;, &quot;ref&quot;: &quot;Azulejo terracota&quot;, &quot;spec&quot;: &quot;2.5x8 zellige-look glazed porcelain, terracotta, around the tub&quot;, &quot;where&quot;: &quot;Bath 2&quot;, &quot;g&quot;: &quot;Inside&quot;}' data-img="/homes/img/sw_zellige_terracotta.jpg" aria-pressed="false"><span class="sw"><img src="/homes/img/sw_zellige_terracotta.jpg" alt="" loading="lazy"></span><span class="tn">Terracotta tile</span></button><button class="tile" type="button" data-g="Inside" data-m='{&quot;name&quot;: &quot;Brushed brass&quot;, &quot;ref&quot;: &quot;Metais dourados&quot;, &quot;spec&quot;: &quot;Faucets, shower trims, cabinet pulls, sconces, door levers&quot;, &quot;where&quot;: &quot;Kitchen and baths&quot;, &quot;g&quot;: &quot;Inside&quot;}' data-img="/homes/img/sw_brass.jpg" aria-pressed="false"><span class="sw"><img src="/homes/img/sw_brass.jpg" alt="" loading="lazy"></span><span class="tn">Brushed brass</span></button></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="band dark end">
+  <div class="wrap">
+    <div class="eyebrow">Next</div>
+    <h2>See it in more detail.</h2>
+    <p class="lede" style="margin-top:12px">Walk Casa 01 in 3D, read the lookbooks, or join the early list for a Lot Fit Study on your land.</p>
+    <div class="cta-row">
+      <a class="btn primary" href="/#join">Join the early list</a>
+      <a class="btn ghost" href="/house/">Casa 01 in 3D</a>
+      <a class="btn ghost" href="/Casa01_Lookbook.pdf" target="_blank" rel="noopener">Casa 01 lookbook</a>
+      <a class="btn ghost" href="/Phase2_Lookbook.pdf" target="_blank" rel="noopener">Duo + Trio lookbook</a>
+    </div>
+  </div>
+</section>
+</main>
+<footer><div class="wrap"><b>Brazilian Modern Homes</b>
+  <span>Austin, Texas · <a href="/">Home</a> · <a href="/house/">Casa 01 in 3D</a> · <a href="/#join">Join the early list</a></span>
+  <span>Renderings and plans are concept designs. Layouts are checked against the HOME rules as we read them; a Lot Fit Study confirms your lot.</span>
+</div></footer>
+<dialog class="lb" id="lb" aria-label="Photo">
+  <img src="" alt="">
+  <div class="bar2"><p></p><span class="nav"><button class="arrow prev" type="button" aria-label="Previous photo">←</button>
+  <button class="arrow next" type="button" aria-label="Next photo">→</button>
+  <button class="arrow close" type="button" aria-label="Close">✕</button></span></div>
+</dialog>
+<script>
+(function(){
+  var ids=['single','duo','trio'];
+  var tabs=ids.map(function(i){return document.getElementById('t-'+i)});
+  var jump=document.querySelectorAll('.jump a');
+  function pick(id,focus){
+    if(ids.indexOf(id)<0) id='single';
+    ids.forEach(function(i,n){
+      var on=i===id;
+      tabs[n].setAttribute('aria-selected',on);tabs[n].tabIndex=on?0:-1;
+      document.getElementById('p-'+i).hidden=!on;
+    });
+    jump.forEach(function(a){a.href='#'+id+'-'+a.dataset.s});
+    if(focus) tabs[ids.indexOf(id)].focus();
+    if(location.hash.slice(1)!==id) history.replaceState(null,'','#'+id);
+  }
+  tabs.forEach(function(t,n){
+    t.addEventListener('click',function(){pick(ids[n]);var p=document.querySelector('.picker');
+      var top=document.getElementById('p-'+ids[n]).getBoundingClientRect().top+scrollY-p.offsetHeight;
+      if(scrollY>top) scrollTo({top:top,behavior:'smooth'});});
+    t.addEventListener('keydown',function(e){
+      var d=e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0;
+      if(d){e.preventDefault();pick(ids[(n+d+3)%3],true);}
+    });
+  });
+  var h=location.hash.slice(1).split('-')[0];
+  pick(h);
+  if(location.hash.indexOf('-')>0){var el=document.getElementById(location.hash.slice(1));if(el)el.scrollIntoView();}
+  addEventListener('hashchange',function(){var k=location.hash.slice(1);if(ids.indexOf(k)>=0)pick(k);});
+
+  // photo viewers
+  var lb=document.getElementById('lb'),lbImg=lb.querySelector('img'),lbCap=lb.querySelector('p'),cur=null;
+  document.querySelectorAll('.viewer').forEach(function(v){
+    var data=JSON.parse(v.dataset.gal),i=0,img=v.querySelector('.main'),cap=v.querySelector('.cap'),cnt=v.querySelector('.count');
+    var th=v.querySelectorAll('.th');
+    function go(n){
+      i=(n+data.length)%data.length;var d=data[i];
+      img.classList.add('out');
+      var pre=new Image();pre.onload=pre.onerror=function(){
+        img.srcset=d.s+' 800w, '+d.l+' 1600w';img.src=d.l;img.alt=d.c;img.classList.remove('out');};
+      pre.src=innerWidth>900?d.l:d.s;
+      cap.textContent=d.c;cnt.textContent=(i+1)+' / '+data.length;
+      th.forEach(function(t,k){t.toggleAttribute('aria-current',k===i);if(k===i)t.setAttribute('aria-current','true');});
+      th[i].scrollIntoView({block:'nearest',inline:'nearest'});
+    }
+    v.querySelector('.prev').onclick=function(){go(i-1)};
+    v.querySelector('.next').onclick=function(){go(i+1)};
+    th.forEach(function(t,k){t.onclick=function(){go(k)}});
+    var f=v.querySelector('.frame'),x0=null;
+    f.addEventListener('pointerdown',function(e){x0=e.clientX});
+    f.addEventListener('pointerup',function(e){if(x0===null)return;var dx=e.clientX-x0;x0=null;
+      if(Math.abs(dx)>40){go(i+(dx<0?1:-1));f.dataset.sw=1;}});
+    f.addEventListener('click',function(){if(f.dataset.sw){delete f.dataset.sw;return;}
+      cur={go:function(n){go(n);show();},i:function(){return i}};show();if(lb.showModal)lb.showModal();});
+    function show(){lbImg.src=data[i].l;lbImg.alt=data[i].c;lbCap.textContent=data[i].c;}
+    v.addEventListener('keydown',function(e){if(e.key==='ArrowRight')go(i+1);if(e.key==='ArrowLeft')go(i-1);});
+  });
+  lb.querySelector('.prev').onclick=function(){cur.go(cur.i()-1)};
+  lb.querySelector('.next').onclick=function(){cur.go(cur.i()+1)};
+  lb.querySelector('.close').onclick=function(){lb.close()};
+  lb.addEventListener('click',function(e){if(e.target===lb)lb.close()});
+  lb.addEventListener('keydown',function(e){if(e.key==='ArrowRight')cur.go(cur.i()+1);if(e.key==='ArrowLeft')cur.go(cur.i()-1);});
+
+  // chips: layouts and floor plans
+  document.querySelectorAll('.chips:not(.mini)').forEach(function(c){
+    var panes=c.nextElementSibling.querySelectorAll('.pane');
+    c.querySelectorAll('.chip').forEach(function(b){b.onclick=function(){
+      c.querySelectorAll('.chip').forEach(function(x){x.setAttribute('aria-pressed',x===b)});
+      panes.forEach(function(p){p.hidden=p.dataset.k!==b.dataset.k});
+    }});
+  });
+
+  // material board
+  var big=document.getElementById('mbImg'),F={g:'mbG',name:'mbName',ref:'mbRef',spec:'mbSpec',where:'mbWhere'};
+  var tiles=document.querySelectorAll('.tile');
+  tiles.forEach(function(t){t.onclick=function(){
+    var m=JSON.parse(t.dataset.m);
+    tiles.forEach(function(x){x.setAttribute('aria-pressed',x===t)});
+    big.classList.add('out');
+    var pre=new Image();pre.onload=function(){big.src=t.dataset.img;big.classList.remove('out')};pre.src=t.dataset.img;
+    Object.keys(F).forEach(function(k){document.getElementById(F[k]).textContent=m[k]});
+    if(innerWidth<900) document.querySelector('.detail').scrollIntoView({behavior:'smooth',block:'start'});
+  }});
+  document.querySelectorAll('.chips.mini .chip').forEach(function(b,_,all){b.onclick=function(){
+    all.forEach(function(x){x.setAttribute('aria-pressed',x===b)});
+    tiles.forEach(function(t){t.hidden=b.dataset.f!=='all'&&t.dataset.g!==b.dataset.f});
+  }});
+})();
+</script>
+</body></html>
