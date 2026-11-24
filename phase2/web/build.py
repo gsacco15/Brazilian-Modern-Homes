@@ -36,6 +36,7 @@ RENDER_DIRS = [os.path.join(P2, "render", d) for d in ("final", "hifi_v2", "hifi
 SWATCHES = os.path.join(CASA01, "renders", "swatches")
 
 esc = html.escape
+SITE_URL = json.load(open(os.path.join(CASA01, "landing", "config.json"))).get("site_url", "").rstrip("/")
 
 
 # ---------------------------------------------------------------- content
@@ -403,6 +404,7 @@ CSS = r"""
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:76px}
 body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;margin:0;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:11;background:var(--forest)}
 img{max-width:100%}
 [hidden]{display:none!important}
 .wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
@@ -436,7 +438,7 @@ button{font:inherit;color:inherit}
 .hello .eyebrow{color:var(--gold-hi)}
 
 /* the Single / Duo / Trio picker */
-.picker{position:sticky;top:0;z-index:10;background:rgba(245,242,234,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+.picker{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:rgba(245,242,234,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
   border-bottom:1px solid var(--line)}
 .picker .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:68px}
 .seg{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);background:var(--card);padding:3px;gap:3px;flex:0 1 480px}
@@ -660,22 +662,30 @@ DESCRIPTION = ("Brazilian modern homes for Austin lots: Casa 01 on its own, a Ca
                "Photos, site layouts, floor plans and the material board.")
 
 
-def page():
+def page(preview=False):
     seg = "".join(
         f'<button role="tab" type="button" id="t-{o["id"]}" aria-controls="p-{o["id"]}" aria-selected="{"true" if i == 0 else "false"}"'
         f'{"" if i == 0 else " tabindex=\"-1\""}><b>{esc(o["name"])}</b><span>{esc(o["sub"])}</span></button>'
         for i, o in enumerate(OPTIONS))
     opts = "".join(option_html(o, i == 0) for i, o in enumerate(OPTIONS))
-    return f'''<!doctype html><html lang="en"><head><meta charset="utf-8">
+    if preview:      # the Artifact preview: the host adds the document skeleton
+        head = (f'<title>Single, Duo and Trio</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n'
+                f'{FONTS}<style>{CSS}</style>\n')
+        tail = ""
+    else:
+        head = None
+        tail = "</body></html>"
+    doc = f'''<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>The Homes · Brazilian Modern Homes</title>
 <meta name="description" content="{esc(DESCRIPTION)}">
 <meta name="theme-color" content="#1d2520">
 <meta property="og:type" content="website"><meta property="og:title" content="The Homes · Brazilian Modern Homes">
-<meta property="og:description" content="{esc(DESCRIPTION)}"><meta property="og:image" content="{URL}og.jpg">
+<meta property="og:description" content="{esc(DESCRIPTION)}"><meta property="og:image" content="{SITE_URL}{URL}og.jpg">
+{f'<meta property="og:url" content="{SITE_URL}/homes/">' if SITE_URL else ""}
 <meta name="twitter:card" content="summary_large_image">
 {FONTS}<style>{CSS}</style></head><body>
-<header class="top">
+@@BODY@@<header class="top">
   <div class="wrap bar">
     <a class="brand" href="/">Brazilian Modern Homes</a>
     <nav class="links" aria-label="Site"><a href="/house/"><span class="lg">Casa 01 in </span>3D</a>
@@ -723,7 +733,10 @@ def page():
   <button class="arrow close" type="button" aria-label="Close">✕</button></span></div>
 </dialog>
 <script>{JS}</script>
-</body></html>'''
+'''
+    if preview:
+        return head + doc.split("@@BODY@@", 1)[1]
+    return doc.replace("@@BODY@@", "") + tail
 
 
 def og():
@@ -734,9 +747,26 @@ def og():
     im.crop((0, top, w, top + ch)).resize((1200, 630), Image.LANCZOS).save(os.path.join(IMG, "og.jpg"), quality=84)
 
 
+def preview(out):
+    """A self-contained copy for a private Artifact preview: relative image paths, Casa 01 photos copied in."""
+    global URL, C01
+    URL, C01 = "img/", "img/c01/"
+    os.makedirs(os.path.join(out, "img", "c01"), exist_ok=True)
+    for f in os.listdir(IMG):
+        shutil.copy(os.path.join(IMG, f), os.path.join(out, "img", f))
+    land = os.path.join(CASA01, "landing", "site", "img")
+    for k, _ in C01_GAL:
+        for w in (800, 1600):
+            shutil.copy(os.path.join(land, f"{k}-{w}.jpg"), os.path.join(out, "img", "c01", f"{k}-{w}.jpg"))
+    open(os.path.join(out, "homes.html"), "w").write(page(preview=True))
+    print("wrote preview", os.path.join(out, "homes.html"))
+
+
 if __name__ == "__main__":
     images()
     og()
     os.makedirs(SITE, exist_ok=True)
     open(os.path.join(SITE, "index.html"), "w").write(page())
     print("wrote", os.path.join(SITE, "index.html"))
+    if "--preview" in sys.argv:
+        preview(sys.argv[sys.argv.index("--preview") + 1])
