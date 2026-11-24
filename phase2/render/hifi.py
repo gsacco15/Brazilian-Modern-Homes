@@ -932,6 +932,29 @@ def night_lights(coll, lights, s):
 
 
 # ---------------------------------------------------------------- scene
+def oak_chair(L, root):
+    """A plain Brazilian-modern dining chair: rift oak frame, cognac leather seat and back.
+    Feet, seat centred on the origin, facing +y (as the Casa 01 chair prototype)."""
+    c = bpy.data.collections.new("proto_oak_chair")
+    root.children.link(c)
+    leather = L.get("leather", L["black"])
+    mb = MB("oak chair", [L["oak"], leather])
+    w, d, sh, bh, lg = 0.72, 0.70, 1.50, 2.62, 0.11           # half width, half depth, seat and back height, leg
+    for sx in (-1, 1):
+        x0 = sx * w - (lg if sx > 0 else 0)
+        mb.box(x0, d - lg, 0, x0 + lg, d, sh - 0.06, mat=0)          # front leg
+        mb.box(x0, -d, 0, x0 + lg, -d + lg, bh, mat=0)              # back leg, up to the top rail
+        mb.box(x0, -d + lg, 0.42, x0 + lg, d - lg, 0.50, mat=0)     # side stretcher
+        mb.box(x0, -d + lg, sh - 0.22, x0 + lg, d - lg, sh - 0.08, mat=0)   # seat rail
+    mb.box(-w + lg, d - lg, sh - 0.22, w - lg, d, sh - 0.08, mat=0)          # front rail
+    mb.box(-w + lg, -d, sh - 0.22, w - lg, -d + lg, sh - 0.08, mat=0)        # back rail
+    mb.box(-w + 0.04, -d + 0.04, sh - 0.08, w - 0.04, d - 0.02, sh + 0.02, mat=1)   # leather seat
+    mb.box(-w + lg, -d + 0.01, bh - 0.62, w - lg, -d + 0.09, bh - 0.12, mat=1)     # leather back
+    mb.box(-w, -d - 0.005, bh - 0.12, w, -d + lg, bh, mat=0)                         # oak top rail
+    ob = mb.build(c, bevel=0.003)
+    return ob
+
+
 def build(site_id):
     R.reset()
     B._COBOGO.clear()
@@ -942,6 +965,7 @@ def build(site_id):
     arch, land, night = new_coll("Architecture", root), new_coll("Landscape", root), new_coll("NightLights", root)
     PROTOS.clear()
     PROTOS.update(R.load_protos(root))
+    PROTOS["chair"] = oak_chair(L, root)           # in place of the tufted Poly Haven chair
     s = SITE_OF[site_id]()
     rng = random.Random(7)
     t0 = time.time()
