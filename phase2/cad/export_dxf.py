@@ -98,16 +98,17 @@ def build_block(doc, name, plan):
             s = o["off"] + o["w"]
         for o in cuts:
             s0, s1 = o["off"], o["off"] + o["w"]
-            if o["kind"] in ("window", "slider"):
-                line(P(s0, d0), P(s0, d1), "A-GLAZ")
-                line(P(s1, d0), P(s1, d1), "A-GLAZ")
+            if o["kind"] in ("window", "slider", "bypass"):
+                lay = "A-DOOR" if o["kind"] == "bypass" else "A-GLAZ"
+                line(P(s0, d0), P(s0, d1), lay)
+                line(P(s1, d0), P(s1, d1), lay)
                 if o["kind"] == "window":
                     for f in (0.38, 0.62):
                         line(P(s0, d0 + (d1 - d0) * f), P(s1, d0 + (d1 - d0) * f), "A-GLAZ")
                 else:
                     mid = (s0 + s1) / 2
-                    line(P(s0, d0 + (d1 - d0) * 0.3), P(mid + 0.25, d0 + (d1 - d0) * 0.3), "A-GLAZ")
-                    line(P(mid - 0.25, d0 + (d1 - d0) * 0.7), P(s1, d0 + (d1 - d0) * 0.7), "A-GLAZ")
+                    line(P(s0, d0 + (d1 - d0) * 0.3), P(mid + 0.25, d0 + (d1 - d0) * 0.3), lay)
+                    line(P(mid - 0.25, d0 + (d1 - d0) * 0.7), P(s1, d0 + (d1 - d0) * 0.7), lay)
             elif o["kind"] == "door":
                 sg = 1.0 if o["side"] == "L" else -1.0
                 face = d1 if sg > 0 else d0
@@ -241,6 +242,19 @@ def build_block(doc, name, plan):
                 cobogo(blk, a, b, y0, y1)
         if op:
             poly([(op[0], y0), (op[1], y0), (op[1], y1), (op[0], y1)], "A-OVHD")
+    for sk in plan.get("skylights", []):          # skylights overhead
+        x0, y0, x1, y1 = sk["rect"]
+        poly([(x0, y0), (x1, y0), (x1, y1), (x0, y1)], "A-OVHD")
+        line((x0, y0), (x1, y1), "A-OVHD")
+        line((x0, y1), (x1, y0), "A-OVHD")
+    sh = plan.get("sunshade")                      # cedar slat sunshade over the back slider
+    if sh:
+        x0, y0, x1, y1 = sh["rect"]
+        poly([(x0, y0), (x1, y0), (x1, y1), (x0, y1)], "A-OVHD")
+        yy = y0 + 0.5
+        while yy < y1 - 0.2:
+            line((x0, yy), (x1, yy), "A-OVHD")
+            yy += 0.6
     pr = plan.get("porch")                        # the Casita's covered porch: roof outline and two posts
     if pr:
         x0, y0, x1, y1 = pr["roof"]
@@ -307,6 +321,13 @@ def feature_labels(msp, plan, t, origin, h, full=True):
     lan = plan.get("lantern")
     if lan and full:
         text(msp, *at(sum(lan["x"]) / 2, lan["y"][0] - 1.4), "COBOGÓ SCREEN, TWO STORIES", h * 0.6)
+    sh = plan.get("sunshade")
+    if sh and full:
+        text(msp, *at((sh["rect"][0] + sh["rect"][2]) / 2, sh["rect"][3] + 0.9), "CEDAR SUNSHADE ABOVE", h * 0.6)
+    for sk in plan.get("skylights", []) if full else []:
+        x0, y0, x1, y1 = sk["rect"]
+        if (x1 - x0) * (y1 - y0) > 9:
+            text(msp, *at((x0 + x1) / 2, (y0 + y1) / 2), "SKYLIGHT", h * 0.5)
     pr = plan.get("porch")
     if pr:
         x0, y0, x1, y1 = pr["rect"]
@@ -326,7 +347,9 @@ def draw_garden_wall(msp, s, origin):
     ox, oy = origin
     y = gw["y"]
     for p0, p1 in gw["piers"]:
-        rect(msp, ox + p0, oy + y - 0.4, ox + p1, oy + y + 0.4, "L-WALL", hatch="AR-SAND", color=8)
+        rect(msp, ox + p0, oy + y - 0.4, ox + p1, oy + y + 0.4, "A-WALL-STON", hatch="ANSI31", color=41)
+    for p0, p1 in gw.get("posts", []):
+        rect(msp, ox + p0, oy + y - 0.15, ox + p1, oy + y + 0.15, "A-COLS")
     c0, c1 = gw["cobogo"]
     cobogo(msp, c0, c1, y - 0.17, y + 0.17, ox, oy)
     text(msp, (ox + (c0 + c1) / 2) * IN, (oy + y - 2.1) * IN, "COBOGÓ", 8)
@@ -396,6 +419,8 @@ def draw_site(msp, s, origin):
     for pts in s.get("walls", []):
         msp.add_lwpolyline([((ox + x) * IN, (oy + y) * IN) for x, y in pts], dxfattribs={"layer": "L-WALL",
                                                                                          "const_width": 6})
+    for r in s.get("address_walls", []):           # low limestone walls at the front walks
+        rect(msp, ox + r[0], oy + r[1], ox + r[2], oy + r[3], "A-WALL-STON", hatch="ANSI31", color=41)
     for r in s.get("calcada", []):                 # site calçada (the Casita's garden landing)
         rect(msp, ox + r[0], oy + r[1], ox + r[2], oy + r[3], "L-PAVE-CALC", hatch="AR-SAND", color=250)
     draw_garden_wall(msp, s, origin)

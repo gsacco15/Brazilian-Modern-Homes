@@ -91,7 +91,7 @@ def openings(plan, floor):
             left = room_at(plan, cx + nx * 0.9, cy + ny * 0.9)
             right = room_at(plan, cx - nx * 0.9, cy - ny * 0.9)
             rec = dict(o=o, ext=w["ext"], p=(cx, cy), n=(nx, ny), u=(ux, uy), th=th, left=left, right=right)
-            (doors if o["kind"] in ("door", "slider") else wins).append(rec)
+            (doors if o["kind"] in ("door", "slider", "bypass") else wins).append(rec)
     for i, d in enumerate(doors):
         d["tag"] = f"{floor}{i + 1:02d}"
     for i, w_ in enumerate(wins):
@@ -104,6 +104,10 @@ def door_row(d, plan):
     if o["kind"] == "slider":
         frm, to = "Outside", d["left"]
         kind = "Sliding glass"
+    elif o["kind"] == "bypass":
+        a_, b_ = sorted((d["left"], d["right"]), key=lambda n: room_area(plan, n))
+        frm, to = b_, a_
+        kind = "Bypass sliding"
     else:
         swing_into = d["left"] if o["side"] == "L" else d["right"]
         frm = d["right"] if o["side"] == "L" else d["left"]
@@ -223,7 +227,8 @@ def tag_positions(plan, doors, wins):
 def plan_svg(sh, doors, wins, scale=17.0):
     plan = sh["plan"]
     W, D = plan["W"], plan["D"]
-    svg = DR.SVG(-8.2, -9.8, W + 9.5, D + (7.2 if sh["chains"].get("back") else 3.0), scale=scale, pad=10)
+    svg = DR.SVG(-8.2, -9.8, W + 9.5, D + (7.2 if sh["chains"].get("back") else (5.0 if plan.get("sunshade") else 3.0)),
+                 scale=scale, pad=10)
     C.draw_plan(svg, plan, None, "full", fs=8.2, labels=False)
     room_tags(svg, plan)
     fixture_notes(svg, plan)

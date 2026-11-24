@@ -82,7 +82,7 @@ def wall_pieces(plan, t, z0, z1, ext_only=True, ly=0.0):
         for o in cuts:
             s0, s1 = o["off"], o["off"] + o["w"]
             mid0, mid1 = d0 + (d1 - d0) * 0.45, d0 + (d1 - d0) * 0.55
-            if o["kind"] == "door":
+            if o["kind"] in ("door", "bypass"):
                 box(s0, s1, d0, d1, z0 + DOOR_HEAD, z1)
                 box(s0, s1, mid0, mid1, z0, z0 + DOOR_HEAD, "door")
             else:
@@ -305,7 +305,9 @@ def build_site(s, L, fac="base"):
         y0 = gw["y"]
         pier = MB("garden wall piers", [L["limestone"], L["cedar_z"]])
         for p0, p1 in gw["piers"]:
-            pier.box(p0, y0 - 0.4, 0.0, p1, y0 + 0.4, 8.5, mat=0)
+            pier.box(p0, y0 - 0.4, 0.0, p1, y0 + 0.4, 8.5 if not gw.get("posts") else 8.0, mat=0)
+        for p0, p1 in gw.get("posts", []):
+            pier.box(p0, y0 - 0.12, 0.0, p1, y0 + 0.12, 8.0, mat=1)
         if gw["gate"]:
             g0, g1 = gw["gate"]
             n = int((g1 - g0) / 0.42)

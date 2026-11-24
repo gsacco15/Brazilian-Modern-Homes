@@ -76,6 +76,7 @@ def s1_duo_side():
                 pave=[("Apron", (5.25, 0, 15.25, 15)), ("Apron", (34.75, 0, 44.75, 15)),
                       ("Terrace", (7, 54, 23, 62)), ("Terrace", (27, 54, 43, 62))],
                 paths=[[(18.0, 0.5), (18.0, 14.5)], [(32.0, 0.5), (32.0, 14.5)]],
+                address_walls=[(19.2, 1.0, 19.87, 7.0), (30.13, 1.0, 30.8, 7.0)],
                 walls=[[(25, 54), (25, 120)]], trees=[(12, 72, 11), (38, 72, 11), (14, 104, 13), (38, 108, 12)],
                 fence=[[(0, 15), (0, 125), (50, 125), (50, 15)]],
                 notes=["Bays on the outside, so every bedroom has an outside wall and stairs, closets and the "
@@ -99,6 +100,7 @@ def s2_trio_onfoot():
                 pave=[("Apron", (5.25, 0, 15.25, 15)), ("Apron", (34.75, 0, 44.75, 15)),
                       ("Terrace", (8, 54, 16, 60)), ("Terrace", (34, 54, 42, 60)), ("Terrace", (25, 92, 31, 100))],
                 paths=[[(2.5, 2), (2.5, 84), (20, 84), (20, 87.5)], [(18.0, 0.5), (18.0, 14.5)], [(32.0, 0.5), (32.0, 14.5)]],
+                address_walls=[(19.2, 1.0, 19.87, 7.0), (30.13, 1.0, 30.8, 7.0)],
                 walls=[[(25, 54), (25, 74)], [(25, 84), (25, 88)], [(5, 74), (45, 74)]],
                 trees=[(12, 68, 10), (38, 68, 10), (37, 108, 11), (12, 81, 7)],
                 fence=[[(0, 15), (0, 125), (50, 125), (50, 15)]],
@@ -125,8 +127,8 @@ def s3_alley_trio():
                       ("Terrace", (8, 75, 22, 81)), ("Terrace", (28, 75, 42, 81)), ("Carts", (27, 9, 37.5, 12.5))],
                 paths=[[(2.5, 2), (2.5, 56), (15, 56), (15, 61)], [(2.5, 56), (35, 56), (35, 61)]],
                 walls=[[(25, 61), (25, 81)], [(5, 51), (45, 51)]],
-                street_wall=[(25, 15), (45, 15)], garden_gate=(27.0, 31.0),
-                calcada=[(27.0, 15.4, 31.0, 19.4)],              # calçada landing inside the garden gate
+                street_wall=[(25, 15), (45, 15)], garden_gate=(25.0, 29.0), garden_stone=6.75,
+                calcada=[(25.4, 15.4, 29.0, 19.4)],              # calçada landing inside the garden gate
                 trees=[(38, 34, 9), (12, 70, 9), (38, 70, 9)],
                 fence=[[(0, 15), (0, 125)], [(50, 125), (50, 15)]],
                 notes=["The street sees a one-story Casita behind its walled garden; the two-story pair sits back.",
@@ -151,6 +153,7 @@ def s4_corner_trio():
                       ("Parking", (40, 76, 60, 86)), ("Walk", (55, 113.5, 60, 116)),
                       ("Terrace", (8, 54, 18, 61)), ("Terrace", (32, 54, 42, 61)), ("Terrace", (42, 92, 52, 100))],
                 paths=[[(18.0, 0.5), (18.0, 14.5)], [(32.0, 0.5), (32.0, 14.5)]],
+                address_walls=[(19.2, 1.0, 19.87, 7.0), (30.13, 1.0, 30.8, 7.0)],
                 walls=[[(25, 54), (25, 74)], [(5, 74), (40, 74)]],
                 trees=[(12, 68, 10), (38, 68, 10), (32, 94, 7), (12, 100, 10)],
                 fence=[[(0, 15), (0, 125), (55, 125)]],
@@ -173,6 +176,7 @@ def s5_wide_duo():
                 pave=[("Drive", (0, 0, 12, 99)), ("Parking", (12, 20, 22, 40)), ("Parking", (12, 79, 22, 99)),
                       ("Walk", (33.75, 0, 36.25, 15)), ("Walk", (12, 64, 34, 66.5)),
                       ("Terrace", (42, 44, 52, 54)), ("Terrace", (42, 103, 52, 113)), ("Carts", (39, 9, 49, 12.5))],
+                address_walls=[(36.6, 1.0, 37.27, 7.0)],
                 walls=[[(42, 64), (60, 64)]],
                 trees=[(53, 30, 10), (53, 86, 10), (32, 118, 9)],
                 fence=[[(0, 15), (0, 125), (65, 125), (65, 15)]],
@@ -193,15 +197,22 @@ def porch_rect(h):
 
 
 def garden_wall(s):
-    """The Casita's wall at the street: limestone piers, a cedar gate, cobogó between (facade direction C).
-    Returns dict(y, piers=[(x0, x1)], gate=(x0, x1) or None, cobogo=(x0, x1)), or None."""
+    """The Casita's wall at the street. Returns dict(y, piers=[(x0, x1)] of stone, posts=[(x0, x1)] of bronze,
+    gate=(x0, x1) or None, cobogo=(x0, x1)), or None.
+    With garden_stone (Nov 24): three parts, open, filtered, solid: the cedar gate next to the house on slim bronze
+    posts, the cobogó, and a solid limestone wall at the outer end, all 8 ft high. Without it (the facade study):
+    limestone piers at the ends, a gate and cobogó between."""
     sw = s.get("street_wall")
     if not sw:
         return None
     (x0, y), (x1, _y) = sw
     g = s.get("garden_gate")
+    st = s.get("garden_stone")
+    if st and g:
+        return dict(y=y, piers=[(x1 - st, x1)], posts=[(g[0], g[0] + 0.25), (g[1], g[1] + 0.25)],
+                    gate=(g[0] + 0.25, g[1]), cobogo=(g[1] + 0.25, x1 - st))
     piers = [(x0, x0 + 2.0)] + ([(g[1], g[1] + 1.0)] if g else []) + [(x1 - 2.0, x1)]
-    return dict(y=y, piers=piers, gate=g, cobogo=((g[1] + 1.0) if g else x0 + 2.0, x1 - 2.0))
+    return dict(y=y, piers=piers, posts=[], gate=g, cobogo=((g[1] + 1.0) if g else x0 + 2.0, x1 - 2.0))
 
 
 def calcada_rects(s):
@@ -232,6 +243,7 @@ def check_site(s):
         x0, y0, x1, y1 = max(r[0], 0), max(r[1], 0), min(r[2], W), min(r[3], L)
         pave += max(0, x1 - x0) * max(0, y1 - y0)
         pave -= sum(_overlap((x0, y0, x1, y1), p) for p in porches)       # paving under a porch roof counts once
+    pave += sum((r[2] - r[0]) * (r[3] - r[1]) for r in s.get("address_walls", []))   # low stone walls
     roofed = porches + [footprint(h["t"]) for h in s["homes"]]
     for r in calcada_rects(s):                                            # mosaic outside the roofs is paving
         a = (r[2] - r[0]) * (r[3] - r[1])

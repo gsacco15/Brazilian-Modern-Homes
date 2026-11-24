@@ -47,6 +47,8 @@ VIEWS = {
                       strength=1.0, exposure=0.15, night=False),
     "duo_garden": dict(site="L1-D1", cam=(43.6, 75.0, 5.3), tgt=(29.0, 54.0, 9.8), lens=18, hdri="golden",
                        sun=300, strength=1.0, exposure=0.35, night=True, night_level=0.3),
+    "upper_hall": dict(site="L1-D1", cam=(16.3, 37.2, 16.7), tgt=(22.4, 24.0, 17.6), lens=16, hdri="day", sun=200,
+                       strength=1.0, exposure=1.6, night=True, night_level=0.12),
     "trio_street": dict(site="L2-T2", cam=(45.0, -22.0, 5.4), tgt=(22.0, 24.0, 8.5), lens=24, hdri="day", sun=200,
                         strength=1.0, exposure=-0.05, night=False),
     "trio_aerial": dict(site="L1-T1", cam=(98.0, -42.0, 74.0), tgt=(25.0, 62.0, 4.0), lens=31, hdri="day", sun=215,
@@ -154,7 +156,7 @@ def openings(plan, t, z0, M_):
                              z_a, z_b)
 
 
-def ashlar(L, coll, t, runs, top, piers, pier_top, name, seed):
+def ashlar(L, coll, t, runs, top, piers, pier_top, name, seed, cap=False):
     """Lueders limestone, sawn-face ashlar in three course heights (8, 4 and 12 in), with a mortar bed; cut at the
     openings. Runs from homes.stone_runs; piers (x0, y0, x1, y1) in the home's frame."""
     rng = random.Random(seed)
@@ -204,8 +206,27 @@ def ashlar(L, coll, t, runs, top, piers, pier_top, name, seed):
                          z1 - joint / 2, r=r)
     for (x0, y0, x1, y1) in piers:
         lb(mo, t, x0 + 0.04, y0 + 0.04, x1 - 0.04, y1 - 0.04, 0.0, pier_top)
+        along_x = (x1 - x0) >= (y1 - y0)
+        Lp = max(x1 - x0, y1 - y0)
+        if cap:                                              # thin limestone cap, slightly proud
+            lb(st, t, x0 - 0.06, y0 - 0.06, x1 + 0.06, y1 + 0.06, pier_top, pier_top + 0.15, r=rng.random())
         for i, (cz0, cz1) in enumerate(courses(0.0, pier_top)):
             r = rng.random()
+            if Lp > 2.2:                                     # a short wall: stones laid along its length
+                q = -rng.uniform(0.0, 1.2)
+                while q < Lp:
+                    ln = rng.uniform(1.3, 3.2) if cz1 - cz0 < 0.9 else rng.uniform(1.8, 3.8)
+                    s0, s1 = max(q, 0.0), min(q + ln, Lp)
+                    q += ln
+                    if s1 - s0 < 0.25:
+                        continue
+                    if along_x:
+                        lb(st, t, x0 + s0 + joint / 2, y0, x0 + s1 - joint / 2, y1, cz0 + joint / 2, cz1 - joint / 2,
+                           r=rng.random())
+                    else:
+                        lb(st, t, x0, y0 + s0 + joint / 2, x1, y0 + s1 - joint / 2, cz0 + joint / 2, cz1 - joint / 2,
+                           r=rng.random())
+                continue
             if i % 2:
                 lb(st, t, x0, y0, x1, y1 - (y1 - y0) / 2 - joint / 2, cz0 + joint / 2, cz1 - joint / 2, r=r)
                 lb(st, t, x0, y0 + (y1 - y0) / 2 + joint / 2, x1, y1, cz0 + joint / 2, cz1 - joint / 2, r=r * 0.7)
@@ -275,6 +296,11 @@ def furnish(L, coll, plan, t, z, name, protos):
     idx = {"oak": 0, "granite": 1, "linen": 2, "ceramic": 3, "black": 4}
     for f in plan.get("fixtures", []):
         k = f["kind"]
+        if k == "chair" and "chair" in protos:
+            x0, y0, x1, y1 = f["rect"]
+            X, Y = tp(t, (x0 + x1) / 2, (y0 + y1) / 2)
+            FU.place(protos["chair"], X, Y, z, math.radians(f.get("rot", 0) + (t["rot"] if t else 0)), coll)
+            continue
         if k not in FURN or "rect" not in f:
             continue
         h, body, top = FURN[k]
@@ -330,24 +356,42 @@ def home(L, coll, h, protos, lights):
         for (a0, a1, b0, b1) in subtract_rect((0.0, W, 0.0, D), (void[0], void[2], void[1], void[3])):
             lb(sl, t, a0, b0, a1, b1, BAND, UP_FF, mats6=[3, 2, 4, 4, 4, 4])
         xr = W if plan is H.CASA02_GF_CARPORT else W + o        # a pair's roofs meet at the shared wall
-        lb(sl, t, -o, -o, xr, D + o, ROOF[0], ROOF[1], mats6=[6, 5, 4, 4, 4, 4])
+        roof_with_skylights(sl, t, (-o, -o, xr, D + o), ROOF, H.CASA02_UPPER.get("skylights", []), nm, L, coll)
     else:
-        lb(sl, t, -o, -o, W + o, D + o, ONE[0], ONE[1], mats6=[6, 5, 4, 4, 4, 4])
+        roof_with_skylights(sl, t, (-o, -o, W + o, D + o), ONE, plan.get("skylights", []), nm, L, coll)
         pr = plan.get("porch")
         if pr:
             x0, y0, x1, y1 = pr["roof"]
             lb(sl, t, W + o, y0, x1, y1, ONE[0], ONE[1], mats6=[6, 5, 4, 4, 4, 4])
     sl.build(coll, bevel=0.003)
-    if casa:                                                   # rooftop solar, 3 ft clear of the edges
+    if casa:                                                   # rooftop solar, 3 ft clear of edges and skylights
         pv = MB(f"{nm} solar", [SOLAR(), L["bronze"]])
-        for row in range(3):
-            y0 = 9.0 + row * 6.4
-            for col in range(3):
-                x0 = 2.5 + col * 5.0
-                lb(pv, t, x0, y0, x0 + 4.8, y0 + 5.6, ROOF[1] + 0.35, ROOF[1] + 0.45, mats6=[1, 0, 1, 1, 1, 1])
-                lb(pv, t, x0 + 0.4, y0 + 0.4, x0 + 0.6, y0 + 5.2, ROOF[1], ROOF[1] + 0.35, mat=1)
-                lb(pv, t, x0 + 4.2, y0 + 0.4, x0 + 4.4, y0 + 5.2, ROOF[1], ROOF[1] + 0.35, mat=1)
+        sks = [sk["rect"] for sk in H.CASA02_UPPER.get("skylights", [])]
+        y0 = 3.0
+        while y0 + 5.6 <= D - 3.0:
+            x0 = 2.6
+            while x0 + 4.5 <= W - 2.6:
+                box = (x0 - 1.0, y0 - 1.0, x0 + 5.5, y0 + 6.6)
+                if not any(box[0] < k[2] and k[0] < box[2] and box[1] < k[3] and k[1] < box[3] for k in sks):
+                    lb(pv, t, x0, y0, x0 + 4.5, y0 + 5.6, ROOF[1] + 0.35, ROOF[1] + 0.45, mats6=[1, 0, 1, 1, 1, 1])
+                    lb(pv, t, x0 + 0.4, y0 + 0.4, x0 + 0.6, y0 + 5.2, ROOF[1], ROOF[1] + 0.35, mat=1)
+                    lb(pv, t, x0 + 3.9, y0 + 0.4, x0 + 4.1, y0 + 5.2, ROOF[1], ROOF[1] + 0.35, mat=1)
+                x0 += 4.7
+            y0 += 5.8
         pv.build(coll, bevel=0.002)
+    sh = plan.get("sunshade")
+    if sh:                                                     # cedar slat sunshade over the back slider
+        x0, y0, x1, y1 = sh["rect"]
+        z = sh["z"]
+        ss = MB(f"{nm} sunshade", [L["cedar_x"], L["bronze"]])
+        for xa in (x0, x1 - 0.2):
+            lb(ss, t, xa, y0, xa + 0.2, y1, z, z + 0.45, mat=1)
+        lb(ss, t, x0, y1 - 0.2, x1, y1, z, z + 0.45, mat=1)
+        yy = y0 + 0.35
+        while yy < y1 - 0.25:
+            lb(ss, t, x0 + 0.2, yy, x1 - 0.2, yy + 0.1, z + 0.05, z + 0.42, mat=0, r=rng.random())
+            yy += 0.32
+        ss.build(coll, bevel=0.002)
     cb = MB(f"{nm} cedar ceilings", [L["cedar_y"]])
     for r in plan["rooms"]:
         if r.get("outdoor"):                                   # carport ceiling
@@ -428,6 +472,33 @@ def home(L, coll, h, protos, lights):
 
 PROTOS = {}
 _SOLAR = {}
+
+
+def roof_with_skylights(sl, t, rect, zz, skylights, nm, L, coll):
+    """The roof slab, cut for skylights: each gets a white light well through the slab, a 6 in curb and glass."""
+    x0, y0, x1, y1 = rect
+    pieces = [(x0, x1, y0, y1)]
+    for sk in skylights:
+        a0, b0, a1, b1 = sk["rect"]
+        pieces = [p for q in pieces for p in subtract_rect(q, (a0, a1, b0, b1))]
+    for (a0, a1, b0, b1) in pieces:
+        lb(sl, t, a0, b0, a1, b1, zz[0], zz[1], mats6=[6, 5, 4, 4, 4, 4])
+    if not skylights:
+        return
+    cu = MB(f"{nm} skylights", [L["paint"], L["roof"], L["glass"], L["bronze"]])
+    for sk in skylights:
+        a0, b0, a1, b1 = sk["rect"]
+        w = 0.06
+        for (p0, q0, p1, q1) in ((a0, b0, a1, b0 + w), (a0, b1 - w, a1, b1), (a0, b0, a0 + w, b1), (a1 - w, b0, a1, b1)):
+            lb(cu, t, p0, q0, p1, q1, zz[0] - 0.01, zz[1], mat=0)                           # well lining
+        c = 0.3
+        for (p0, q0, p1, q1) in ((a0 - c, b0 - c, a1 + c, b0), (a0 - c, b1, a1 + c, b1 + c), (a0 - c, b0, a0, b1),
+                                 (a1, b0, a1 + c, b1)):
+            lb(cu, t, p0, q0, p1, q1, zz[1], zz[1] + 0.5, mat=1)                            # curb
+        lb(cu, t, a0 - c, b0 - c, a1 + c, b1 + c, zz[1] + 0.5, zz[1] + 0.56, mat=2)         # glass
+        lb(cu, t, a0 - c - 0.04, b0 - c - 0.04, a1 + c + 0.04, b0 - c + 0.08, zz[1] + 0.5, zz[1] + 0.6, mat=3)
+        lb(cu, t, a0 - c - 0.04, b1 + c - 0.08, a1 + c + 0.04, b1 + c + 0.04, zz[1] + 0.5, zz[1] + 0.6, mat=3)
+    cu.build(coll, bevel=0.002)
 
 
 def SOLAR():
@@ -527,12 +598,25 @@ def site(L, coll, s, rng):
         y = gw["y"]
         runs = []
         piers = [(p0, y - 0.4, p1, y + 0.4) for p0, p1 in gw["piers"]]
-        ashlar(L, coll, None, runs, 0.0, piers, 8.5, "garden wall", 5)
+        three = bool(gw.get("posts"))                       # open, filtered, solid, all 8 ft
+        ashlar(L, coll, None, runs, 0.0, piers, 7.85 if three else 8.5, "garden wall", 5, cap=three)
         c0, c1 = gw["cobogo"]
-        B.cobogo_panel(L, "Garden cobogo", c0, c1, y - 0.165, 0.4, 8.4)
+        B.cobogo_panel(L, "Garden cobogo", c0, c1, y - 0.165, 0.0 if three else 0.4, 8.0 if three else 8.4)
+        if gw.get("posts"):
+            po = MB("Garden gate posts", [L["bronze"]])
+            for p0, p1 in gw["posts"]:
+                po.box(p0, y - 0.12, -0.3, p1, y + 0.12, 8.0)
+            po.build(coll, bevel=0.002)
         if gw["gate"]:
             g0, g1 = gw["gate"]
-            cedar_gate(L, coll, None, g0 + 0.03, g1 - 0.03, y - 0.06, 0.2, 7.6, "Casita garden")
+            cedar_gate(L, coll, None, g0 + 0.03, g1 - 0.03, y - 0.06, 0.15 if three else 0.2, 8.0 if three else 7.6,
+                       "Casita garden")
+    for i, r in enumerate(s.get("address_walls", [])):         # low limestone walls at the walks
+        ashlar(L, coll, None, [], 0.0, [r], 2.3, f"address wall {i}", 11 + i, cap=True)
+        mbx = MB(f"mailbox {i}", [L["bronze"]])
+        x0, y0, x1, y1 = r
+        mbx.box(x0 + 0.04, y0 + 0.3, 2.45, x1 - 0.04, y0 + 1.5, 3.25)
+        mbx.build(coll, bevel=0.01)
     if s.get("calcada"):
         calcada(L, coll, s["calcada"], lambda r: 0.12, "site")
     # neighbours, with trees behind

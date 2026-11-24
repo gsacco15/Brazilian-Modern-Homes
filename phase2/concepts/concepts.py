@@ -47,7 +47,7 @@ def draw_walls(svg, plan, t, detail):
         for o in cuts:
             s0, s1 = o["off"], o["off"] + o["w"]
             k = o["kind"]
-            if k in ("window", "slider"):
+            if k in ("window", "slider", "bypass"):
                 for s_ in (s0, s1):
                     xa, ya = P(s_, d0)
                     xb, yb = P(s_, d1)
@@ -309,6 +309,33 @@ def draw_porch(svg, plan, t, detail, fs):
         svg.text(cx, cy, "Porch", fs, fill=MID, ls=0.3, extra='dy="2"')
 
 
+def draw_skylights(svg, plan, t, detail):
+    """Skylights overhead: dashed outline with diagonals."""
+    for sk in plan.get("skylights", []):
+        x0, y0, x1, y1 = sk["rect"]
+        svg.poly(tpoly(t, rect_pts(sk["rect"])), fill="none", stroke=MID, sw=0.5, extra='stroke-dasharray="3 2"')
+        for (ax, ay), (bx, by) in (((x0, y0), (x1, y1)), ((x0, y1), (x1, y0))):
+            a, b = tp(t, ax, ay), tp(t, bx, by)
+            svg.line(a[0], a[1], b[0], b[1], LIGHT, 0.35, extra='stroke-dasharray="3 2"')
+
+
+def draw_sunshade(svg, plan, t, detail):
+    """The cedar slat sunshade over the back slider: dashed outline (overhead) with its slats."""
+    sh = plan.get("sunshade")
+    if not sh:
+        return
+    x0, y0, x1, y1 = sh["rect"]
+    svg.poly(tpoly(t, rect_pts(sh["rect"])), fill="none", stroke=DR.CEDAR, sw=0.6, extra='stroke-dasharray="4 2"')
+    y = y0 + 0.5
+    while y < y1 - 0.2:
+        a, b = tp(t, x0, y), tp(t, x1, y)
+        svg.line(a[0], a[1], b[0], b[1], DR.CEDAR, 0.3, extra='stroke-dasharray="4 2"')
+        y += 0.6
+    if detail == "full":
+        cx, cy = tp(t, (x0 + x1) / 2, y1 + 0.9)
+        svg.text(cx, cy, "CEDAR SUNSHADE ABOVE", 5.8, fill="#6e5a3c", ls=0.6, extra='dy="2"')
+
+
 def draw_garden_wall(svg, s):
     """The Casita's street wall: limestone piers, a cedar gate swinging into the garden, cobogó between."""
     gw = garden_wall(s)
@@ -317,6 +344,8 @@ def draw_garden_wall(svg, s):
     y = gw["y"]
     for p0, p1 in gw["piers"]:
         svg.rect(p0, y - 0.4, p1, y + 0.4, fill=LIMESTONE, stroke=INK, sw=0.6)
+    for p0, p1 in gw.get("posts", []):
+        svg.rect(p0, y - 0.15, p1, y + 0.15, fill=INK, stroke="none")
     c0, c1 = gw["cobogo"]
     cobogo_band(svg, (c0, y - 0.17, c1, y + 0.17), None, int(round(c1 - c0)), True)
     if gw["gate"]:
@@ -361,6 +390,8 @@ def draw_plan(svg, plan, t=None, detail="full", fs=8.5, labels=True):
         svg.line(a[0], a[1], b[0], b[1], DR.CEDAR, 1.5 if detail == "full" else 0.9, extra='stroke-dasharray="0.8 1"')
     draw_lantern(svg, plan, t, detail)
     draw_porch(svg, plan, t, detail, fs)
+    draw_skylights(svg, plan, t, detail)
+    draw_sunshade(svg, plan, t, detail)
     if labels:
         for room in plan["rooms"]:
             room_label(svg, room, t, detail, fs)
@@ -376,7 +407,7 @@ def svg_str(svg):
 def plan_svg(plan, scale=13.0, note_front="FRONT: STREET, ALLEY OR SIDE STREET"):
     W, Dd = plan["W"], plan["D"]
     xr = plan["porch"]["roof"][2] if plan.get("porch") else W        # the Casita's porch sits off the right side
-    svg = DR.SVG(-5.5, -7.5, xr + 5.5, Dd + 4.0, scale=scale, pad=14)
+    svg = DR.SVG(-5.5, -7.5, xr + 5.5, Dd + (5.0 if plan.get("sunshade") else 4.0), scale=scale, pad=14)
     draw_plan(svg, plan, None, "full", fs=8.2)
     svg.dim(0, 0, W, 0, -4.2, size=8.5)
     if plan.get("porch"):
@@ -446,6 +477,8 @@ def site_svg(s):
     for pts in s.get("walls", []):
         svg.pline(pts, stroke=INK, sw=1.6)
     draw_calcada(svg, dict(calcada=s.get("calcada", [])), None, "site")
+    for r in s.get("address_walls", []):          # low limestone walls at the walks: mailbox, number, light
+        svg.rect(*r, fill=LIMESTONE, stroke=INK, sw=0.5)
     draw_garden_wall(svg, s)
     svg.rect(0, 0, W, L, fill="none", stroke=INK, sw=0.9, extra='stroke-dasharray="10 3 2 3"')
     # homes

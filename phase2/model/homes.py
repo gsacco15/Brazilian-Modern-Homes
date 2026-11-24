@@ -37,6 +37,11 @@ def slider(off, w):
     return dict(kind="slider", off=off, w=w)
 
 
+def bypass(off, w):
+    """Bypass sliding closet doors (two leaves on parallel tracks)."""
+    return dict(kind="bypass", off=off, w=w)
+
+
 # ------------------------------------------------------------------ Casa 02
 # Developed plans (Nov 2026). x = 20 is the shared wall of a side-by-side pair: a 1-hour fire wall with no
 # openings, so the attached versions (C02-GC and the upper floor) put every window on the front, back and outer
@@ -76,8 +81,15 @@ LANTERN = dict(x=(11.0, 20.0), y=(-1.0, -0.67), opening=(11.0, 15.0), note="cobo
 # - Black calçada portuguesa, about 50 sf at the entry, as at Casa 01: a rug in the carport at the no-step door
 #   and a threshold under the cobogó at the front door. Both sit under the house, so they add no impervious cover.
 # - Pedra São Tomé (Lueders limestone pavers, 24 x 36 thermal) on the terraces and the stepping stones.
-STONE_GC = dict(walls=[((0.0, 39.0), (0.0, 20.0))], piers=[(0.0, 0.0, 1.5, 1.5)])
-STONE_GS = dict(walls=[((0.0, 39.0), (0.0, 0.0)), ((0.0, 0.0), (10.5, 0.0))], piers=[])
+# Revised Nov 24: stone only where the street sees it or where things hit it, as walls, not posts. On the carport
+# version the corner pier grows into a short wall that wraps the corner (6 ft along the outer side) and carries
+# the upper floor; the hidden side wall of the kitchen and living room goes back to stucco. On the suite version,
+# the suite's street wall and the first 10 ft of the outer side. Thin-cut Lueders (1 to 1.5 in), adhered.
+STONE_GC = dict(walls=[], piers=[(0.0, 0.0, 1.5, 1.5), (0.0, 1.5, 0.75, 6.0)])
+STONE_GS = dict(walls=[((0.0, 10.0), (0.0, 0.0)), ((0.0, 0.0), (10.5, 0.0))], piers=[])
+# Cedar slat sunshade over the 16 ft back slider: 3.5 ft deep, open blades on a bronze frame (not a roof, so
+# it adds no footprint or impervious cover); it shades the glass and gives the back wall a face.
+SUNSHADE = dict(rect=(1.0, 39.0, 19.0, 42.5), z=9.3)
 CALCADA_THRESHOLD = (11.0, -0.95, 20.0, 0.0)
 BACK_GLASS = {2: [slider(2.0, 16.0)]}                 # back wall: 16 ft slider to the pátio
 EAST_GLASS = [slider(28.0, 8.0)]                       # outer long wall of a detached home, where the pátio is
@@ -93,8 +105,10 @@ KITCHEN_FIX = [
     dict(kind="counter", rect=(3.1, 20.55, 10.45, 22.55)),
     dict(kind="range", rect=(4.0, 20.55, 6.5, 22.55)),
     dict(kind="sink", rect=(7.6, 20.75, 9.6, 22.35)),
-    dict(kind="island", rect=(3.5, 24.2, 11.5, 26.8)),
-    dict(kind="table", rect=(2.5, 29.5, 9.5, 33.0)),
+    # one 10 ft island that is also the dining table: 42 in aisle to the counter, four chairs on the living side
+    dict(kind="island", rect=(2.0, 26.1, 12.0, 29.1), note="10 ft island + dining table"),
+    dict(kind="chair", rect=(2.9, 29.6, 4.4, 31.1), rot=180), dict(kind="chair", rect=(5.2, 29.6, 6.7, 31.1), rot=180),
+    dict(kind="chair", rect=(7.5, 29.6, 9.0, 31.1), rot=180), dict(kind="chair", rect=(9.8, 29.6, 11.3, 31.1), rot=180),
     dict(kind="sofa", rect=(11.5, 34.5, 18.8, 37.4)),
 ]
 
@@ -109,7 +123,7 @@ CASA02_GF_CARPORT = dict(
     stair=STAIR, slats=STAIR_SLATS,
     columns=[(0.35, 10.0)],                                            # the street corner is the stone pier
     gate=((1.5, 0.0), (10.5, 0.0)),                                    # 9 ft cedar slat gate
-    stone=STONE_GC,
+    stone=STONE_GC, sunshade=SUNSHADE,
     calcada=[(4.75, 4.5, 10.25, 13.5), CALCADA_THRESHOLD],              # rug at the carport door + threshold
     lantern=LANTERN,
     enclosed=W2 * D2 - (BAY[2] - BAY[0]) * (BAY[3] - BAY[1]),
@@ -125,8 +139,11 @@ CASA02_GF_SUITE = dict(
         part((10.5, 20.0), (10.5, 0.0), door(10.33, 2.67, "R", "s")),  # suite door off the hall
         part((0.0, 12.5), (10.5, 12.5), door(6.75, 2.67, "L", "s")),    # bedroom | bath (30 in clear)
         part((0.0, 20.0), (10.5, 20.0)),                                # bath | kitchen
+        part((8.5, 0.0), (8.5, 6.5), bypass(0.5, 5.5)),                  # reach-in closet
+        part((8.5, 6.5), (10.5, 6.5)),
     ],
-    rooms=[dict(name="Suite bedroom", rect=(0.0, 0.0, 10.5, 12.5), short="Bedroom", lab=(5.25, 2.9)),
+    rooms=[dict(name="Suite bedroom", rect=(0.0, 0.0, 10.5, 12.5), short="Bedroom", lab=(4.6, 2.9)),
+           dict(name="Suite closet", rect=(8.5, 0.0, 10.5, 6.5), label=False),
            dict(name="Suite bath", rect=(0.0, 12.5, 10.5, 20.0), short="Bath", lab=(3.4, 14.3))] + SERVICE_ROOMS,
     fixtures=KITCHEN_FIX + SERVICE_FIX + [
         dict(kind="bed", rect=(2.75, 5.6, 7.75, 12.1)),
@@ -135,7 +152,7 @@ CASA02_GF_SUITE = dict(
         dict(kind="lav", rect=(7.6, 17.9, 10.1, 19.6)),
     ],
     stair=STAIR, slats=STAIR_SLATS,
-    stone=STONE_GS,
+    stone=STONE_GS, sunshade=SUNSHADE,
     calcada=[CALCADA_THRESHOLD],
     lantern=LANTERN,
     enclosed=W2 * D2,
@@ -158,8 +175,14 @@ CASA02_UPPER = dict(
              door(13.5, 2.5, "L", "s")),                                  # laundry, closet, bath
         part((14.0, 23.5), (20.0, 23.5)),                                 # laundry | closet
         part((14.0, 30.0), (20.0, 30.0)),                                 # closet | primary bath
+        part((8.5, 0.0), (8.5, 6.5), bypass(0.5, 5.5)),                  # Bed 2 closet
+        part((8.5, 6.5), (10.5, 6.5)),
+        part((8.5, 21.0), (8.5, 27.0), bypass(0.4, 5.2)),                # Bed 3 closet
+        part((8.5, 21.0), (10.5, 21.0)),
     ],
-    rooms=[dict(name="Bed 2", rect=(0.0, 0.0, 10.5, 11.0), lab=(5.25, 1.9)),
+    rooms=[dict(name="Bed 2", rect=(0.0, 0.0, 10.5, 11.0), lab=(4.4, 1.9)),
+           dict(name="Closet 2", rect=(8.5, 0.0, 10.5, 6.5), label=False),
+           dict(name="Closet 3", rect=(8.5, 21.0, 10.5, 27.0), label=False),
            dict(name="Bath 2", rect=(0.0, 11.0, 10.5, 16.5), short="Bath", lab=(3.2, 12.4)),
            dict(name="Bed 3 / den", rect=(0.0, 16.5, 10.5, 27.0), short="Bed 3", lab=(5.25, 18.0)),
            dict(name="Landing", rect=(10.5, 0.0, 20.0, 6.0), lab=(15.0, 3.6), note="desk under the cobogó"),
@@ -183,6 +206,13 @@ CASA02_UPPER = dict(
     ],
     stair=dict(STAIR, floor="upper", cut=None),
     slats=[((STAIR_X, 6.0), (STAIR_X, 19.5))],                         # cedar slat guard along the stair opening
+    # skylights: daylight down the open stair to the ground floor, over the primary shower and the tub, and into
+    # the two windowless rooms (walk-in closet, laundry)
+    skylights=[dict(rect=(16.6, 6.6, 19.4, 18.9), note="over the stair"),
+               dict(rect=(16.7, 35.8, 19.1, 38.2), note="over the shower"),
+               dict(rect=(1.0, 14.1, 5.1, 16.0), note="over the tub"),
+               dict(rect=(15.6, 25.4, 18.4, 28.2), note="walk-in closet"),
+               dict(rect=(15.5, 20.3, 18.5, 22.7), note="laundry")],
     void=(STAIR_X, 6.0, 20.0, 19.5),
     lantern=dict(LANTERN, opening=None),
     enclosed=W2 * D2,
@@ -229,6 +259,9 @@ CASITA = dict(
     # along the living room and flex room only (22 ft), which keeps the 50-ft trios under the impervious cap.
     porch=dict(rect=(20.0, 0.0, 27.75, 22.0), roof=(20.0, -1.0, 28.0, 23.0), posts=[(27.45, 0.25), (27.45, 21.75)]),
     calcada=[(13.0, -3.0, 17.0, 0.0)],                                 # calçada stoop at the front door, 12 sf
+    skylights=[dict(rect=(16.3, 21.8, 19.3, 24.3), note="over the shower"),
+               dict(rect=(8.5, 16.0, 11.0, 21.0), note="hall"),
+               dict(rect=(13.0, 26.5, 18.5, 30.5), note="closet")],
     enclosed=W3 * D3,
 )
 
