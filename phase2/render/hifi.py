@@ -334,10 +334,16 @@ def home(L, coll, h, protos, lights):
     rng = random.Random(hash(nm) % 1000)
     walls = MB(f"{nm} walls", [L["stucco"], L["paint"]])
     floors = [(FF, GF_TOP if casa else ONE[0], plan)] + ([(UP_FF, UP_TOP, H.CASA02_UPPER)] if casa else [])
+    fx0, fy0, fx1, fy1 = footprint(t)
     for z0, z1, pl in floors:
         for x0, y0, x1, y1, za, zb, kind in B.wall_pieces(pl, t, z0, z1, ext_only=False):
             if kind in ("glass", "door"):
                 continue
+            if kind == "inner":                     # stop partitions at the inner face of the outer walls
+                x0, x1 = max(x0, fx0 + 0.5), min(x1, fx1 - 0.5)
+                y0, y1 = max(y0, fy0 + 0.5), min(y1, fy1 - 0.5)
+                if x1 - x0 < 0.05 or y1 - y0 < 0.05:
+                    continue
             walls.box(x0, y0, za, x1, y1, zb, mat=0 if kind == "wall" else 1)
     walls.build(coll, bevel=0.004)
     M_ = dict(frames=MB(f"{nm} window frames", [L["bronze"]]), glass=MB(f"{nm} glass", [L["glass"]]),
