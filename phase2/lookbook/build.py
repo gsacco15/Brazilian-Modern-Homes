@@ -254,8 +254,8 @@ walls and a white upper floor.</p>
     P.append(page(nxt(), "II · Inside", "Baths and the stair, lit from above",
                   "Skylights where they count: over the primary shower, the tub, the stair, the walk-in and the laundry.",
                   f'<div class="two">'
-                  f'{fig(img.get("primary_bath", ""), "The primary bath", "A walk-in shower under a skylight, green tile to the ceiling, a brass rain head; a floating oak vanity with a limestone top, a round mirror and two brass sconces.")}'
-                  f'{fig(img.get("upper_hall", ""), "The upstairs hall", "A long skylight over the open oak stair washes the hall with daylight; cedar slats screen the stair from the rooms.")}'
+                  f'{fig(img.get("primary_bath", ""), "The primary bath", "Seen from the walk-in shower: green tile to the ceiling under a skylight; a floating oak vanity with a limestone top and vessel sink, a round brass mirror between two sconces, a wall-hung wc.")}'
+                  f'{fig(img.get("upper_hall", ""), "The upstairs hall", "A skylight over the open oak stair washes the hall with daylight under a cedar ceiling; cedar slats screen the stair, and the landing desk sits behind the cobogó.")}'
                   f'</div>'))
     cols = []
     for title, rows in (("Kitchen", KITCHEN), ("Baths", BATHS), ("Details", DETAILS)):

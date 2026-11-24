@@ -49,7 +49,7 @@ VIEWS = {
                        sun=300, strength=1.0, exposure=0.35, night=True, night_level=0.3),
     "kitchen": dict(site="L1-D1", cam=(22.6, 52.6, 5.8), tgt=(11.0, 37.5, 5.1), lens=18, hdri="day", sun=200,
                     strength=1.0, exposure=1.9, night=True, night_level=0.12),
-    "primary_bath": dict(site="L1-D1", cam=(20.0, 53.2, 16.7), tgt=(23.2, 46.0, 15.4), lens=15, hdri="day", sun=200,
+    "primary_bath": dict(site="L1-D1", cam=(23.0, 53.0, 16.3), tgt=(23.2, 45.2, 15.0), lens=18, hdri="day", sun=200,
                          strength=1.0, exposure=1.6, night=True, night_level=0.15),
     "side_drive": dict(site="L4-T1", cam=(-5.0, -23.0, 5.4), tgt=(19.0, 23.0, 9.8), lens=24, hdri="afternoon", sun=232,
                        strength=1.0, exposure=-0.1, night=False),
@@ -403,7 +403,7 @@ def primary_bath(L, coll, t, name):
     mx, my = tp(t, 18.2, 30.2)
     for nmx, mat, rr, off in (("rim", L["brass"], 1.12, 0.0), ("mirror", L["mirror"], 1.05, 0.02)):
         ob = BA.cyl(f"{name} mirror {nmx}", coll, mat, mx, my, 0, 0.05, rr, axis="Y", segs=64)
-        ob.location = (mx * M, (my + (0.05 if t["rot"] == 0 else -0.05) * (1 if not t["mirror"] else 1)) * M,
+        ob.location = (mx * M, (my + ((0.05 + off) if t["rot"] == 0 else -(0.05 + off))) * M,   # the glass sits proud of the rim
                        (z0 + 5.3) * M)
     for sxx in (16.75, 19.55 - 0.1):
         gx, gy = tp(t, sxx, 30.55)
