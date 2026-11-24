@@ -218,6 +218,47 @@ CASA02_UPPER = dict(
     enclosed=W2 * D2,
 )
 
+# Side-drive ground floor (P2-23), for homes in a row along a shared drive (the 65-ft and deep-lot trios).
+# The bay runs across the front, 20 x 10.5 ft, and opens sideways to the drive through a cedar gate; the car
+# parks along the house front. The street (or the home in front) sees a full Lueders limestone wall with the
+# cobogó above it on the upper floor only. You enter through the bay, on a calçada walk, to an oak door into the
+# hall. The living room opens east to its own pátio through an 8 ft slider; the back wall, 5 ft from the next
+# home, gets a band of high windows instead of the big slider. Detached only, so the east wall can have glass.
+CASA02_GF_SIDE = dict(
+    name="Casa 02 · ground floor, side drive", W=W2, D=D2,
+    walls=loop([(0.0, 10.5), (20.0, 10.5), (20.0, 39.0), (0.0, 39.0)],
+               {0: [door(0.75, 2.67, "L", "s"), door(11.5, 3.0, "L", "s")],
+                1: [slider(17.5, 8.0)],
+                2: [win(3.0, 14.0, "high")],
+                3: [win(5.0, 6.0, "sill 3'-6\"")]})
+    + [
+        part((6.0, 10.5), (6.0, 16.0)),                                   # mechanical | WC
+        part((0.0, 16.0), (10.5, 16.0)),                                  # mechanical, WC | pantry
+        part((0.0, 20.0), (10.5, 20.0)),                                  # pantry | kitchen
+        part((10.5, 10.5), (10.5, 20.0), door(1.0, 2.83, "L", "s"), door(6.0, 2.5, "L", "s")),  # hall | WC, pantry
+    ],
+    rooms=[dict(name="Carport", rect=(0.0, 0.0, 20.0, 10.5), outdoor=True, note="open to the drive · cedar gate",
+                lab=(6.0, 6.8)),
+           dict(name="Mech", rect=(0.0, 10.5, 6.0, 16.0), lab=(3.0, 13.6)),
+           dict(name="WC", rect=(6.0, 10.5, 10.5, 16.0), lab=(8.25, 13.6)),
+           dict(name="Pantry", rect=(0.0, 16.0, 10.5, 20.0), lab=(5.25, 18.4)),
+           dict(name="Hall", rect=(10.5, 10.5, STAIR_X, 20.0), lab=(13.2, 15.0)),
+           dict(name="Kitchen", rect=(0.0, 20.0, 20.0, 27.0), lab=(15.0, 25.4)),
+           dict(name="Living + dining", rect=(0.0, 27.0, 20.0, 39.0), lab=(14.6, 30.4))],
+    fixtures=KITCHEN_FIX + [
+        dict(kind="wc", at=(8.25, 15.6), rot=180),
+        dict(kind="lav", rect=(6.4, 10.95, 8.0, 12.4)),
+        dict(kind="mech", rect=(0.7, 11.4, 3.4, 14.4), note="air handler + water heater"),
+        dict(kind="car", rect=(1.5, 1.6, 17.5, 8.0)),
+    ],
+    stair=STAIR, slats=[((STAIR_X, 10.5), (STAIR_X, 19.5))],
+    gate=((0.0, 0.67), (0.0, 10.5)),                                   # on the drive side
+    stone=dict(walls=[], piers=[(0.0, 0.0, 20.0, 0.67), (19.33, 0.67, 20.0, 4.0)]),   # the street wall + return
+    calcada=[(0.5, 8.4, 19.5, 10.4)],                                  # calçada walk along the back of the bay
+    lantern=dict(LANTERN, opening=None, upper_only=True, y=(-1.0, -0.67)),
+    enclosed=W2 * (D2 - 10.5),
+)
+
 # ------------------------------------------------------------------ Casita
 W3, D3 = 20.0, 32.0
 CASITA = dict(
@@ -264,6 +305,15 @@ CASITA = dict(
                dict(rect=(13.0, 26.5, 18.5, 30.5), note="closet")],
     enclosed=W3 * D3,
 )
+
+
+# The Casita without its porch, for sites where the porch would sit in a setback (L4-T1)
+CASITA_NP = dict(CASITA, name="Casita · no porch", porch=None)
+
+
+def is_casita(plan):
+    """One-story Casita plans (with or without the porch); everything else is a two-story Casa 02 ground floor."""
+    return plan.get("name", "").startswith("Casita")
 
 
 def stone_runs(plan):

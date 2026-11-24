@@ -134,7 +134,7 @@ def build_home(h, origin, L, idx, fac="base"):
     plan = h["plan"]
     t = h["t"]
     ox, oy = origin
-    casa = plan is not H.CASITA
+    casa = not H.is_casita(plan)
     W, D = plan["W"], plan["D"]
     step = 8.0 if (casa and fac == "B") else 0.0
     clad = "stucco"                      # stone is added on top where the plan has it (stone_runs, piers)
@@ -177,10 +177,16 @@ def build_home(h, origin, L, idx, fac="base"):
             lbox(det, t, cx - 0.25, cy - 0.25, cx + 0.25, cy + 0.25, FF - 0.9, ONE_STORY_ROOF[0], mat=0)
     if plan.get("gate") and h.get("gate", True):
         (gx0, gy0), (gx1, gy1) = plan["gate"]
-        n = int(abs(gx1 - gx0) / 0.42)
-        for i in range(n):
-            x = gx0 + (gx1 - gx0) * (i + 0.5) / n
-            lbox(det, t, x - 0.14, gy0 + 0.16, x + 0.14, gy0 + 0.34, FF + 0.15, FF + 8.0, mat=1)
+        if abs(gx1 - gx0) < 1e-6:                                                        # side gate, along y
+            n = int(abs(gy1 - gy0) / 0.42)
+            for i in range(n):
+                y = gy0 + (gy1 - gy0) * (i + 0.5) / n
+                lbox(det, t, gx0 + 0.16, y - 0.14, gx0 + 0.34, y + 0.14, 0.15, 8.0, mat=1)
+        else:
+            n = int(abs(gx1 - gx0) / 0.42)
+            for i in range(n):
+                x = gx0 + (gx1 - gx0) * (i + 0.5) / n
+                lbox(det, t, x - 0.14, gy0 + 0.16, x + 0.14, gy0 + 0.34, FF + 0.15, FF + 8.0, mat=1)
     if casa and fac == "A":                                                               # cedar veil, front and back
         n = int(W / 0.42)
         for i in range(n):
@@ -200,7 +206,8 @@ def build_home(h, origin, L, idx, fac="base"):
         if lan.get("opening"):                                                           # open at the front door
             pa, pb = tp(t, lan["opening"][0], 0.0)[0], tp(t, lan["opening"][1], 0.0)[0]
             holes.append((min(pa, pb) + ox, max(pa, pb) + ox, FF - 0.1, FF + 8.0))
-        cobogo_panel(L, f"{h['id']} cobogo", min(xa, xb) + ox, max(xa, xb) + ox, min(ya, yb) + oy, FF, ROOF[0], holes)
+        z0 = (UP_FF - 1.25) if lan.get("upper_only") else FF
+        cobogo_panel(L, f"{h['id']} cobogo", min(xa, xb) + ox, max(xa, xb) + ox, min(ya, yb) + oy, z0, ROOF[0], holes)
 
 
 def stone_and_calcada(plan, t, L, hid, casa):

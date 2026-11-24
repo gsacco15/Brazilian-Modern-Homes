@@ -32,7 +32,7 @@ def dusk_lights(s, fac):
     """Warm light inside every home, each floor, plus one behind each cobogó stair."""
     for h in s["homes"]:
         plan, t = h["plan"], h["t"]
-        casa = plan is not B.H.CASITA
+        casa = not B.H.is_casita(plan)
         step = 8.0 if (casa and fac == "B") else 0.0
         spots = [(plan["W"] / 2, plan["D"] * 0.3, B.FF + 7.5), (plan["W"] / 2, plan["D"] * 0.75, B.FF + 7.5)]
         if casa:

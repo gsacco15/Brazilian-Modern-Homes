@@ -44,8 +44,10 @@ LAYERS = [  # name, colour, lineweight (1/100 mm), linetype
 
 PLANS = [("C02-GC", H.CASA02_GF_CARPORT, "CASA 02 - GROUND FLOOR, CARPORT"),
          ("C02-GS", H.CASA02_GF_SUITE, "CASA 02 - GROUND FLOOR, SUITE"),
-         ("C02-UP", H.CASA02_UPPER, "CASA 02 - UPPER FLOOR (BOTH VERSIONS)"),
-         ("CS", H.CASITA, "CASITA")]
+         ("C02-UP", H.CASA02_UPPER, "CASA 02 - UPPER FLOOR (ALL VERSIONS)"),
+         ("C02-GD", H.CASA02_GF_SIDE, "CASA 02 - GROUND FLOOR, SIDE DRIVE"),
+         ("CS", H.CASITA, "CASITA"),
+         ("CS-NP", H.CASITA_NP, "CASITA, NO PORCH")]
 BLOCK_OF = {id(p): name for name, p, _ in PLANS}
 
 
@@ -199,7 +201,10 @@ def build_block(doc, name, plan):
         poly([(cx - 0.3, cy - 0.3), (cx + 0.3, cy - 0.3), (cx + 0.3, cy + 0.3), (cx - 0.3, cy + 0.3)], "A-COLS", hatch=True)
     if plan.get("gate"):
         (gx0, gy0), (gx1, gy1) = plan["gate"]
-        line((gx0, gy0 + 0.25), (gx1, gy1 + 0.25), "A-GATE")
+        if abs(gx1 - gx0) < 1e-6:
+            line((gx0 + 0.25, gy0), (gx1 + 0.25, gy1), "A-GATE")
+        else:
+            line((gx0, gy0 + 0.25), (gx1, gy1 + 0.25), "A-GATE")
     for run in H.stone_runs(plan):                # Lueders limestone ashlar on the outer face
         (ax, ay), (ux, uy), (nx, ny), L_ = run["a"], run["u"], run["n"], run["L"]
         s0 = 0.0
@@ -430,7 +435,7 @@ def draw_site(msp, s, origin):
         feature_labels(msp, h["plan"], h["t"], origin, 9, full=False)
         x0, y0, x1, y1 = footprint(h["t"])
         tx, ty = h.get("tag") or ((x0 + x1) / 2, (y0 - 2.4 if y0 > 18 else y1 + 3.2))
-        fa = h["plan"]["enclosed"] + (H.CASA02_UPPER["enclosed"] if h["plan"] is not H.CASITA else 0)
+        fa = h["plan"]["enclosed"] + (H.CASA02_UPPER["enclosed"] if not H.is_casita(h["plan"]) else 0)
         text(msp, (ox + tx) * IN, (oy + ty) * IN, f"{h['id']} - {h['kind'].upper()}", 15)
         text(msp, (ox + tx) * IN, (oy + ty - 1.6) * IN, f"{h['beds']} - {fa:,.0f} SF", 11)
     dim(msp, (ox, oy + L), (ox + W, oy + L), (ox, oy + L + (16 if lot.get("alley") else 4)))
@@ -608,7 +613,7 @@ def main():
     # plans side by side: the three Casa 02 floors 32 ft apart (one sheet), the Casita 48 ft further (its own sheet)
     plan_x = {}
     for i, (name, plan, title) in enumerate(PLANS):
-        ox = i * 32.0 + (16.0 if name == "CS" else 0.0)
+        ox = i * 32.0 + (16.0 if name.startswith("CS") else 0.0)
         plan_x[name] = ox
         msp.add_blockref(name, (ox * IN, 0), dxfattribs={"layer": "0"})
         room_labels(msp, plan, None, (ox, 0), 9)

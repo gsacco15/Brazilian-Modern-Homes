@@ -249,6 +249,20 @@ def calcada(L, coll, rects, z_of, name):
     mo.build(coll)
 
 
+def cedar_gate_y(L, coll, t, y0, y1, x, z0, z1, name):
+    """Cedar slat gate along y (a side gate, face toward -x)."""
+    g = MB(f"{name} cedar gate", [L["cedar_z"], L["bronze"]])
+    lb(g, t, x + 0.1, y0, x + 0.22, y1, z0, z0 + 0.12, mat=1)
+    lb(g, t, x + 0.1, y0, x + 0.22, y1, z1 - 0.12, z1, mat=1)
+    for yy in (y0, y1 - 0.12):
+        lb(g, t, x + 0.05, yy, x + 0.27, yy + 0.12, z0, z1, mat=1)
+    y = y0 + 0.16
+    while y + 0.125 < y1 - 0.14:
+        lb(g, t, x, y, x + 0.12, y + 0.125, z0 + 0.05, z1 - 0.05, mat=0, r=random.random())
+        y += 0.29
+    g.build(coll, bevel=0.002)
+
+
 def cedar_gate(L, coll, t, x0, x1, y, z0, z1, name):
     """Cedar slat gate on a dark bronze frame, along x in the home's frame (face toward -y)."""
     g = MB(f"{name} cedar gate", [L["cedar_z"], L["bronze"]])
@@ -328,7 +342,7 @@ def furnish(L, coll, plan, t, z, name, protos):
 
 def home(L, coll, h, protos, lights):
     plan, t = h["plan"], h["t"]
-    casa = plan is not H.CASITA
+    casa = not H.is_casita(plan)
     W, D = plan["W"], plan["D"]
     nm = f"{h['id']}"
     rng = random.Random(hash(nm) % 1000)
@@ -415,8 +429,11 @@ def home(L, coll, h, protos, lights):
             lb(det, t, cx - 0.17, cy - 0.17, cx + 0.17, cy + 0.17, 0.0, ONE[0])
     det.build(coll, bevel=0.002)
     if plan.get("gate") and h.get("gate", True):
-        (gx0, gy0), (gx1, _gy1) = plan["gate"]
-        cedar_gate(L, coll, t, gx0 + 0.05, gx1 - 0.05, gy0 - 0.05, 0.2, 8.4, nm)
+        (gx0, gy0), (gx1, gy1) = plan["gate"]
+        if abs(gx1 - gx0) < 1e-6:
+            cedar_gate_y(L, coll, t, gy0 + 0.05, gy1 - 0.05, gx0 - 0.05, 0.2, 8.4, nm)
+        else:
+            cedar_gate(L, coll, t, gx0 + 0.05, gx1 - 0.05, gy0 - 0.05, 0.2, 8.4, nm)
     # the staples: stone, cobogó, calçada; and the carport slab
     if plan.get("stone"):
         ashlar(L, coll, t, H.stone_runs(plan), GF_TOP, plan["stone"].get("piers", []), BAND, nm, len(nm) * 7)
@@ -427,9 +444,10 @@ def home(L, coll, h, protos, lights):
         if lan.get("opening"):
             pa, pb = tp(t, lan["opening"][0], 0.0)[0], tp(t, lan["opening"][1], 0.0)[0]
             holes.append((min(pa, pb), max(pa, pb), FF - 0.1, FF + 8.0))
-        B.cobogo_panel(L, f"{nm} cobogo", min(xa, xb), max(xa, xb), min(ya, yb), FF, ROOF[0], holes)
+        z0 = BAND if lan.get("upper_only") else FF
+        B.cobogo_panel(L, f"{nm} cobogo", min(xa, xb), max(xa, xb), min(ya, yb), z0, ROOF[0], holes)
         cap = MB(f"{nm} cobogo frame", [L["bronze"]])
-        lb(cap, t, lan["x"][0], lan["y"][0] - 0.03, lan["x"][1], lan["y"][1] + 0.03, FF - 0.12, FF)
+        lb(cap, t, lan["x"][0], lan["y"][0] - 0.03, lan["x"][1], lan["y"][1] + 0.03, z0 - 0.12, z0)
         cap.build(coll)
     slab = MB(f"{nm} carport slab", [L["concrete"]])
     for r in plan["rooms"]:

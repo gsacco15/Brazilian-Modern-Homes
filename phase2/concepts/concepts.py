@@ -274,7 +274,7 @@ LANTERN_LABEL = True        # the developed plans (phase2/plans) label the scree
 def draw_lantern(svg, plan, t, detail):
     """The two-story cobogó screen in front of the entry and stair (facade direction C)."""
     lan = plan.get("lantern")
-    if not lan:
+    if not lan or lan.get("upper_only"):                     # drawn on the upper floor plan instead
         return
     (x0, x1), (y0, y1) = lan["x"], lan["y"]
     op = lan.get("opening")
@@ -383,7 +383,8 @@ def draw_plan(svg, plan, t=None, detail="full", fs=8.5, labels=True):
         svg.poly(tpoly(t, rect_pts((cx - 0.3, cy - 0.3, cx + 0.3, cy + 0.3))), fill=INK, stroke="none")
     if plan.get("gate"):
         (gx0, gy0), (gx1, gy1) = plan["gate"]
-        a, b = tp(t, gx0, gy0 + 0.25), tp(t, gx1, gy1 + 0.25)
+        vert = abs(gx1 - gx0) < 1e-6                          # a side gate (side-drive plan) runs along y
+        a, b = (tp(t, gx0 + 0.25, gy0), tp(t, gx1 + 0.25, gy1)) if vert else (tp(t, gx0, gy0 + 0.25), tp(t, gx1, gy1 + 0.25))
         svg.line(a[0], a[1], b[0], b[1], DR.CEDAR, 1.6 if detail == "full" else 1.0, extra='stroke-dasharray="1.5 1.5"')
     for (ax, ay), (bx, by) in plan.get("slats", []):            # cedar slats beside the stair
         a, b = tp(t, ax, ay), tp(t, bx, by)
@@ -490,7 +491,7 @@ def site_svg(s):
         tx = (x0 + x1) / 2
         if h.get("tag"):
             tx, tag_y = h["tag"]
-        fa = h["plan"]["enclosed"] + (H.CASA02_UPPER["enclosed"] if h["plan"] is not H.CASITA else 0)
+        fa = h["plan"]["enclosed"] + (H.CASA02_UPPER["enclosed"] if not H.is_casita(h["plan"]) else 0)
         svg.text(tx, tag_y, f"{h['id']} · {h['kind'].upper()}", 7, weight=700, ls=0.8)
         svg.text(tx, tag_y, f"{h['beds']} · {fa:,.0f} sf", 6.2, fill=MID, extra='dy="8"')
     svg.dim(0, L, W, L, 3.2 + (12 if lot.get("alley") else 0), size=7.5)

@@ -186,6 +186,33 @@ def s5_wide_duo():
                        "Both pátios face east off the two-story block, shaded in the afternoon."])
 
 
+@site
+def s6_side_drive_trio():
+    """P2-23: two side-drive Casa 02s in a row on a shared drive, and the Casita at the back (test-fit L4-T1)."""
+    W, L = 65.0, 125.0
+    gd, cs = H.CASA02_GF_SIDE, H.CASITA_NP
+    homes = [dict(id="A", plan=gd, t=T(gd, 12, 15), park=True, kind="Casa 02, side drive", beds="3 bed / 2.5 bath"),
+             dict(id="B", plan=gd, t=T(gd, 12, 59), park=True, kind="Casa 02, side drive", beds="3 bed / 2.5 bath"),
+             dict(id="C", plan=cs, t=T(cs, 37, 88, mirror=True), park=True, kind="Casita", beds="1 bed + flex",
+                  tag=(47, 84.5))]
+    return dict(id="L4-T1", name="Trio on a shared drive, side-drive carports", lot=dict(W=W, L=L), homes=homes,
+                patios=[(32, 15, 60, 54), (32, 59, 60, 83), (12, 103, 37, 120)],
+                pave=[("Drive", (0, 0, 12, 92)), ("Terrace", (34, 30, 42, 40)), ("Terrace", (34, 70, 42, 80)),
+                      ("Terrace", (25, 105, 33, 113)), ("Carts", (52, 9, 62, 12.5))],
+                paths=[[(6, 93), (6, 100.5), (34.5, 100.5), (34.5, 86), (42, 86)]],
+                walls=[[(32, 54), (60, 54)], [(32, 83), (36, 83)]],
+                trees=[(50, 34, 10), (50, 72, 9), (20, 112, 8)],
+                fence=[[(0, 15), (0, 125), (65, 125), (65, 15)]],
+                address_walls=[(12.3, 1.0, 12.97, 7.0)],
+                notes=["One 12 ft drive along the west line serves all three homes; one curb cut.",
+                       "Each Casa 02 parks across its front, entering from the drive (side-drive ground floor, "
+                       "P2-23). The street sees a full limestone wall with the cobogó above.",
+                       "Living rooms open east to their own pátios; the back walls get high windows.",
+                       "The Casita parks at the end of the drive and walks behind B. Its porch would sit in the side "
+                       "setback here, so this one has none.",
+                       "Fire access to the Casita is about 150 ft from the street: confirm with the fire marshal."])
+
+
 def porch_rect(h):
     """The roofed porch of a home on the lot (x0, y0, x1, y1), or None."""
     p = h["plan"].get("porch")
@@ -252,7 +279,7 @@ def check_site(s):
     for k, r in s["pave"]:
         x0, y0, x1, y1 = max(r[0], 0), max(r[1], 0), min(r[2], W), min(r[3], HOME_RULES["front"])
         fy += max(0, x1 - x0) * max(0, y1 - y0)
-    fa = sum(h["plan"]["enclosed"] + (H.CASA02_UPPER["enclosed"] if h["plan"] is not H.CASITA else 0)
+    fa = sum(h["plan"]["enclosed"] + (H.CASA02_UPPER["enclosed"] if not H.is_casita(h["plan"]) else 0)
              for h in s["homes"])
     far = HOME_RULES["far2"] if n == 2 else HOME_RULES["far3"]
     return dict(fa=fa, fa_cap=max(far[0] * A, far[1]), bc=bc, bc_cap=HOME_RULES["bc"] * A, ic=bc + pave,

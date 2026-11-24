@@ -42,7 +42,9 @@ SHEETS = [
          chains=dict(front=[0, 10.5, 14.25, 20], west=[0, 20, 27, 39], east=[0, 5.5, 9.5, 19.5, 27, 39])),
     dict(no="A-102", plan=H.CASA02_GF_SUITE, title="Ground floor, suite", floor=1,
          chains=dict(front=[0, 10.5, 14.25, 20], west=[0, 12.5, 20, 27, 39], east=[0, 5.5, 9.5, 19.5, 27, 39])),
-    dict(no="A-103", plan=H.CASA02_UPPER, title="Upper floor, both versions", floor=2,
+    dict(no="A-104", plan=H.CASA02_GF_SIDE, title="Ground floor, side drive", floor=1,
+         chains=dict(front=[0, 10.5, 16, 20], west=[0, 10.5, 16, 20, 27, 39], east=[0, 10.5, 19.5, 27, 39])),
+    dict(no="A-103", plan=H.CASA02_UPPER, title="Upper floor, all versions", floor=2,
          chains=dict(front=[0, 10.5, 20], west=[0, 11, 16.5, 27, 39], east=[0, 6, 19.5, 23.5, 30, 39],
                      back=[0, 14, 20])),
 ]
@@ -117,11 +119,15 @@ def door_row(d, plan):
     note = ""
     if d["ext"] and o["kind"] == "door" and "Carport" in rooms | {"Outside"} and d["n"] == (1.0, -0.0):
         note = ""
-    if d["ext"] and o["kind"] == "door":
-        if abs(d["n"][1] - 1.0) < 1e-6:          # in the front wall
-            note = "Front door: oak, solid core, under the cobogó"
-        else:
+    if "Mech" in rooms:
+        note = "Louvred, for the water heater's air"
+    elif d["ext"] and o["kind"] == "door":
+        if "Carport" in rooms and plan is H.CASA02_GF_SIDE:
+            note = "Entry from the carport: oak, solid core, no step"
+        elif "Carport" in rooms:
             note = "No-step entry from the carport; half glass"
+        else:
+            note = "Front door: oak, solid core, under the cobogó"
     elif o["kind"] == "slider":
         note = "Four panels, two sliding, to the pátio" if o["w"] >= 12 else "To the side pátio; detached sites only"
     elif "WC" in rooms:
@@ -242,16 +248,16 @@ def plan_svg(sh, doors, wins, scale=17.0):
         chain(svg, ch["back"], "x", D, 3.0)
     svg.text(W / 2, -9.0, "FRONT", 7.0, fill=MID, ls=1.4)
     lan = plan.get("lantern")
-    if lan:                                              # leader to the cobogó screen
+    if lan and not lan.get("upper_only"):               # leader to the cobogó screen
         svg.leader(lan["x"][1] - 0.4, (lan["y"][0] + lan["y"][1]) / 2, W + 1.0, -2.0,
                    "COBOGÓ SCREEN" + (", 2 STORIES" if lan.get("opening") is None else ""), size=6.2)
     svg.text(W + 6.9, D / 2, "", 6)
     X, Y = svg.X(W + 7.3), svg.Y(D * 0.5)
     svg.add(f'<text x="{X:.1f}" y="{Y:.1f}" font-family="{C.FONT}" font-size="6.4" fill="{MID}" letter-spacing="1.2" '
             f'text-anchor="middle" transform="rotate(90 {X:.1f} {Y:.1f})">SHARED WALL OF A PAIR · 1-HOUR, NO OPENINGS</text>'
-            if plan is not H.CASA02_GF_SUITE else
+            if plan not in (H.CASA02_GF_SUITE, H.CASA02_GF_SIDE) else
             f'<text x="{X:.1f}" y="{Y:.1f}" font-family="{C.FONT}" font-size="6.4" fill="{MID}" letter-spacing="1.2" '
-            f'text-anchor="middle" transform="rotate(90 {X:.1f} {Y:.1f})">OUTER SIDE · DETACHED SITES (L4-D2)</text>')
+            f'text-anchor="middle" transform="rotate(90 {X:.1f} {Y:.1f})">OUTER SIDE · DETACHED SITES (L4-D2, L4-T1)</text>')
     return C.svg_str(svg)
 
 
@@ -303,6 +309,11 @@ SHEET_NOTES = {
               "pair, that wall is the shared wall: no openings.",
               "Lueders limestone ashlar on the whole outer side and on the suite's street wall, as at Casa 01; a "
               "calçada threshold under the cobogó."],
+    "A-104": ["For homes in a row on a shared drive (the 65-ft trio, L4-T1): the bay runs across the front and the car "
+              "enters from the drive through a cedar gate. Upper floor as A-103.",
+              "The street sees a full Lueders limestone wall with the cobogó above it on the upper floor only.",
+              "You enter through the bay on a calçada walk; the living room opens east to its own pátio through an "
+              "8 ft slider, and the back wall, 5 ft from the next home, takes a band of high windows."],
     "A-103": ["The stair lands at the front, in a bright landing behind the cobogó (room for a desk); the hall runs "
               "back along the open stair to the primary suite.",
               "Bath 2 sits between the two front bedrooms on the outer wall, with a window. Laundry upstairs, beside "
@@ -332,6 +343,9 @@ def sheet_html(sh):
     if plan is H.CASA02_GF_CARPORT:
         areas = [("Ground floor", f"{a['carport_gf']:,.0f} sf"), ("Carport", "210 sf, not floor area"),
                  ("Home total", f"{a['carport_total']:,.0f} sf · 3 bed / 2.5 bath")]
+    elif plan is H.CASA02_GF_SIDE:
+        areas = [("Ground floor", f"{plan['enclosed']:,.0f} sf"), ("Carport", "210 sf, not floor area"),
+                 ("Home total", f"{plan['enclosed'] + a['upper']:,.0f} sf · 3 bed / 2.5 bath")]
     elif plan is H.CASA02_GF_SUITE:
         areas = [("Ground floor", f"{a['suite_gf']:,.0f} sf"), ("Home total", f"{a['suite_total']:,.0f} sf"),
                  ("Bedrooms", "3 bed + den / 3.5 bath")]
@@ -357,7 +371,7 @@ def sheet_html(sh):
 
 def main():
     os.makedirs(OUT, exist_ok=True)
-    pages = [sheet_html(sh) for sh in SHEETS]
+    pages = [sheet_html(sh) for sh in sorted(SHEETS, key=lambda x: x["no"])]
     for sh in SHEETS:
         d, w_ = openings(sh["plan"], sh["floor"])
         print(sh["no"], len(d), "doors", len(w_), "windows")
