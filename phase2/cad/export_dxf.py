@@ -23,6 +23,7 @@ from model import homes as H  # noqa: E402
 from model.sites import SITES, HOME_RULES, footprint, garden_wall, tp  # noqa: E402
 sys.path.insert(0, os.path.join(os.path.dirname(HERE), "plans"))
 import plans as PL  # noqa: E402  (developed plans: sheets, tags, schedules, the same as the PDF)
+import elevations as EL  # noqa: E402  (elevations and sections, the same as the PDF)
 
 OUT = os.path.join(HERE, "Phase2_Concepts.dxf")
 IN = 12.0  # inches per foot
@@ -35,6 +36,8 @@ LAYERS = [  # name, colour, lineweight (1/100 mm), linetype
     ("A-WALL-SCRN", 7, 25, "Continuous"), ("A-ROOF-OTLN", 8, 18, "DASHED"),
     ("A-ANNO-SYMB", 7, 18, "Continuous"), ("A-ANNO-SCHD", 7, 18, "Continuous"),
     ("A-WALL-STON", 41, 35, "Continuous"), ("L-PAVE-CALC", 250, 18, "Continuous"),
+    ("A-ELEV", 7, 35, "Continuous"), ("A-ELEV-PATT", 8, 13, "Continuous"), ("A-ELEV-GLAZ", 4, 18, "Continuous"),
+    ("A-ELEV-OTLN", 7, 50, "Continuous"), ("A-SECT", 7, 50, "Continuous"),
     ("A-ANNO-DIMS", 7, 13, "Continuous"), ("A-ANNO-TEXT", 7, 18, "Continuous"),
     ("C-PROP", 1, 35, "PHANTOM"), ("C-SETB", 8, 13, "DASHED"), ("C-ROAD", 8, 13, "Continuous"),
     ("C-PAVE", 8, 13, "Continuous"), ("L-PLNT", 3, 13, "Continuous"), ("L-TREE", 3, 18, "Continuous"),
@@ -550,6 +553,32 @@ def schedules(lay, sh, doors, wins):
     m.set_location((x0, y - 0.12))
 
 
+# ---------------------------------------------------------------- elevations and sections
+def emit_drawing(msp, d, ox, oz, scale):
+    """One elevation or section (feet, x across, z up) into model space at (ox, oz) ft; text sized for scale."""
+    P = lambda x, z: ((ox + x) * IN, (oz + z) * IN)
+    for it in d.items:
+        lay = it.get("layer", "A-ELEV")
+        if lay not in ("A-ELEV", "A-ELEV-PATT", "A-ELEV-GLAZ", "A-ELEV-OTLN", "A-SECT", "A-ANNO-TEXT", "A-ANNO-DIMS"):
+            lay = "A-ELEV"
+        if it["k"] == "poly":
+            pts = [P(*q) for q in it["pts"]]
+            msp.add_lwpolyline(pts, close=True, dxfattribs={"layer": lay})
+            if lay == "A-SECT":                                   # cut elements: solid poché
+                h = msp.add_hatch(color=7, dxfattribs={"layer": "A-SECT"})
+                h.set_solid_fill(color=7)
+                h.paths.add_polyline_path(pts, is_closed=True)
+        elif it["k"] == "line":
+            msp.add_line(P(*it["a"]), P(*it["b"]), dxfattribs={"layer": lay})
+        elif it["k"] == "circle":
+            msp.add_circle(P(*it["c"]), it["r"] * IN, dxfattribs={"layer": lay})
+        elif it["k"] == "text":
+            al = {"start": TextEntityAlignment.MIDDLE_LEFT, "end": TextEntityAlignment.MIDDLE_RIGHT,
+                  "middle": TextEntityAlignment.MIDDLE_CENTER}[it["anchor"]]
+            text(msp, *P(*it["p"]), it["s"].upper(), it["size"] / 72.0 * scale * 0.95, lay, align=al)
+    text(msp, *P((d.x0 + d.x1) / 2, d.z0 - 2.5), d.title.upper(), 9.0 / 72.0 * scale)
+
+
 # ---------------------------------------------------------------- paper space
 def title_block(lay, sheet, title, scale, phase="CONCEPT"):
     """17 x 11 in sheet: border, a 2.3 in title strip on the right."""
@@ -650,6 +679,21 @@ def main():
         lay = sheet(doc, f"{sh['no']} {BLOCK_OF[id(sh['plan'])]}", sh["no"], sh["title"].upper(), '3/16" = 1\'-0"',
                     64, (origin[0] + 10.6, origin[1] + cy), size_in=(8.6, 9.9), phase="DESIGN DEVELOPMENT")
         schedules(lay, sh, doors, wins)
+    # elevations and sections: model space below the developed plans, two drawings per sheet
+    dr = EL.all_drawings()
+    oz = -230.0
+    for no, title, items, _notes in PL.ELEV_SHEETS:
+        widths = [dr[k].x1 - dr[k].x0 for k, _t in items]
+        total = sum(widths) + 10.0
+        scale, stxt = ((64, '3/16" = 1\'-0"') if total < 70 else (96, '1/8" = 1\'-0"') if total < 100
+                       else (128, '3/32" = 1\'-0"'))
+        x = 0.0
+        for (k, _t), w in zip(items, widths):
+            emit_drawing(msp, dr[k], x - dr[k].x0, oz, scale)
+            x += w + 10.0
+        sheet(doc, f"{no} {title.split(' · ')[-1].title()}", no, title.upper(), stxt, scale,
+              (total / 2 - 5.0, oz + 10.0), phase="DESIGN DEVELOPMENT")
+        oz -= 70.0
     if "Layout1" in doc.layouts:
         doc.layouts.delete("Layout1")
     doc.saveas(OUT)

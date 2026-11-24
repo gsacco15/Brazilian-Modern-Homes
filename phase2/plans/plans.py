@@ -17,6 +17,7 @@ P2 = os.path.dirname(HERE)
 ROOT = os.path.dirname(P2)
 OUT = os.path.join(HERE, "out")
 sys.path.insert(0, os.path.join(P2, "concepts"))
+sys.path.insert(0, HERE)
 import concepts as C  # noqa: E402  (plan drawing kit; it also puts the model and Casa 01 kit on the path)
 
 C.LANTERN_LABEL = False     # the screen gets a leader label here, clear of the tags at the front
@@ -275,6 +276,12 @@ CSS = C.CSS + """
 .gn{font-size:9.4px;line-height:1.38;margin:0;padding-left:15px}
 .gn li{margin:0 0 2px}
 .ar{display:flex;gap:18px;font-size:10px}
+.evs{display:grid;grid-template-columns:1fr 1fr;gap:.3in;min-height:0;align-items:center}
+.ev{display:flex;flex-direction:column;gap:6px;min-height:0}
+.ev .s svg{width:100%;height:auto;max-height:7.4in}
+.dtl{display:flex;justify-content:space-between;border-top:1.5px solid #1b1d1f;padding-top:5px;font-size:10px}
+.dtl b{font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.dtl span{color:#5b625b}
 .ar b{font-size:15px;display:block}
 """
 
@@ -369,9 +376,42 @@ def sheet_html(sh):
             f'line: cedar slats. Stone band: Lueders limestone ashlar. Dark rug: calçada portuguesa.</p></div></div></div>{title_block(sh["no"], sh["title"])}</section>')
 
 
+ELEV_SHEETS = [
+    ("A-201", "Casa 02 elevations · front and back", [("front_gc", "Front, carport version"), ("back_gc", "Back, toward the pátio")],
+     ["Front: the cobogó lantern rises both floors over the entry and stair; a Lueders limestone pier wraps the "
+      "carport corner; cedar slat gate.", "Back: a 16 ft slider under a cedar slat sunshade; the primary bedroom "
+      "window above; skylight curbs on the roof."]),
+    ("A-202", "Casa 02 elevations · sides", [("side_gc", "Outer side, carport version"), ("side_gd", "Drive side, side-drive version")],
+     ["The shared wall of a pair has no openings (not shown). The outer side: open carport with one steel column, the "
+      "stone wall turning the corner, stucco above.", "Side-drive version: the cedar gate opens the bay to the drive."]),
+    ("A-203", "Casa 02 elevations · other fronts", [("front_gs", "Front, suite version"), ("front_gd", "Front, side-drive version")],
+     ["Suite version: the suite's street wall in limestone with its egress window, as Casa 01's street wall.",
+      "Side-drive version: a full limestone wall at the street, the cobogó on the upper floor only."]),
+    ("A-204", "Casita elevations", [("cs_front", "Front"), ("cs_side", "Porch side")],
+     ["One story, 12'-3\" to the roof edge; covered porch with a cedar ceiling on two bronze posts.",
+      "Calçada stoop at the front door; skylights over the shower, the hall and the closet."]),
+    ("A-301", "Sections", [("sect_a", "Section A, through the stair"), ("cs_sect", "Section C, Casita living + porch")],
+     ["Section A: the open oak stair rises from the kitchen to the landing behind the cobogó, under a skylight that "
+      "lights both floors; skylights over the laundry, the walk-in and the primary shower.",
+      "Section C: the living room opens under the porch through a 10 ft slider."]),
+]
+
+
+def elev_sheet(no, title, items, notes):
+    import elevations as EL
+    dr = EL.all_drawings()
+    cells = "".join(f'<div class="ev"><div class="s">{EL.to_svg(dr[k])}</div><div class="dtl"><b>{t}</b>'
+                    f'<span>Scale to fit · feet above grade</span></div></div>' for k, t in items)
+    li = "".join(f"<li>{t}</li>" for t in notes)
+    return (f'<section class="page"><div class="main" style="grid-template-rows:auto 1fr auto">'
+            f'<h1>{title}</h1><div class="evs">{cells}</div><ul class="gn">{li}</ul></div>'
+            f'{title_block(no, title.split(" · ")[-1].capitalize() if " · " in title else title)}</section>')
+
+
 def main():
     os.makedirs(OUT, exist_ok=True)
     pages = [sheet_html(sh) for sh in sorted(SHEETS, key=lambda x: x["no"])]
+    pages += [elev_sheet(*e) for e in ELEV_SHEETS]
     for sh in SHEETS:
         d, w_ = openings(sh["plan"], sh["floor"])
         print(sh["no"], len(d), "doors", len(w_), "windows")
