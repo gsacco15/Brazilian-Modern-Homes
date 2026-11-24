@@ -47,6 +47,12 @@ VIEWS = {
                       strength=1.0, exposure=0.15, night=False),
     "duo_garden": dict(site="L1-D1", cam=(43.6, 75.0, 5.3), tgt=(29.0, 54.0, 9.8), lens=18, hdri="golden",
                        sun=300, strength=1.0, exposure=0.35, night=True, night_level=0.3),
+    "kitchen": dict(site="L1-D1", cam=(22.6, 52.6, 5.8), tgt=(11.0, 37.5, 5.1), lens=18, hdri="day", sun=200,
+                    strength=1.0, exposure=1.9, night=True, night_level=0.12),
+    "primary_bath": dict(site="L1-D1", cam=(20.0, 53.2, 16.7), tgt=(23.2, 46.0, 15.4), lens=15, hdri="day", sun=200,
+                         strength=1.0, exposure=1.6, night=True, night_level=0.15),
+    "side_drive": dict(site="L4-T1", cam=(-5.0, -23.0, 5.4), tgt=(19.0, 23.0, 9.8), lens=24, hdri="afternoon", sun=232,
+                       strength=1.0, exposure=-0.1, night=False),
     "upper_hall": dict(site="L1-D1", cam=(16.3, 37.2, 16.7), tgt=(22.4, 24.0, 17.6), lens=16, hdri="day", sun=200,
                        strength=1.0, exposure=1.6, night=True, night_level=0.12),
     "trio_street": dict(site="L2-T2", cam=(45.0, -22.0, 5.4), tgt=(22.0, 24.0, 8.5), lens=24, hdri="day", sun=200,
@@ -305,6 +311,105 @@ def stair(L, coll, plan, t, name):
     mb.build(coll, bevel=0.002)
 
 
+KITCHEN_KINDS = ("counter", "island", "range", "sink", "fridge")
+DETAIL_KITCHEN = True
+
+
+def kitchen(L, coll, plan, t, name):
+    """The Casa 02 kitchen as specified: rift oak slab cabinets with reveals and a toe kick, honed black granite,
+    green zellige backsplash to an oak shelf, plaster hood over the induction range, undermount sink with a brass
+    bridge faucet, panel-ready oak fridge, and the granite island with its oak table."""
+    fx = {f["kind"]: f for f in plan.get("fixtures", []) if "rect" in f and f["rect"][1] >= 20.0}   # kitchen zone
+    if "counter" not in fx:
+        return
+    mb = MB(f"{name} kitchen", [L["oak"], L["black"], L["granite"], L["tile"], L["paint"], L["brass"], L["oak_y"]])
+    z = FF
+    cx0, cy0, cx1, cy1 = fx["counter"]["rect"]
+    fr = fx.get("fridge", {}).get("rect")
+    x_left = fr[2] if fr else cx0
+    # base run: toe kick, boxes, reveals, top
+    lb(mb, t, x_left, cy0, cx1, cy1 - 0.25, z, z + 0.33, mat=1)
+    lb(mb, t, x_left, cy0, cx1, cy1, z + 0.33, z + 2.9, mat=0, r=0.3)
+    x = x_left + 1.5
+    while x < cx1 - 0.3:
+        lb(mb, t, x - 0.01, cy1, x + 0.01, cy1 + 0.005, z + 0.38, z + 2.86, mat=1)
+        x += 1.5
+    lb(mb, t, x_left, cy1, cx1, cy1 + 0.005, z + 2.33, z + 2.35, mat=1)
+    lb(mb, t, x_left, cy0, cx1 + 0.02, cy1 + 0.06, z + 2.9, z + 3.0, mat=2)
+    if "range" in fx:                                           # induction top, black front, plaster hood
+        rx0, ry0, rx1, ry1 = fx["range"]["rect"]
+        lb(mb, t, rx0 + 0.1, ry0 + 0.25, rx1 - 0.1, ry1 - 0.2, z + 3.0, z + 3.012, mat=1)
+        lb(mb, t, rx0, cy1, rx1, cy1 + 0.01, z + 0.4, z + 2.85, mat=1)
+        lb(mb, t, rx0 - 0.1, cy0, rx1 + 0.1, cy0 + 1.7, z + 6.3, BAND, mat=4)
+    if "sink" in fx:
+        sx0, sy0, sx1, sy1 = fx["sink"]["rect"]
+        lb(mb, t, sx0, sy0, sx1, sy1, z + 2.97, z + 3.004, mat=1)
+        mx = (sx0 + sx1) / 2
+        lb(mb, t, mx - 0.05, cy0 + 0.15, mx + 0.05, cy0 + 0.25, z + 3.0, z + 4.15, mat=5)
+        lb(mb, t, mx - 0.04, cy0 + 0.15, mx + 0.04, cy0 + 0.95, z + 4.05, z + 4.13, mat=5)
+    # green zellige backsplash to the oak shelf, the shelf
+    lb(mb, t, x_left, cy0 - 0.05, cx1, cy0, z + 3.0, z + 5.3, mat=3)
+    lb(mb, t, x_left, cy0, cx1, cy0 + 0.9, z + 5.3, z + 5.45, mat=6)
+    if fr:                                                      # panel-ready fridge in oak
+        fx0, fy0, fx1, fy1 = fr
+        lb(mb, t, fx0, fy0, fx1, fy1, z, z + 7.6, mat=0, r=0.6)
+        lb(mb, t, (fx0 + fx1) / 2 - 0.01, fy1, (fx0 + fx1) / 2 + 0.01, fy1 + 0.005, z + 0.2, z + 7.4, mat=1)
+        for xx in ((fx0 + fx1) / 2 - 0.25, (fx0 + fx1) / 2 + 0.2):
+            lb(mb, t, xx, fy1 + 0.005, xx + 0.05, fy1 + 0.1, z + 3.2, z + 5.2, mat=5)
+    if "island" in fx:                                          # granite island at counter height
+        ix0, iy0, ix1, iy1 = fx["island"]["rect"]
+        lb(mb, t, ix0 + 0.3, iy0 + 0.25, ix1 - 0.3, iy1, z, z + 0.33, mat=1)
+        lb(mb, t, ix0 + 0.3, iy0, ix1 - 0.3, iy1, z + 0.33, z + 2.9, mat=0, r=0.45)
+        x = ix0 + 1.8
+        while x < ix1 - 0.6:
+            lb(mb, t, x - 0.01, iy0 - 0.005, x + 0.01, iy0, z + 0.38, z + 2.86, mat=1)
+            x += 1.5
+        lb(mb, t, ix0, iy0 - 0.06, ix1, iy1, z + 2.9, z + 3.0, mat=2)
+    if "island_table" in fx:                                    # the oak table built onto it
+        tx0, ty0, tx1, ty1 = fx["island_table"]["rect"]
+        lb(mb, t, tx0, ty0, tx1, ty1, z + 2.36, z + 2.5, mat=6)
+        for xx in (tx0 + 0.2, tx1 - 0.35):
+            lb(mb, t, xx, ty1 - 0.35, xx + 0.15, ty1 - 0.2, z, z + 2.36, mat=0)
+    mb.build(coll, bevel=0.003)
+
+
+def primary_bath(L, coll, t, name):
+    """The primary bath upstairs: a walk-in shower under the skylight in green zellige to the ceiling, glass panel,
+    brass rain head; floating oak vanity with a limestone top and a vessel sink; round mirror and sconces; wall wc."""
+    import bath as BA                                           # Casa 01 bath helpers (cylinders, globes)
+    z0, zc = UP_FF, UP_TOP
+    mb = MB(f"{name} primary bath", [L["zellige"], L["shower_mosaic"], L["floor"], L["glass"], L["brass"], L["oak"],
+                                     L["limestone"], L["ceramic"]])
+    lb(mb, t, 14.2, 30.2, 19.5, 38.5, z0, z0 + 0.02, mat=2)                   # honed concrete floor
+    lb(mb, t, 16.3, 35.4, 19.5, 38.5, z0, z0 + 0.03, mat=1)                   # shower mosaic
+    win = (15.5, 18.5, z0 + 5.5, z0 + 8.5)                                    # back wall window in the shower
+    for (a0, a1, b0, b1) in subtract_rect((16.3, 19.5, z0, zc), win):
+        lb(mb, t, a0, 38.45, a1, 38.5, b0, b1, mat=0)
+    lb(mb, t, 19.45, 35.4, 19.5, 38.5, z0, zc, mat=0)                         # east wall of the shower
+    lb(mb, t, 16.28, 35.6, 16.32, 38.45, z0 + 0.03, z0 + 7.6, mat=3)          # glass panel
+    lb(mb, t, 16.26, 35.6, 16.34, 38.45, z0 + 7.6, z0 + 7.66, mat=4)
+    lb(mb, t, 18.7, 36.95, 19.45, 37.05, z0 + 7.0, z0 + 7.08, mat=4)          # rain head arm
+    lb(mb, t, 19.4, 36.7, 19.45, 37.3, z0 + 3.9, z0 + 4.3, mat=4)             # valve trim
+    lb(mb, t, 17.05, 30.45, 19.4, 32.1, z0 + 1.15, z0 + 2.55, mat=5)          # floating oak vanity
+    lb(mb, t, 17.0, 30.2, 19.45, 32.2, z0 + 2.55, z0 + 2.7, mat=6)            # limestone top
+    lb(mb, t, 18.2, 30.2, 18.28, 30.85, z0 + 3.4, z0 + 3.47, mat=4)           # wall faucet
+    lb(mb, t, 14.75, 30.2, 16.05, 31.95, z0 + 1.05, z0 + 1.42, mat=7)         # wall-hung wc
+    lb(mb, t, 15.0, 30.2, 15.8, 31.65, z0 + 0.95, z0 + 1.05, mat=7)
+    mb.build(coll, bevel=0.003)
+    hx, hy = tp(t, 18.7, 37.0)
+    BA.cyl(f"{name} rain head", coll, L["brass"], hx, hy, z0 + 6.95, z0 + 7.0, 0.42)
+    sx, sy = tp(t, 18.2, 31.3)
+    BA.cyl(f"{name} vessel sink", coll, L["ceramic"], sx, sy, z0 + 2.7, z0 + 3.15, 0.62, bowl=0.38)
+    mx, my = tp(t, 18.2, 30.2)
+    for nmx, mat, rr, off in (("rim", L["brass"], 1.12, 0.0), ("mirror", L["mirror"], 1.05, 0.02)):
+        ob = BA.cyl(f"{name} mirror {nmx}", coll, mat, mx, my, 0, 0.05, rr, axis="Y", segs=64)
+        ob.location = (mx * M, (my + (0.05 if t["rot"] == 0 else -0.05) * (1 if not t["mirror"] else 1)) * M,
+                       (z0 + 5.3) * M)
+    for sxx in (16.75, 19.55 - 0.1):
+        gx, gy = tp(t, sxx, 30.55)
+        BA.globe(f"{name} sconce", coll, L["lamp"], gx, gy, z0 + 5.4)
+
+
 def furnish(L, coll, plan, t, z, name, protos):
     mb = MB(f"{name} furniture", [L["oak"], L["granite"], L["linen"], L["ceramic"], L["black"]])
     idx = {"oak": 0, "granite": 1, "linen": 2, "ceramic": 3, "black": 4}
@@ -315,7 +420,7 @@ def furnish(L, coll, plan, t, z, name, protos):
             X, Y = tp(t, (x0 + x1) / 2, (y0 + y1) / 2)
             FU.place(protos["chair"], X, Y, z, math.radians(f.get("rot", 0) + (t["rot"] if t else 0)), coll)
             continue
-        if k not in FURN or "rect" not in f:
+        if k not in FURN or "rect" not in f or (k in KITCHEN_KINDS and DETAIL_KITCHEN and f["rect"][1] >= 20.0):
             continue
         h, body, top = FURN[k]
         x0, y0, x1, y1 = f["rect"]
@@ -470,6 +575,9 @@ def home(L, coll, h, protos, lights):
         stair(L, coll, plan, t, nm)
         furnish(L, coll, plan, t, FF, f"{nm} GF", PROTOS)
         furnish(L, coll, H.CASA02_UPPER, t, UP_FF, f"{nm} UP", PROTOS)
+        kitchen(L, coll, plan, t, nm)
+        if t["rot"] == 0 and not t["mirror"]:                  # one detailed bath (A), where the camera goes
+            primary_bath(L, coll, t, nm)
     else:
         furnish(L, coll, plan, t, FF, f"{nm} CS", PROTOS)
     # night lights: warm rooms, the lantern, soffits
@@ -643,22 +751,82 @@ def site(L, coll, s, rng):
         mbx.build(coll, bevel=0.01)
     if s.get("calcada"):
         calcada(L, coll, s["calcada"], lambda r: 0.12, "site")
-    # neighbours, with trees behind
-    nb = MB("Neighbours", [L["house_beige"], L["house_roof"], L["glass"], L["bronze"]])
+    neighbourhood(L, coll, s, rng)
+
+
+SIDING = {}
+
+
+def siding(L, name, color):
+    if name not in SIDING:
+        SIDING[name] = MAT.fabric(f"Siding {name}", color, 0.85, 0.0)
+    return SIDING[name]
+
+
+def house(nb_parts, x0, y0, x1, y1, face, rng, garage=False):
+    """A neighbouring house in plan rect (x0, y0, x1, y1), its street face at face ("s" = y0 side, "n" = y1 side):
+    walls, a hipped roof, framed windows, a front door with a porch, and optionally a garage door and drive."""
+    walls, roof, glass, trim, door, conc = nb_parts
+    h = rng.uniform(9.5, 10.5)
+    walls.box(x0, y0, 0, x1, y1, h)
+    inset = min(6.0, (x1 - x0) / 3, (y1 - y0) / 3)
+    ridge = h + rng.uniform(5.0, 7.0)
+    pts = [(x0 - 1.5, y0 - 1.5, h), (x1 + 1.5, y0 - 1.5, h), (x1 + 1.5, y1 + 1.5, h), (x0 - 1.5, y1 + 1.5, h),
+           (x0 + inset, y0 + inset, ridge), (x1 - inset, y0 + inset, ridge), (x1 - inset, y1 - inset, ridge),
+           (x0 + inset, y1 - inset, ridge)]
+    roof._add(pts, [(0, 1, 5, 4), (1, 2, 6, 5), (2, 3, 7, 6), (3, 0, 4, 7), (4, 5, 6, 7), (0, 3, 2, 1)], [0] * 6, 0.5)
+    fy = y0 if face == "s" else y1
+    sg = -1 if face == "s" else 1
+    span = x1 - x0
+    xs = [x0 + span * f for f in (0.18, 0.42, 0.78)] if not garage else [x0 + span * 0.2, x0 + span * 0.45]
+    for wx in xs:                                               # windows with white trim
+        trim.box(wx - 2.2, fy + sg * 0.12 - 0.06, 2.6, wx + 2.2, fy + sg * 0.12 + 0.06, 7.9)
+        glass.box(wx - 1.9, fy + sg * 0.18 - 0.03, 2.9, wx + 1.9, fy + sg * 0.18 + 0.03, 7.6)
+    dx = x0 + span * 0.62 if not garage else x0 + span * 0.66
+    door.box(dx - 1.6, fy + sg * 0.15 - 0.05, 0.6, dx + 1.6, fy + sg * 0.15 + 0.05, 7.4)
+    conc.box(dx - 4.0, fy + sg * 0.0, 0, dx + 4.0, fy + sg * 5.0, 0.55)       # porch slab
+    for px in (dx - 3.7, dx + 3.7):
+        trim.box(px - 0.2, fy + sg * 4.6 - 0.2, 0.55, px + 0.2, fy + sg * 4.6 + 0.2, h)
+    if garage:
+        gx = x0 + span * 0.85
+        trim.box(gx - 4.6, fy + sg * 0.14 - 0.05, 0, gx + 4.6, fy + sg * 0.14 + 0.05, 7.6)
+    return fy, sg, (x0 + span * 0.85 if garage else dx)
+
+
+def neighbourhood(L, coll, s, rng):
+    """Neighbouring houses on both sides, across the street and behind; drives, porches; street lights."""
+    W, Lo = s["lot"]["W"], s["lot"]["L"]
+    lot = s["lot"]
+    walls = {k: MB(f"Neighbour walls {k}", [siding(L, k, c)]) for k, c in
+             (("sand", "#D4C9B5"), ("sage", "#B9BFAE"), ("white", "#E4E1D8"), ("clay", "#C9B29A"))}
+    roof = MB("Neighbour roofs", [L["house_roof"]])
+    glass = MB("Neighbour glass", [L["glass"]])
+    trim = MB("Neighbour trim", [L["paint"]])
+    door = MB("Neighbour doors", [L["dark_wood"]])
+    conc = MB("Neighbour paving", [L["concrete"]])
+    keys = list(walls)
     right = W + (40 if lot.get("corner") else 12)
-    for (x0, x1) in ((-50, -12), (right, right + 38)):
-        y0, y1 = 22, 70
-        nb.box(x0, y0, 0, x1, y1, 10.0, mat=0)
-        inset = 6.0
-        pts = [(x0 - 1.5, y0 - 1.5, 10), (x1 + 1.5, y0 - 1.5, 10), (x1 + 1.5, y1 + 1.5, 10), (x0 - 1.5, y1 + 1.5, 10),
-               (x0 + inset, y0 + inset, 16.5), (x1 - inset, y0 + inset, 16.5), (x1 - inset, y1 - inset, 16.5),
-               (x0 + inset, y1 - inset, 16.5)]
-        faces = [(0, 1, 5, 4), (1, 2, 6, 5), (2, 3, 7, 6), (3, 0, 4, 7), (4, 5, 6, 7), (0, 3, 2, 1)]
-        nb._add(pts, faces, [1] * 6, 0.5)
-        for k in range(3):
-            wx = x0 + 6 + k * (x1 - x0 - 12) / 2
-            nb.box(wx - 2, y0 - 0.1, 3.0, wx + 2, y0 + 0.05, 7.5, mat=2)
-    nb.build(coll)
+    plots = [(-52, 22, -12, 68, "s", True), (right, 24, right + 40, 70, "s", False),
+             (-60, -96, -22, -60, "n", True), (-8, -98, 32, -60, "n", False), (46, -96, 86, -58, "n", True),
+             (-50, Lo + 22, -10, Lo + 62, "s", False), (W + 8, Lo + 22, W + 48, Lo + 64, "s", True)]
+    for i, (x0, y0, x1, y1, face, gar) in enumerate(plots):
+        if lot.get("alley") and y0 > Lo:
+            y0, y1 = y0 + 14, y1 + 14
+        parts = (walls[keys[i % len(keys)]], roof, glass, trim, door, conc)
+        fy, sg, dxx = house(parts, x0, y0, x1, y1, face, rng, garage=gar)
+        if gar:                                                 # driveway to the street
+            street_y = -12.0 if face == "s" else -40.0
+            ya, yb = sorted((fy, street_y if y0 < Lo else fy + sg * 20))
+            conc.box(dxx - 5.0, ya, -0.02, dxx + 5.0, yb, 0.06)
+    for m in list(walls.values()) + [roof, glass, trim, door, conc]:
+        m.build(coll, bevel=0.003)
+    # street lights in the parkway
+    sl = MB("Street lights", [L["black"], L["lamp"]])
+    for x in (-30.0, W + 26.0):
+        sl.box(x - 0.2, -9.2, 0, x + 0.2, -8.8, 16.0)
+        sl.box(x - 0.15, -9.0, 15.6, x + 0.15, -4.5, 15.9)
+        sl.box(x - 0.6, -5.2, 15.2, x + 0.6, -4.0, 15.6, mat=1)
+    sl.build(coll, bevel=0.01)
 
 
 def trees_and_planting(L, coll, s, rng, protos):
@@ -671,7 +839,9 @@ def trees_and_planting(L, coll, s, rng, protos):
              for x, y, r in s["trees"]]
     trees += [dict(x=-14, y=-9, h=30, spread=36, seed=11, leaf=0.8), dict(x=W + 16, y=-9, h=28, spread=34, seed=13, leaf=0.8),
               dict(x=-30, y=95, h=34, spread=44, seed=17, leaf=0.7), dict(x=W + 30, y=100, h=32, spread=42, seed=19, leaf=0.7),
-              dict(x=W / 2, y=Lo + 30, h=38, spread=50, seed=23, leaf=0.7)]
+              dict(x=W / 2, y=Lo + 30, h=38, spread=50, seed=23, leaf=0.7),
+              dict(x=-40, y=-50, h=30, spread=38, seed=29, leaf=0.7), dict(x=60, y=-52, h=28, spread=34, seed=31, leaf=0.7),
+              dict(x=-32, y=Lo + 10, h=32, spread=40, seed=37, leaf=0.7)]
     for tr in trees:
         PL.live_oak(f"oak_{tr['seed']}", (tr["x"] * M, tr["y"] * M, 0.0), tr["h"] * M, tr["spread"] * M, tr["seed"],
                     coll, L["bark"], leafc, leaf_density=tr.get("leaf", 1.0), crown_base=tr.get("crown", 0.22))
@@ -766,6 +936,7 @@ def build(site_id):
     R.reset()
     B._COBOGO.clear()
     _SOLAR.clear()
+    SIDING.clear()
     root = bpy.context.scene.collection
     L = MAT.build_library()
     arch, land, night = new_coll("Architecture", root), new_coll("Landscape", root), new_coll("NightLights", root)

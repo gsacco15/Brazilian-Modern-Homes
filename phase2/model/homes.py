@@ -105,10 +105,12 @@ KITCHEN_FIX = [
     dict(kind="counter", rect=(3.1, 20.55, 10.45, 22.55)),
     dict(kind="range", rect=(4.0, 20.55, 6.5, 22.55)),
     dict(kind="sink", rect=(7.6, 20.75, 9.6, 22.35)),
-    # one 10 ft island that is also the dining table: 42 in aisle to the counter, four chairs on the living side
-    dict(kind="island", rect=(2.0, 26.1, 12.0, 29.1), note="10 ft island + dining table"),
-    dict(kind="chair", rect=(2.9, 29.6, 4.4, 31.1), rot=180), dict(kind="chair", rect=(5.2, 29.6, 6.7, 31.1), rot=180),
-    dict(kind="chair", rect=(7.5, 29.6, 9.0, 31.1), rot=180), dict(kind="chair", rect=(9.8, 29.6, 11.3, 31.1), rot=180),
+    # a 10 ft granite island at counter height (42 in aisle to the counter) with an oak dining table built onto its
+    # living-room side at table height: four chairs
+    dict(kind="island", rect=(2.0, 26.1, 12.0, 28.1), note="granite island"),
+    dict(kind="island_table", rect=(2.0, 28.1, 12.0, 30.6), note="oak table"),
+    dict(kind="chair", rect=(2.9, 30.9, 4.4, 32.4), rot=180), dict(kind="chair", rect=(5.2, 30.9, 6.7, 32.4), rot=180),
+    dict(kind="chair", rect=(7.5, 30.9, 9.0, 32.4), rot=180), dict(kind="chair", rect=(9.8, 30.9, 11.3, 32.4), rot=180),
     dict(kind="sofa", rect=(11.5, 34.5, 18.8, 37.4)),
 ]
 

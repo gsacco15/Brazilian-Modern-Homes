@@ -49,7 +49,8 @@ INTERIOR = [
 ]
 
 KITCHEN = [
-    ("Layout", "Counter on the wall, a 10 ft island that is also the dining table, panel-ready fridge in oak"),
+    ("Layout", "Counter on the wall; a 10 ft granite island with an oak dining table built onto its living-room side "
+               "(seats four); panel-ready fridge in oak"),
     ("Cabinets", "Rift white oak slab doors, 1/8 in reveals, no uppers: one oak shelf over a green tile backsplash"),
     ("Counters", "Honed black granite, 1.25 in; the island top runs as one slab with seating for four"),
     ("Appliances", "30 in induction range with a plaster hood, dishwasher, 30 in panel-ready fridge"),
@@ -70,7 +71,8 @@ DETAILS = [
     ("Stair", "Open rift oak treads with a riser bar, steel stringer, cedar slats on the hall side, wall rail in oak"),
     ("Doors", "8 ft solid-core rift oak slabs, brass levers; bypass oak closet doors"),
     ("Skylights", "Fixed, laminated low-E on 6 in curbs: stair, primary shower, tub, walk-in, laundry; Casita shower, hall, closet"),
-    ("Ceilings", "9'-6\" ground floor, 9'-0\" upstairs, painted; cedar in the carport and porch"),
+    ("Ceilings", "9'-6\" ground floor, painted; upstairs, cedar T&G under the roof as in Casa 01's great room; "
+                 "cedar in the carport and porch"),
     ("Lighting", "Warm 2700 K, dimmable; lantern light at the landing behind the cobogó; path lights"),
     ("Mechanical", "Ducted heat pump, heat-pump water heater, ERV; rooftop solar, about 3 kW a home"),
 ]
