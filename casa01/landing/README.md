@@ -6,7 +6,9 @@ Every push to GitHub rebuilds the site. `scripts/vercel-build.sh` assembles it f
 |---|---|---|
 | `/` | Landing page with the early-list form | `casa01/landing/page.html` → `site/` |
 | `/house` | Interactive house: live 3D model with sun slider, 360° tour, renders, finishes | `casa01/lookbook/web/house.html` + assets |
+| `/homes/` | The homes: Single (Casa 01), Duo and Trio, with photos, site layouts, floor plans and the material board | `phase2/web/build.py` → `phase2/web/site/` |
 | `/Casa01_Lookbook.pdf` | The latest 21-page lookbook | `casa01/Casa01_Lookbook.pdf` |
+| `/Phase2_Lookbook.pdf` | The duo + trio lookbook (Casa 02 + Casita) | `phase2/Phase2_Lookbook.pdf` |
 | `/leads` | **Private** list of sign-ups, with counts by ad and headline | `casa01/landing/leads.html` |
 | `/api/lead`, `/api/leads` | Save a sign-up / read them (serverless functions) | `api/` |
 
@@ -14,6 +16,12 @@ After editing the landing page, rebuild it and push:
 
 ```bash
 python3 casa01/landing/build.py
+```
+
+After changing the Phase 2 model or renders, rebuild the homes page the same way:
+
+```bash
+python3 phase2/web/build.py
 ```
 
 ## One-time Vercel setup (about 5 minutes)
