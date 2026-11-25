@@ -60,6 +60,12 @@ VIEWS = {
     "trio_aerial": dict(site="L1-T1", cam=(98.0, -42.0, 74.0), tgt=(25.0, 62.0, 4.0), lens=31, hdri="day", sun=215,
                         strength=1.0, exposure=0.0, night=False, two_point=False),
 }
+# one aerial per layout, the same angle as trio_aerial, for the website's layout pages (air_<layout>)
+for _lid, (_w, _l) in {"L1-D1": (50, 125), "L1-T1": (50, 125), "L2-T2": (50, 125), "L3-T1": (60, 125),
+                       "L4-D2": (65, 125), "L4-T1": (65, 125)}.items():
+    VIEWS[f"air_{_lid}"] = dict(site=_lid, cam=(_w / 2 + 73.0, _l / 2 - 104.5, 74.0), tgt=(_w / 2, _l / 2 - 0.5, 4.0),
+                                lens=31 if _w == 50 else 29, hdri="day", sun=215, strength=1.0, exposure=0.0,
+                                night=False, two_point=False)
 FURN = {"counter": (3.0, "oak", "granite"), "island": (3.0, "oak", "granite"), "range": (3.0, "black", "black"),
         "sink": (3.0, "oak", "granite"), "fridge": (6.8, "black", "black"), "table": (2.5, "oak", "oak"),
         "desk": (2.5, "oak", "oak"), "sofa": (2.4, "linen", "linen"), "bed": (1.9, "linen", "linen"),

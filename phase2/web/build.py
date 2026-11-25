@@ -197,7 +197,9 @@ def images():
         jpg(os.path.join(CASA01, "renders", f"{k}.png"), os.path.join(IMG, f"c01_{k}-400.jpg"), 400, 74)
     for f in S.SITES:
         s = f()
-        jpg(os.path.join(P2, "render", "out", f"{s['id']}_aerial.png"), os.path.join(IMG, f"mass_{s['id']}.jpg"), 900, 78)
+        air = os.path.join(P2, "render", "final", f"air_{s['id']}.png")      # high-detail aerial, else the massing view
+        src = air if os.path.exists(air) else os.path.join(P2, "render", "out", f"{s['id']}_aerial.png")
+        jpg(src, os.path.join(IMG, f"mass_{s['id']}.jpg"), 1100, 80)
     jpg(os.path.join(CASA01, "renders", "aerial.png"), os.path.join(IMG, "mass_C01.jpg"), 900, 78)
     swatch_images()
     # drawings
@@ -273,7 +275,7 @@ def layout_html(lid):
                  ("Parking", f"{c['parking']} on site"),
                  ("Paving", f"{fmt(c['ic'])} of {fmt(c['ic_cap'])} sf allowed")]
         notes = [re.sub(r"\s*\([^)]*(P2-\d+|impervious)[^)]*\)", "", n) for n in s["notes"][:3]]
-        mass_cap = "Massing view"
+        mass_cap = "From above" if os.path.exists(os.path.join(P2, "render", "final", f"air_{lid}.png")) else "Massing view"
     kv = "".join(f"<div><dt>{esc(a)}</dt><dd>{esc(b)}</dd></div>" for a, b in facts)
     li = "".join(f"<li>{esc(n)}</li>" for n in notes)
     return f'''<div class="pane lay" data-k="{lid}"{'' if lid in ('C01', 'L1-D1', 'L1-T1') else ' hidden'}>
