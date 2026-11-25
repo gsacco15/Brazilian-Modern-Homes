@@ -68,20 +68,17 @@ P2_CAPTIONS = {
 
 PLANS = {
     "GC": (H.CASA02_GF_CARPORT, "Ground floor, carport", "570 sf + carport",
-           "The front door opens under the cobogó to a hall past the powder room, then one long room for "
-           "cooking, dining and living that opens to the pátio. The car parks behind a cedar gate."),
+           "Kitchen, dining and living in one long room that opens to the pátio. Powder room by the front "
+           "door, carport behind a cedar gate."),
     "GS": (H.CASA02_GF_SUITE, "Ground floor, suite", "780 sf",
-           "Where parking moves to a pad, the carport becomes a bedroom suite with its own bath and closet. "
-           "The home becomes 3 bed + den, 3.5 bath, 1,560 sf."),
+           "The carport becomes a bedroom suite with its own bath, for lots that park on a pad. "
+           "3 bed + den, 3.5 bath, 1,560 sf in all."),
     "GD": (H.CASA02_GF_SIDE, "Ground floor, side drive", "570 sf + carport",
-           "For lots with one shared drive: the car turns in from the side to a bay across the front, "
-           "and the street sees a limestone wall."),
+           "For lots with a shared drive. The car turns in from the side, and the street sees a limestone wall."),
     "UP": (H.CASA02_UPPER, "Upper floor", "780 sf",
-           "The primary suite with a walk-in and a skylit shower, two bedrooms (one works as a den), "
-           "a second bath under a skylight, and the laundry."),
+           "Primary suite with a walk-in and a skylit shower, two more bedrooms, a second bath and the laundry."),
     "CS": (H.CASITA, "Casita", "640 sf",
-           "One story: living and kitchen, a flex room, a bedroom and bath, and a covered porch on its own "
-           "walled garden."),
+           "One story: living and kitchen, a flex room, a bedroom and bath, and a covered porch on its own garden."),
 }
 
 LAYOUT_LABEL = {
@@ -95,22 +92,19 @@ LAYOUT_LABEL = {
 
 OPTIONS = [
     dict(id="single", name="Single", sub="1 home", title="Casa 01, the courtyard house",
-         lede="One story in an L around a pátio. Limestone and cedar face the street; inside, every room "
-              "opens to the courtyard and its live oak.",
+         lede="One story wrapped around a pátio and its live oak. Every room opens onto it.",
          facts=[("1", "home"), ("1,670", "sq ft"), ("3 / 2", "bed / bath"), ("65 ft", "typical lot width")],
          gallery=[("c01", k, cap) for k, cap in C01_GAL],
          layouts=["C01"], plans=["C01"]),
     dict(id="duo", name="Duo", sub="2 homes", title="Casa 02, a pair on one lot",
-         lede="Two homes of two stories, mirrored about a shared wall. Each has its own door, carport, "
-              "pátio and skylit upstairs; a single cobogó lantern joins the pair at the street.",
+         lede="Two two-story homes that share one wall. Each has its own front door, carport and pátio.",
          facts=[("2", "homes"), ("1,350–1,560", "sq ft each"), ("3 / 2.5", "bed / bath each"),
                 ("50–65 ft", "lot width")],
          gallery=[("p2", k, P2_CAPTIONS[k]) for k in
                   ("duo_street", "duo_dusk", "duo_entry", "duo_garden", "kitchen", "primary_bath", "upper_hall")],
          layouts=["L1-D1", "L4-D2"], plans=["GC", "UP", "GS"]),
     dict(id="trio", name="Trio", sub="3 homes", title="The pair plus a Casita",
-         lede="The Casa 02 pair with a one-story Casita on the same lot: at the back, at the street, on the "
-              "corner or down a shared drive. Three front doors, three gardens.",
+         lede="The Casa 02 pair plus a one-story Casita on the same lot. Three front doors, three gardens.",
          facts=[("3", "homes"), ("3,340", "sq ft in all"), ("3 + 3 + 1", "bedrooms"), ("50–65 ft", "lot width")],
          gallery=[("p2", k, P2_CAPTIONS[k]) for k in
                   ("trio_street", "side_drive", "trio_aerial", "duo_entry", "duo_garden", "kitchen", "primary_bath")],
@@ -118,17 +112,14 @@ OPTIONS = [
 ]
 
 C01_LAYOUT = dict(
-    label=("On its own lot", "65 × 125 ft lot"), name="Casa 01 on a typical lot",
-    facts=[("Lot", "65 × 125 ft"), ("Home", "Casa 01, 3 bed / 2 bath"), ("Floor area", "1,670 sf"),
-           ("Parking", "Carport behind a cedar gate")],
-    notes=["The house wraps the pátio on two sides; the carport and a cedar fence close the other two.",
-           "The heritage oak stays in the backyard, and the veranda faces it.",
-           "The front yard is a meadow of native grasses on decomposed granite."],
+    label=("On its own lot", "65 × 125 ft lot"), name="On its own lot",
+    facts=[("Homes", "Casa 01, 3 bed / 2 bath"), ("Floor area", "1,670 sf"), ("Parking", "Carport")],
+    notes="The house wraps the pátio, and the backyard oak stays.",
 )
 
 C01_PLAN = ("Floor plan", "1,670 sf",
-            "One story in an L around the pátio: the great room, kitchen and primary suite across the back, two "
-            "bedrooms along a gallery, and the carport and covered entry at the street.")
+            "Great room, kitchen and primary suite across the back; two bedrooms along the gallery; carport "
+            "and covered entry at the street.")
 
 
 # ---------------------------------------------------------------- images
@@ -255,37 +246,42 @@ def fmt(n):
     return f"{n:,.0f}"
 
 
+LAYOUT_DESC = {
+    "L1-D1": "Side by side, each with its own carport at the street.",
+    "L4-D2": "One behind the other on a shared drive. Each ground floor gains a bedroom suite.",
+    "L1-T1": "The pair at the street, the Casita in the back garden.",
+    "L2-T2": "The Casita faces the street. The pair sits back and parks off the alley.",
+    "L3-T1": "The Casita faces the side street, with its own parking.",
+    "L4-T1": "One shared drive serves all three homes.",
+}
+
+
 def layout_html(lid):
+    air = os.path.exists(os.path.join(P2, "render", "final", f"air_{lid}.png"))
     if lid == "C01":
         L = C01_LAYOUT
-        title, facts, notes = L["name"], L["facts"], L["notes"]
-        mass_cap = "From above: the pátio open to the sky"
+        title, lot_s, facts, desc = L["name"], L["label"][1], L["facts"], L["notes"]
+        mass_cap = "From above"
     else:
         s = next(f() for f in S.SITES if f()["id"] == lid)
         c = S.check_site(s)
-        lot = s["lot"]
-        lot_s = f"{fmt(lot['W'])} × {fmt(lot['L'])} ft" + (", alley" if lot.get("alley") else "") + \
-            (", corner" if lot.get("corner") else "")
         kinds = {}
         for h in s["homes"]:
             kinds.setdefault(h["kind"], []).append(h["beds"])
         homes_s = "; ".join(f"{len(v)} × {k} ({v[0]})" if len(v) > 1 else f"{k} ({v[0]})" for k, v in kinds.items())
-        title = s["name"]
-        facts = [("Lot", lot_s), ("Homes", homes_s), ("Floor area", f"{fmt(c['fa'])} sf in all"),
-                 ("Parking", f"{c['parking']} on site"),
-                 ("Paving", f"{fmt(c['ic'])} of {fmt(c['ic_cap'])} sf allowed")]
-        notes = [re.sub(r"\s*\([^)]*(P2-\d+|impervious)[^)]*\)", "", n) for n in s["notes"][:3]]
-        mass_cap = "From above" if os.path.exists(os.path.join(P2, "render", "final", f"air_{lid}.png")) else "Massing view"
+        title, lot_s = LAYOUT_LABEL[lid]
+        facts = [("Homes", homes_s), ("Floor area", f"{fmt(c['fa'])} sf in all"), ("Parking", f"{c['parking']} on site")]
+        desc = LAYOUT_DESC[lid]
+        mass_cap = "From above" if air else "Massing view"
     kv = "".join(f"<div><dt>{esc(a)}</dt><dd>{esc(b)}</dd></div>" for a, b in facts)
-    li = "".join(f"<li>{esc(n)}</li>" for n in notes)
     return f'''<div class="pane lay" data-k="{lid}"{'' if lid in ('C01', 'L1-D1', 'L1-T1') else ' hidden'}>
-  <a class="sheet site" href="{URL}site_{lid}.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="{URL}site_{lid}.svg" alt="Site plan, {esc(title)}" loading="lazy"></a>
+  <a class="sheet site" href="{URL}site_{lid}.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="{URL}site_{lid}.svg" alt="Site plan: {esc(title)}" loading="lazy"></a>
   <div class="info">
-    <div class="eyebrow">{esc(lid if lid != 'C01' else 'Casa 01')}</div>
+    <div class="eyebrow">{esc(lot_s)}</div>
     <h3>{esc(title)}</h3>
+    <p>{esc(desc)}</p>
     <dl class="kv">{kv}</dl>
-    <ul class="notes">{li}</ul>
-    <figure class="mass"><img src="{URL}mass_{lid}.jpg" alt="{esc(mass_cap)}, {esc(title)}" loading="lazy"><figcaption>{esc(mass_cap)}</figcaption></figure>
+    <figure class="mass"><img src="{URL}mass_{lid}.jpg" alt="{esc(mass_cap)}: {esc(title)}" loading="lazy"><figcaption>{esc(mass_cap)}</figcaption></figure>
   </div>
 </div>'''
 
@@ -293,18 +289,14 @@ def layout_html(lid):
 def plan_html(pk, first):
     if pk == "C01":
         name, area, desc = C01_PLAN
-        rooms = ["Great room", "Kitchen", "Primary suite", "Bedrooms 2 and 3", "Bath 2", "Laundry", "Pátio",
-                 "Veranda", "Carport"]
     else:
         plan, name, area, desc = PLANS[pk]
-        rooms = [r[0] if isinstance(r, (list, tuple)) else r["name"] for r in plan["rooms"]]
     return f'''<div class="pane pl" data-k="{pk}"{'' if first else ' hidden'}>
   <a class="sheet plan" href="{URL}plan_{pk}.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="{URL}plan_{pk}.svg" alt="Floor plan: {esc(name)}" loading="lazy"></a>
   <div class="info">
     <div class="eyebrow">{esc(area)}</div>
     <h3>{esc(name)}</h3>
     <p>{esc(desc)}</p>
-    <p class="rooms">{" · ".join(esc(r) for r in rooms)}</p>
   </div>
 </div>'''
 
@@ -320,11 +312,7 @@ def option_html(o, first):
                   for pk in o["plans"]]
     lays = "".join(layout_html(lid) for lid in o["layouts"])
     plans = "".join(plan_html(pk, i == 0) for i, pk in enumerate(o["plans"]))
-    lay_head = "On the lot" if oid == "single" else "Ways to arrange it"
-    lay_lede = ("Casa 01 fits a typical Austin lot, with the oak kept and the pátio facing the sun."
-                if oid == "single" else
-                f"{len(o['layouts'])} tested layouts, each checked against Austin's HOME rules for floor area, "
-                "building and paving cover. Pick one to see it.")
+    lay_head = "On the lot" if oid == "single" else "Site layouts"
     return f'''<section class="opt" id="p-{oid}" role="tabpanel" aria-labelledby="t-{oid}"{'' if first else ' hidden'}>
   <div class="band photos" data-sec="photos" id="{oid}-photos">
     <div class="wrap">
@@ -338,7 +326,7 @@ def option_html(o, first):
   </div>
   <div class="band soft" data-sec="layouts" id="{oid}-layouts">
     <div class="wrap">
-      <div class="sec-head"><div class="eyebrow">Site</div><h2>{lay_head}</h2><p class="lede">{esc(lay_lede)}</p></div>
+      <div class="sec-head"><div class="eyebrow">Site</div><h2>{lay_head}</h2></div>
       {chips("Layouts", lay_items)}
       <div class="panes">{lays}</div>
     </div>
@@ -368,8 +356,7 @@ def board_html():
     return f'''<section class="band board" id="materials" aria-labelledby="h-mat">
   <div class="wrap">
     <div class="sec-head"><div class="eyebrow">One palette</div><h2 id="h-mat">The material board</h2>
-      <p class="lede">The same fourteen materials in every home, Single, Duo or Trio. Each pairs a Brazilian
-      modern original with what an Austin builder buys.</p></div>
+      <p class="lede">Fourteen materials, used in every home. Tap one to see where it goes.</p></div>
     <div class="mb">
       <div class="detail" aria-live="polite">
         <div class="big"><img id="mbImg" src="{URL}sw_limestone.jpg" alt=""></div>
@@ -507,7 +494,6 @@ button{font:inherit;color:inherit}
 .sheet.plan img{max-height:min(74vh,760px)}
 .info{display:grid;gap:14px;align-content:start}
 .info p{color:var(--muted)}
-.info .rooms{font-size:13px;letter-spacing:.02em;color:var(--sage)}
 .kv{display:grid;margin:4px 0 0;border-top:1px solid var(--line)}
 .kv div{display:grid;grid-template-columns:110px 1fr;gap:12px;padding:8px 0;border-bottom:1px solid var(--line)}
 .kv dt{font-size:11px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding-top:3px}
@@ -552,9 +538,18 @@ button{font:inherit;color:inherit}
 .btn.primary:hover{background:#e2c690}
 .btn.ghost{border-color:currentColor;background:transparent}
 .btn.ghost:hover{background:rgba(236,230,216,.12)}
-footer{background:var(--forest);color:var(--on-forest-muted);font-size:13px;padding-block:32px;border-top:1px solid rgba(236,230,216,.12)}
-footer .wrap{display:grid;gap:8px}
-footer b{color:var(--on-forest);font-weight:900;letter-spacing:.14em;text-transform:uppercase;font-size:12px}
+footer{background:var(--forest);color:var(--on-forest-muted);font-size:14px;padding-block:52px 28px;border-top:1px solid rgba(236,230,216,.12)}
+.foot{display:grid;gap:30px 24px;grid-template-columns:1fr 1fr}
+.f-brand{grid-column:1/-1}
+@media (min-width:800px){.foot{grid-template-columns:1.6fr 1fr 1fr 1fr}.f-brand{grid-column:auto}}
+.f-brand a{font-family:var(--serif);font-size:26px;color:var(--on-forest);text-decoration:none;line-height:1.1}
+.f-brand p{margin-top:8px;font-family:var(--serif);font-style:italic;font-size:18px;color:var(--gold-hi)}
+.f-col{display:grid;gap:9px;align-content:start}
+.f-col b{color:var(--on-forest);font-weight:900;letter-spacing:.16em;text-transform:uppercase;font-size:11px;margin-bottom:4px}
+.f-col a{text-decoration:none;color:var(--on-forest-muted);transition:color .2s}
+.f-col a:hover{color:var(--gold-hi)}
+.f-base{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 24px;margin-top:40px;padding-top:18px;
+  border-top:1px solid rgba(236,230,216,.14);font-size:12.5px}
 
 /* lightbox */
 dialog.lb{padding:0;border:0;background:transparent;max-width:min(96vw,1600px);width:100%}
@@ -594,7 +589,8 @@ JS = r"""
   var h=location.hash.slice(1).split('-')[0];
   pick(h);
   if(location.hash.indexOf('-')>0){var el=document.getElementById(location.hash.slice(1));if(el)el.scrollIntoView();}
-  addEventListener('hashchange',function(){var k=location.hash.slice(1);if(ids.indexOf(k)>=0)pick(k);});
+  addEventListener('hashchange',function(){var k=location.hash.slice(1);if(ids.indexOf(k)>=0){pick(k);
+    document.getElementById('p-'+k).scrollIntoView({behavior:'smooth'});}});
 
   // photo viewers
   var lb=document.getElementById('lb'),lbImg=lb.querySelector('img'),lbCap=lb.querySelector('p'),cur=null;
@@ -696,8 +692,8 @@ def page(preview=False):
   <div class="wrap hello">
     <div class="eyebrow">The homes</div>
     <h1>One way of building, three sizes.</h1>
-    <p class="lede">A courtyard house on its own lot, a pair of two-story homes, or the pair with a Casita. The same limestone,
-      cedar, cobogó and pátio in each, fitted to Austin lots under the HOME rules.</p>
+    <p class="lede">A courtyard house on its own lot, a pair of two-story homes, or the pair plus a Casita.
+      Limestone, cedar and cobogó in every one.</p>
   </div>
 </header>
 <div class="picker">
@@ -713,8 +709,7 @@ def page(preview=False):
 <section class="band dark end">
   <div class="wrap">
     <div class="eyebrow">Next</div>
-    <h2>See it in more detail.</h2>
-    <p class="lede" style="margin-top:12px">Walk Casa 01 in 3D, read the lookbooks, or join the early list for a Lot Fit Study on your land.</p>
+    <h2>Take a closer look.</h2>
     <div class="cta-row">
       <a class="btn primary" href="/#join">Join the early list</a>
       <a class="btn ghost" href="/house/">Casa 01 in 3D</a>
@@ -724,10 +719,18 @@ def page(preview=False):
   </div>
 </section>
 </main>
-<footer><div class="wrap"><b>Brazilian Modern Homes</b>
-  <span>Austin, Texas · <a href="/">Home</a> · <a href="/house/">Casa 01 in 3D</a> · <a href="/#join">Join the early list</a></span>
-  <span>Renderings and plans are concept designs. Layouts are checked against the HOME rules as we read them; a Lot Fit Study confirms your lot.</span>
-</div></footer>
+<footer>
+  <div class="wrap foot">
+    <div class="f-brand"><a href="/">Brazilian Modern Homes</a><p>Brazilian soul. Texas materials.</p></div>
+    <nav class="f-col" aria-label="The homes"><b>The homes</b><a href="#single">Single · Casa 01</a><a href="#duo">Duo · Casa 02 pair</a>
+      <a href="#trio">Trio · with a Casita</a><a href="#materials">Materials</a></nav>
+    <nav class="f-col" aria-label="Explore"><b>Explore</b><a href="/house/">Casa 01 in 3D</a>
+      <a href="/Casa01_Lookbook.pdf" target="_blank" rel="noopener">Casa 01 lookbook</a>
+      <a href="/Phase2_Lookbook.pdf" target="_blank" rel="noopener">Duo + Trio lookbook</a></nav>
+    <nav class="f-col" aria-label="Get started"><b>Get started</b><a href="/#join">Join the early list</a></nav>
+  </div>
+  <div class="wrap"><div class="f-base"><span>© 2026 Brazilian Modern Homes · Austin, Texas</span><span>Renderings are concept designs.</span></div></div>
+</footer>
 <dialog class="lb" id="lb" aria-label="Photo">
   <img src="" alt="">
   <div class="bar2"><p></p><span class="nav"><button class="arrow prev" type="button" aria-label="Previous photo">←</button>

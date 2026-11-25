@@ -120,7 +120,6 @@ button{font:inherit;color:inherit}
 .sheet.plan img{max-height:min(74vh,760px)}
 .info{display:grid;gap:14px;align-content:start}
 .info p{color:var(--muted)}
-.info .rooms{font-size:13px;letter-spacing:.02em;color:var(--sage)}
 .kv{display:grid;margin:4px 0 0;border-top:1px solid var(--line)}
 .kv div{display:grid;grid-template-columns:110px 1fr;gap:12px;padding:8px 0;border-bottom:1px solid var(--line)}
 .kv dt{font-size:11px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding-top:3px}
@@ -165,9 +164,18 @@ button{font:inherit;color:inherit}
 .btn.primary:hover{background:#e2c690}
 .btn.ghost{border-color:currentColor;background:transparent}
 .btn.ghost:hover{background:rgba(236,230,216,.12)}
-footer{background:var(--forest);color:var(--on-forest-muted);font-size:13px;padding-block:32px;border-top:1px solid rgba(236,230,216,.12)}
-footer .wrap{display:grid;gap:8px}
-footer b{color:var(--on-forest);font-weight:900;letter-spacing:.14em;text-transform:uppercase;font-size:12px}
+footer{background:var(--forest);color:var(--on-forest-muted);font-size:14px;padding-block:52px 28px;border-top:1px solid rgba(236,230,216,.12)}
+.foot{display:grid;gap:30px 24px;grid-template-columns:1fr 1fr}
+.f-brand{grid-column:1/-1}
+@media (min-width:800px){.foot{grid-template-columns:1.6fr 1fr 1fr 1fr}.f-brand{grid-column:auto}}
+.f-brand a{font-family:var(--serif);font-size:26px;color:var(--on-forest);text-decoration:none;line-height:1.1}
+.f-brand p{margin-top:8px;font-family:var(--serif);font-style:italic;font-size:18px;color:var(--gold-hi)}
+.f-col{display:grid;gap:9px;align-content:start}
+.f-col b{color:var(--on-forest);font-weight:900;letter-spacing:.16em;text-transform:uppercase;font-size:11px;margin-bottom:4px}
+.f-col a{text-decoration:none;color:var(--on-forest-muted);transition:color .2s}
+.f-col a:hover{color:var(--gold-hi)}
+.f-base{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 24px;margin-top:40px;padding-top:18px;
+  border-top:1px solid rgba(236,230,216,.14);font-size:12.5px}
 
 /* lightbox */
 dialog.lb{padding:0;border:0;background:transparent;max-width:min(96vw,1600px);width:100%}
@@ -187,8 +195,8 @@ dialog.lb::backdrop{background:rgba(16,20,18,.92)}
   <div class="wrap hello">
     <div class="eyebrow">The homes</div>
     <h1>One way of building, three sizes.</h1>
-    <p class="lede">A courtyard house on its own lot, a pair of two-story homes, or the pair with a Casita. The same limestone,
-      cedar, cobogó and pátio in each, fitted to Austin lots under the HOME rules.</p>
+    <p class="lede">A courtyard house on its own lot, a pair of two-story homes, or the pair plus a Casita.
+      Limestone, cedar and cobogó in every one.</p>
   </div>
 </header>
 <div class="picker">
@@ -204,7 +212,7 @@ dialog.lb::backdrop{background:rgba(16,20,18,.92)}
     <div class="wrap">
       <div class="opt-head">
         <div><div class="eyebrow">Single · 1 home</div><h2>Casa 01, the courtyard house</h2></div>
-        <p class="lede">One story in an L around a pátio. Limestone and cedar face the street; inside, every room opens to the courtyard and its live oak.</p>
+        <p class="lede">One story wrapped around a pátio and its live oak. Every room opens onto it.</p>
       </div>
       <div class="facts"><div><b>1</b><span>home</span></div><div><b>1,670</b><span>sq ft</span></div><div><b>3 / 2</b><span>bed / bath</span></div><div><b>65 ft</b><span>typical lot width</span></div></div>
       <div class="viewer" data-gal='[{&quot;s&quot;: &quot;/img/street-800.jpg&quot;, &quot;l&quot;: &quot;/img/street-1600.jpg&quot;, &quot;c&quot;: &quot;From the street: limestone, a cedar gate and the cobogó screen.&quot;}, {&quot;s&quot;: &quot;/img/street_dusk-800.jpg&quot;, &quot;l&quot;: &quot;/img/street_dusk-1600.jpg&quot;, &quot;c&quot;: &quot;At dusk the cobogó glows like a lantern.&quot;}, {&quot;s&quot;: &quot;/img/gate-800.jpg&quot;, &quot;l&quot;: &quot;/img/gate-1600.jpg&quot;, &quot;c&quot;: &quot;Through the gate, the pátio opens to the right.&quot;}, {&quot;s&quot;: &quot;/img/entry-800.jpg&quot;, &quot;l&quot;: &quot;/img/entry-1600.jpg&quot;, &quot;c&quot;: &quot;Covered entry: black calçada underfoot, the cobogó beside you.&quot;}, {&quot;s&quot;: &quot;/img/courtyard-800.jpg&quot;, &quot;l&quot;: &quot;/img/courtyard-1600.jpg&quot;, &quot;c&quot;: &quot;The pátio under a live oak. Every room opens onto it.&quot;}, {&quot;s&quot;: &quot;/img/interior-800.jpg&quot;, &quot;l&quot;: &quot;/img/interior-1600.jpg&quot;, &quot;c&quot;: &quot;The great room, under a cedar ceiling.&quot;}, {&quot;s&quot;: &quot;/img/kitchen-800.jpg&quot;, &quot;l&quot;: &quot;/img/kitchen-1600.jpg&quot;, &quot;c&quot;: &quot;Kitchen with honed black granite and green tile.&quot;}, {&quot;s&quot;: &quot;/img/bath-800.jpg&quot;, &quot;l&quot;: &quot;/img/bath-1600.jpg&quot;, &quot;c&quot;: &quot;Primary bath: green tile, a curbless shower, a skylight overhead.&quot;}, {&quot;s&quot;: &quot;/img/bath2-800.jpg&quot;, &quot;l&quot;: &quot;/img/bath2-1600.jpg&quot;, &quot;c&quot;: &quot;Hall bath: terracotta tile around the tub.&quot;}, {&quot;s&quot;: &quot;/img/veranda-800.jpg&quot;, &quot;l&quot;: &quot;/img/veranda-1600.jpg&quot;, &quot;c&quot;: &quot;The veranda faces the backyard oak.&quot;}]'>
@@ -224,16 +232,16 @@ dialog.lb::backdrop{background:rgba(16,20,18,.92)}
   </div>
   <div class="band soft" data-sec="layouts" id="single-layouts">
     <div class="wrap">
-      <div class="sec-head"><div class="eyebrow">Site</div><h2>On the lot</h2><p class="lede">Casa 01 fits a typical Austin lot, with the oak kept and the pátio facing the sun.</p></div>
+      <div class="sec-head"><div class="eyebrow">Site</div><h2>On the lot</h2></div>
       
       <div class="panes"><div class="pane lay" data-k="C01">
-  <a class="sheet site" href="/homes/img/site_C01.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/site_C01.svg" alt="Site plan, Casa 01 on a typical lot" loading="lazy"></a>
+  <a class="sheet site" href="/homes/img/site_C01.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/site_C01.svg" alt="Site plan: On its own lot" loading="lazy"></a>
   <div class="info">
-    <div class="eyebrow">Casa 01</div>
-    <h3>Casa 01 on a typical lot</h3>
-    <dl class="kv"><div><dt>Lot</dt><dd>65 × 125 ft</dd></div><div><dt>Home</dt><dd>Casa 01, 3 bed / 2 bath</dd></div><div><dt>Floor area</dt><dd>1,670 sf</dd></div><div><dt>Parking</dt><dd>Carport behind a cedar gate</dd></div></dl>
-    <ul class="notes"><li>The house wraps the pátio on two sides; the carport and a cedar fence close the other two.</li><li>The heritage oak stays in the backyard, and the veranda faces it.</li><li>The front yard is a meadow of native grasses on decomposed granite.</li></ul>
-    <figure class="mass"><img src="/homes/img/mass_C01.jpg" alt="From above: the pátio open to the sky, Casa 01 on a typical lot" loading="lazy"><figcaption>From above: the pátio open to the sky</figcaption></figure>
+    <div class="eyebrow">65 × 125 ft lot</div>
+    <h3>On its own lot</h3>
+    <p>The house wraps the pátio, and the backyard oak stays.</p>
+    <dl class="kv"><div><dt>Homes</dt><dd>Casa 01, 3 bed / 2 bath</dd></div><div><dt>Floor area</dt><dd>1,670 sf</dd></div><div><dt>Parking</dt><dd>Carport</dd></div></dl>
+    <figure class="mass"><img src="/homes/img/mass_C01.jpg" alt="From above: On its own lot" loading="lazy"><figcaption>From above</figcaption></figure>
   </div>
 </div></div>
     </div>
@@ -247,8 +255,7 @@ dialog.lb::backdrop{background:rgba(16,20,18,.92)}
   <div class="info">
     <div class="eyebrow">1,670 sf</div>
     <h3>Floor plan</h3>
-    <p>One story in an L around the pátio: the great room, kitchen and primary suite across the back, two bedrooms along a gallery, and the carport and covered entry at the street.</p>
-    <p class="rooms">Great room · Kitchen · Primary suite · Bedrooms 2 and 3 · Bath 2 · Laundry · Pátio · Veranda · Carport</p>
+    <p>Great room, kitchen and primary suite across the back; two bedrooms along the gallery; carport and covered entry at the street.</p>
   </div>
 </div></div>
     </div>
@@ -258,7 +265,7 @@ dialog.lb::backdrop{background:rgba(16,20,18,.92)}
     <div class="wrap">
       <div class="opt-head">
         <div><div class="eyebrow">Duo · 2 homes</div><h2>Casa 02, a pair on one lot</h2></div>
-        <p class="lede">Two homes of two stories, mirrored about a shared wall. Each has its own door, carport, pátio and skylit upstairs; a single cobogó lantern joins the pair at the street.</p>
+        <p class="lede">Two two-story homes that share one wall. Each has its own front door, carport and pátio.</p>
       </div>
       <div class="facts"><div><b>2</b><span>homes</span></div><div><b>1,350–1,560</b><span>sq ft each</span></div><div><b>3 / 2.5</b><span>bed / bath each</span></div><div><b>50–65 ft</b><span>lot width</span></div></div>
       <div class="viewer" data-gal='[{&quot;s&quot;: &quot;/homes/img/duo_street-800.jpg&quot;, &quot;l&quot;: &quot;/homes/img/duo_street-1600.jpg&quot;, &quot;c&quot;: &quot;The pair from the street: limestone corners, cedar carport gates, one cobogó lantern between the doors.&quot;}, {&quot;s&quot;: &quot;/homes/img/duo_dusk-800.jpg&quot;, &quot;l&quot;: &quot;/homes/img/duo_dusk-1600.jpg&quot;, &quot;c&quot;: &quot;At dusk the stair light turns the cobogó into a lantern.&quot;}, {&quot;s&quot;: &quot;/homes/img/duo_entry-800.jpg&quot;, &quot;l&quot;: &quot;/homes/img/duo_entry-1600.jpg&quot;, &quot;c&quot;: &quot;Each front door sits under the cobogó, on a black calçada threshold.&quot;}, {&quot;s&quot;: &quot;/homes/img/duo_garden-800.jpg&quot;, &quot;l&quot;: &quot;/homes/img/duo_garden-1600.jpg&quot;, &quot;c&quot;: &quot;Evening at the back: each home opens to its own pátio under a cedar sunshade.&quot;}, {&quot;s&quot;: &quot;/homes/img/kitchen-800.jpg&quot;, &quot;l&quot;: &quot;/homes/img/kitchen-1600.jpg&quot;, &quot;c&quot;: &quot;Kitchen: rift oak, green tile, a granite island with an oak table built on.&quot;}, {&quot;s&quot;: &quot;/homes/img/primary_bath-800.jpg&quot;, &quot;l&quot;: &quot;/homes/img/primary_bath-1600.jpg&quot;, &quot;c&quot;: &quot;Primary bath: from the green-tiled shower to the oak vanity, the round brass mirror and sconces.&quot;}, {&quot;s&quot;: &quot;/homes/img/upper_hall-800.jpg&quot;, &quot;l&quot;: &quot;/homes/img/upper_hall-1600.jpg&quot;, &quot;c&quot;: &quot;Upstairs: a skylight over the stair, a cedar ceiling, and a desk on the landing behind the cobogó.&quot;}]'>
@@ -278,25 +285,25 @@ dialog.lb::backdrop{background:rgba(16,20,18,.92)}
   </div>
   <div class="band soft" data-sec="layouts" id="duo-layouts">
     <div class="wrap">
-      <div class="sec-head"><div class="eyebrow">Site</div><h2>Ways to arrange it</h2><p class="lede">2 tested layouts, each checked against Austin&#x27;s HOME rules for floor area, building and paving cover. Pick one to see it.</p></div>
+      <div class="sec-head"><div class="eyebrow">Site</div><h2>Site layouts</h2></div>
       <div class="chips" role="group" aria-label="Layouts"><button class="chip" type="button" data-k="L1-D1" aria-pressed="true"><b>Side by side</b><span>50 × 125 ft lot</span></button><button class="chip" type="button" data-k="L4-D2" aria-pressed="false"><b>Front and back</b><span>65 × 125 ft lot</span></button></div>
       <div class="panes"><div class="pane lay" data-k="L1-D1">
-  <a class="sheet site" href="/homes/img/site_L1-D1.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/site_L1-D1.svg" alt="Site plan, Duo, side by side" loading="lazy"></a>
+  <a class="sheet site" href="/homes/img/site_L1-D1.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/site_L1-D1.svg" alt="Site plan: Side by side" loading="lazy"></a>
   <div class="info">
-    <div class="eyebrow">L1-D1</div>
-    <h3>Duo, side by side</h3>
-    <dl class="kv"><div><dt>Lot</dt><dd>50 × 125 ft</dd></div><div><dt>Homes</dt><dd>2 × Casa 02 (3 bed / 2.5 bath)</dd></div><div><dt>Floor area</dt><dd>2,700 sf in all</dd></div><div><dt>Parking</dt><dd>2 on site</dd></div><div><dt>Paving</dt><dd>2,141 of 2,812 sf allowed</dd></div></dl>
-    <ul class="notes"><li>Bays on the outside, so every bedroom has an outside wall and stairs, closets and the carports buffer the shared wall.</li><li>Two 10-ft curb cuts at the outer edges use exactly the 40% front-yard limit. If the city allows only one, use the small-lot split or a front-and-back duo instead.</li><li>Front walks are stepping stones in planting, and carts live in each carport: the front yard has no paving to spare. The step-free route is up the apron to the side door.</li></ul>
-    <figure class="mass"><img src="/homes/img/mass_L1-D1.jpg" alt="Massing view, Duo, side by side" loading="lazy"><figcaption>Massing view</figcaption></figure>
+    <div class="eyebrow">50 × 125 ft lot</div>
+    <h3>Side by side</h3>
+    <p>Side by side, each with its own carport at the street.</p>
+    <dl class="kv"><div><dt>Homes</dt><dd>2 × Casa 02 (3 bed / 2.5 bath)</dd></div><div><dt>Floor area</dt><dd>2,700 sf in all</dd></div><div><dt>Parking</dt><dd>2 on site</dd></div></dl>
+    <figure class="mass"><img src="/homes/img/mass_L1-D1.jpg" alt="From above: Side by side" loading="lazy"><figcaption>From above</figcaption></figure>
   </div>
 </div><div class="pane lay" data-k="L4-D2" hidden>
-  <a class="sheet site" href="/homes/img/site_L4-D2.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/site_L4-D2.svg" alt="Site plan, Duo front and back, ground-floor suites" loading="lazy"></a>
+  <a class="sheet site" href="/homes/img/site_L4-D2.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/site_L4-D2.svg" alt="Site plan: Front and back" loading="lazy"></a>
   <div class="info">
-    <div class="eyebrow">L4-D2</div>
-    <h3>Duo front and back, ground-floor suites</h3>
-    <dl class="kv"><div><dt>Lot</dt><dd>65 × 125 ft</dd></div><div><dt>Homes</dt><dd>2 × Casa 02 with suite (3 bed + den / 3.5 bath)</dd></div><div><dt>Floor area</dt><dd>3,120 sf in all</dd></div><div><dt>Parking</dt><dd>2 on site</dd></div><div><dt>Paving</dt><dd>3,497 of 3,656 sf allowed</dd></div></dl>
-    <ul class="notes"><li>With paving to spare, each home parks on a pad beside the shared drive and its flex bay becomes a ground-floor bedroom suite (1,560 sf).</li><li>One curb cut serves both homes; the drive stops at the back home&#x27;s parking.</li><li>Both pátios face east off the two-story block, shaded in the afternoon.</li></ul>
-    <figure class="mass"><img src="/homes/img/mass_L4-D2.jpg" alt="Massing view, Duo front and back, ground-floor suites" loading="lazy"><figcaption>Massing view</figcaption></figure>
+    <div class="eyebrow">65 × 125 ft lot</div>
+    <h3>Front and back</h3>
+    <p>One behind the other on a shared drive. Each ground floor gains a bedroom suite.</p>
+    <dl class="kv"><div><dt>Homes</dt><dd>2 × Casa 02 with suite (3 bed + den / 3.5 bath)</dd></div><div><dt>Floor area</dt><dd>3,120 sf in all</dd></div><div><dt>Parking</dt><dd>2 on site</dd></div></dl>
+    <figure class="mass"><img src="/homes/img/mass_L4-D2.jpg" alt="Massing view: Front and back" loading="lazy"><figcaption>Massing view</figcaption></figure>
   </div>
 </div></div>
     </div>
@@ -310,24 +317,21 @@ dialog.lb::backdrop{background:rgba(16,20,18,.92)}
   <div class="info">
     <div class="eyebrow">570 sf + carport</div>
     <h3>Ground floor, carport</h3>
-    <p>The front door opens under the cobogó to a hall past the powder room, then one long room for cooking, dining and living that opens to the pátio. The car parks behind a cedar gate.</p>
-    <p class="rooms">Entry · WC · Hall · Mech · Kitchen · Living + dining · Carport</p>
+    <p>Kitchen, dining and living in one long room that opens to the pátio. Powder room by the front door, carport behind a cedar gate.</p>
   </div>
 </div><div class="pane pl" data-k="UP" hidden>
   <a class="sheet plan" href="/homes/img/plan_UP.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/plan_UP.svg" alt="Floor plan: Upper floor" loading="lazy"></a>
   <div class="info">
     <div class="eyebrow">780 sf</div>
     <h3>Upper floor</h3>
-    <p>The primary suite with a walk-in and a skylit shower, two bedrooms (one works as a den), a second bath under a skylight, and the laundry.</p>
-    <p class="rooms">Bed 2 · Closet 2 · Closet 3 · Bath 2 · Bed 3 / den · Landing · Hall · Laundry · Closet · Primary · Primary bath</p>
+    <p>Primary suite with a walk-in and a skylit shower, two more bedrooms, a second bath and the laundry.</p>
   </div>
 </div><div class="pane pl" data-k="GS" hidden>
   <a class="sheet plan" href="/homes/img/plan_GS.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/plan_GS.svg" alt="Floor plan: Ground floor, suite" loading="lazy"></a>
   <div class="info">
     <div class="eyebrow">780 sf</div>
     <h3>Ground floor, suite</h3>
-    <p>Where parking moves to a pad, the carport becomes a bedroom suite with its own bath and closet. The home becomes 3 bed + den, 3.5 bath, 1,560 sf.</p>
-    <p class="rooms">Suite bedroom · Suite closet · Suite bath · Entry · WC · Hall · Mech · Kitchen · Living + dining</p>
+    <p>The carport becomes a bedroom suite with its own bath, for lots that park on a pad. 3 bed + den, 3.5 bath, 1,560 sf in all.</p>
   </div>
 </div></div>
     </div>
@@ -337,7 +341,7 @@ dialog.lb::backdrop{background:rgba(16,20,18,.92)}
     <div class="wrap">
       <div class="opt-head">
         <div><div class="eyebrow">Trio · 3 homes</div><h2>The pair plus a Casita</h2></div>
-        <p class="lede">The Casa 02 pair with a one-story Casita on the same lot: at the back, at the street, on the corner or down a shared drive. Three front doors, three gardens.</p>
+        <p class="lede">The Casa 02 pair plus a one-story Casita on the same lot. Three front doors, three gardens.</p>
       </div>
       <div class="facts"><div><b>3</b><span>homes</span></div><div><b>3,340</b><span>sq ft in all</span></div><div><b>3 + 3 + 1</b><span>bedrooms</span></div><div><b>50–65 ft</b><span>lot width</span></div></div>
       <div class="viewer" data-gal='[{&quot;s&quot;: &quot;/homes/img/trio_street-800.jpg&quot;, &quot;l&quot;: &quot;/homes/img/trio_street-1600.jpg&quot;, &quot;c&quot;: &quot;On an alley lot the Casita faces the street behind its walled garden; the pair sits back.&quot;}, {&quot;s&quot;: &quot;/homes/img/side_drive-800.jpg&quot;, &quot;l&quot;: &quot;/homes/img/side_drive-1600.jpg&quot;, &quot;c&quot;: &quot;On a 65 ft lot one drive serves all three; the street sees a limestone wall, the cobogó above.&quot;}, {&quot;s&quot;: &quot;/homes/img/trio_aerial-800.jpg&quot;, &quot;l&quot;: &quot;/homes/img/trio_aerial-1600.jpg&quot;, &quot;c&quot;: &quot;From above: the pair at the street, the Casita behind with its own garden.&quot;}, {&quot;s&quot;: &quot;/homes/img/duo_entry-800.jpg&quot;, &quot;l&quot;: &quot;/homes/img/duo_entry-1600.jpg&quot;, &quot;c&quot;: &quot;Each front door sits under the cobogó, on a black calçada threshold.&quot;}, {&quot;s&quot;: &quot;/homes/img/duo_garden-800.jpg&quot;, &quot;l&quot;: &quot;/homes/img/duo_garden-1600.jpg&quot;, &quot;c&quot;: &quot;Evening at the back: each home opens to its own pátio under a cedar sunshade.&quot;}, {&quot;s&quot;: &quot;/homes/img/kitchen-800.jpg&quot;, &quot;l&quot;: &quot;/homes/img/kitchen-1600.jpg&quot;, &quot;c&quot;: &quot;Kitchen: rift oak, green tile, a granite island with an oak table built on.&quot;}, {&quot;s&quot;: &quot;/homes/img/primary_bath-800.jpg&quot;, &quot;l&quot;: &quot;/homes/img/primary_bath-1600.jpg&quot;, &quot;c&quot;: &quot;Primary bath: from the green-tiled shower to the oak vanity, the round brass mirror and sconces.&quot;}]'>
@@ -357,43 +361,43 @@ dialog.lb::backdrop{background:rgba(16,20,18,.92)}
   </div>
   <div class="band soft" data-sec="layouts" id="trio-layouts">
     <div class="wrap">
-      <div class="sec-head"><div class="eyebrow">Site</div><h2>Ways to arrange it</h2><p class="lede">4 tested layouts, each checked against Austin&#x27;s HOME rules for floor area, building and paving cover. Pick one to see it.</p></div>
+      <div class="sec-head"><div class="eyebrow">Site</div><h2>Site layouts</h2></div>
       <div class="chips" role="group" aria-label="Layouts"><button class="chip" type="button" data-k="L1-T1" aria-pressed="true"><b>Casita behind</b><span>50 × 125 ft lot</span></button><button class="chip" type="button" data-k="L2-T2" aria-pressed="false"><b>Casita at the street</b><span>50 × 125 ft, with alley</span></button><button class="chip" type="button" data-k="L3-T1" aria-pressed="false"><b>Corner lot</b><span>60 × 125 ft corner</span></button><button class="chip" type="button" data-k="L4-T1" aria-pressed="false"><b>Shared side drive</b><span>65 × 125 ft lot</span></button></div>
       <div class="panes"><div class="pane lay" data-k="L1-T1">
-  <a class="sheet site" href="/homes/img/site_L1-T1.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/site_L1-T1.svg" alt="Site plan, Trio, Casita on foot" loading="lazy"></a>
+  <a class="sheet site" href="/homes/img/site_L1-T1.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/site_L1-T1.svg" alt="Site plan: Casita behind" loading="lazy"></a>
   <div class="info">
-    <div class="eyebrow">L1-T1</div>
-    <h3>Trio, Casita on foot</h3>
-    <dl class="kv"><div><dt>Lot</dt><dd>50 × 125 ft</dd></div><div><dt>Homes</dt><dd>2 × Casa 02 (3 bed / 2.5 bath); Casita (1 bed + flex)</dd></div><div><dt>Floor area</dt><dd>3,340 sf in all</dd></div><div><dt>Parking</dt><dd>2 on site</dd></div><div><dt>Paving</dt><dd>2,804 of 2,812 sf allowed</dd></div></dl>
-    <ul class="notes"><li>The Casita has no parking: no paving is left for it on a 50-ft lot.</li><li>Its path runs along the west side yard as stepping stones in planting, which add no paving.</li><li>Fire access: about 143 ft from the street to the Casita&#x27;s far corner, inside the 150-ft reach.</li></ul>
-    <figure class="mass"><img src="/homes/img/mass_L1-T1.jpg" alt="Massing view, Trio, Casita on foot" loading="lazy"><figcaption>Massing view</figcaption></figure>
+    <div class="eyebrow">50 × 125 ft lot</div>
+    <h3>Casita behind</h3>
+    <p>The pair at the street, the Casita in the back garden.</p>
+    <dl class="kv"><div><dt>Homes</dt><dd>2 × Casa 02 (3 bed / 2.5 bath); Casita (1 bed + flex)</dd></div><div><dt>Floor area</dt><dd>3,340 sf in all</dd></div><div><dt>Parking</dt><dd>2 on site</dd></div></dl>
+    <figure class="mass"><img src="/homes/img/mass_L1-T1.jpg" alt="Massing view: Casita behind" loading="lazy"><figcaption>Massing view</figcaption></figure>
   </div>
 </div><div class="pane lay" data-k="L2-T2" hidden>
-  <a class="sheet site" href="/homes/img/site_L2-T2.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/site_L2-T2.svg" alt="Site plan, Trio, Casita at the street, pair on the alley" loading="lazy"></a>
+  <a class="sheet site" href="/homes/img/site_L2-T2.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/site_L2-T2.svg" alt="Site plan: Casita at the street" loading="lazy"></a>
   <div class="info">
-    <div class="eyebrow">L2-T2</div>
-    <h3>Trio, Casita at the street, pair on the alley</h3>
-    <dl class="kv"><div><dt>Lot</dt><dd>50 × 125 ft, alley</dd></div><div><dt>Homes</dt><dd>Casita (1 bed + flex); 2 × Casa 02 (3 bed / 2.5 bath)</dd></div><div><dt>Floor area</dt><dd>3,340 sf in all</dd></div><div><dt>Parking</dt><dd>2 on site</dd></div><div><dt>Paving</dt><dd>2,742 of 2,812 sf allowed</dd></div></dl>
-    <ul class="notes"><li>The street sees a one-story Casita behind its walled garden; the two-story pair sits back.</li><li>The pair parks off the alley with no curb cut on the street; guests enter through the garden.</li><li>The Casita parks on the street. Its garden wall is cobogó between limestone piers, with a 4 ft cedar gate into its pátio.</li></ul>
-    <figure class="mass"><img src="/homes/img/mass_L2-T2.jpg" alt="Massing view, Trio, Casita at the street, pair on the alley" loading="lazy"><figcaption>Massing view</figcaption></figure>
+    <div class="eyebrow">50 × 125 ft, with alley</div>
+    <h3>Casita at the street</h3>
+    <p>The Casita faces the street. The pair sits back and parks off the alley.</p>
+    <dl class="kv"><div><dt>Homes</dt><dd>Casita (1 bed + flex); 2 × Casa 02 (3 bed / 2.5 bath)</dd></div><div><dt>Floor area</dt><dd>3,340 sf in all</dd></div><div><dt>Parking</dt><dd>2 on site</dd></div></dl>
+    <figure class="mass"><img src="/homes/img/mass_L2-T2.jpg" alt="Massing view: Casita at the street" loading="lazy"><figcaption>Massing view</figcaption></figure>
   </div>
 </div><div class="pane lay" data-k="L3-T1" hidden>
-  <a class="sheet site" href="/homes/img/site_L3-T1.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/site_L3-T1.svg" alt="Site plan, Trio on a corner, Casita facing the side street" loading="lazy"></a>
+  <a class="sheet site" href="/homes/img/site_L3-T1.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/site_L3-T1.svg" alt="Site plan: Corner lot" loading="lazy"></a>
   <div class="info">
-    <div class="eyebrow">L3-T1</div>
-    <h3>Trio on a corner, Casita facing the side street</h3>
-    <dl class="kv"><div><dt>Lot</dt><dd>60 × 125 ft, corner</dd></div><div><dt>Homes</dt><dd>2 × Casa 02 (3 bed / 2.5 bath); Casita (1 bed + flex)</dd></div><div><dt>Floor area</dt><dd>3,340 sf in all</dd></div><div><dt>Parking</dt><dd>3 on site</dd></div><div><dt>Paving</dt><dd>3,063 of 3,375 sf allowed</dd></div></dl>
-    <ul class="notes"><li>The Casita&#x27;s door and parking face the side street, so the main street sees only the pair.</li><li>Every home parks on site; the Casita&#x27;s pad sits between the gardens, off the side street.</li><li>A second street frontage means a second curb cut on its own street.</li></ul>
-    <figure class="mass"><img src="/homes/img/mass_L3-T1.jpg" alt="Massing view, Trio on a corner, Casita facing the side street" loading="lazy"><figcaption>Massing view</figcaption></figure>
+    <div class="eyebrow">60 × 125 ft corner</div>
+    <h3>Corner lot</h3>
+    <p>The Casita faces the side street, with its own parking.</p>
+    <dl class="kv"><div><dt>Homes</dt><dd>2 × Casa 02 (3 bed / 2.5 bath); Casita (1 bed + flex)</dd></div><div><dt>Floor area</dt><dd>3,340 sf in all</dd></div><div><dt>Parking</dt><dd>3 on site</dd></div></dl>
+    <figure class="mass"><img src="/homes/img/mass_L3-T1.jpg" alt="Massing view: Corner lot" loading="lazy"><figcaption>Massing view</figcaption></figure>
   </div>
 </div><div class="pane lay" data-k="L4-T1" hidden>
-  <a class="sheet site" href="/homes/img/site_L4-T1.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/site_L4-T1.svg" alt="Site plan, Trio on a shared drive, side-drive carports" loading="lazy"></a>
+  <a class="sheet site" href="/homes/img/site_L4-T1.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/site_L4-T1.svg" alt="Site plan: Shared side drive" loading="lazy"></a>
   <div class="info">
-    <div class="eyebrow">L4-T1</div>
-    <h3>Trio on a shared drive, side-drive carports</h3>
-    <dl class="kv"><div><dt>Lot</dt><dd>65 × 125 ft</dd></div><div><dt>Homes</dt><dd>2 × Casa 02, side drive (3 bed / 2.5 bath); Casita (1 bed + flex)</dd></div><div><dt>Floor area</dt><dd>3,340 sf in all</dd></div><div><dt>Parking</dt><dd>3 on site</dd></div><div><dt>Paving</dt><dd>3,579 of 3,656 sf allowed</dd></div></dl>
-    <ul class="notes"><li>One 12 ft drive along the west line serves all three homes; one curb cut.</li><li>Each Casa 02 parks across its front, entering from the drive. The street sees a full limestone wall with the cobogó above.</li><li>Living rooms open east to their own pátios; the back walls get high windows.</li></ul>
-    <figure class="mass"><img src="/homes/img/mass_L4-T1.jpg" alt="Massing view, Trio on a shared drive, side-drive carports" loading="lazy"><figcaption>Massing view</figcaption></figure>
+    <div class="eyebrow">65 × 125 ft lot</div>
+    <h3>Shared side drive</h3>
+    <p>One shared drive serves all three homes.</p>
+    <dl class="kv"><div><dt>Homes</dt><dd>2 × Casa 02, side drive (3 bed / 2.5 bath); Casita (1 bed + flex)</dd></div><div><dt>Floor area</dt><dd>3,340 sf in all</dd></div><div><dt>Parking</dt><dd>3 on site</dd></div></dl>
+    <figure class="mass"><img src="/homes/img/mass_L4-T1.jpg" alt="Massing view: Shared side drive" loading="lazy"><figcaption>Massing view</figcaption></figure>
   </div>
 </div></div>
     </div>
@@ -407,32 +411,28 @@ dialog.lb::backdrop{background:rgba(16,20,18,.92)}
   <div class="info">
     <div class="eyebrow">570 sf + carport</div>
     <h3>Ground floor, carport</h3>
-    <p>The front door opens under the cobogó to a hall past the powder room, then one long room for cooking, dining and living that opens to the pátio. The car parks behind a cedar gate.</p>
-    <p class="rooms">Entry · WC · Hall · Mech · Kitchen · Living + dining · Carport</p>
+    <p>Kitchen, dining and living in one long room that opens to the pátio. Powder room by the front door, carport behind a cedar gate.</p>
   </div>
 </div><div class="pane pl" data-k="GD" hidden>
   <a class="sheet plan" href="/homes/img/plan_GD.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/plan_GD.svg" alt="Floor plan: Ground floor, side drive" loading="lazy"></a>
   <div class="info">
     <div class="eyebrow">570 sf + carport</div>
     <h3>Ground floor, side drive</h3>
-    <p>For lots with one shared drive: the car turns in from the side to a bay across the front, and the street sees a limestone wall.</p>
-    <p class="rooms">Carport · Mech · WC · Pantry · Hall · Kitchen · Living + dining</p>
+    <p>For lots with a shared drive. The car turns in from the side, and the street sees a limestone wall.</p>
   </div>
 </div><div class="pane pl" data-k="UP" hidden>
   <a class="sheet plan" href="/homes/img/plan_UP.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/plan_UP.svg" alt="Floor plan: Upper floor" loading="lazy"></a>
   <div class="info">
     <div class="eyebrow">780 sf</div>
     <h3>Upper floor</h3>
-    <p>The primary suite with a walk-in and a skylit shower, two bedrooms (one works as a den), a second bath under a skylight, and the laundry.</p>
-    <p class="rooms">Bed 2 · Closet 2 · Closet 3 · Bath 2 · Bed 3 / den · Landing · Hall · Laundry · Closet · Primary · Primary bath</p>
+    <p>Primary suite with a walk-in and a skylit shower, two more bedrooms, a second bath and the laundry.</p>
   </div>
 </div><div class="pane pl" data-k="CS" hidden>
   <a class="sheet plan" href="/homes/img/plan_CS.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="/homes/img/plan_CS.svg" alt="Floor plan: Casita" loading="lazy"></a>
   <div class="info">
     <div class="eyebrow">640 sf</div>
     <h3>Casita</h3>
-    <p>One story: living and kitchen, a flex room, a bedroom and bath, and a covered porch on its own walled garden.</p>
-    <p class="rooms">Living + kitchen · Flex · Hall · W/D + linen · Bath · Bedroom · Closet</p>
+    <p>One story: living and kitchen, a flex room, a bedroom and bath, and a covered porch on its own garden.</p>
   </div>
 </div></div>
     </div>
@@ -441,8 +441,7 @@ dialog.lb::backdrop{background:rgba(16,20,18,.92)}
 <section class="band board" id="materials" aria-labelledby="h-mat">
   <div class="wrap">
     <div class="sec-head"><div class="eyebrow">One palette</div><h2 id="h-mat">The material board</h2>
-      <p class="lede">The same fourteen materials in every home, Single, Duo or Trio. Each pairs a Brazilian
-      modern original with what an Austin builder buys.</p></div>
+      <p class="lede">Fourteen materials, used in every home. Tap one to see where it goes.</p></div>
     <div class="mb">
       <div class="detail" aria-live="polite">
         <div class="big"><img id="mbImg" src="/homes/img/sw_limestone.jpg" alt=""></div>
@@ -468,8 +467,7 @@ dialog.lb::backdrop{background:rgba(16,20,18,.92)}
 <section class="band dark end">
   <div class="wrap">
     <div class="eyebrow">Next</div>
-    <h2>See it in more detail.</h2>
-    <p class="lede" style="margin-top:12px">Walk Casa 01 in 3D, read the lookbooks, or join the early list for a Lot Fit Study on your land.</p>
+    <h2>Take a closer look.</h2>
     <div class="cta-row">
       <a class="btn primary" href="/#join">Join the early list</a>
       <a class="btn ghost" href="/house/">Casa 01 in 3D</a>
@@ -479,10 +477,18 @@ dialog.lb::backdrop{background:rgba(16,20,18,.92)}
   </div>
 </section>
 </main>
-<footer><div class="wrap"><b>Brazilian Modern Homes</b>
-  <span>Austin, Texas · <a href="/">Home</a> · <a href="/house/">Casa 01 in 3D</a> · <a href="/#join">Join the early list</a></span>
-  <span>Renderings and plans are concept designs. Layouts are checked against the HOME rules as we read them; a Lot Fit Study confirms your lot.</span>
-</div></footer>
+<footer>
+  <div class="wrap foot">
+    <div class="f-brand"><a href="/">Brazilian Modern Homes</a><p>Brazilian soul. Texas materials.</p></div>
+    <nav class="f-col" aria-label="The homes"><b>The homes</b><a href="#single">Single · Casa 01</a><a href="#duo">Duo · Casa 02 pair</a>
+      <a href="#trio">Trio · with a Casita</a><a href="#materials">Materials</a></nav>
+    <nav class="f-col" aria-label="Explore"><b>Explore</b><a href="/house/">Casa 01 in 3D</a>
+      <a href="/Casa01_Lookbook.pdf" target="_blank" rel="noopener">Casa 01 lookbook</a>
+      <a href="/Phase2_Lookbook.pdf" target="_blank" rel="noopener">Duo + Trio lookbook</a></nav>
+    <nav class="f-col" aria-label="Get started"><b>Get started</b><a href="/#join">Join the early list</a></nav>
+  </div>
+  <div class="wrap"><div class="f-base"><span>© 2026 Brazilian Modern Homes · Austin, Texas</span><span>Renderings are concept designs.</span></div></div>
+</footer>
 <dialog class="lb" id="lb" aria-label="Photo">
   <img src="" alt="">
   <div class="bar2"><p></p><span class="nav"><button class="arrow prev" type="button" aria-label="Previous photo">←</button>
@@ -517,7 +523,8 @@ dialog.lb::backdrop{background:rgba(16,20,18,.92)}
   var h=location.hash.slice(1).split('-')[0];
   pick(h);
   if(location.hash.indexOf('-')>0){var el=document.getElementById(location.hash.slice(1));if(el)el.scrollIntoView();}
-  addEventListener('hashchange',function(){var k=location.hash.slice(1);if(ids.indexOf(k)>=0)pick(k);});
+  addEventListener('hashchange',function(){var k=location.hash.slice(1);if(ids.indexOf(k)>=0){pick(k);
+    document.getElementById('p-'+k).scrollIntoView({behavior:'smooth'});}});
 
   // photo viewers
   var lb=document.getElementById('lb'),lbImg=lb.querySelector('img'),lbCap=lb.querySelector('p'),cur=null;
