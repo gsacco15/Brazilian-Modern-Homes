@@ -205,7 +205,7 @@ def s6_side_drive_trio():
                 # the house, a limestone pier at the lot line), and between B's pátio and the Casita's court
                 screens=[dict(y=15.0, x0=32.0, x1=65.0, gate=(32.25, 35.75), stone=2.0, h=7.0),
                          dict(y=83.0, x0=32.0, x1=65.0, gate=None, stone=2.0, h=7.0)],
-                drive_walk=(8.5, 0.0, 12.0, 92.0),                       # a lit limestone walk along the drive's east edge
+                drive_walk=(8.5, 0.0, 12.0, 92.0),                       # limestone walk along the drive, recessed lights
                 trees=[(50, 34, 10), (50, 72, 9), (20, 112, 8)],
                 fence=[[(0, 15), (0, 125), (65, 125), (65, 15)]],
                 address_walls=[(12.3, 1.0, 12.97, 7.0)],
@@ -258,6 +258,42 @@ def screen_parts(sc):
     return dict(y=sc["y"], h=sc.get("h", 7.0), piers=[(x1 - st, x1)],
                 posts=[(g[0], g[0] + 0.25), (g[1], g[1] + 0.25)] if g else [],
                 gate=(g[0] + 0.25, g[1]) if g else None, cobogo=((g[1] + 0.25) if g else x0, x1 - st))
+
+
+def walk_lights(s, step=8.0, clear=1.0):
+    """Recessed lights for the drive walk: flush in-ground, drive-over rated, spaced along the stretches between the
+    carport openings and the front-door canopies so nothing sits where a car turns in or a door opens.
+    Returns [(x, y)] in site feet, down the middle of the walk."""
+    dw = s.get("drive_walk")
+    if not dw:
+        return []
+    blocks = []
+    for h in s["homes"]:
+        p, t = h["plan"], h["t"]
+        spans = []
+        if p.get("gate"):
+            spans.append(p["gate"])
+        if p.get("canopy"):
+            r = p["canopy"]["rect"]
+            spans.append(((r[0], r[1]), (r[2], r[3])))
+        for (ax, ay), (bx, by) in spans:
+            ys = (tp(t, ax, ay)[1], tp(t, bx, by)[1])
+            blocks.append((min(ys) - clear, max(ys) + clear))
+    blocks.sort()
+    segs, cur = [], dw[1] + 1.5
+    for b0, b1 in blocks:
+        if b0 > cur:
+            segs.append((cur, b0))
+        cur = max(cur, b1)
+    segs.append((cur, dw[3] - 1.5))
+    x = (dw[0] + dw[2]) / 2
+    pts = []
+    for a, b in segs:
+        if b - a < 2.5:
+            continue
+        n = max(1, round((b - a) / step))
+        pts += [(x, a + (k + 0.5) * (b - a) / n) for k in range(n)]
+    return pts
 
 
 def calcada_rects(s):

@@ -17,7 +17,7 @@ OUT = os.path.join(HERE, "out")
 sys.path.insert(0, os.path.dirname(HERE))
 sys.path.insert(0, os.path.join(ROOT, "casa01"))
 from model import homes as H  # noqa: E402
-from model.sites import (SITES, HOME_RULES, T, check_site, ellipse_pts, footprint, garden_wall, screen_parts,  # noqa: E402
+from model.sites import (SITES, HOME_RULES, T, check_site, ellipse_pts, footprint, garden_wall, screen_parts, walk_lights,  # noqa: E402
                          rect_pts, tp, tpoly)
 import drawings as DR  # noqa: E402  (Casa 01 drawing kit: SVG class, colours, trees, north arrow)
 
@@ -493,10 +493,8 @@ def site_svg(s):
     if s.get("drive_walk"):                                               # limestone walk along the drive, lit
         dw = s["drive_walk"]
         svg.rect(*dw, fill="#ebe5d6", stroke=LIGHT, sw=0.3)
-        yb = dw[1] + 6.0
-        while yb < dw[3] - 2:
-            svg.circle(dw[0] + 0.5, yb, 0.35, fill=INK, stroke="none")         # bollard lights
-            yb += 14.0
+        for lx, ly in walk_lights(s):                                      # recessed in-ground lights
+            svg.circle(lx, ly, 0.32, fill="#fff6d8", stroke=INK, sw=0.4)
         cx, cy = svg.X((dw[0] + dw[2]) / 2), svg.Y((dw[1] + dw[3]) / 2)
         svg.add(f'<text x="{cx:.1f}" y="{cy:.1f}" font-family="{FONT}" font-size="5.2" fill="{MID}" text-anchor="middle" '
                 f'letter-spacing="0.8" transform="rotate(-90 {cx:.1f} {cy:.1f})">LIT WALK</text>')

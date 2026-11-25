@@ -270,14 +270,15 @@ walls and a white upper floor.</p>
 
     # III. the trio ----------------------------------------------------------
     P.append(bleed(img.get("side_drive", ""), "III · The trio", "The trio · 65 x 125 lot, one drive", "Stone, cobogó, a lit walk",
-                   "One 12 ft drive serves all three homes, with a limestone walk and bronze bollards to each front door. "
+                   "One 12 ft drive serves all three homes, with a limestone walk to each front door, lit from lights set into it. "
                    "Each Casa 02 parks across its front, so the street sees a full limestone wall, and a 7 ft cobogó screen "
                    "with a cedar gate closes the front garden from the sidewalk.",
                    ["Cobogó privacy screen", "Cedar garden gate", "Limestone street wall", "Lit drive walk"])); nxt()
     P.append(bleed(img.get("side_drive_night", ""), "III · The trio", "At night", "Light on the walk",
-                   "Bollards light the walk up the drive, a cedar canopy lights each front door, the limestone wall is "
-                   "washed from below, and the screen glows from the garden behind it.",
-                   ["Bollards", "Canopy light", "Wall grazers", "Cobogó glow"])); nxt()
+                   "Lights set flush in the walk and in the house walls lead up the drive, so nothing stands where a car "
+                   "turns in. A cedar canopy lights each front door, the limestone wall is washed from below, and the "
+                   "screen glows from the garden behind it.",
+                   ["Recessed walk lights", "Canopy light", "Wall grazers", "Cobogó glow"])); nxt()
     P.append(bleed(img.get("trio_street", ""), "III · The trio", "The trio · Casita at the street", "A garden wall, a cedar gate",
                    "On an alley lot the one-story Casita faces the street behind its walled garden: a limestone wall, "
                    "cobogó between cedar posts and a cedar slat gate, with a covered porch inside. The pair sits back "

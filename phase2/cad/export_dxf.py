@@ -20,7 +20,7 @@ from ezdxf.enums import TextEntityAlignment
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
 from model import homes as H  # noqa: E402
-from model.sites import SITES, HOME_RULES, footprint, garden_wall, screen_parts, tp  # noqa: E402
+from model.sites import SITES, HOME_RULES, footprint, garden_wall, screen_parts, walk_lights, tp  # noqa: E402
 sys.path.insert(0, os.path.join(os.path.dirname(HERE), "plans"))
 import plans as PL  # noqa: E402  (developed plans: sheets, tags, schedules, the same as the PDF)
 import elevations as EL  # noqa: E402  (elevations and sections, the same as the PDF)
@@ -362,10 +362,8 @@ def draw_garden_wall(msp, s, origin):
     if dw:                                                   # the lit limestone walk along the drive
         ox, oy = origin
         rect(msp, ox + dw[0], oy + dw[1], ox + dw[2], oy + dw[3], "C-PAVE")
-        yb = dw[1] + 6.0
-        while yb < dw[3] - 2:
-            msp.add_circle(((ox + dw[0] + 0.5) * IN, (oy + yb) * IN), 0.35 * IN, dxfattribs={"layer": "E-LITE"})
-            yb += 14.0
+        for lx, ly in walk_lights(s):                       # recessed in-ground lights, clear of carports and doors
+            msp.add_circle(((ox + lx) * IN, (oy + ly) * IN), 0.32 * IN, dxfattribs={"layer": "E-LITE"})
 
 
 def _garden_wall(msp, gw, origin):

@@ -30,7 +30,7 @@ import furniture as FU  # noqa: E402  (Casa 01)
 from geo import MB, M, new_coll, subtract_rect  # noqa: E402
 
 R, MAT, H, tp = B.R, B.MAT, B.H, B.tp
-from model.sites import SITES, footprint, garden_wall, screen_parts  # noqa: E402
+from model.sites import SITES, footprint, garden_wall, screen_parts, walk_lights  # noqa: E402
 
 OUT = os.path.join(HERE, "hifi")
 FF, GF_TOP, UP_FF, UP_TOP, ROOF, ONE = B.FF, B.GF_TOP, B.UP_FF, B.UP_TOP, B.ROOF, B.ONE_STORY_ROOF
@@ -790,13 +790,12 @@ def site(L, coll, s, rng):
             for xa, xb in ((x0, (x0 + x1) / 2), ((x0 + x1) / 2, x1)):
                 wk.box(xa + 0.02, yy + 0.02, 0.0, xb - 0.02, ye - 0.02, 0.12, mat=0, r=rng.random())
             yy = ye
-        yb = y0 + 6.0
-        while yb < y1 - 2:
-            bx = x0 + 0.5
-            wk.box(bx - 0.21, yb - 0.21, 0.1, bx + 0.21, yb + 0.21, 2.35, mat=1)
-            wk.box(bx - 0.19, yb - 0.19, 2.35, bx + 0.19, yb + 0.19, 2.62, mat=2)
-            wk.box(bx - 0.23, yb - 0.23, 2.62, bx + 0.23, yb + 0.23, 2.8, mat=1)
-            yb += 14.0
+        for lx, ly in walk_lights(s):                         # flush in-ground lights: bronze ring, frosted lens
+            wk.box(lx - 0.27, ly - 0.27, 0.06, lx + 0.27, ly + 0.27, 0.125, mat=1)
+            wk.box(lx - 0.19, ly - 0.19, 0.06, lx + 0.19, ly + 0.19, 0.13, mat=2)
+        for wx, wy in wall_step_lights(s):                    # recessed step lights in the house walls, 18 in up
+            wk.box(wx - 0.03, wy - 0.33, 1.25, wx + 0.01, wy + 0.33, 1.6, mat=1)
+            wk.box(wx - 0.035, wy - 0.27, 1.3, wx - 0.025, wy + 0.27, 1.42, mat=2)
         wk.build(coll, bevel=0.004)
     for i, r in enumerate(s.get("address_walls", [])):         # low limestone walls at the walks
         ashlar(L, coll, None, [], 0.0, [r], 2.3, f"address wall {i}", 11 + i, cap=True)
@@ -807,6 +806,27 @@ def site(L, coll, s, rng):
     if s.get("calcada"):
         calcada(L, coll, s["calcada"], lambda r: 0.12, "site")
     neighbourhood(L, coll, s, rng)
+
+
+def wall_step_lights(s):
+    """Recessed step lights in the house walls beside the drive walk: one beside each walk light that has a house
+    wall next to it (not at a carport opening or a door). Returns [(x of the wall face, y)]."""
+    dw = s.get("drive_walk")
+    if not dw:
+        return []
+    out = []
+    for h in s["homes"]:
+        p, t = h["plan"], h["t"]
+        if not p.get("gate"):
+            continue
+        fx0, fy0, fx1, fy1 = footprint(t)
+        if abs(fx0 - dw[2]) > 0.6:                           # the home's wall must be the walk's edge
+            continue
+        ya = tp(t, 0.0, p["gate"][1][1])[1] + 0.5            # from the end of the carport opening
+        for lx, ly in walk_lights(s):
+            if ya < ly < fy1 - 0.5:
+                out.append((fx0, ly))
+    return out
 
 
 SIDING = {}
@@ -990,12 +1010,10 @@ def night_lights(coll, lights, s):
         ob.location = (x * M, y * M, z * M)
         coll.objects.link(ob)
 
-    dw = s.get("drive_walk")
-    if dw:                                                   # bollard heads along the drive walk
-        yb = dw[1] + 6.0
-        while yb < dw[3] - 2:
-            pt(dw[0] + 0.5, yb, 2.5, 9, "bollard")
-            yb += 14.0
+    for lx, ly in walk_lights(s):                            # recessed walk lights glow up from the paving
+        pt(lx, ly, 0.35, 5, "walk light")
+    for wx, wy in wall_step_lights(s):                       # step lights wash the walk from the wall
+        pt(wx - 0.5, wy, 1.3, 6, "step light")
     for sc in s.get("screens", []):                          # the cobogó glows: soft uplights on the garden side
         c0, c1 = screen_parts(sc)["cobogo"]
         x = c0 + 2.5

@@ -63,7 +63,7 @@ P2_CAPTIONS = {
     "upper_hall": "Upstairs: a skylight over the stair, a cedar ceiling, and a desk on the landing behind the cobogó.",
     "trio_street": "On an alley lot the Casita faces the street behind its walled garden; the pair sits back.",
     "side_drive": "One drive serves all three homes. A cobogó screen closes the front garden from the street.",
-    "side_drive_night": "At night, bollards light the walk to each front door and the cobogó screen glows.",
+    "side_drive_night": "At night, lights set into the walk and the walls lead to each front door, and the screen glows.",
     "trio_aerial": "From above: the pair at the street, the Casita behind with its own garden.",
 }
 
