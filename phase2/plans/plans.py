@@ -122,6 +122,8 @@ def door_row(d, plan):
         note = ""
     if "Mech" in rooms:
         note = "Louvred, for the water heater's air"
+    elif o.get("note"):
+        note = o["note"]
     elif d["ext"] and o["kind"] == "door":
         if "Carport" in rooms and plan is H.CASA02_GF_SIDE:
             note = "Entry from the carport: oak, solid core, no step"
@@ -319,8 +321,11 @@ SHEET_NOTES = {
     "A-104": ["For homes in a row on a shared drive (the 65-ft trio, L4-T1): the bay runs across the front and the car "
               "enters from the drive through a cedar gate. Upper floor as A-103.",
               "The street sees a full Lueders limestone wall with the cobogó above it on the upper floor only.",
-              "You enter through the bay on a calçada walk; the living room opens east to its own pátio through an "
-              "8 ft slider, and the back wall, 5 ft from the next home, takes a band of high windows."],
+              "The front door opens off the drive under a cedar canopy, into an entry hall where the pantry was; "
+              "visitors come up a lit limestone walk along the drive. The carport door stays as the everyday door "
+              "from the car.",
+              "The living room opens east to its own pátio through an 8 ft slider, behind a cobogó screen at the "
+              "street; the back wall, 5 ft from the next home, takes a band of high windows."],
     "A-103": ["The stair lands at the front, in a bright landing behind the cobogó (room for a desk); the hall runs "
               "back along the open stair to the primary suite.",
               "Bath 2 sits between the two front bedrooms on the outer wall, with a window. Laundry upstairs, beside "

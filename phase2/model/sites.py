@@ -194,19 +194,28 @@ def s6_side_drive_trio():
     homes = [dict(id="A", plan=gd, t=T(gd, 12, 15), park=True, kind="Casa 02, side drive", beds="3 bed / 2.5 bath"),
              dict(id="B", plan=gd, t=T(gd, 12, 59), park=True, kind="Casa 02, side drive", beds="3 bed / 2.5 bath"),
              dict(id="C", plan=cs, t=T(cs, 37, 88, mirror=True), park=True, kind="Casita", beds="1 bed + flex",
-                  tag=(47, 84.5))]
+                  tag=(47, 85.3))]
     return dict(id="L4-T1", name="Trio on a shared drive, side-drive carports", lot=dict(W=W, L=L), homes=homes,
                 patios=[(32, 15, 60, 54), (32, 59, 60, 83), (12, 103, 37, 120)],
                 pave=[("Drive", (0, 0, 12, 92)), ("Terrace", (34, 30, 42, 40)), ("Terrace", (34, 70, 42, 80)),
                       ("Terrace", (25, 105, 33, 113)), ("Carts", (52, 9, 62, 12.5))],
-                paths=[[(6, 93), (6, 100.5), (34.5, 100.5), (34.5, 86), (42, 86)]],
-                walls=[[(32, 54), (60, 54)], [(32, 83), (36, 83)]],
+                paths=[[(6, 93), (6, 101), (34, 101)]],                  # straight from the drive to the Casita door
+                walls=[[(32, 54), (60, 54)]],
+                # cobogó privacy screens, 7 ft: across A's pátio at the front setback line (a cedar garden gate by
+                # the house, a limestone pier at the lot line), and between B's pátio and the Casita's court
+                screens=[dict(y=15.0, x0=32.0, x1=65.0, gate=(32.25, 35.75), stone=2.0, h=7.0),
+                         dict(y=83.0, x0=32.0, x1=65.0, gate=None, stone=2.0, h=7.0)],
+                drive_walk=(8.5, 0.0, 12.0, 92.0),                       # a lit limestone walk along the drive's east edge
                 trees=[(50, 34, 10), (50, 72, 9), (20, 112, 8)],
                 fence=[[(0, 15), (0, 125), (65, 125), (65, 15)]],
                 address_walls=[(12.3, 1.0, 12.97, 7.0)],
                 notes=["One 12 ft drive along the west line serves all three homes; one curb cut.",
                        "Each Casa 02 parks across its front, entering from the drive (side-drive ground floor, "
                        "P2-23). The street sees a full limestone wall with the cobogó above.",
+                       "Visitors walk up a lit limestone walk along the drive to each front door: the Casa 02 doors "
+                       "open off the drive under cedar canopies, and the Casita's faces the end of its path.",
+                       "Cobogó screens close A's pátio from the street (a cedar garden gate by the house) and part "
+                       "B's pátio from the Casita's court.",
                        "Living rooms open east to their own pátios; the back walls get high windows.",
                        "The Casita parks at the end of the drive and walks behind B. Its porch would sit in the side "
                        "setback here, so this one has none.",
@@ -242,6 +251,15 @@ def garden_wall(s):
     return dict(y=y, piers=piers, posts=[], gate=g, cobogo=((g[1] + 1.0) if g else x0 + 2.0, x1 - 2.0))
 
 
+def screen_parts(sc):
+    """A cobogó privacy screen (sites' "screens") as the garden wall's parts: a cedar gate by the house on bronze
+    posts, cobogó, and a limestone pier at the outer end. Same keys as garden_wall()."""
+    x0, x1, st, g = sc["x0"], sc["x1"], sc["stone"], sc.get("gate")
+    return dict(y=sc["y"], h=sc.get("h", 7.0), piers=[(x1 - st, x1)],
+                posts=[(g[0], g[0] + 0.25), (g[1], g[1] + 0.25)] if g else [],
+                gate=(g[0] + 0.25, g[1]) if g else None, cobogo=((g[1] + 0.25) if g else x0, x1 - st))
+
+
 def calcada_rects(s):
     """Every calçada mosaic on the lot (x0, y0, x1, y1): the homes' (from their plans) and the site's own."""
     out = list(s.get("calcada", []))
@@ -271,6 +289,8 @@ def check_site(s):
         pave += max(0, x1 - x0) * max(0, y1 - y0)
         pave -= sum(_overlap((x0, y0, x1, y1), p) for p in porches)       # paving under a porch roof counts once
     pave += sum((r[2] - r[0]) * (r[3] - r[1]) for r in s.get("address_walls", []))   # low stone walls
+    for sc in s.get("screens", []):                                                  # cobogó screens and piers
+        pave += (sc["x1"] - sc["x0"] - sc["stone"]) * 0.33 + sc["stone"] * 1.0
     roofed = porches + [footprint(h["t"]) for h in s["homes"]]
     for r in calcada_rects(s):                                            # mosaic outside the roofs is paving
         a = (r[2] - r[0]) * (r[3] - r[1])

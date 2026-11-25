@@ -29,7 +29,7 @@ RENDER_DIRS = [os.path.join(P2, "render", d) for d in ("final", "hifi_v2", "hifi
 SW_DIRS = [os.path.join(P2, "web", "site", "img"), os.path.join(ROOT, "casa01", "renders", "swatches")]
 ELEV = os.path.join(P2, "plans", "out")
 VIEWS = ["duo_street", "duo_dusk", "duo_entry", "duo_garden", "kitchen", "primary_bath", "upper_hall",
-         "trio_street", "side_drive", "trio_aerial"]
+         "trio_street", "side_drive", "side_drive_night", "trio_aerial"]
 esc = html.escape
 
 A = H.area_summary()
@@ -209,7 +209,7 @@ walls and a white upper floor.</p>
 <div style="position:relative"><img class="fill" src="{img.get("duo_dusk", "")}" alt="Casa 02 duo at dusk"></div></section>''')
 
     # contents: page numbers are fixed by the order below
-    starts = {"I": 3, "II": 7, "III": 10, "IV": 14, "V": 17}
+    starts = {"I": 3, "II": 7, "III": 10, "IV": 15, "V": 18}
     moves = "".join(f'<div class="move"><div class="k">{i + 1}</div><div><h3>{t}</h3><p>{p}</p></div></div>'
                     for i, (t, p) in enumerate(MOVES))
     facts = "".join(f'<div><div class="n">{a}</div><div class="l">{b}</div></div>' for a, b in FACTS)
@@ -269,21 +269,26 @@ walls and a white upper floor.</p>
                       for m in INTERIOR) + '</div>'))
 
     # III. the trio ----------------------------------------------------------
+    P.append(bleed(img.get("side_drive", ""), "III · The trio", "The trio · 65 x 125 lot, one drive", "Stone, cobogó, a lit walk",
+                   "One 12 ft drive serves all three homes, with a limestone walk and bronze bollards to each front door. "
+                   "Each Casa 02 parks across its front, so the street sees a full limestone wall, and a 7 ft cobogó screen "
+                   "with a cedar gate closes the front garden from the sidewalk.",
+                   ["Cobogó privacy screen", "Cedar garden gate", "Limestone street wall", "Lit drive walk"])); nxt()
+    P.append(bleed(img.get("side_drive_night", ""), "III · The trio", "At night", "Light on the walk",
+                   "Bollards light the walk up the drive, a cedar canopy lights each front door, the limestone wall is "
+                   "washed from below, and the screen glows from the garden behind it.",
+                   ["Bollards", "Canopy light", "Wall grazers", "Cobogó glow"])); nxt()
     P.append(bleed(img.get("trio_street", ""), "III · The trio", "The trio · Casita at the street", "A garden wall, a cedar gate",
                    "On an alley lot the one-story Casita faces the street behind its walled garden: a limestone wall, "
                    "cobogó between cedar posts and a cedar slat gate, with a covered porch inside. The pair sits back "
                    "and parks off the alley.",
                    ["Limestone wall", "Cobogó panel", "Cedar garden gate"], top=True)); nxt()
-    P.append(bleed(img.get("side_drive", ""), "III · The trio", "The trio · 65 x 125 lot, one drive", "A stone wall to the street",
-                   "One 12 ft drive along the side serves all three homes. Each Casa 02 parks across its front, turning in "
-                   "from the drive, so the street sees a full limestone wall under the cobogó.",
-                   ["Shared drive", "Limestone street wall", "Cobogó above"])); nxt()
     P.append(bleed(img.get("trio_aerial", ""), "III · The trio", "The trio · 50 x 125 lot", "Three homes, three gardens",
                    "The pair at the street, the Casita in the back garden on a stepping-stone path. Every home has its own "
                    "pátio; solar on the roofs, skylights over the stairs and baths.",
                    ["Casita behind", "Private pátios", "Rooftop solar"], top=True)); nxt()
     lay = []
-    for lid in ("L1-T1", "L2-T2", "L3-T1", "L4-T1"):
+    for lid in ("L4-T1", "L1-T1", "L2-T2", "L3-T1"):
         s = site(lid)
         m = C.check_site(s)
         lay.append(f'<div class="p"><h4>{lid} · {s["lot"]["W"]:.0f} x {s["lot"]["L"]:.0f}'

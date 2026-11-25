@@ -17,7 +17,7 @@ OUT = os.path.join(HERE, "out")
 sys.path.insert(0, os.path.dirname(HERE))
 sys.path.insert(0, os.path.join(ROOT, "casa01"))
 from model import homes as H  # noqa: E402
-from model.sites import (SITES, HOME_RULES, T, check_site, ellipse_pts, footprint, garden_wall,  # noqa: E402
+from model.sites import (SITES, HOME_RULES, T, check_site, ellipse_pts, footprint, garden_wall, screen_parts,  # noqa: E402
                          rect_pts, tp, tpoly)
 import drawings as DR  # noqa: E402  (Casa 01 drawing kit: SVG class, colours, trees, north arrow)
 
@@ -336,11 +336,31 @@ def draw_sunshade(svg, plan, t, detail):
         svg.text(cx, cy, "CEDAR SUNSHADE ABOVE", 5.8, fill="#6e5a3c", ls=0.6, extra='dy="2"')
 
 
-def draw_garden_wall(svg, s):
-    """The Casita's street wall: limestone piers, a cedar gate swinging into the garden, cobogó between."""
-    gw = garden_wall(s)
-    if not gw:
+def draw_canopy(svg, plan, t, detail):
+    """A cedar canopy over a front door: dashed outline (overhead)."""
+    cn = plan.get("canopy")
+    if not cn:
         return
+    svg.poly(tpoly(t, rect_pts(cn["rect"])), fill="none", stroke=DR.CEDAR, sw=0.6, extra='stroke-dasharray="4 2"')
+    if detail == "full":
+        x0, y0, x1, y1 = cn["rect"]
+        cx, cy = tp(t, x0 - 1.6, (y0 + y1) / 2)
+        svg.add(f'<text x="{svg.X(cx):.1f}" y="{svg.Y(cy):.1f}" font-family="{FONT}" font-size="5.8" fill="#6e5a3c" '
+                f'letter-spacing="0.6" text-anchor="middle" transform="rotate(-90 {svg.X(cx):.1f} {svg.Y(cy):.1f})">'
+                f'FRONT DOOR · CANOPY ABOVE</text>')
+
+
+def draw_garden_wall(svg, s):
+    """The Casita's street wall and any privacy screens: limestone piers, a cedar gate swinging into the garden,
+    cobogó between."""
+    for sc in s.get("screens", []):
+        _draw_wall(svg, screen_parts(sc))
+    gw = garden_wall(s)
+    if gw:
+        _draw_wall(svg, gw)
+
+
+def _draw_wall(svg, gw):
     y = gw["y"]
     for p0, p1 in gw["piers"]:
         svg.rect(p0, y - 0.4, p1, y + 0.4, fill=LIMESTONE, stroke=INK, sw=0.6)
@@ -393,6 +413,7 @@ def draw_plan(svg, plan, t=None, detail="full", fs=8.5, labels=True):
     draw_porch(svg, plan, t, detail, fs)
     draw_skylights(svg, plan, t, detail)
     draw_sunshade(svg, plan, t, detail)
+    draw_canopy(svg, plan, t, detail)
     if labels:
         for room in plan["rooms"]:
             room_label(svg, room, t, detail, fs)
@@ -469,6 +490,16 @@ def site_svg(s):
         if k == "Carts":
             svg.text((r[0] + r[2]) / 2, (r[1] + r[3]) / 2, f"{3 * len(s['homes'])} CARTS", 5.5, fill="#6e5a3c",
                      extra='dy="2"')
+    if s.get("drive_walk"):                                               # limestone walk along the drive, lit
+        dw = s["drive_walk"]
+        svg.rect(*dw, fill="#ebe5d6", stroke=LIGHT, sw=0.3)
+        yb = dw[1] + 6.0
+        while yb < dw[3] - 2:
+            svg.circle(dw[0] + 0.5, yb, 0.35, fill=INK, stroke="none")         # bollard lights
+            yb += 14.0
+        cx, cy = svg.X((dw[0] + dw[2]) / 2), svg.Y((dw[1] + dw[3]) / 2)
+        svg.add(f'<text x="{cx:.1f}" y="{cy:.1f}" font-family="{FONT}" font-size="5.2" fill="{MID}" text-anchor="middle" '
+                f'letter-spacing="0.8" transform="rotate(-90 {cx:.1f} {cy:.1f})">LIT WALK</text>')
     for pts in s.get("paths", []):
         stepping(svg, pts)
     for x, y, rr in s["trees"]:

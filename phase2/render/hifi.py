@@ -30,7 +30,7 @@ import furniture as FU  # noqa: E402  (Casa 01)
 from geo import MB, M, new_coll, subtract_rect  # noqa: E402
 
 R, MAT, H, tp = B.R, B.MAT, B.H, B.tp
-from model.sites import SITES, footprint, garden_wall  # noqa: E402
+from model.sites import SITES, footprint, garden_wall, screen_parts  # noqa: E402
 
 OUT = os.path.join(HERE, "hifi")
 FF, GF_TOP, UP_FF, UP_TOP, ROOF, ONE = B.FF, B.GF_TOP, B.UP_FF, B.UP_TOP, B.ROOF, B.ONE_STORY_ROOF
@@ -51,6 +51,8 @@ VIEWS = {
                     strength=1.0, exposure=1.9, night=True, night_level=0.12),
     "primary_bath": dict(site="L1-D1", cam=(23.0, 53.0, 16.3), tgt=(23.2, 45.2, 15.0), lens=18, hdri="day", sun=200,
                          strength=1.0, exposure=1.6, night=True, night_level=0.15),
+    "side_drive_night": dict(site="L4-T1", cam=(-5.0, -23.0, 5.4), tgt=(19.0, 23.0, 9.8), lens=24, hdri="dusk",
+                             sun=290, strength=0.07, exposure=0.9, night=True),
     "side_drive": dict(site="L4-T1", cam=(-5.0, -23.0, 5.4), tgt=(19.0, 23.0, 9.8), lens=24, hdri="afternoon", sun=232,
                        strength=1.0, exposure=-0.1, night=False),
     "upper_hall": dict(site="L1-D1", cam=(16.3, 37.2, 16.7), tgt=(22.4, 24.0, 17.6), lens=16, hdri="day", sun=200,
@@ -133,7 +135,7 @@ def openings(plan, t, z0, M_):
                 fw, za, zb = 0.12, z0, z0 + B.DOOR_HEAD
                 for p0, p1, z_a, z_b in ((q0, q0 + fw, za, zb), (q1 - fw, q1, za, zb), (q0, q1, zb - fw, zb)):
                     wbox(M_["frames"], t, a, u, n, p0, p1, d0 + 0.05, d0 + 0.42, z_a, z_b)
-                front = abs(n[1] - 1.0) < 1e-6                       # the front door: solid oak
+                front = o.get("front", abs(n[1] - 1.0) < 1e-6)       # the front door: solid oak
                 if front:
                     wbox(M_["oak"], t, a, u, n, q0 + fw, q1 - fw, d0 + 0.16, d0 + 0.3, za, zb - fw)
                 else:                                                 # carport door: oak with a glass upper half
@@ -523,6 +525,20 @@ def home(L, coll, h, protos, lights):
             lb(ss, t, x0 + 0.2, yy, x1 - 0.2, yy + 0.1, z + 0.05, z + 0.42, mat=0, r=rng.random())
             yy += 0.32
         ss.build(coll, bevel=0.002)
+    cn = plan.get("canopy")
+    if cn:                                                     # cedar canopy over the front door, bronze fascia
+        x0, y0, x1, y1 = cn["rect"]
+        z = cn["z"]
+        cm = MB(f"{nm} canopy", [L["cedar_x"], L["bronze"]])
+        lb(cm, t, x0, y0, x1, y1, z + 0.1, z + 0.45, mat=1)
+        lb(cm, t, x0 + 0.06, y0 + 0.06, x1, y1 - 0.06, z, z + 0.1, mat=0)
+        cm.build(coll, bevel=0.003)
+        X, Y = tp(t, (x0 + x1) / 2 + 0.3, (y0 + y1) / 2)
+        lights.append(("spot", X, Y, z - 0.15, 40))
+    if not casa and plan.get("calcada"):                       # a light over the Casita's stoop
+        x0, y0, x1, y1 = plan["calcada"][0]
+        X, Y = tp(t, (x0 + x1) / 2, (y0 + y1) / 2)
+        lights.append(("spot", X, Y, ONE[0] - 0.4, 28))
     cb = MB(f"{nm} cedar ceilings", [L["cedar_y"]])
     for r in plan["rooms"]:
         if r.get("outdoor"):                                   # carport ceiling
@@ -749,6 +765,39 @@ def site(L, coll, s, rng):
             g0, g1 = gw["gate"]
             cedar_gate(L, coll, None, g0 + 0.03, g1 - 0.03, y - 0.06, 0.15 if three else 0.2, 8.0 if three else 7.6,
                        "Casita garden")
+    for i, sc in enumerate(s.get("screens", [])):             # cobogó privacy screens: gate, cobogó, limestone pier
+        sp = screen_parts(sc)
+        y, hh = sp["y"], sp["h"]
+        ashlar(L, coll, None, [], 0.0, [(p0, y - 0.4, p1, y + 0.4) for p0, p1 in sp["piers"]], hh - 0.15,
+               f"screen {i}", 21 + i, cap=True)
+        c0, c1 = sp["cobogo"]
+        B.cobogo_panel(L, f"Screen cobogo {i}", c0, c1, y - 0.165, 0.0, hh)
+        if sp["posts"]:
+            po = MB(f"screen {i} posts", [L["bronze"]])
+            for p0, p1 in sp["posts"]:
+                po.box(p0, y - 0.12, -0.3, p1, y + 0.12, hh)
+            po.build(coll, bevel=0.002)
+        if sp["gate"]:
+            g0, g1 = sp["gate"]
+            cedar_gate(L, coll, None, g0 + 0.03, g1 - 0.03, y - 0.06, 0.15, hh, f"screen {i}")
+    dw = s.get("drive_walk")
+    if dw:                                                   # limestone walk along the drive, bronze bollards
+        x0, y0, x1, y1 = dw
+        wk = MB("Drive walk", [L["pavers"], L["bronze"], L["lamp"]])
+        yy = y0
+        while yy < y1 - 0.05:
+            ye = min(yy + 3.0, y1)
+            for xa, xb in ((x0, (x0 + x1) / 2), ((x0 + x1) / 2, x1)):
+                wk.box(xa + 0.02, yy + 0.02, 0.0, xb - 0.02, ye - 0.02, 0.12, mat=0, r=rng.random())
+            yy = ye
+        yb = y0 + 6.0
+        while yb < y1 - 2:
+            bx = x0 + 0.5
+            wk.box(bx - 0.21, yb - 0.21, 0.1, bx + 0.21, yb + 0.21, 2.35, mat=1)
+            wk.box(bx - 0.19, yb - 0.19, 2.35, bx + 0.19, yb + 0.19, 2.62, mat=2)
+            wk.box(bx - 0.23, yb - 0.23, 2.62, bx + 0.23, yb + 0.23, 2.8, mat=1)
+            yb += 14.0
+        wk.build(coll, bevel=0.004)
     for i, r in enumerate(s.get("address_walls", [])):         # low limestone walls at the walks
         ashlar(L, coll, None, [], 0.0, [r], 2.3, f"address wall {i}", 11 + i, cap=True)
         mbx = MB(f"mailbox {i}", [L["bronze"]])
@@ -925,6 +974,47 @@ def night_lights(coll, lights, s):
         ob = bpy.data.objects.new(ld.name, ld)
         ob.location = (x * M, y * M, z * M)
         coll.objects.link(ob)
+    def up(x, y, z, e, size=40, name="uplight"):              # a spot aimed up: trees, stone, screens
+        ld = bpy.data.lights.new(name, "SPOT")
+        ld.energy, ld.color, ld.shadow_soft_size = e, warm, 0.05
+        ld.spot_size, ld.spot_blend = math.radians(size), 0.6
+        ob = bpy.data.objects.new(name, ld)
+        ob.location = (x * M, y * M, z * M)
+        ob.rotation_euler = (math.pi, 0.0, 0.0)
+        coll.objects.link(ob)
+
+    def pt(x, y, z, e, name="site light"):
+        ld = bpy.data.lights.new(name, "POINT")
+        ld.energy, ld.color, ld.shadow_soft_size = e, warm, 0.08
+        ob = bpy.data.objects.new(name, ld)
+        ob.location = (x * M, y * M, z * M)
+        coll.objects.link(ob)
+
+    dw = s.get("drive_walk")
+    if dw:                                                   # bollard heads along the drive walk
+        yb = dw[1] + 6.0
+        while yb < dw[3] - 2:
+            pt(dw[0] + 0.5, yb, 2.5, 9, "bollard")
+            yb += 14.0
+    for sc in s.get("screens", []):                          # the cobogó glows: soft uplights on the garden side
+        c0, c1 = screen_parts(sc)["cobogo"]
+        x = c0 + 2.5
+        while x < c1 - 1.0:
+            up(x, sc["y"] + 0.9, 0.25, 75, 75, "screen glow")
+            x += 5.0
+    for x, y, r in s["trees"]:                               # trees: two uplights each
+        up(x - 1.2, y - 1.6, 0.3, 110, 35, "tree uplight")
+        up(x + 1.4, y - 0.7, 0.3, 80, 35, "tree uplight")
+    for h in s["homes"]:                                     # graze the limestone street walls
+        for x0, y0, x1, y1 in h["plan"].get("stone", {}).get("piers", []):
+            if y0 < 0.01 and x1 - x0 > 3:
+                x = x0 + 1.5
+                while x < x1 - 1.0:
+                    X, Y = tp(h["t"], x, -0.45)
+                    up(X, Y, 0.15, 6, 22, "wall grazer")
+                    x += 3.0
+    for r in s.get("address_walls", []):                     # the mailbox and number light
+        pt((r[0] + r[2]) / 2, r[1] + 0.9, 2.9, 5, "mailbox light")
     for pts in s.get("paths", []):                           # low path lights beside the stepping stones
         for (x0, y0), (x1, y1) in zip(pts, pts[1:]):
             n = max(1, int(math.hypot(x1 - x0, y1 - y0) / 7))

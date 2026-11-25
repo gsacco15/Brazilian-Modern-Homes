@@ -62,7 +62,8 @@ P2_CAPTIONS = {
     "primary_bath": "Primary bath: from the green-tiled shower to the oak vanity, the round brass mirror and sconces.",
     "upper_hall": "Upstairs: a skylight over the stair, a cedar ceiling, and a desk on the landing behind the cobogó.",
     "trio_street": "On an alley lot the Casita faces the street behind its walled garden; the pair sits back.",
-    "side_drive": "On a 65 ft lot one drive serves all three; the street sees a limestone wall, the cobogó above.",
+    "side_drive": "One drive serves all three homes. A cobogó screen closes the front garden from the street.",
+    "side_drive_night": "At night, bollards light the walk to each front door and the cobogó screen glows.",
     "trio_aerial": "From above: the pair at the street, the Casita behind with its own garden.",
 }
 
@@ -74,7 +75,8 @@ PLANS = {
            "The carport becomes a bedroom suite with its own bath, for lots that park on a pad. "
            "3 bed + den, 3.5 bath, 1,560 sf in all."),
     "GD": (H.CASA02_GF_SIDE, "Ground floor, side drive", "570 sf + carport",
-           "For lots with a shared drive. The car turns in from the side, and the street sees a limestone wall."),
+           "For lots with a shared drive. The front door opens off the drive under a cedar canopy, the car "
+           "turns in from the side, and the street sees a limestone wall."),
     "UP": (H.CASA02_UPPER, "Upper floor", "780 sf",
            "Primary suite with a walk-in and a skylit shower, two more bedrooms, a second bath and the laundry."),
     "CS": (H.CASITA, "Casita", "640 sf",
@@ -107,8 +109,9 @@ OPTIONS = [
          lede="The Casa 02 pair plus a one-story Casita on the same lot. Three front doors, three gardens.",
          facts=[("3", "homes"), ("3,340", "sq ft in all"), ("3 + 3 + 1", "bedrooms"), ("50–65 ft", "lot width")],
          gallery=[("p2", k, P2_CAPTIONS[k]) for k in
-                  ("trio_street", "side_drive", "trio_aerial", "duo_entry", "duo_garden", "kitchen", "primary_bath")],
-         layouts=["L1-T1", "L2-T2", "L3-T1", "L4-T1"], plans=["GC", "GD", "UP", "CS"]),
+                  ("side_drive", "side_drive_night", "trio_street", "trio_aerial", "duo_garden", "kitchen",
+                   "primary_bath")],
+         layouts=["L4-T1", "L1-T1", "L2-T2", "L3-T1"], plans=["GD", "UP", "CS", "GC"]),
 ]
 
 C01_LAYOUT = dict(
@@ -252,11 +255,11 @@ LAYOUT_DESC = {
     "L1-T1": "The pair at the street, the Casita in the back garden.",
     "L2-T2": "The Casita faces the street. The pair sits back and parks off the alley.",
     "L3-T1": "The Casita faces the side street, with its own parking.",
-    "L4-T1": "One shared drive serves all three homes.",
+    "L4-T1": "One shared drive with a lit walk to all three front doors. Cobogó screens give each garden privacy.",
 }
 
 
-def layout_html(lid):
+def layout_html(lid, first=False):
     air = os.path.exists(os.path.join(P2, "render", "final", f"air_{lid}.png"))
     if lid == "C01":
         L = C01_LAYOUT
@@ -274,7 +277,7 @@ def layout_html(lid):
         desc = LAYOUT_DESC[lid]
         mass_cap = "From above" if air else "Massing view"
     kv = "".join(f"<div><dt>{esc(a)}</dt><dd>{esc(b)}</dd></div>" for a, b in facts)
-    return f'''<div class="pane lay" data-k="{lid}"{'' if lid in ('C01', 'L1-D1', 'L1-T1') else ' hidden'}>
+    return f'''<div class="pane lay" data-k="{lid}"{'' if first else ' hidden'}>
   <a class="sheet site" href="{URL}site_{lid}.svg" target="_blank" rel="noopener" title="Open the drawing full size"><img src="{URL}site_{lid}.svg" alt="Site plan: {esc(title)}" loading="lazy"></a>
   <div class="info">
     <div class="eyebrow">{esc(lot_s)}</div>
@@ -310,7 +313,7 @@ def option_html(o, first):
         lay_items = [(lid, *LAYOUT_LABEL[lid]) for lid in o["layouts"]]
     plan_items = [(pk, PLANS[pk][1] if pk != "C01" else C01_PLAN[0], PLANS[pk][2] if pk != "C01" else C01_PLAN[1])
                   for pk in o["plans"]]
-    lays = "".join(layout_html(lid) for lid in o["layouts"])
+    lays = "".join(layout_html(lid, i == 0) for i, lid in enumerate(o["layouts"]))
     plans = "".join(plan_html(pk, i == 0) for i, pk in enumerate(o["plans"]))
     lay_head = "On the lot" if oid == "single" else "Site layouts"
     return f'''<section class="opt" id="p-{oid}" role="tabpanel" aria-labelledby="t-{oid}"{'' if first else ' hidden'}>

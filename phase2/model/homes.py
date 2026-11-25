@@ -226,24 +226,28 @@ CASA02_UPPER = dict(
 # cobogó above it on the upper floor only. You enter through the bay, on a calçada walk, to an oak door into the
 # hall. The living room opens east to its own pátio through an 8 ft slider; the back wall, 5 ft from the next
 # home, gets a band of high windows instead of the big slider. Detached only, so the east wall can have glass.
+# Front doors that face the drive (L4-T1): solid oak, with their own note in the door schedule
+FRONT_GD = dict(door(19.5, 3.0, "L", "e"), front=True, note="Front door from the drive walk: oak, solid core, cedar canopy")
+FRONT_CS_DRIVE = dict(door(11.5, 3.0, "L", "e"), front=True, note="Front door facing the path: oak, solid core")
+
 CASA02_GF_SIDE = dict(
     name="Casa 02 · ground floor, side drive", W=W2, D=D2,
     walls=loop([(0.0, 10.5), (20.0, 10.5), (20.0, 39.0), (0.0, 39.0)],
                {0: [door(0.75, 2.67, "L", "s"), door(11.5, 3.0, "L", "s")],
-                1: [slider(17.5, 8.0)],
+                1: [dict(slider(17.5, 8.0), note="Two panels, one sliding, to the pátio")],
                 2: [win(3.0, 14.0, "high")],
-                3: [win(5.0, 6.0, "sill 3'-6\"")]})
+                3: [win(5.0, 6.0, "sill 3'-6\""), FRONT_GD]})
     + [
         part((6.0, 10.5), (6.0, 16.0)),                                   # mechanical | WC
-        part((0.0, 16.0), (10.5, 16.0)),                                  # mechanical, WC | pantry
-        part((0.0, 20.0), (10.5, 20.0)),                                  # pantry | kitchen
-        part((10.5, 10.5), (10.5, 20.0), door(1.0, 2.83, "L", "s"), door(6.0, 2.5, "L", "s")),  # hall | WC, pantry
+        part((0.0, 16.0), (10.5, 16.0)),                                  # mechanical, WC | entry
+        part((0.0, 20.0), (10.5, 20.0)),                                  # entry | kitchen
+        part((10.5, 10.5), (10.5, 16.0), door(1.0, 2.83, "L", "s")),      # hall | WC; the entry opens to the hall
     ],
     rooms=[dict(name="Carport", rect=(0.0, 0.0, 20.0, 10.5), outdoor=True, note="open to the drive · cedar gate",
                 lab=(6.0, 6.8)),
            dict(name="Mech", rect=(0.0, 10.5, 6.0, 16.0), lab=(3.0, 13.6)),
            dict(name="WC", rect=(6.0, 10.5, 10.5, 16.0), lab=(8.25, 13.6)),
-           dict(name="Pantry", rect=(0.0, 16.0, 10.5, 20.0), lab=(5.25, 18.4)),
+           dict(name="Entry", rect=(0.0, 16.0, 10.5, 20.0), lab=(6.0, 18.4)),
            dict(name="Hall", rect=(10.5, 10.5, STAIR_X, 20.0), lab=(13.2, 15.0)),
            dict(name="Kitchen", rect=(0.0, 20.0, 20.0, 27.0), lab=(15.0, 25.4)),
            dict(name="Living + dining", rect=(0.0, 27.0, 20.0, 39.0), lab=(14.6, 30.4))],
@@ -257,6 +261,7 @@ CASA02_GF_SIDE = dict(
     gate=((0.0, 0.67), (0.0, 10.5)),                                   # on the drive side
     stone=dict(walls=[], piers=[(0.0, 0.0, 20.0, 0.67), (19.33, 0.67, 20.0, 4.0)]),   # the street wall + return
     calcada=[(0.5, 8.4, 19.5, 10.4)],                                  # calçada walk along the back of the bay
+    canopy=dict(rect=(-2.5, 15.25, 0.0, 20.75), z=8.6, note="cedar canopy over the front door"),
     lantern=dict(LANTERN, opening=None, upper_only=True, y=(-1.0, -0.67)),
     enclosed=W2 * (D2 - 10.5),
 )
@@ -310,7 +315,16 @@ CASITA = dict(
 
 
 # The Casita without its porch, for sites where the porch would sit in a setback (L4-T1)
-CASITA_NP = dict(CASITA, name="Casita · no porch", porch=None)
+# On L4-T1 the Casita is mirrored at the back of the lot and reached by a path from the end of the drive, so its
+# front door turns to face that path (the porch-side wall, which faces west there) and the old door becomes a window.
+CASITA_NP = dict(CASITA, name="Casita · no porch", porch=None,
+                 walls=loop([(0.0, 0.0), (20.0, 0.0), (20.0, 32.0), (0.0, 32.0)],
+                            {0: [win(3.0, 6.0, ""), win(12.0, 6.0, "")],
+                             1: [win(3.0, 6.0, ""), FRONT_CS_DRIVE, win(20.5, 3.0, "high")],
+                             2: [win(11.0, 6.0, "egress")],
+                             3: [win(22.0, 6.0, "sill 3'-6\""), win(3.0, 4.0, "fluted below 5'")]})
+                 + CASITA["walls"][4:],
+                 calcada=[(20.0, 11.0, 23.0, 15.0)])               # calçada stoop at the new door, 12 sf
 
 
 def is_casita(plan):

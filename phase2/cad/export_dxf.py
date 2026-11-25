@@ -20,7 +20,7 @@ from ezdxf.enums import TextEntityAlignment
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
 from model import homes as H  # noqa: E402
-from model.sites import SITES, HOME_RULES, footprint, garden_wall, tp  # noqa: E402
+from model.sites import SITES, HOME_RULES, footprint, garden_wall, screen_parts, tp  # noqa: E402
 sys.path.insert(0, os.path.join(os.path.dirname(HERE), "plans"))
 import plans as PL  # noqa: E402  (developed plans: sheets, tags, schedules, the same as the PDF)
 import elevations as EL  # noqa: E402  (elevations and sections, the same as the PDF)
@@ -40,7 +40,7 @@ LAYERS = [  # name, colour, lineweight (1/100 mm), linetype
     ("A-ELEV-OTLN", 7, 50, "Continuous"), ("A-SECT", 7, 50, "Continuous"),
     ("A-ANNO-DIMS", 7, 13, "Continuous"), ("A-ANNO-TEXT", 7, 18, "Continuous"),
     ("C-PROP", 1, 35, "PHANTOM"), ("C-SETB", 8, 13, "DASHED"), ("C-ROAD", 8, 13, "Continuous"),
-    ("C-PAVE", 8, 13, "Continuous"), ("L-PLNT", 3, 13, "Continuous"), ("L-TREE", 3, 18, "Continuous"),
+    ("C-PAVE", 8, 13, "Continuous"), ("E-LITE", 2, 13, "Continuous"), ("L-PLNT", 3, 13, "Continuous"), ("L-TREE", 3, 18, "Continuous"),
     ("L-FENC", 30, 25, "Continuous"), ("L-WALL", 7, 35, "Continuous"), ("L-PATH", 8, 13, "Continuous"),
     ("G-TTLB", 7, 35, "Continuous"), ("G-TTLB-TEXT", 7, 18, "Continuous"), ("G-VPRT", 8, 13, "Continuous"),
 ]
@@ -263,6 +263,10 @@ def build_block(doc, name, plan):
         while yy < y1 - 0.2:
             line((x0, yy), (x1, yy), "A-OVHD")
             yy += 0.6
+    cn = plan.get("canopy")                       # cedar canopy over a front door
+    if cn:
+        x0, y0, x1, y1 = cn["rect"]
+        poly([(x0, y0), (x1, y0), (x1, y1), (x0, y1)], "A-OVHD")
     pr = plan.get("porch")                        # the Casita's covered porch: roof outline and two posts
     if pr:
         x0, y0, x1, y1 = pr["roof"]
@@ -348,10 +352,23 @@ def feature_labels(msp, plan, t, origin, h, full=True):
 
 
 def draw_garden_wall(msp, s, origin):
-    """The Casita's street wall: limestone piers, a cedar gate into the garden, cobogó between."""
+    """The Casita's street wall and the privacy screens: limestone piers, a cedar gate into the garden, cobogó."""
+    for sc in s.get("screens", []):
+        _garden_wall(msp, screen_parts(sc), origin)
     gw = garden_wall(s)
-    if not gw:
-        return
+    if gw:
+        _garden_wall(msp, gw, origin)
+    dw = s.get("drive_walk")
+    if dw:                                                   # the lit limestone walk along the drive
+        ox, oy = origin
+        rect(msp, ox + dw[0], oy + dw[1], ox + dw[2], oy + dw[3], "C-PAVE")
+        yb = dw[1] + 6.0
+        while yb < dw[3] - 2:
+            msp.add_circle(((ox + dw[0] + 0.5) * IN, (oy + yb) * IN), 0.35 * IN, dxfattribs={"layer": "E-LITE"})
+            yb += 14.0
+
+
+def _garden_wall(msp, gw, origin):
     ox, oy = origin
     y = gw["y"]
     for p0, p1 in gw["piers"]:

@@ -38,7 +38,7 @@ import materials as MAT  # noqa: E402
 from geo import MB, M, merge_copies  # noqa: E402
 import house as CASA01_HOUSE  # noqa: E402  (the Casa 01 cobogó block)
 from model import homes as H  # noqa: E402
-from model.sites import SITES, garden_wall, tp  # noqa: E402
+from model.sites import SITES, garden_wall, screen_parts, tp  # noqa: E402
 
 OUT = os.path.join(HERE, "out")
 
@@ -323,6 +323,22 @@ def build_site(s, L, fac="base"):
                 pier.box(x - 0.14, y0 - 0.09, 0.25, x + 0.14, y0 + 0.09, 7.5, mat=1)
         pier.build(bpy.context.scene.collection, bevel=0.003)
         cobogo_panel(L, "Casita garden cobogo", gw["cobogo"][0], gw["cobogo"][1], y0 - 0.165, 0.5, 8.5)
+    for i, sc in enumerate(s.get("screens", [])):             # cobogó privacy screens (L4-T1)
+        sp = screen_parts(sc)
+        y0, hh = sp["y"], sp["h"]
+        pier = MB(f"screen {i} pier", [L["limestone"], L["cedar_z"]])
+        for p0, p1 in sp["piers"]:
+            pier.box(p0, y0 - 0.4, 0.0, p1, y0 + 0.4, hh, mat=0)
+        for p0, p1 in sp["posts"]:
+            pier.box(p0, y0 - 0.12, 0.0, p1, y0 + 0.12, hh, mat=1)
+        if sp["gate"]:
+            g0, g1 = sp["gate"]
+            n = int((g1 - g0) / 0.42)
+            for k in range(n):
+                x = g0 + (k + 0.5) * (g1 - g0) / n
+                pier.box(x - 0.14, y0 - 0.09, 0.25, x + 0.14, y0 + 0.09, hh - 0.3, mat=1)
+        pier.build(bpy.context.scene.collection, bevel=0.003)
+        cobogo_panel(L, f"Screen cobogo {i}", sp["cobogo"][0], sp["cobogo"][1], y0 - 0.165, 0.0, hh)
     for i, (x, y, r) in enumerate(s["trees"]):
         tree(x, y, r, L, i * 13 + int(x))
     # neighbouring houses for scale
